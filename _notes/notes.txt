@@ -1,0 +1,5 @@
+discord.Constants.ApplicationCommandOptionTypes.NUMBER;
+
+https://discordjs.guide/interactions/registering-slash-commands.html#option-types
+
+https://discordjs.guide/interactions/replying-to-slash-commands.html#command-options

@@ -1,0 +1,48 @@
+const fs = require('fs');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+
+const config = require("./config/config.json");
+const token = process.env.token;
+const clientId = config.CLIENTID;
+const guildId = config.GUILDID;
+
+const commands = [];
+const commandFiles = fs.readdirSync('./interactions').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) 
+{
+	const command = require(`./interactions/${file}`);
+	if (command.type == "MESSAGE" || command.type == "USER")
+		delete command.description;
+	commands.push(command.data.toJSON());
+}
+
+console.log(`Deploying commands to:\n`,
+			`Client: ${clientId}\n`,
+			`Guild: ${guildId}\n`);
+
+const rest = new REST({ version: '9' }).setToken(token);
+
+(async () => 
+{
+	try {
+		console.log('Started refreshing application (/) commands.');
+
+		//// Register global commands
+		// await rest.put(
+		// 	Routes.applicationCommands(clientId),
+		// 	{ body: commands },
+		// );
+
+		//// Register guild commands
+		await rest.put(
+			Routes.applicationGuildCommands(clientId, guildId),
+			{ body: commands },
+		);
+
+		console.log('Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
+	}
+})();
