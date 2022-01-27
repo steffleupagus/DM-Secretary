@@ -1,5 +1,2 @@
-
-#run = "node_modules/.bin/node index.js"
-
 language = "nodejs"
 run = "npm start"
