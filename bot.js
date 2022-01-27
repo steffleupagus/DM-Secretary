@@ -33,7 +33,7 @@ class Bot
 	loadConfig()
 	{
 		const mod = process.env.mod || "";
-		this.client.config = require(`./config/${mod}config.json`);
+		this.client.config = require(`./config/${mod}_config.json`);
 		this.client.config.token = process.env.token;
 		
 		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)

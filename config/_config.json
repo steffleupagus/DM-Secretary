@@ -1,0 +1,38 @@
+{
+	"CONFIG":"PRODUCTION",
+	"CLIENTID":"912162588253642763",
+	"GUILDID":"694275190976413816",
+	"OWNERID":"659069077872181248",
+	"prefix":"~",
+
+	"DMOnDutyRole": "694285067723210843",
+	"ModeratorRole":"698004379638300763",
+	"RespecRole":"926934641913507930",
+
+	"avraeId": "261302296103747584",
+	"disboardId":"302050872383242240",
+	"tupperId": "431544605209788416",
+	"unbelievaboatId":"356950275044671499",
+	"yagpdbId":"204255221017214977",
+
+
+	"bumpChannel":"695630306564112504",
+	"rollChannel":"697021317727387718",
+	"respecChannel":"926935974880104468",
+	"retireChannel":"794251515991818271",
+	"botSpamChannel":"697620228703649892",
+	"dmbotSpamChannel":"758926434017607690",
+	"xpLogChannel": "775545148192587796",
+	"xpSpamChannel": "704307298407022622",
+	"dmSpamChannel": "794037671861288980",
+	"dragonspeakerChan":"717772298459021423",
+	"dmPingChannel":"772338010641006632",
+	"tupperLogChannel": "788607055367634964",
+
+	"levelOutputChan":"825183131355185212",
+	"activityChannel":"833758148212424764",
+	"profileChannel":"694861975896719450",
+
+	"xpemoji":"<:xp:858887927899226112>",
+	"rppemoji":"<:d20:704040692946698361>"
+}
