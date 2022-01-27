@@ -32,11 +32,11 @@ class Bot
 	/// Load configuration file
 	loadConfig()
 	{
-		//TODO: Include a mechanism for per-server configurations
-		this.client.config = require("./config/config.json");
-//		this.client.config = require("./config/debugconfig.json");
+		const mod = process.env.mod || "";
+		this.client.config = require(`./config/${mod}config.json`);
 		this.client.config.token = process.env.token;
-		// this.config.CLIENTID = process.env.CLIENTID;
+		
+		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)
 	}
 
 	/// Load individual event files and register the event for dynamic execution
