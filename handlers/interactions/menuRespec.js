@@ -1,6 +1,6 @@
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 
-const respec = require("../utilities/respecFuncs.js")
+const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
 
 async function execute(bot, interaction)
 {
