@@ -1,11 +1,11 @@
-const client = require("../bot");
+const client = require(`${process.cwd()}/bot`)
 
 function execute(client)
 {
 	console.log(`Ready! Logged in as ${client.user.tag} ✅`);
 
 	const bld = Date.now() % 10000;
-	const name = `Demiplane of Lust (Build: ${bld})`;
+	const name = `You Fap (Build: ${bld})`;
 	client.user.setPresence({ 
 		activities: [{ type: 3, name: name }], 
 		status: 'dnd' 
@@ -20,14 +20,20 @@ function execute(client)
 // //		`${client.commands.size} commands | ${client.config.prefix}help`,
 //    	];
 
-//    	let index = 0;
-// 	setInterval(() => 
-// 	{	
-// 		if (index === arrayOfStatus.length) index = 0;
-// 		const status = arrayOfStatus[index];
-// 		client.user.setActivity(`${status}`, { type: "WATCHING" });
-// 		index++;
-// 	}, 8000);
+	const arrayOfStatus = [
+		["WATCHING","You Fap"],
+		["LISTENING","You Moan"],
+		["PLAYING","With Myself"],
+	];
+
+   	let index = 0;
+	setInterval(() => 
+	{	
+		if (index === arrayOfStatus.length) index = 0;
+		const status = arrayOfStatus[index];
+		client.user.setActivity(status[1], { type: status[0] });
+		index++;
+	}, 8000);
 }
 
 // when the client is ready, run this code

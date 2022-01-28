@@ -33,7 +33,7 @@ class Bot
 	loadConfig()
 	{
 		const mod = process.env.mod || "";
-		this.client.config = require(`./config/${mod}_config.json`);
+		this.client.config = require(`${process.cwd()}/config/${mod}_config.json`);
 		this.client.config.token = process.env.token;
 		
 		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)
@@ -47,7 +47,7 @@ class Bot
 		this.client.on("ready", () => this.loadCommands() );
 
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));	
-		const eventFiles = await globPromise(`${process.cwd()}/events/*.js`);    
+		const eventFiles = await globPromise(`${process.cwd()}/handlers/events/*.js`);    
 		eventFiles.map((file) => 
 		{
 			//const event = require(`./events/${file}`);
@@ -63,13 +63,13 @@ class Bot
 	async loadMessageHandlers()
 	{
 		console.log("Loading message handlers...");
-		const messageHandlers = fs.readdirSync('./handlers/message')
+		const messageHandlers = fs.readdirSync(`${process.cwd()}/handlers/message`)
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.messageHandlers = [];
 		for (const file of messageHandlers) 
 		{
-			const handler = require(`./handlers/message/${file}`);
+			const handler = require(`${process.cwd()}/handlers/message/${file}`);
 			console.log(" - Handler: ", handler.name);
 			this.client.messageHandlers.push(handler);
 		}		
@@ -78,13 +78,13 @@ class Bot
 	loadReactHandlers()
 	{
 		console.log("Loading reaction handlers...");
-		const messageHandlers = fs.readdirSync('./handlers/reations')
+		const messageHandlers = fs.readdirSync('${process.cwd()}/handlers/reations')
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.reactHandlers = [];
 		for (const file of messageHandlers) 
 		{
-			const handler = require(`./handlers/reations/${file}`);
+			const handler = require(`${process.cwd()}/handlers/reations/${file}`);
 			console.log(" - Handler: ", handler.name);
 			this.client.reactHandlers.push(handler);
 		}		
@@ -130,12 +130,12 @@ class Bot
 		console.log("Loading commands...");
 
 		this.client.commands = new Collection();
-		const commandFiles = fs.readdirSync('./interactions').filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/interactions`).filter(file => file.endsWith('.js'));
 		if (!commandFiles.length)
 			console.log(" - No commands found");
 		for (const file of commandFiles) 
 		{
-			const command = require(`./interactions/${file}`);
+			const command = require(`${process.cwd()}/handlers/interactions/${file}`);
 			console.log(" - Command: ", command.data.name);
 			// Set a new item in the Collection; key = command name, value = exported module
 			this.client.commands.set(command.data.name, command);

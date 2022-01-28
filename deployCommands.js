@@ -2,17 +2,18 @@ const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
-const config = require("./config/config.json");
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const token = process.env.token;
 const clientId = config.CLIENTID;
 const guildId = config.GUILDID;
 
 const commands = [];
-const commandFiles = fs.readdirSync('./interactions').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./handlers/interactions').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) 
 {
-	const command = require(`./interactions/${file}`);
+	const command = require(`./handlers/interactions/${file}`);
 	if (command.type == "MESSAGE" || command.type == "USER")
 		delete command.description;
 	commands.push(command.data.toJSON());
