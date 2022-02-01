@@ -1,15 +1,10 @@
+const ApplicationCommandType = require(`${process.cwd()}/utilities/enums.js`);
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 
 const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
 
-async function execute(bot, interaction)
+async function execute(interaction)
 {
-	if (interaction.user.id != bot.config.OWNERID)
-	{
-		interaction.reply(`This menu can only be used by <@${bot.config.OWNERID}>`);
-		return;
-	}
-
 	const user  = interaction.user;
 	const client = interaction.client;
 	const guildId = interaction.guildId;
@@ -20,11 +15,17 @@ async function execute(bot, interaction)
 	const channel = await guild?.channels.fetch(channelId);
 	const message = await channel?.messages.fetch(messageId);
 
-	if (message && respec.shouldHandle(bot, message))
+	if (interaction.user.id != client.config.OWNERID)
+	{
+		interaction.reply(`This menu can only be used by <@${client.config.OWNERID}>`);
+		return;
+	}
+
+	if (message && respec.shouldHandle(client, message))
 	{
 		await interaction.reply({ 	content: 'Parsing for Respec message', 
 									ephemeral: true });
-		respec.handle(bot, message)
+		respec.handle(client, message)
 	}else{
 		await interaction.reply({ 	content: 'This is not a respec message.', 
 									ephemeral: true });
@@ -35,6 +36,6 @@ module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Respec')
-		.setType(3),
+		.setType(ApplicationCommandType.Message),
 	execute: execute
 };

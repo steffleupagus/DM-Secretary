@@ -5,6 +5,10 @@ const { glob } = require("glob");
 const { promisify } = require("util");
 const globPromise = promisify(glob);
 
+
+const { ApplicationCommandType } = require('discord.js')
+
+
 const utils = require('./utilities/utilFuncs.js')
 
 class Bot 
@@ -17,6 +21,8 @@ class Bot
 			Intents.FLAGS.GUILD_MESSAGE_REACTIONS
 		]
 		this.client = new Client({intents: intents});
+
+		console.log();
 
 		this.loadBot();
 	}
@@ -130,12 +136,12 @@ class Bot
 		console.log("Loading commands...");
 
 		this.client.commands = new Collection();
-		const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/interactions`).filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/commands`).filter(file => file.endsWith('.js'));
 		if (!commandFiles.length)
 			console.log(" - No commands found");
 		for (const file of commandFiles) 
 		{
-			const command = require(`${process.cwd()}/handlers/interactions/${file}`);
+			const command = require(`${process.cwd()}/handlers/commands/${file}`);
 			console.log(" - Command: ", command.data.name);
 			// Set a new item in the Collection; key = command name, value = exported module
 			this.client.commands.set(command.data.name, command);

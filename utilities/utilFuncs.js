@@ -20,6 +20,14 @@ module.exports =
 		}
 	},
 
+	async asyncObjectForEach(object, callback)
+	{
+		for (const [key, value] of Object.entries(object)) 
+		{
+			await callback(value, key, object);
+		}
+	},
+
 	async asyncArrayForEach(array, callback) 
 	{
 		if (!array) return;

@@ -9,11 +9,11 @@ const clientId = config.CLIENTID;
 const guildId = config.GUILDID;
 
 const commands = [];
-const commandFiles = fs.readdirSync('./handlers/interactions').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./handlers/commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) 
 {
-	const command = require(`./handlers/interactions/${file}`);
+	const command = require(`./handlers/commands/${file}`);
 	if (command.type == "MESSAGE" || command.type == "USER")
 		delete command.description;
 	commands.push(command.data.toJSON());

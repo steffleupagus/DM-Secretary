@@ -24,8 +24,8 @@ function verifyMessageMeta(client, message)
 
 	let channel = message.channel.id;
 	let parent  = message.channel.parentId;
-	channel = (//(channel == client.config.rollChannel)||
-			   //(parent == client.config.rollChannel)||
+	channel = ((channel == client.config.rollChannel)||
+			   (parent == client.config.rollChannel)||
 			   (channel == client.config.respecChannel)||
 			   (parent == client.config.respecChannel));
 

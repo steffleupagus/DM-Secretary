@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
 const EMBED_MAX = 6000
 const EMBED_FIELD_MAX = 1024
@@ -210,15 +211,16 @@ class EmbedPaginator
 
 	async send(channel, message=null, callback=null)
 	{
-		await this.asyncForEach(this.embeds(), async embed=>
+		await Utils.asyncArrayForEach(this.embeds(), async embed=>
 		{
 			console.log(embed.title,": ",embed.fields.length);
 
 			var sentMsg = null;
 			if (message)
-				sentMsg = await channel.send(message, embed).catch(console.error);
+				sentMsg = await channel.send({content:message, embeds:[embed]})
+									   .catch(console.error);
 			else
-				sentMsg = await channel.send(embed).catch(console.error);
+				sentMsg = await channel.send({embeds: [embed]}).catch(console.error);
 			if (callback && sentMsg)
 				callback(sentMsg);
 		});
@@ -226,11 +228,9 @@ class EmbedPaginator
 
 	async sendComplex(channel, data, callback=null, callbackArg=null)
 	{
-		await this.asyncForEach(this.embeds(), async embed=>
+		await Utils.asyncArrayForEach(this.embeds(), async embed=>
 		{
-//			console.log(embed.title,": ",embed.fields.length);
-
-			data.embed = embed;
+			data.embeds = [embed];
 			var sentMsg = await channel.send(data).catch(console.error);
 			if (callback && sentMsg)
 			{

@@ -13,10 +13,6 @@ async function execute(client, interaction)
 						interaction.message?.interaction?.commandName : 
 						interaction.commandName;
 
-	console.log(`\n\n\n${commandName}\n\n\n`);
-
-
-
 	// const commandName = interaction.commandName ?? interaction.message.interaction.commandName ?? false;
 	// if (!commandName) return
 
@@ -30,9 +26,9 @@ async function execute(client, interaction)
 		// 	await command.handleButton(interaction);
 		// else 
 		if (interaction.isSelectMenu())
-			await command.select(client, interaction);
+			await command.select(interaction);
 		else 			//interaction.isCommand() || interaction.isContextMenu()
-			await command.execute(client, interaction);
+			await command.execute(interaction);
 	}
 	catch (error)
 	{
