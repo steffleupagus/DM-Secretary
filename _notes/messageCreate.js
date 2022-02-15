@@ -1,4 +1,4 @@
-const client = require("../bot")
+const client = require(`${process.cwd()}/bot`)
 
 
 

@@ -1,9 +1,9 @@
 const { MessageEmbed, Message, Client } = require("discord.js");
 const { readdirSync } = require("fs");
-const prefix = require("../../config/config.json").prefix;
+const prefix = require(`${process.cwd()}/config/config.json`).prefix;
 let color = "#36393f";
 
-const create_mh = require('../../functions/helpfunction');
+const create_mh = require(`${process.cwd()}/functions/helpfunction`);
 
 module.exports = 
 {
@@ -115,7 +115,7 @@ module.exports =
 
 
             const cmds = commands.map((command) => {
-              let file = require(`../../commands/${dir}/${command}`);
+              let file = require(`${process.cwd()}/commands/${dir}/${command}`);
 
               if (!file.name) return "No command name.";
 
@@ -180,15 +180,15 @@ module.exports =
     } else {
       let catts = [];
 
-      readdirSync("./commands/").forEach((dir) => {
+      readdirSync(`${process.cwd()}/commands/`).forEach((dir) => {
         if (dir.toLowerCase() !== args[0].toLowerCase()) return;
-        const commands = readdirSync(`./commands/${dir}/`).filter((file) =>
+        const commands = readdirSync(`${process.cwd()}/commands/${dir}/`).filter((file) =>
           file.endsWith(".js")
         );
 
 
         const cmds = commands.map((command) => {
-          let file = require(`../../commands/${dir}/${command}`);
+          let file = require(`${process.cwd()}/commands/${dir}/${command}`);
 
           if (!file.name) return "No command name.";
 

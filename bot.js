@@ -9,7 +9,7 @@ const globPromise = promisify(glob);
 const { ApplicationCommandType } = require('discord.js')
 
 
-const utils = require('./utilities/utilFuncs.js')
+const utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
 class Bot 
 {
@@ -84,7 +84,7 @@ class Bot
 	loadReactHandlers()
 	{
 		console.log("Loading reaction handlers...");
-		const messageHandlers = fs.readdirSync('${process.cwd()}/handlers/reations')
+		const messageHandlers = fs.readdirSync(`${process.cwd()}/handlers/reations`)
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.reactHandlers = [];
