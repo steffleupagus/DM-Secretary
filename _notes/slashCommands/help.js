@@ -3,7 +3,7 @@ const { readdirSync } = require("fs");
 const prefix = "/";
 let color = "#36393f";
 
-const create_mh = require('../../functions/helpfunction');
+const create_mh = require(`${process.cwd()}/functions/helpfunction`);
 
 module.exports = {
   name: "help",
@@ -124,7 +124,7 @@ module.exports = {
 
 
             const cmds = commands.map((command) => {
-              let file = require(`../../SlashCommands/${dir}/${command}`);
+              let file = require(`${process.cwd()}/SlashCommands/${dir}/${command}`);
 
               if (!file.name) return "No command name.";
 
@@ -197,7 +197,7 @@ module.exports = {
 
 
         const cmds = commands.map((command) => {
-          let file = require(`../../SlashCommands/${dir}/${command}`);
+          let file = require(`${process.cwd()}/SlashCommands/${dir}/${command}`);
 
           if (!file.name) return "No command name.";
 
