@@ -50,7 +50,7 @@ function checkPermissions(interaction, command)
 		userPermissions.forEach(perm => {
 			if (!userPerms.has(perm) && !chanPerms.has(perm))
 			{
-				perm = util.getPermissionStr(perm);
+				perm = Utils.getPermissionStr(perm);
 				missingPerms.push(perm.toString())
 			}
 		});
