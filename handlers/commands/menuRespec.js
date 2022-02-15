@@ -1,6 +1,8 @@
 const ApplicationCommandType = require(`${process.cwd()}/utilities/enums.js`);
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
 
 async function execute(interaction)
@@ -14,12 +16,6 @@ async function execute(interaction)
 	const guild = guilds.get(guildId);
 	const channel = await guild?.channels.fetch(channelId);
 	const message = await channel?.messages.fetch(messageId);
-
-	if (interaction.user.id != client.config.OWNERID)
-	{
-		interaction.reply(`This menu can only be used by <@${client.config.OWNERID}>`);
-		return;
-	}
 
 	if (message && respec.shouldHandle(client, message))
 	{
@@ -37,5 +33,8 @@ module.exports =
 	data: new ContextMenuCommandBuilder()
 		.setName('Respec')
 		.setType(ApplicationCommandType.Message),
+	whitelistRoles: [
+		config.ModeratorRole,
+	],
 	execute: execute
 };

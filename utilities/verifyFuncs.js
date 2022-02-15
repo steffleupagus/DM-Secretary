@@ -53,7 +53,7 @@ function verifyMessageContent(client, message)
 	return false;
 }
 
-function verifyRoll(client, message, sendResult=true)
+function verifyRoll(client, message, interaction=null, sendResult=true)
 {
 	var embed = message.embeds[0];
 	var title = embed.title
@@ -165,11 +165,11 @@ function verifyRoll(client, message, sendResult=true)
 	if (sendResult)
 	{
 		dice = "`" + dice.join("` / `") + "`: `" + total + "`";
-		sendVerification(message, color, t, u, hash, playerMatch, dice);
+		sendVerification(message, color, t, u, hash, playerMatch, dice, interaction);
 	}
 }
 
-function sendVerification(message, color, t, u, hash, mention, dice)
+function sendVerification(message, color, t, u, hash, mention, dice, interaction=null)
 {
 	var title = "Roll " + (hash ? "Verified" : "Rejected")
 	var footer= (hash ? t+'X'+u+'X'+hash : "Verification failed...")
@@ -190,9 +190,27 @@ function sendVerification(message, color, t, u, hash, mention, dice)
 	else
 		mention = "";
 
-	message.channel.send({content:mention, embeds:[embed]})				
-		.then(async (newMsg) => {})
-		.catch(console.error);
+	if (interaction)
+	{
+		if (interaction.replied)
+		{
+			interaction.editReply({content:mention, embeds:[embed]})
+				.then(async (newMsg) => {})
+				.catch(console.error);
+		}
+		else
+		{
+			interaction.reply({content:mention, embeds:[embed]})
+				.then(async (newMsg) => {})
+				.catch(console.error);
+		}
+	}
+	else
+	{
+		message.channel.send({content:mention, embeds:[embed]})				
+			.then(async (newMsg) => {})
+			.catch(console.error);
+	}
 
 	return;
 }
