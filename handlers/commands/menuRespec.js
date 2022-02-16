@@ -3,7 +3,7 @@ const { ContextMenuCommandBuilder } = require('@discordjs/builders');
 
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
-const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
+const respec = require(`${process.cwd()}/utilities/funcsRespec.js`)
 
 async function execute(interaction)
 {
@@ -32,7 +32,8 @@ module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Respec')
-		.setType(ApplicationCommandType.Message),
+		.setType(ApplicationCommandType.Message)
+		.setDefaultPermission(false),
 	whitelistRoles: [
 		config.ModeratorRole,
 	],

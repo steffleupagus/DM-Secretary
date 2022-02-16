@@ -96,40 +96,6 @@ class Bot
 		}		
 	}
 
-
-
-
-
-
-
-
-
-// // Commands
-// const commandFiles = await globPromise(`${process.cwd()}/commands/**/*.js`);
-// commandFiles.map((value) => {
-// 	const file = require(value);
-// 	const splitted = value.split("/");
-// 	const directory = splitted[splitted.length - 2];
-
-// 	if (file.name) {
-// 		const properties = { directory, ...file };
-// 		client.commands.set(file.name, properties);
-// 	}
-// });
-
-
-// // Slash Commands
-// const slashCommands = await globPromise(`${process.cwd()}/SlashCommands/*/*.js`);
-// const arrayOfSlashCommands = [];
-// slashCommands.map((value) => {
-// 	const file = require(value);
-// 	if (!file?.name) return;
-// 	client.slashCommands.set(file.name, file);
-
-// 	if (["MESSAGE", "USER"].includes(file.type)) delete file.description;
-// 	arrayOfSlashCommands.push(file);
-// });
-
 	/// Load the individual command files and register them for dynamic execution
 	async loadCommands()
 	{
@@ -143,10 +109,41 @@ class Bot
 		{
 			const command = require(`${process.cwd()}/handlers/commands/${file}`);
 			console.log(" - Command: ", command.data.name);
+
 			// Set a new item in the Collection; key = command name, value = exported module
 			this.client.commands.set(command.data.name, command);
 		}
+
+		await this.applyPermissions();
 	}
+
+	async applyPermissions()
+	{
+		if (!this.client.application?.owner) await this.client.application?.fetch()
+		const guild = await this.client.guilds.cache.get(this.client.config.GUILDID)
+		const commands = await guild?.commands.fetch();
+
+		commands.each(async (v,k,all)=>
+		{
+//			console.log(k, v.name)
+			const name = v.name
+			const command = this.client.commands.get(name);
+			const whitelistRoles = command.whitelistRoles;
+			if (whitelistRoles)
+			{
+				let permissions = []
+				for (const role of whitelistRoles)
+				{
+					permissions.push({id:role, type:'ROLE', permission: true})
+				}
+				await v.permissions.add({permissions});
+			}
+		})
+	}
+
+
+
+
 
 	/// Handle login and disconnect
 	runBot()
@@ -170,30 +167,3 @@ const bot = new Bot();
 require("./dashboard")(bot.client)
 
 module.exports = bot.client;
-
-
-
-
-
-
-
-// const client = new Client({ intents: intents });
-
-// //Load the config
-// //TODO - Load separate config if the bot is DEVELOPMENT or RELEASE build
-// client.config = require("./config/config.json");
-
-
-// handler.loadEvents(client);
-
-
-
-
-// client.commands = new Collection();
-// client.slashCommands = new Collection();
-
-
-// //require("./dashboard")(client);
-
-// client.login(process.env.token);
-// module.exports = client;

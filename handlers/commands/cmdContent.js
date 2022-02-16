@@ -2,8 +2,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Permissions } = require('discord.js')
 const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
+const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
 const index = require(`${process.cwd()}/content/_contentIndex.json`)
 const wait = require('util').promisify(setTimeout);
+
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 async function publishContent(channel, content)
 {
@@ -85,8 +89,8 @@ async function execute(interaction)
 	await interaction.reply(`Writing contents to <#${target.id}>`);
 
 	//Clean up the old messages in the channel
-	await Utils.channelCleanup(channel);
-	
+	await MsgUtils.channelCleanup(channel);
+
 	//Grab the data for the new content according to what goes in this channel
 	const content = require(`${process.cwd()}/content/${index[channel.id].data}`)
 
@@ -113,7 +117,7 @@ async function run(message, command, args)
 const data = new SlashCommandBuilder()
 	.setName('content')
 	.setDescription('Update the contents of a static channel')
-	// .addStringOption(option => option.setName('input').setDescription('Enter a string').setRequired(false))
+	.setDefaultPermission(false)	
 	.addChannelOption(option => option.setName('target').setRequired(false)
 									  .setDescription('Specify a target channel'))
 
@@ -123,6 +127,9 @@ const userPermissions = [	Permissions.FLAGS.MANAGE_CHANNELS,
 module.exports = 
 {
 	data: data,
+	whitelistRoles: [
+		config.BuilderRole,
+	],
 	userPermissions: userPermissions,
 	execute: execute,
 	message: run

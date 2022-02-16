@@ -1,7 +1,7 @@
 /*------------------------------------------------------------*\
 | Detect Respec purchases and relay them to the respec channel |
 \*------------------------------------------------------------*/
-const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
+const respec = require(`${process.cwd()}/utilities/funcsRespec.js`)
 module.exports = {
 	name: 'respecPurchase',
 	shouldHandle: respec.shouldHandle,
