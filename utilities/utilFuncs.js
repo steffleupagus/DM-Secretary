@@ -1,4 +1,4 @@
-const { Permissions } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports =
 {
@@ -38,10 +38,10 @@ module.exports =
 		}
 	},
 	
-	hasWhitelistRole(member,whitelistRoles)
+	hasAnyRole(member, roleArray)
 	{
 		const userRoles = member.roles.cache;
-		for (const role of whitelistRoles)
+		for (const role of roleArray)
 		{
 			if (userRoles.has(role))
 				return true;

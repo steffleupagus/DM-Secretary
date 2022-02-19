@@ -9,12 +9,8 @@ async function execute(interaction)
 {
 	const user  = interaction.user;
 	const client = interaction.client;
-	const guildId = interaction.guildId;
-	const channelId = interaction.channelId;
 	const messageId = interaction.targetId;
-	const guilds = client.guilds.cache;
-	const guild = guilds.get(guildId);
-	const channel = await guild?.channels.fetch(channelId);
+	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 
 	if (message && respec.shouldHandle(client, message))

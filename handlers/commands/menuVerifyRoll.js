@@ -9,16 +9,12 @@ async function execute(interaction)
 {
 	const user  = interaction.user;
 	const client = interaction.client;
-	const guildId = interaction.guildId;
-	const channelId = interaction.channelId;
 	const messageId = interaction.targetId;
-	const guilds = client.guilds.cache;
-	const guild = guilds.get(guildId);
-	const channel = await guild?.channels.fetch(channelId);
+	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 
 	const roles = [ config.ModeratorRole, config.DMRole ];
-	const hasRole = Utils.hasWhitelistRole(interaction.member, roles);
+	const hasRole = Utils.hasAnyRole(interaction.member, roles);
 
 	if (message && verify.shouldHandle(client, message))
 	{
