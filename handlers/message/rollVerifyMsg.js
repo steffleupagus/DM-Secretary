@@ -1,6 +1,6 @@
-/*------------------------------------------------------------*\
-| Detect Respec purchases and relay them to the respec channel |
-\*------------------------------------------------------------*/
+/*--------------------------------------*\
+| Detect Avrae rolls and verify the hash |
+\*--------------------------------------*/
 const verify = require(`${process.cwd()}/utilities/funcsVerify.js`)
 module.exports = {
 	name: 'rollVerify',
