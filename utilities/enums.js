@@ -3,4 +3,6 @@ const ApplicationCommandType = {
 	Message: 3
 }
 
-module.exports = ApplicationCommandType
+module.exports = {
+	ApplicationCommandType
+}

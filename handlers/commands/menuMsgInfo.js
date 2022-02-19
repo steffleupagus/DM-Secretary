@@ -2,12 +2,11 @@ const { ApplicationCommandType } = require(`${process.cwd()}/utilities/enums.js`
 const { ContextMenuCommandBuilder } = require('@discordjs/builders')
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
-const mod = process.env.mod || ""
+const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`)
-const verify = require(`${process.cwd()}/utilities/funcsVerify.js`)
+
 async function execute(interaction)
 {
-	const user  = interaction.user;
 	const client = interaction.client;
 	const guildId = interaction.guildId;
 	const channelId = interaction.channelId;
@@ -17,24 +16,25 @@ async function execute(interaction)
 	const channel = await guild?.channels.fetch(channelId);
 	const message = await channel?.messages.fetch(messageId);
 
-	const roles = [ config.ModeratorRole, config.DMRole ];
-	const hasRole = Utils.hasWhitelistRole(interaction.member, roles);
+	interaction.deferReply({ephemeral:true});
 
-	if (message && verify.shouldHandle(client, message))
-	{
-		await interaction.reply({ 	content: 'Parsing for roll message', 
-									ephemeral: true });
-		verify.handle(client, message, hasRole ? null : interaction);
-	}else{
-		await interaction.reply({ 	content: 'This is not a roll message.', 
-									ephemeral: true });
-	}
+	let response = [];
+	response.push(`.applicationId: ${message.applicationId}`)
+	response.push(`.author: ${message.author}`)
+	response.push(`.channel: ${message.channel}`)
+	response.push(`.content: ${message.content}`)
+	response.push(`.id: ${message.id}`)
+	response.push(`.member: ${message.member}`)
+	response.push(`.url: ${message.url}`)
+	response.push(`.webhookId: ${message.webhookId}`)	
+
+	interaction.editreply({content:response.join("\n"), ephemeral:true});
 }
 
 module.exports = 
 {
 	data: new ContextMenuCommandBuilder()
-		.setName('Verify Roll')
+		.setName('Info')
 		.setType(ApplicationCommandType.Message),
 	execute: execute
 };
