@@ -2,6 +2,21 @@ const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports =
 {
+	async sendError(channel, errors, pings = "", sendBreak = false)
+	{
+		var embed = new MessageEmbed()
+		if (Array.isArray(pings))
+			pings = pings.join("> <@");
+		if (pings.length > 0)
+			pings = "<@" + pings + ">";
+		errors.forEach(error=>{ embed.addField("Error",error) })
+		await channel.send({content: pings, embeds:[embed]}).then(()=>
+		{
+			if (sendBreak)
+				message.channel.send("``` ```");
+		});
+	},
+	
 	async slowdown(milliseconds)	
 	{ 
 		return new Promise(resolve => setTimeout(resolve, milliseconds)) 

@@ -63,7 +63,6 @@ async function publishContent(channel, content)
 		embed.send(channel);
 	}
 
-
 	return true
 }
 
