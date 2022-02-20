@@ -4,12 +4,7 @@ const path = require('path')
 const { glob } = require("glob");
 const { promisify } = require("util");
 const globPromise = promisify(glob);
-
-
-const { ApplicationCommandType } = require('discord.js')
-
-
-const utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
+const mongoose = require('mongoose')
 
 class Bot 
 {
@@ -21,9 +16,6 @@ class Bot
 			Intents.FLAGS.GUILD_MESSAGE_REACTIONS
 		]
 		this.client = new Client({intents: intents});
-
-		console.log();
-
 		this.loadBot();
 	}
 
@@ -32,6 +24,11 @@ class Bot
 		this.loadConfig();
 		await this.loadEvents();
 		await this.loadMessageHandlers();
+		this.client.on("ready", () => 
+		{
+			this.loadCommands();
+			this.loadDatabase();
+		});				
 		this.runBot();
 	}
 
@@ -45,13 +42,21 @@ class Bot
 		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)
 	}
 
+	async loadDatabase()
+	{
+		await mongoose.connect(process.env.mongodb_url,
+		{
+			useUnifiedTopology: true,
+			useNewUrlParser: true,
+			keepAlive: true
+		}).then(console.log('Mongodb ✅'))
+	}
+
 	/// Load individual event files and register the event for dynamic execution
 	async loadEvents()
 	{
 		console.log("Loading events...");
 		
-		this.client.on("ready", () => this.loadCommands() );
-
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));	
 		const eventFiles = await globPromise(`${process.cwd()}/handlers/events/*.js`);    
 		eventFiles.map((file) => 
