@@ -11,7 +11,7 @@ function execute(client)
 		status: 'dnd' 
 	});
 
-// 	const arrayOfStatus = [
+// 	const statusArray = [
 // 		`${client.guilds.cache.size} servers | ${client.config.prefix}help`,
 // 		`${client.channels.cache.size} channels | ${client.config.prefix}help`,
 // 		` ${client.guilds.cache
@@ -20,7 +20,7 @@ function execute(client)
 // //		`${client.commands.size} commands | ${client.config.prefix}help`,
 //    	];
 
-	const arrayOfStatus = [
+	const statusArray = [
 		["WATCHING","You Fap"],
 		["LISTENING","You Moan"],
 		["PLAYING","With Myself"],
@@ -29,8 +29,8 @@ function execute(client)
    	let index = 0;
 	setInterval(() => 
 	{	
-		if (index === arrayOfStatus.length) index = 0;
-		const status = arrayOfStatus[index];
+		if (index === statusArray.length) index = 0;
+		const status = statusArray[index];
 		client.user.setActivity(status[1], { type: status[0] });
 		index++;
 	}, 8000);

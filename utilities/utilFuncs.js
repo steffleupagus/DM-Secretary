@@ -1,7 +1,22 @@
-const { Permissions } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports =
 {
+	async sendError(channel, errors, pings = "", sendBreak = false)
+	{
+		var embed = new MessageEmbed()
+		if (Array.isArray(pings))
+			pings = pings.join("> <@");
+		if (pings.length > 0)
+			pings = "<@" + pings + ">";
+		errors.forEach(error=>{ embed.addField("Error",error) })
+		await channel.send({content: pings, embeds:[embed]}).then(()=>
+		{
+			if (sendBreak)
+				message.channel.send("``` ```");
+		});
+	},
+	
 	async slowdown(milliseconds)	
 	{ 
 		return new Promise(resolve => setTimeout(resolve, milliseconds)) 
@@ -37,20 +52,110 @@ module.exports =
 			await callback(array[index], index, array);
 		}
 	},
-
-	//Use with caution
-	async channelCleanup(channel)
+	
+	hasAnyRole(member, roleArray)
 	{
-		let messages = await channel.messages.fetch({limit: 100});
-		console.log(`Channel cleanup: Deleting ${messages.size} messages.`)
-			await channel.bulkDelete(messages);
-		if (messages.size >= 2)
-			await this.channelCleanup(channel);
+		const userRoles = member.roles.cache;
+		for (const role of roleArray)
+		{
+			if (userRoles.has(role))
+				return true;
+		};
+		return false;
 	},
 	
 	getPermissionStr(perm)
 	{
 		perm = Object.keys(Permissions.FLAGS).find(key => Permissions.FLAGS[key] === perm);
 		return perm;
+	},
+
+	milliseconds(days=0, hours=0, minutes=0, seconds=0)
+	{
+		hours += days * 24;
+		minutes += hours * 60;
+		seconds += minutes * 60;
+		let ms = seconds * 1000;
+		return ms;
+	},
+
+	getDate()
+	{
+		// Get time zone offset for NY, USA
+		const getTZOffset = () => {
+			const stdTimezoneOffset = () => {
+				var jan = new Date(0, 1)
+				var jul = new Date(6, 1)
+				return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
+			}
+
+			var today = new Date()
+			
+			const isDstObserved = (today) => 
+			{
+				return today.getTimezoneOffset() < stdTimezoneOffset()
+			}
+
+			console.log("DST: "+isDstObserved(today))
+
+			if (isDstObserved(today))
+				return -4
+			else
+				return -5
+		}
+
+		const d = new Date()
+		const localTime = d.getTime()
+		const localOffset = d.getTimezoneOffset() * 60 * 1000
+		const utcTime = localTime + localOffset
+
+		// obtain and add destination's UTC time offset
+		const tzOffset = getTZOffset()
+
+		console.log("Offset: "+tzOffset)
+
+		const usa = utcTime + (60 * 60 * 1000 * tzOffset)
+		// convert msec value to date string
+		const nd = new Date(usa)
+
+		console.log(this.formatDate(nd))
+
+//		return this.getFormattedDate(nd, withTime);
+		return nd;
+	},
+
+	formatDate(d, format="hh:mm pm DD/MM/YYYY")
+	{
+		const year = d.getFullYear() 			//YYYY
+
+		const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];	
+		const monthIndex = d.getMonth()			//MM
+		const monthFull = monthsFull[monthIndex]
+		const monthShort= monthsShort[monthIndex]
+
+		const daysFull = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+		const daysShort = ['Sun','Mon','Tues','Wed','Thur','Fri','Sat'];
+
+		const date = d.getDate() 				//DD
+
+		const hour24 = d.getHours() 			//24-hour
+		const pm     = hour24 < 12 ? 'am':'pm';	//
+		const hour12 = hour24 % 12 || 12;
+		var	  min  	 = d.getMinutes();
+			  min	 = (min < 10 ? "0" : "") + min;
+
+		format = format.replace("YYYY", year);
+		format = format.replace("MMMM", monthFull);
+		format = format.replace("MMM", 	monthShort);
+		format = format.replace("MM", 	monthIndex+1);
+		format = format.replace("DD", 	date);
+		format = format.replace("HH", 	hour24);
+		format = format.replace("hh", 	hour12);
+		format = format.replace("mm", 	min);
+		format = format.replace("pm", 	pm);
+
+		return format;
 	}
+
 }

@@ -1,20 +1,16 @@
-const ApplicationCommandType = require(`${process.cwd()}/utilities/enums.js`);
-const { ContextMenuCommandBuilder } = require('@discordjs/builders');
+const { ApplicationCommandType } = require(`${process.cwd()}/utilities/enums.js`)
+const { ContextMenuCommandBuilder } = require('@discordjs/builders')
 
-const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
-const respec = require(`${process.cwd()}/utilities/respecFuncs.js`)
+const mod = process.env.mod || ""
+const config = require(`${process.cwd()}/config/${mod}_config.json`)
+const respec = require(`${process.cwd()}/utilities/funcsRespec.js`)
 
 async function execute(interaction)
 {
 	const user  = interaction.user;
 	const client = interaction.client;
-	const guildId = interaction.guildId;
-	const channelId = interaction.channelId;
 	const messageId = interaction.targetId;
-	const guilds = client.guilds.cache;
-	const guild = guilds.get(guildId);
-	const channel = await guild?.channels.fetch(channelId);
+	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 
 	if (message && respec.shouldHandle(client, message))
@@ -32,7 +28,8 @@ module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Respec')
-		.setType(ApplicationCommandType.Message),
+		.setType(ApplicationCommandType.Message)
+		.setDefaultPermission(false),
 	whitelistRoles: [
 		config.ModeratorRole,
 	],

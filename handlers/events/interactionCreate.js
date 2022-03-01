@@ -24,7 +24,9 @@ async function execute(client, interaction)
 	catch (error)
 	{
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await reply(interaction, 
+					{	content: `There was an error executing this command:\n${error}`, 
+						ephemeral: true });
 	}
 }
 
