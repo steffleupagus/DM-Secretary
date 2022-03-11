@@ -128,22 +128,37 @@ class Bot
 		const guild = await this.client.guilds.cache.get(this.client.config.GUILDID)
 		const commands = await guild?.commands.fetch();
 
+		const fullPermissions = [];
+		
+		console.log("Applying command permissions...")
 		commands.each(async (v,k,all)=>
 		{
-//			console.log(k, v.name)
+			console.log(k, v.name)
 			const name = v.name
 			const command = this.client.commands.get(name);
+			console.log(` - ${name}`)
 			const whitelistRoles = command.whitelistRoles;
 			if (whitelistRoles)
 			{
+//				const currentPermissions = await v?.permissions?.fetch() || [];
 				let permissions = []
 				for (const role of whitelistRoles)
 				{
-					permissions.push({id:role, type:'ROLE', permission: true})
+//					const perm = currentPermissions.find(obj => { return obj.id === role })
+//					if (!perm?.permission)
+						permissions.push({id:role, type:'ROLE', permission: true})	
 				}
-				await v.permissions.add({permissions});
+				if (permissions.length > 0)
+				{
+					console.log(` - Updating perms for ${name}`)
+					//await v.permissions.add({permissions});
+					fullPermissions.push({id:k, permissions:permissions})
+				}
 			}
 		})
+
+		console.log(fullPermissions);
+		await guild?.commands.permissions.set({ fullPermissions });
 	}
 
 
