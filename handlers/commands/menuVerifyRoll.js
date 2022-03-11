@@ -32,5 +32,7 @@ module.exports =
 	data: new ContextMenuCommandBuilder()
 		.setName('Verify Roll')
 		.setType(ApplicationCommandType.Message),
-	execute: execute
+	execute: execute,
+
+	build:config.PRODUCTION
 };

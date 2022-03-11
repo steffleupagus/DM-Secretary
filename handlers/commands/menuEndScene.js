@@ -47,5 +47,7 @@ module.exports =
 		.setType(ApplicationCommandType.Message)
 		.setDefaultPermission(false),
 	whitelistRoles: requiredRoles,
-	execute: execute
+	execute: execute,
+
+	build:config.DEV
 };

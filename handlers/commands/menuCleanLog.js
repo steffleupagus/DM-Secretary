@@ -66,5 +66,7 @@ module.exports =
 		.setDefaultPermission(false),	
 	whitelistRoles: [config.LiveModRole],
 	userPermissions: userPermissions,
-	execute: execute
+	execute: execute,
+
+	build:config.DEV
 };
