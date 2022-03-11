@@ -131,5 +131,7 @@ module.exports =
 	],
 	userPermissions: userPermissions,
 	execute: execute,
-	message: run
+	message: run,
+
+	build:config.DEV||config.PRODUCTION 
 };

@@ -5,8 +5,7 @@ const DuelUtils = require(`${process.cwd()}/utilities/funcsDuel.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`)
 
-const requiredRoles = [ config.ModeratorRole, config.DMRole, 
-					    config._ModeratorRole, config._DMRole ];
+const requiredRoles = [ config.ModeratorRole, config.DMRole ];
 
 // const { MessageEmbed, Permissions } = require('discord.js')
 // const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
@@ -41,5 +40,7 @@ module.exports =
 		.setType(ApplicationCommandType.Message)
 		.setDefaultPermission(false),
 	whitelistRoles: requiredRoles,
-	execute: execute
+	execute: execute,
+
+	build:config.PRODUCTION 
 };

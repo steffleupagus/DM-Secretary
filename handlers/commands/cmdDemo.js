@@ -91,5 +91,7 @@ module.exports =
 	execute: execute,
 	message: run,
 	button: button,
-	select: select
+	select: select,
+
+	build:config.DEV
 };

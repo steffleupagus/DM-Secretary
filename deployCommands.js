@@ -17,7 +17,9 @@ for (const file of commandFiles)
 	const command = require(`${process.cwd()}/handlers/commands/${file}`);
 	if (command.type == "MESSAGE" || command.type == "USER")
 		delete command.description;
-	commands.push(command.data.toJSON());
+
+	if (!command.hasOwnProperty("build") || command.build)
+		commands.push(command.data.toJSON());
 }
 
 console.log(`Deploying commands to:\n`,

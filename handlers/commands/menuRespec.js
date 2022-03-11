@@ -33,5 +33,7 @@ module.exports =
 	whitelistRoles: [
 		config.ModeratorRole,
 	],
-	execute: execute
+	execute: execute,
+
+	build:config.PRODUCTION 
 };
