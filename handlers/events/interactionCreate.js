@@ -1,11 +1,15 @@
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 async function execute(client, interaction)
 {
-	let commandName = interaction.isMessageComponent() ? 
-						interaction.message?.interaction?.commandName : 
+	const commandName = interaction.isMessageComponent() ? 
+							(interaction.message?.interaction?.commandName ||
+							 (interaction?.customId?.includes('.') ? 
+								interaction.customId.split(".")[0] : null)) : 
 						interaction.commandName;
+	//TODO: customId should be in the form of <command>.<payload>
+	
 	if (!commandName) return;
-	const command = interaction.client.commands.get(interaction.commandName);
+	const command = interaction.client.commands.get(commandName);
 	if (!command) return;
 	const commandPermitted = checkPermissions(interaction, command)
 	if (!commandPermitted) return;
@@ -13,12 +17,11 @@ async function execute(client, interaction)
 	try
 	{
 		//interaction.isMessageComponent()
-		// if (interaction.isButton())
-		// 	await command.handleButton(interaction);
-		// else 
 		if (interaction.isSelectMenu())
 			await command.select(interaction);
-		else 			//interaction.isCommand() || interaction.isContextMenu()
+		else if (interaction.isButton())
+			await command.button(interaction);
+		else //(interaction.isCommand() || interaction.isContextMenu())
 			await command.execute(interaction);
 	}
 	catch (error)
@@ -86,19 +89,6 @@ function checkPermissions(interaction, command)
 
 	return true;
 }
-
-// console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction of type ${interaction.type}.`);
-// console.log(interaction);
-// console.log("isCommand: "+ interaction.isCommand());
-// console.log("isContextMenu: "+ interaction.isContextMenu());
-// console.log("isMessageComponent: "+ interaction.isMessageComponent());
-// console.log("isButton: "+ interaction.isButton());
-// console.log("isSelectMenu: "+ interaction.isSelectMenu());
-// const commandName = interaction.commandName ?? interaction.message.interaction.commandName ?? false;
-// if (!commandName) return
-//interaction.isMessageComponent()
-// if (interaction.isButton())
-// 	await command.handleButton(interaction);		
 
 module.exports = {
 	name: 'interactionCreate',

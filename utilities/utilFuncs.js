@@ -2,19 +2,9 @@ const { MessageEmbed, Permissions } = require('discord.js');
 
 module.exports =
 {
-	async sendError(channel, errors, pings = "", sendBreak = false)
+	isEqual(a, b)
 	{
-		var embed = new MessageEmbed()
-		if (Array.isArray(pings))
-			pings = pings.join("> <@");
-		if (pings.length > 0)
-			pings = "<@" + pings + ">";
-		errors.forEach(error=>{ embed.addField("Error",error) })
-		await channel.send({content: pings, embeds:[embed]}).then(()=>
-		{
-			if (sendBreak)
-				message.channel.send("``` ```");
-		});
+		return JSON.stringify(a) === JSON.stringify(b)
 	},
 	
 	async slowdown(milliseconds)	
@@ -70,6 +60,11 @@ module.exports =
 		return perm;
 	},
 
+	precise(x, prec=2) 
+	{
+		return Math.floor(x*100)/100;
+	},
+	
 	milliseconds(days=0, hours=0, minutes=0, seconds=0)
 	{
 		hours += days * 24;
@@ -79,7 +74,7 @@ module.exports =
 		return ms;
 	},
 
-	getDate()
+	getDate(timeStamp = null)
 	{
 		// Get time zone offset for NY, USA
 		const getTZOffset = () => {
@@ -89,14 +84,14 @@ module.exports =
 				return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
 			}
 
-			var today = new Date()
+			var today = timeStamp ? new Date(timeStamp) : new Date()
 			
 			const isDstObserved = (today) => 
 			{
 				return today.getTimezoneOffset() < stdTimezoneOffset()
 			}
 
-			console.log("DST: "+isDstObserved(today))
+//			console.log("DST: "+isDstObserved(today))
 
 			if (isDstObserved(today))
 				return -4
@@ -104,7 +99,7 @@ module.exports =
 				return -5
 		}
 
-		const d = new Date()
+		const d = timeStamp ? new Date(timeStamp) : new Date()
 		const localTime = d.getTime()
 		const localOffset = d.getTimezoneOffset() * 60 * 1000
 		const utcTime = localTime + localOffset
@@ -112,15 +107,13 @@ module.exports =
 		// obtain and add destination's UTC time offset
 		const tzOffset = getTZOffset()
 
-		console.log("Offset: "+tzOffset)
+//		console.log("Offset: "+tzOffset)
 
 		const usa = utcTime + (60 * 60 * 1000 * tzOffset)
 		// convert msec value to date string
 		const nd = new Date(usa)
 
-		console.log(this.formatDate(nd))
-
-//		return this.getFormattedDate(nd, withTime);
+//		console.log(this.formatDate(nd))
 		return nd;
 	},
 

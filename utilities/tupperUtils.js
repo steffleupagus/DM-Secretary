@@ -4,14 +4,12 @@ const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 const tupperSchema = require(`${process.cwd()}/database/tupperSchema.js`)
 
-///
-/// Private
-///
-function parseTupperLog(client, message)
+function parseTupperLog(client, message, silent = true)
 {
 	if (isTupperLogMessage(client, message))
 	{
-		console.log(" +++ Parsing tupper log message (" + message.id + ")");
+		if (!silent)
+			console.log(" +++ Parsing tupper log message (" + message.id + ")");
 		const embed = message.embeds[0];
 		var tupperName = embed.title;
 		var authorId = embed.fields.find(field => field.name == 'Registered by');
@@ -59,7 +57,7 @@ function isTupperProxyMessage(message)
 	if (!message) return false;
 	const isBot = message.author.bot;
 	const isTupper = message.applicationId == config.tupperId;
-	const isWebhool = message.webhookId;
+	const isWebhook = message.webhookId;
 	return (isBot && isTupper && isWebhook);	
 }
 
@@ -87,23 +85,50 @@ async function logTupperMessage(client, message, interaction=null, sendResult=tr
 				{
 					console.log(tupperData)
 					await new tupperSchema(tupperData).save()
+					await message.react('🛢️');
 				}
 			}
+			return tupperData;			
 		}
+		else
+		{
+			await message.react('🛢️');
+		}
+		return logged;
 	}
+	return null;
+}
+
+
+async function getTupperLogLegacy(search)
+{
+	const legacyLog = require(`${process.cwd()}/config/tupperMap.json`);
+	const result = legacyLog[search.mId];
+	result.aId = result.uid;	
+	return result;
 }
 
 async function getTupperLog(search)
 {
+//	return getTupperLogLegacy(search);
+	
 	const result = await tupperSchema.findOne(search)
 	return result;
 }
 
+async function getTupperData(message)
+{
+	const query = {mId:message.id};
+	const result = await getTupperLog(query);
+	return result;	
+}
 
 
 module.exports = {
 	isTupperProxyMessage,
 	isTupperLogMessage,
-	logTupperMessage
+	logTupperMessage,
+	parseTupperLog,
+	getTupperData
 }
 

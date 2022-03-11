@@ -4,7 +4,7 @@ const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 const levelSchema = require(`${process.cwd()}/database/levelSchema.js`)
-
+const dailyExpSchema = require(`${process.cwd()}/database/dailyExpSchema.js`)
 
 function isLevelMessage(client, message)
 {
@@ -32,14 +32,107 @@ async function logLevelMessage(client, message, interaction=null, sendResult=tru
 
 async function getLevelData(search)
 {
+	//First try a basic find on the exact match
 	const result = await levelSchema.findOne(search)
-	return result;
+	if (result) return result;
+
+	//If we didn't find a match there, see if we can do a less-precise match and return the first result
+	if (search.name)
+	{
+		const newSearch = {name:search.name}
+		const newResult = await levelSchema.find(newSearch)		
+		return newResult[0] || null;
+	}
+	
+	return null;
+}
+
+function getDuelExp(level)
+{
+	//Exp table array by level, each entry is an array of [winner, loser]
+	var exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
+				[113, 	37], 	[188,	62], 	[375,	125],	// 3,  4,  5
+				[450, 	150],	[563,	187],	[675,	225],	// 6,  7,  8
+				[825, 	275],	[900,	300],	[1200,	400],	// 9, 10, 11
+				[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
+				[2100,	700],	[2400,	800],	[2925,	975],	//15, 16, 17
+				[3150,	1050],	[3675,	1125],	[4275,	1425]];	//18, 19, 20		
+	return exp[level];
+}
+
+function getExpCap(level)
+{
+	var cap = [ 0,				0,				0,	
+				150,			250,			500,	
+				600,			750,			900,
+				1100,			1200,			1600,
+				2000,			2200,			2500,
+				2800,			3200,			3900,
+				4200,			4900,			5700		];
+	return cap[level];
+}
+
+/// Update the daily exp log, and cap the exp from this data
+async function updateDailyExp(data, type, logDate)
+{
+	data.xp.total = data.xp.xp
+	const search = {
+		name: data.char,
+		user: data.uid,
+		type: type		
+	}
+
+	let oldReset;
+	const logged = new Date(logDate)
+	const newReset = new Date(new Date(logDate).setHours(24,0,0,0))
+	
+	const result = await dailyExpSchema.findOne(search)
+	if (result)
+	{
+		oldReset = new Date(result.reset)
+		if (logDate >= result.reset)
+		{
+			console.log("Resetting daily cap")
+			result.exp = 0
+			result.cap = data.xp.cap
+		}
+
+ 		data.xp.xp = Math.min(data.xp.xp, result.cap - result.exp);
+		data.xp.total  = result.exp;
+		data.xp.total += data.xp.xp;
+		console.log(`Updating exp total. ${result.exp} => ${data.xp.total}`)
+	}
+
+	// console.log("Reset:",oldReset)
+	// console.log("Logged:",logged)
+	// console.log("Now:",Utils.getDate())
+	// console.log("New Reset:",newReset)
+	
+	const newResult = await dailyExpSchema.findOneAndUpdate(
+		search,
+		{
+			name: data.char,
+			user: data.uid,
+			type: type,
+			exp: data.xp.total,
+			cap: data.xp.cap,
+			reset: newReset
+		},
+		{
+			new: true,
+			upsert: true
+		})
+	console.log(result, newResult, "\n\n\n")
+	return data
 }
 
 module.exports = {
 	isLevelMessage,
 	logLevelMessage,
-	getLevelData
+	getLevelData,
+	getDuelExp,
+	getExpCap,
+	updateDailyExp
 }
 
 async function updateLevelData(search, level)

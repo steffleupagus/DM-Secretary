@@ -147,6 +147,12 @@ class EmbedPaginator
         this._field_count = 0;
 	}
 
+	closeField()
+	{
+		this.close_field()
+	}
+
+
 	/// Sets the footer on the final embed.
     setFooter(value=null, icon_url=null)
 	{
@@ -171,7 +177,8 @@ class EmbedPaginator
 		}
         if (current_count > EMBED_MAX)
             this.close_embed()
-        this._embeds[this._embeds.length-1].setFooter(this._footer_text);
+		if (this._footer_text)
+        	this._embeds[this._embeds.length-1].setFooter(this._footer_text);		
 	}
 
 	//Terminate the current embed and create a new one.
@@ -260,6 +267,15 @@ EmbedPaginator.prototype.toString = function EmbedPaginatorToString()
 		output+= `\t_embed_count=${this._embed_count}\n`;
 		output+= `\tTotal Embeds=${this._embeds.length}\n`;
 		output+= `\tTotal Fields=${this._total_fields}\n`;
+
+	for (let e=0; e<this._embed_count; ++e)
+	{
+		const embed = this._embeds[e];	
+
+//		console.log(e, embed)
+		if (!embed) continue;		
+		output+= `\tEmbed ${e}: ${embed.fields.length} fields | ${embed.length} total length\n`
+	}
 
 	return output;
 };
