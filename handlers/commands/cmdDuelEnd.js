@@ -43,8 +43,9 @@ async function button(interaction)
 {
 	const subCommand = interaction.customId;
 
-	if ("duel.startThread" == subCommand)
+	if ("duel.startDuel" == subCommand)
 	{
+		const client = interaction.client;
 		client.commands.get('startduel').execute(interaction)
 		return;
 	}

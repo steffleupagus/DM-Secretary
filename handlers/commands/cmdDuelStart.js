@@ -12,7 +12,7 @@ async function execute(interaction)
 	const client = interaction.client;
 	const channel = interaction.channel;
 	const guildId = interaction.guildId;
-	const opponent = interaction.options.getUser('opponent') || null
+	const opponent = interaction.options?.getUser('opponent') || null
 
 	if (!DuelUtils.isDuelRPChannel(channel))
 	{
@@ -21,33 +21,46 @@ async function execute(interaction)
 		return
 	}
 
-	const existingThread = channel.threads.cache.find(x => !x.archived);
-	if (existingThread)
-	{
-		interaction.reply({ephemeral:true, 
-						   content:"This channel already has a duel in progress"})
-		return		
-	}
-
-
-	
 	await interaction.reply("Starting duel...");
 	if (interaction.message)
 		await interaction.message.edit({content:"``` ```",components:[]})
+	
+	let thread = null;
+	let threads = await channel.threads.fetchActive()
+	thread = threads?.threads?.first()
+	if (!thread)
+	{
+		threads = await channel.threads.fetchArchived();
+		thread = threads?.threads?.first()
+	}
 
-	const name = channel.name.replace("🗣","⚙").replace("_rp","_mechanics")
-	const thread = await channel.threads?.create({name:name});
+	if (!thread)
+	{
+		const name = channel.name.replace("🗣","⚙").replace("_rp","_mechanics")	
+		thread = await channel.threads?.create({name:name});
+
+		//Add the bots we'll need
+		if (thread.joinable) await thread.join();
+		await thread.members.add(client.config.avraeId);		
+	}
 	
-	//Add the bots we'll need
-	if (thread.joinable) await thread.join();
-	await thread.members.add(client.config.avraeId);
-	await thread.members.add(user.id);
-	if (opponent)
-		await thread.members.add(opponent.id);
+	if (thread)
+	{
+		if (thread.archived)
+			await thread.setArchived(false)
+
+		await thread.members.add(user.id);
+		if (opponent)
+			await thread.members.add(opponent.id);
 	
-	//Inform the user about the channel split
-	thread.send(`@ping your opponent here. Roleplay in <#${channel.id}>`)
-	await interaction.editReply(`Duel Started (Mechanics in <#${thread.id}>)`);	
+		//Inform the user about the channel split
+		thread.send(`@ping your opponent here. Roleplay in <#${channel.id}>`)
+		await interaction.editReply(`Duel Started (Mechanics in <#${thread.id}>)`);	
+	}	
+	else
+	{
+		interaction.editReply(`Something went wrong creating the thread`);	
+	}
 }
 
 async function run(message, command, args)
@@ -66,5 +79,5 @@ module.exports =
 	execute: execute,
 	message: run,
 	
-	build:config.PRODUCTION	//||config.DEV
+	build:config.PRODUCTION// || config.DEV
 };
