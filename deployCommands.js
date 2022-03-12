@@ -2,10 +2,14 @@ const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
-const mod = process.env.mod || "";
+let mod = process.env.mod || "";
+//console.log(process.argv)
+if (process.argv.length > 2) 
+	mod = (process.argv[2].includes("dev") ? "dev" : "")
+
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const token = process.env.token;
-const clientId = config.CLIENTID;
+const clientId = process.env.clientid;
 const guildId = config.GUILDID;
 
 const commands = [];
@@ -22,7 +26,7 @@ for (const file of commandFiles)
 		commands.push(command.data.toJSON());
 }
 
-console.log(`Deploying commands to:\n`,
+console.log(`Deploying commands to ${mod}\n`,
 			`Client: ${clientId}\n`,
 			`Guild: ${guildId}\n`);
 

@@ -21,26 +21,27 @@ async function execute(interaction)
 	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 
-//	client.commands.get('duel').execute(interaction, message)
-	const ephemeral = false
+	client.commands.get('duel').execute(interaction, message)
 	
-	await interaction.deferReply({ephemeral:ephemeral});
-	const transcript = await DuelUtils.generateTranscript(channel, message);
-	await interaction.editReply({embeds:[transcript[0]]});
-	for (let i=1; i < transcript.length; ++i)
-	{
-		await interaction.followUp({embeds:[transcript[i]], ephemeral:ephemeral})
-	}
+	// const ephemeral = false
+	
+	// await interaction.deferReply({ephemeral:ephemeral});
+	// const transcript = await DuelUtils.generateTranscript(channel, message);
+	// await interaction.editReply({embeds:[transcript[0]]});
+	// for (let i=1; i < transcript.length; ++i)
+	// {
+	// 	await interaction.followUp({embeds:[transcript[i]], ephemeral:ephemeral})
+	// }
 }
 
 module.exports = 
 {
 	data: new ContextMenuCommandBuilder()
-		.setName('Duel Transcript')
+		.setName('Conclude Duel')
 		.setType(ApplicationCommandType.Message)
 		.setDefaultPermission(false),
 	whitelistRoles: requiredRoles,
 	execute: execute,
 
-	build:config.PRODUCTION 
+	build:config.PRODUCTION || config.DEV
 };
