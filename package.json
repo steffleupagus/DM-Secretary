@@ -11,6 +11,7 @@
     "start": "node bot.js",
     "deploy": "node deployCommands.js"
   },
+  "//": "node deploy -- dev // node deploy -- prod",
   "dependencies": {
     "@discordjs/builders": "^0.8.2",
     "@discordjs/rest": "^0.1.0-canary.0",

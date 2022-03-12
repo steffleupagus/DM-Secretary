@@ -359,6 +359,10 @@ async function scrapeMessageMetadata(stats, message)
 function assignUnknown(stats, authorId, name)
 {
 	const unknown = stats?.[0]?.char?.[name];
+
+	stats[authorId] = stats?.[authorId] || {char:{}}
+	stats[authorId].char[name] = stats?.[authorId]?.char?.[name] 
+								|| {length:0, posts:0} 
 	stats[authorId].char[name].length += unknown.length || 0;
 	stats[authorId].char[name].posts += unknown.posts || 0;
 	if (unknown.chan)

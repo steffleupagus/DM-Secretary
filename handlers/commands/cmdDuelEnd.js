@@ -18,7 +18,12 @@ async function execute(interaction, message=null)
 	//const type = message ? "Menu Command" : "Slash Command";
 	//await interaction.followUp({content:type,ephemeral:true});
 	if (response !== true)
+	{
+		// await interaction.editReply({embeds:[...response.embeds]});
+		// if (response.content)
+		// 	await interaction.channel.send({content:response.content})
 		await interaction.editReply(response);
+	}
 	else if (interaction.ephemeral)
 		await interaction.editReply("Done")
 	else
@@ -38,15 +43,19 @@ async function button(interaction)
 {
 	const subCommand = interaction.customId;
 
-	if ("duel.transcript" == subCommand)
+	if ("duel.startThread" == subCommand)
+	{
+		client.commands.get('startduel').execute(interaction)
+		return;
+	}
+	else if ("duel.transcript" == subCommand)
 	{
 		await interaction.deferReply({ephemeral:true});
 		const transcript = await DuelUtils.generateTranscriptFromLog(interaction.message);
 		await interaction.editReply({embeds:[...transcript]});
 		return;
 	}
-
-	if ("duel.undo" == subCommand)
+	else if ("duel.undo" == subCommand)
 	{
 		await interaction.deferReply();
 		await DuelUtils.undoApproval(interaction.message, interaction.client)
@@ -70,8 +79,6 @@ async function select(interaction)
 const data = new SlashCommandBuilder()
 	.setName('duel')
 	.setDescription('Conclude a duel')
-	.addBooleanOption(option => option.setName('force').setRequired(false)
-		.setDescription('[DM Only] Force the duel to conclude ignoring RP limit'))
 
 module.exports = 
 {
@@ -81,5 +88,5 @@ module.exports =
 	button: button,
 	select: select,
 
-	build:config.PRODUCTION 
+	build:config.PRODUCTION// || config.DEV
 };

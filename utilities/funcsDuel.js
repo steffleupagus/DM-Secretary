@@ -80,12 +80,10 @@ async function processDuel(channel, user, message)
 
 	//Consolidate the RP and Duel data
 	duelData = await consolidateData(duelData, rpData);
-
-
 	
 	//Verify that there were exactly two participants
-	const participants = await verifyParticipants(duelData);
-	if (participants !== true) 
+	const participants = await verifyParticipants(duelData);	
+	if (null == message && participants !== true) 
 		return unlockMutex(mechChan, participants, user.id);
 	
 	//Verify that both participants put in sufficient effort in their roleplay
@@ -118,14 +116,32 @@ async function processDuel(channel, user, message)
 		duel:duelData.start
 	}
 
+	let transcript = generateTranscriptFromData(duelData)
+	if (transcript)
+	{
+		transcript = await mechChan.send({embeds:transcript})
+		cleanedData.transcript = transcript.url
+	}
 	mechChan.send("``` ```");
-	rpChan.send("``` ```");
 	const dmEmbed = await sendApprovalMessage(cleanedData, guild);	
 	await attachButtons(dmEmbed);
 
 	cleanedData.link = dmEmbed.url;
 	const playerEmbed = await closeScene(cleanedData);
 
+	let button = []
+	if (mechChan.isThread)
+	{
+		await mechChan.setArchived(true, "Duel Complete")
+		button = Prompt.createButtonRow([
+			{style:'SECONDARY', emoji:"⚔️", label:"Start New Duel",
+			 custom_id:"duel.startThread"}
+		])
+		button = [button]
+		await rpChan.send({embeds:[playerEmbed]})
+	}
+	await rpChan.send({content:"``` ```",components:button});
+	
 	unlockMutex(mechChan);
 	return {embeds:[playerEmbed]}
 }
@@ -303,6 +319,9 @@ async function consolidateData(duelData, rpData)
 	});
 
 	//Bring in the RP data
+
+	console.log(rpData)
+	
 	var players = Object.keys(duelData.players);
 	players.forEach( user => 
 	{
@@ -385,19 +404,19 @@ function verifyRoleplay(duelData)
 async function determineWinner(duelData, channel, sender)
 {
 	let outcome = {winner:0,loser:0};
-	const players = Object.keys(duelData.players);
-	players.forEach( (uid, idx)=>
+	const chars = Object.keys(duelData.characters)
+						.filter(c=>duelData.characters[c].pc)	
+	chars.forEach( char => 
 	{
-		const char = duelData.players[uid].char;
 		const charData = duelData.characters[char];
 		//Figure out the winner / loser based on HP remaining
 		if ((charData.hp > 0)&&(0 == outcome.winner))
-			outcome.winner = uid;
+			outcome.winner = {uid:charData.user, char:char};
 		else if ((charData.hp <= 0)&&(0 == outcome.loser))
-			outcome.loser = uid;
+			outcome.loser = {uid:charData.user, char:char};
 		else
 			outcome = {winner: -1, loser: -1};
-	});
+	})
 
 	//If we can't figure out the winner, prompt the player to select them
 	if ((outcome.winner <= 0)||(outcome.loser <= 0))
@@ -417,9 +436,13 @@ async function promptWinner(duelData, channel, sender)
 	const players = Object.keys(duelData.players);
 	const options = ["1️⃣","2️⃣","❌"];	
 	let prompt = "";
-	players.forEach( (uid, idx)=>
+	// players.forEach( (uid, idx)=>
+	// {
+	// 	const char = duelData.players[uid].char;
+	const chars = Object.keys(duelData.characters)
+						.filter(c=>duelData.characters[c].pc)
+	chars.forEach( (char, idx) => 
 	{
-		const char = duelData.players[uid].char;
 		const level = duelData.characters[char].level;
 		if (PROMPT_REACTS)
 			prompt += `${options[idx]} - \`${char}\` (Level ${level})\n`
@@ -443,9 +466,16 @@ async function promptWinner(duelData, channel, sender)
 
 	if (typeof response !== 'number')
 		return response;
-	if ((response < 0)||(response >= players.length ))
-		response = "Invalid input. Command canceled.";	
-	let outcome = {winner:players[response],loser:players[1-response]};
+	if ((response < 0)||(response >= chars.length ))
+		return "Invalid input. Command canceled.";
+
+	const winName = chars[response];
+	const lossName = chars[1-response];
+	let outcome = {
+		winner:{uid: duelData.characters[winName].user, char:winName },
+		loser:{uid: duelData.characters[lossName].user, char:lossName }
+	};
+
 	return outcome;
 }
 
@@ -490,13 +520,13 @@ async function promptWinnerReact(channel, pings, embed, users, options)
 ///
 function calculateExp(duelData)
 {
-	const winuid = duelData.outcome.winner;
-	const winName= duelData.players[winuid].char;
-	const winner = duelData.characters[winName];
-	const winCap = LevelUtils.getExpCap(winner.level);
+	const winuid  = duelData.outcome.winner.uid;
+	const winName = duelData.outcome.winner.char;	//players[winuid].char;
+	const winner  = duelData.characters[winName];
+	const winCap  = LevelUtils.getExpCap(winner.level);
 
-	const losuid  = duelData.outcome.loser;
-	const lossName= duelData.players[losuid].char;
+	const losuid  = duelData.outcome.loser.uid;
+	const lossName= duelData.outcome.loser.char;	//players[losuid].char;
 	const loser   = duelData.characters[lossName];
 	const lossCap = LevelUtils.getExpCap(loser.level);
 
@@ -511,8 +541,8 @@ function calculateExp(duelData)
 	const lossRaw = exp[1];
 	const lossExp = Math.min(lossRaw, lossCap);
 
-	duelData.players[winner.user].xp = { xp:winExp,	cap:winCap	}
-	duelData.players[loser.user].xp = { xp:lossExp,	cap:lossCap	}
+	duelData.characters[winName].xp = { xp:winExp,	 cap:winCap	 }
+	duelData.characters[lossName].xp = { xp:lossExp, cap:lossCap }
 
 	return duelData;
 }
@@ -524,27 +554,29 @@ function cleanData(duelData)
 {
 	var cleanData = {};
 	//Winner
-	var uid = duelData.outcome.winner;
+	var uid    = duelData.outcome.winner.uid;
 	var player = duelData.players[uid]
-	var name = player.char;
+	var name   = duelData.outcome.winner.char;	//player.char;
+	var char   = duelData.characters[name];
 	cleanData["winner"] = {
 		uid: uid,
 		char: name,
-		level: duelData.characters[name].level,
+		level: char.level,
 		rp: player.rp,
-		xp: player.xp
+		xp: char.xp
 	};
 
 	//loser
-	uid = duelData.outcome.loser;
+	uid    = duelData.outcome.loser.uid;
 	player = duelData.players[uid];
-	name = player.char;
+	name   = duelData.outcome.loser.char;	//player.char;
+	char   = duelData.characters[name];
 	cleanData["loser"] = {
 		uid: uid,
 		char: name,
-		level: duelData.characters[name].level,
+		level: char.level,
 		rp: player.rp,
-		xp: player.xp
+		xp: char.xp
 	};
 
 	cleanData.command = "duel";
@@ -609,17 +641,22 @@ async function sendApprovalMessage(duelData, guild)
 	const loss     = getExpField(duelData.loser, true)
 	const rpLink   = duelData.links.rp
 	const duelLink = duelData.links.duel
+	let transcript = duelData.transcript
+	transcript = transcript ? `[Transcript](${transcript})` : "None"
+	
 	delete duelData.links
 	delete duelData.winner.rp
 	delete duelData.loser.rp
+	delete duelData.transcript
 	const encoded = encodeURIComponent(JSON.stringify(duelData));
 	var dmEmbed = new MessageEmbed() 
 		.setTitle(DUELTITLE)
 		.setThumbnail("https://i.imgur.com/Dt8PHkE.png")
 		.addField(`👑 Win: ${winner.char} (Level ${winner.level})`, win)
 		.addField(`💀 Loss: ${loser.char} (Level ${loser.level})`, loss)
-		.addField("Roleplay Start", "[Start]("+rpLink+")", true)
-		.addField("Duel Start", "[Start]("+duelLink+")", true)
+		.addField("Roleplay", "[Start]("+rpLink+")", true)
+		.addField("Duel","[Start]("+duelLink+")", true)
+		.addField("Transcript",transcript, true)		
 		.addField("Data","[Data]("+(JSONURL+encoded)+")",true)
 		.setFooter(`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`);
 
@@ -681,14 +718,14 @@ function getApprovalButtons()
 	const row = Prompt.createButtonRow([
 		{style:'SUCCESS', emoji:"✅", label:"Approve", custom_id:"duel.approve"},
 		{style:'DANGER', emoji:"❌", label:"Reject", custom_id:"duel.decline"},	
-		{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
-	])
-	const row2 = Prompt.createButtonRow([
+//		{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
+//	])
+//	const row2 = Prompt.createButtonRow([
 		{style:'SECONDARY', emoji:"👑", custom_id:"duel.winOnly"},
 		{style:'PRIMARY', emoji:"⏸️", custom_id:"duel.draw"},		
 		{style:'SECONDARY', emoji:"💀", custom_id:"duel.lossOnly"}
 	])	
-	return [row,row2]
+	return [row]	//,row2]
 }
 
 ///
@@ -749,8 +786,6 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	}
 	duelData.winner.xp.xp *= winRatio;
 	duelData.loser.xp.xp *= lossRatio;
-
-	console.log(duelData);
 	
 	//Update the daily total in the DB
 	const winner = await LevelUtils.updateDailyExp(duelData.winner, cmd, date);
@@ -824,7 +859,7 @@ async function postApprovedExp(message, duelData)
 //			{style:'PRIMARY', emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
 			{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 		])
-		await message.edit({embeds:[embed],components:[row]});
+		await message.edit({embeds:[embed]})	//,components:[row]});
 
 		//Add a react to the original initiative post when approved by a DM
 		const guild = message.guild;
@@ -871,23 +906,6 @@ async function undoApproval(logMessage, client)
 // 		pingChan.send("```\n" + shortDate + "\n```");
 // 	}
 
-//<#${config.xpLogChannel}>
-
-//TODO - send a message to the loot log regardless of which react was used
-//TODO - add a button to the player-facing embed to create a new thread for mechanics
-
-	// var shortDate = Utils.formatDate(date, "DD MMM YYYY");
-	// var copyPasta = "*Don't forget to update the cap totals before posting*";
-	// 	copyPasta+="```\n__**Duel**__ - " + shortDate + "\n";
-	// 	copyPasta+= "_Log in <#" + config.xpSpamChannel + ">_\n\n";
-	// 	copyPasta+= "👑 Win " + win.replace('\n'," ") + winCap + "\n";
-	// 	copyPasta+= "💀 Loss "+loss.replace('\n'," ") + lossCap + "```\n";
-	// dmEmbed.addField("Copy / Paste", copyPasta)
-	// dmEmbed.addField("XP Log Channel","<#"+config.xpLogChannel+">", true);
-
-
-
-
 
 ///
 /// Using the parsed event data, generate a transcript
@@ -905,19 +923,25 @@ async function generateTranscript(channel, message)
 {	
 	//Get the raw duel data and throw an error if we don't have any
 	const duelData = await getDuelData(channel, message);
-	if (!duelData)
+	if (!duelData || !duelData.events)
 	{
 		const embed = new MessageEmbed().setTitle("Error: No Duel Data Found")
 					.setDescription("Must be done in a mechanics channel")
 		return [embed]	
 	}
+	return generateTranscriptFromData(duelData)
+}
+
+function generateTranscriptFromData(duelData)
+{
+	if (!duelData.events) return null;
 	
 	let embed = new Embed()
 		embed.setTitle("Duel Transcript")
 //	embed.setDescription("")
 	for (let round=0; round <= duelData.rounds; ++round)
 	{
-		let events = duelData.events.filter(event => (event.round == round));		
+		let events = duelData.events.filter(event => (event.round == round));
 		if (events.length > 0)
 		{
 			embed.addField(`Round ${round}`, "")
@@ -952,6 +976,13 @@ function getChannelPair(channel)
 	return null;
 }
 
+function isDuelRPChannel(channel)
+{
+	const pair = getChannelPair(channel)
+	if (!pair) return false;
+	return (pair.RP == channel.id)
+}
+
 ///
 /// We don't want people to resolve the same duel multiple times
 /// so to prevent that, we lock the channel from accepting the command again
@@ -984,6 +1015,7 @@ module.exports = {
 	processDuel,
 	approveDuel,	
 	undoApproval,
+	isDuelRPChannel,
 	generateTranscript,
 	generateTranscriptFromLog
 }

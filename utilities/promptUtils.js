@@ -212,7 +212,7 @@ async function promptUserButtonInteraction(channel, prompt, users, options,
 		i.deferUpdate();
 		const user = i.user;
 		const msg = i.message.id == prompt.id;		
-		const member = channel.guild.members.resolve(i.user.id);
+		const member = channel.guild.members.resolve(user.id);
 		const modDM = Utils.hasAnyRole(member, dmRoles) && !user.bot;
 		const validUser = users.includes(user.id) && !reactedUsers.includes(user.id);
 		return (msg && (modDM || validUser));
@@ -230,7 +230,7 @@ async function promptUserButtonInteraction(channel, prompt, users, options,
 		{
 			console.log("Collector")
 			const member = channel.guild.members.resolve(i.user.id);
-			const modDM = Utils.hasAnyRole(member, dmRoles) && !user.bot;
+			const modDM = Utils.hasAnyRole(member, dmRoles) && !i.user.bot;
  			if (modDM || returnFirst || failOptions.includes(i.customId))
 			{
 				const idx = options.map(opt => opt.custom_id).indexOf(i.customId);
