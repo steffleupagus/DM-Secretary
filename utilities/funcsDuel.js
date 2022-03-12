@@ -5,6 +5,7 @@ const Prompt = require(`${process.cwd()}/utilities/promptUtils.js`);
 const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`);
 const LevelUtils = require(`${process.cwd()}/utilities/levelUtils.js`);
 
+const unbapi = require("unb-api");
 const { MessageEmbed } = require('discord.js')
 const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
 
@@ -805,12 +806,14 @@ async function approveDuel(duelLogMessage, user, subCommand)
 		await prompt.delete();
 	}
 	
-	await postApprovedExp(duelLogMessage, duelData);
+	await postApprovedExp(duelLogMessage, duelData, user);
 }
 
 //Post the approved exp message to the Log channel
-async function postApprovedExp(message, duelData)
+async function postApprovedExp(message, duelData, user)
 {
+	const guild 	= message.guild;
+	const channel	= await guild?.channels.resolve(duelData.channel);	
 	const date      = new Date(duelData.logDate);
 	const veriDate  = Utils.formatDate(Utils.getDate(), "DD MMMM YYYY [ hh:mmpm ]")
 	const shortDate = Utils.formatDate(date, "DD MMM YYYY");
@@ -832,6 +835,13 @@ async function postApprovedExp(message, duelData)
 		case "duel.draw": emoji = "⚖️"; reply = "Draw Declared"; break;    
 		case "duel.decline": emoji = "❌"; reply = "Duel Rejected"; break
 	}
+
+	/////
+	const unbClient = new unbapi.Client(process.env.UBTOKEN);
+	const bonus = channel?.isThread ? 500 : 250;
+	await unbClient.editUserBalance(guild.id, duelData.winner.uid, { cash: bonus })
+	await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
+	/////
 	
 	const logEmbed = new MessageEmbed().setTitle(`${DUELXPTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
@@ -839,6 +849,11 @@ async function postApprovedExp(message, duelData)
 				  win + winNote)
 		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
 				  loss + lossNote)
+
+		/////
+		.addField('<:d20:704040692946698361> Tester RPP Bonus',`✅ Added <:d20:704040692946698361>500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added <:d20:704040692946698361>500 to <@${duelData.loser.uid}>'s cash balance.`)
+		/////
+	
 	if (duelData.comment)
 		logEmbed.addField("DM Comment",duelData.comment)
 	
@@ -850,17 +865,16 @@ async function postApprovedExp(message, duelData)
 	pingChan.send({content:pings,embeds:[logEmbed]}).then(async (msg)=>
 	{
 		let embed = message.embeds[0];
-		let link = `[Link](${msg.url})`
-		embed.addField(`${emoji} ${reply}`, link, true);
+		let link = `<@${user.id}> [Link](${msg.url})`
+		embed.addField(`${emoji} ${reply}`, link);
+		embed.setFooter(`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`)
 		const row = Prompt.createButtonRow([
 //			{style:'PRIMARY', emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
 			{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 		])
-		await message.edit({embeds:[embed]})	//,components:[row]});
+		await message.edit({embeds:[embed], components:[]})	//,components:[row]});
 
 		//Add a react to the original initiative post when approved by a DM
-		const guild = message.guild;
-		const channel = await guild?.channels.resolve(duelData.channel);
 		const initMsg = await channel?.messages.fetch(duelData.id);
 		await initMsg?.react(emoji);
 	});

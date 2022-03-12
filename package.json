@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "glob": "^7.2.0",
     "mongoose": "^6.0.11",
-    "string-similarity": "^4.0.4"
+    "string-similarity": "^4.0.4",
+    "unb-api": "^1.2.3"
   }
 }

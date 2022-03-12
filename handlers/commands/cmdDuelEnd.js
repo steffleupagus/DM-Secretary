@@ -32,11 +32,11 @@ async function execute(interaction, message=null)
 
 async function run(message, command, args)
 {
-	return;
 	const channel = message.channel;
 	const user = message.author;
 	const response = await DuelUtils.processDuel(channel, user, null);
-	await message.channel.send(response);
+	if (response !== true)
+		await message.channel.send(response);
 }
 
 async function button(interaction)
