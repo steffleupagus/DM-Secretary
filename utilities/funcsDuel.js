@@ -132,10 +132,13 @@ async function processDuel(channel, user, message)
 	let button = []
 	if (mechChan.isThread)
 	{
-		await mechChan.setArchived(true, "Duel Complete")
+		const players = Object.keys(duelData.players)
+		Utils.asyncArrayForEach(players, async player =>
+			await mechChan.members.remove(player, "Duel Complete"))
+				
 		button = Prompt.createButtonRow([
 			{style:'SECONDARY', emoji:"⚔️", label:"Start New Duel",
-			 custom_id:"duel.startThread"}
+			 custom_id:"duel.startDuel"}
 		])
 		button = [button]
 		await rpChan.send({embeds:[playerEmbed]})
@@ -318,10 +321,7 @@ async function consolidateData(duelData, rpData)
 		duelData.characters[name].pc = true;
 	});
 
-	//Bring in the RP data
-
-	console.log(rpData)
-	
+	//Bring in the RP data	
 	var players = Object.keys(duelData.players);
 	players.forEach( user => 
 	{
@@ -654,8 +654,7 @@ async function sendApprovalMessage(duelData, guild)
 		.setThumbnail("https://i.imgur.com/Dt8PHkE.png")
 		.addField(`👑 Win: ${winner.char} (Level ${winner.level})`, win)
 		.addField(`💀 Loss: ${loser.char} (Level ${loser.level})`, loss)
-		.addField("Roleplay", "[Start]("+rpLink+")", true)
-		.addField("Duel","[Start]("+duelLink+")", true)
+		.addField("Start Links", `[Roleplay](${rpLink})\n[Duel](${duelLink})`, true)
 		.addField("Transcript",transcript, true)		
 		.addField("Data","[Data]("+(JSONURL+encoded)+")",true)
 		.setFooter(`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`);
@@ -812,8 +811,6 @@ async function approveDuel(duelLogMessage, user, subCommand)
 //Post the approved exp message to the Log channel
 async function postApprovedExp(message, duelData)
 {
-	console.log(duelData);
-
 	const date      = new Date(duelData.logDate);
 	const veriDate  = Utils.formatDate(Utils.getDate(), "DD MMMM YYYY [ hh:mmpm ]")
 	const shortDate = Utils.formatDate(date, "DD MMM YYYY");
