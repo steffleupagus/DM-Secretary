@@ -5,6 +5,7 @@ const Prompt = require(`${process.cwd()}/utilities/promptUtils.js`);
 const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`);
 const LevelUtils = require(`${process.cwd()}/utilities/levelUtils.js`);
 
+const unbapi = require("unb-api");
 const { MessageEmbed } = require('discord.js')
 const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
 
@@ -14,8 +15,8 @@ const PING_PREFIX = DEBUG ? "-" : "@";
 const MIN_CHARS = DEBUG ? 0 : 750;
 const MIN_POSTS = DEBUG ? 0 : 3;
 const PROMPT_REACTS = false;
-const DUELTITLE = "<:xp:858887927899226112> Duel Complete";
-const DUELXPTITLE = "<:xp:858887927899226112> Duel";
+const DUELTITLE = `${config.xpemoji} Duel Complete`;
+const DUELXPTITLE = `${config.xpemoji} Duel`
 const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
 
 /// Error Messages
@@ -116,11 +117,14 @@ async function processDuel(channel, user, message)
 		duel:duelData.start
 	}
 
-	let transcript = generateTranscriptFromData(duelData)
+	const transcript = generateTranscriptFromData(duelData)
 	if (transcript)
-	{
-		transcript = await mechChan.send({embeds:transcript})
-		cleanedData.transcript = transcript.url
+	{		
+		const transcriptLink = await mechChan.send({embeds:[transcript[0]]})
+		cleanedData.transcript = transcriptLink.url
+
+		for (let i=1; i < transcript.length; ++i)
+			await mechChan.send({embeds:[transcript[i]]})
 	}
 	mechChan.send("``` ```");
 	const dmEmbed = await sendApprovalMessage(cleanedData, guild);	
@@ -805,12 +809,14 @@ async function approveDuel(duelLogMessage, user, subCommand)
 		await prompt.delete();
 	}
 	
-	await postApprovedExp(duelLogMessage, duelData);
+	await postApprovedExp(duelLogMessage, duelData, user);
 }
 
 //Post the approved exp message to the Log channel
-async function postApprovedExp(message, duelData)
+async function postApprovedExp(message, duelData, user)
 {
+	const guild 	= message.guild;
+	const channel	= await guild?.channels.resolve(duelData.channel);	
 	const date      = new Date(duelData.logDate);
 	const veriDate  = Utils.formatDate(Utils.getDate(), "DD MMMM YYYY [ hh:mmpm ]")
 	const shortDate = Utils.formatDate(date, "DD MMM YYYY");
@@ -832,6 +838,13 @@ async function postApprovedExp(message, duelData)
 		case "duel.draw": emoji = "⚖️"; reply = "Draw Declared"; break;    
 		case "duel.decline": emoji = "❌"; reply = "Duel Rejected"; break
 	}
+
+	/////
+	const unbClient = new unbapi.Client(process.env.UBTOKEN);
+	const bonus = channel?.isThread ? 500 : 250;
+	await unbClient.editUserBalance(guild.id, duelData.winner.uid, { cash: bonus })
+	await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
+	/////
 	
 	const logEmbed = new MessageEmbed().setTitle(`${DUELXPTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
@@ -839,6 +852,11 @@ async function postApprovedExp(message, duelData)
 				  win + winNote)
 		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
 				  loss + lossNote)
+
+		/////
+		.addField('${config.rppemoji} Tester RPP Bonus',`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
+		/////
+	
 	if (duelData.comment)
 		logEmbed.addField("DM Comment",duelData.comment)
 	
@@ -850,17 +868,16 @@ async function postApprovedExp(message, duelData)
 	pingChan.send({content:pings,embeds:[logEmbed]}).then(async (msg)=>
 	{
 		let embed = message.embeds[0];
-		let link = `[Link](${msg.url})`
-		embed.addField(`${emoji} ${reply}`, link, true);
+		let link = `<@${user.id}> [Link](${msg.url})`
+		embed.addField(`${emoji} ${reply}`, link);
+		embed.setFooter(`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`)
 		const row = Prompt.createButtonRow([
 //			{style:'PRIMARY', emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
 			{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 		])
-		await message.edit({embeds:[embed]})	//,components:[row]});
+		await message.edit({embeds:[embed], components:[]})	//,components:[row]});
 
 		//Add a react to the original initiative post when approved by a DM
-		const guild = message.guild;
-		const channel = await guild?.channels.resolve(duelData.channel);
 		const initMsg = await channel?.messages.fetch(duelData.id);
 		await initMsg?.react(emoji);
 	});

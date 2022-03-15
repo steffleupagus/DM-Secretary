@@ -18,25 +18,31 @@ async function execute(interaction, message=null)
 	//const type = message ? "Menu Command" : "Slash Command";
 	//await interaction.followUp({content:type,ephemeral:true});
 	if (response !== true)
-	{
-		// await interaction.editReply({embeds:[...response.embeds]});
-		// if (response.content)
-		// 	await interaction.channel.send({content:response.content})
 		await interaction.editReply(response);
-	}
 	else if (interaction.ephemeral)
 		await interaction.editReply("Done")
 	else
 		await interaction.deleteReply();
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
-	return;
 	const channel = message.channel;
 	const user = message.author;
+
+	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
 	const response = await DuelUtils.processDuel(channel, user, null);
-	await message.channel.send(response);
+	if (response !== true)
+	{
+		if (!response.content)
+			response.content = null
+		await reply.edit(response);
+	}
+	else
+	{
+		reply.delete()
+	}
+	message.delete()
 }
 
 async function button(interaction)
@@ -89,5 +95,5 @@ module.exports =
 	button: button,
 	select: select,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };

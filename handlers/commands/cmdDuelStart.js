@@ -63,7 +63,7 @@ async function execute(interaction)
 	}
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
 }
 
@@ -79,5 +79,5 @@ module.exports =
 	execute: execute,
 	message: run,
 	
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };

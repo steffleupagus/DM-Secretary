@@ -109,7 +109,7 @@ async function execute(interaction)
 	// console.log([string, channel]);
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
 }
 
