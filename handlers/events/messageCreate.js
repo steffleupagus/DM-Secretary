@@ -17,16 +17,17 @@ async function execute(client, message)
 
 	const prefix = client.config.prefix;
 	//If it starts with the command character, process it as command		
-	if (message.content.startsWith(prefix))
+	if (message.content.startsWith(prefix) && 
+		message.guild.id == client.config.GUILDID)
 	{
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const commandName = args.shift().toLowerCase();
 		const command = client.commands.get(commandName);
-		if (command) 
+		if (command)
 		{
 			try 
 			{
-				await command.message(message, commandName, args);
+				await command.message(client, message, commandName, args);
 			}
 			catch (error) 
 			{

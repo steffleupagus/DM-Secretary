@@ -25,13 +25,23 @@ async function execute(interaction, message=null)
 		await interaction.deleteReply();
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
 	const channel = message.channel;
 	const user = message.author;
+
+	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
 	const response = await DuelUtils.processDuel(channel, user, null);
 	if (response !== true)
-		await message.channel.send(response);
+	{
+		if (!response.content)
+			response.content = null
+		await reply.edit(response);
+	}
+	else
+	{
+		reply.delete()
+	}
 	message.delete()
 }
 
@@ -85,5 +95,5 @@ module.exports =
 	button: button,
 	select: select,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };

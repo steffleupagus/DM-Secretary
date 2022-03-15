@@ -29,7 +29,7 @@ async function execute(interaction, message=null)
 	await interaction.followUp({content:type,ephemeral:true});	
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
 	return;
 	const channel = message.channel;

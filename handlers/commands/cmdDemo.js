@@ -57,7 +57,7 @@ async function execute(interaction)
 	interaction.reply({embeds:[embed], components: rows})
 }
 
-async function run(message, command, args)
+async function run(client, message, command, args)
 {
 }
 
