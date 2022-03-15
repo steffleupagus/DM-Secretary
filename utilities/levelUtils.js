@@ -205,7 +205,7 @@ async function updateDataFromMessage(client, message)
 
 			const query = {name: finalData.name, user: finalData.user}
 			const oldRecord = await updateLevelData(query, finalData.level);
-			message.react("<:xp:858887927899226112>")
+			message.react(config.xpemoji)
 
 			console.log("PREVIOUS: ", oldRecord)
 			updateLevelMessage = (!oldRecord || finalData.level != oldRecord.level)

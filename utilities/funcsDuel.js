@@ -15,8 +15,8 @@ const PING_PREFIX = DEBUG ? "-" : "@";
 const MIN_CHARS = DEBUG ? 0 : 750;
 const MIN_POSTS = DEBUG ? 0 : 3;
 const PROMPT_REACTS = false;
-const DUELTITLE = "<:xp:858887927899226112> Duel Complete";
-const DUELXPTITLE = "<:xp:858887927899226112> Duel";
+const DUELTITLE = `${config.xpemoji} Duel Complete`;
+const DUELXPTITLE = `${config.xpemoji} Duel`
 const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
 
 /// Error Messages
@@ -117,11 +117,14 @@ async function processDuel(channel, user, message)
 		duel:duelData.start
 	}
 
-	let transcript = generateTranscriptFromData(duelData)
+	const transcript = generateTranscriptFromData(duelData)
 	if (transcript)
-	{
-		transcript = await mechChan.send({embeds:transcript})
-		cleanedData.transcript = transcript.url
+	{		
+		const transcriptLink = await mechChan.send({embeds:[transcript[0]]})
+		cleanedData.transcript = transcriptLink.url
+
+		for (let i=1; i < transcript.length; ++i)
+			await mechChan.send({embeds:[transcript[i]]})
 	}
 	mechChan.send("``` ```");
 	const dmEmbed = await sendApprovalMessage(cleanedData, guild);	
@@ -851,7 +854,7 @@ async function postApprovedExp(message, duelData, user)
 				  loss + lossNote)
 
 		/////
-		.addField('<:d20:704040692946698361> Tester RPP Bonus',`✅ Added <:d20:704040692946698361>500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added <:d20:704040692946698361>500 to <@${duelData.loser.uid}>'s cash balance.`)
+		.addField('${config.rppemoji} Tester RPP Bonus',`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
 		/////
 	
 	if (duelData.comment)

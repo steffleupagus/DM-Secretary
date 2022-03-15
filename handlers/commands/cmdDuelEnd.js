@@ -18,12 +18,7 @@ async function execute(interaction, message=null)
 	//const type = message ? "Menu Command" : "Slash Command";
 	//await interaction.followUp({content:type,ephemeral:true});
 	if (response !== true)
-	{
-		// await interaction.editReply({embeds:[...response.embeds]});
-		// if (response.content)
-		// 	await interaction.channel.send({content:response.content})
 		await interaction.editReply(response);
-	}
 	else if (interaction.ephemeral)
 		await interaction.editReply("Done")
 	else
@@ -37,6 +32,7 @@ async function run(message, command, args)
 	const response = await DuelUtils.processDuel(channel, user, null);
 	if (response !== true)
 		await message.channel.send(response);
+	message.delete()
 }
 
 async function button(interaction)
