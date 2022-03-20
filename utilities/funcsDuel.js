@@ -21,6 +21,7 @@ const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
 
 /// Error Messages
 const ERROR_WRONG_CHANNEL = "Cannot process duels in this channel."
+const ERROR_RP_CHANNEL = "*Please run this in the Mechanics channel*"
 const ERROR_ACTIVE_DUEL = "**Duel Active**\nPlease end the duel with `!i end` before running this command.\n*If there is still a pinned message after ending, please inform a DM on Duty.*"
 const ERROR_PROCESS_DUEL = "Already processing this duel"
 const ERROR_NO_MECH = "**No duel found**\n*Run this command in the associated Mechanics channel.*"
@@ -57,7 +58,9 @@ async function processDuel(channel, user, message)
 	const rpChan = guild.channels.resolve(channelPair.RP);
 	const mechChan = guild.channels.resolve(channelPair.MECHANICS);
 	if (!mechChan) return unlockMutex(rpChan, ERROR_NO_MECH, user.id);
-		
+
+	if (channelPair.RP == channel.id) return unlockMutex(mechChan, ERROR_RP_CHANNEL, user.id);
+	
 	//Check pinned messages and early exit if there's an active init
 	const pins = await mechChan.messages.fetchPinned()
 	if (pins.size > 0) return unlockMutex(mechChan, ERROR_ACTIVE_DUEL, user.id);
@@ -135,11 +138,7 @@ async function processDuel(channel, user, message)
 
 	let button = []
 	if (mechChan.isThread)
-	{
-		const players = Object.keys(duelData.players)
-		Utils.asyncArrayForEach(players, async player =>
-			await mechChan.members.remove(player, "Duel Complete"))
-				
+	{			
 		button = Prompt.createButtonRow([
 			{style:'SECONDARY', emoji:"⚔️", label:"Start New Duel",
 			 custom_id:"duel.startDuel"}
@@ -854,7 +853,7 @@ async function postApprovedExp(message, duelData, user)
 				  loss + lossNote)
 
 		/////
-		.addField('${config.rppemoji} Tester RPP Bonus',`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
+		.addField(`${config.rppemoji} Tester RPP Bonus`,`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
 		/////
 	
 	if (duelData.comment)
