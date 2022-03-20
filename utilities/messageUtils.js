@@ -212,8 +212,11 @@ function isRoleplayChannel(channel)
 
 function isRoleplayThread(channel)
 {
-	return channel.isThread && isRoleplayChannel(channel.parent);
+	return 	channel.isThread && 
+			isRoleplayChannel(channel.parent) && 
+			!channel.name.includes("⚙");
 }
+
 
 ///
 /// Scrape the entire guild for new messages
@@ -478,5 +481,6 @@ module.exports =
 	findNextBreak,
 	findFenceposts,
 	scrapeMessages,
-	isRoleplayChannel
+	isRoleplayChannel,
+	isRoleplayThread
 }	
