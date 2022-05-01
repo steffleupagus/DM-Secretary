@@ -5,6 +5,7 @@ const EMBED_MAX = 6000
 const EMBED_FIELD_MAX = 1024
 const EMBED_DESC_MAX = 2048
 const EMBED_TITLE_MAX = 256
+const EMBED_FIELD_COUNT_MAX = 25
 
 class EmbedPaginator
 {
@@ -102,6 +103,9 @@ class EmbedPaginator
         if (this._current_field.length > 0)
             this.close_field()
 
+		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
+			this.close_embed()
+			
 		this._total_fields++;
 		this._current_fields++;
         this._field_count += value.length + 1
@@ -216,21 +220,25 @@ class EmbedPaginator
         return this._embeds;
 	}
 
-	async send(channel, message=null, callback=null)
+	async send(channel, message=null, callback=null, completedCallback=null)
 	{
+		var sentMessages = [];
 		await Utils.asyncArrayForEach(this.embeds(), async embed=>
 		{
-			console.log(embed.title,": ",embed.fields.length);
-
-			var sentMsg = null;
+			let sentMsg = null;
 			if (message)
+			{
 				sentMsg = await channel.send({content:message, embeds:[embed]})
 									   .catch(console.error);
+				message = null;
+			}
 			else
 				sentMsg = await channel.send({embeds: [embed]}).catch(console.error);
+			sentMessages.push(sentMsg)
 			if (callback && sentMsg)
 				callback(sentMsg);
 		});
+		return sentMessages;
 	}
 
 	async sendComplex(channel, data, callback=null, callbackArg=null)
@@ -248,15 +256,6 @@ class EmbedPaginator
 			}
 		});
 	}
-
-	//Async safe loop
-	async asyncForEach(array, callback) 
-	{
-		for (let index = 0; index < array.length; index++) 
-		{
-			await callback(array[index], index, array);
-		}
-	}	
 }
 
 EmbedPaginator.prototype.toString = function EmbedPaginatorToString() 

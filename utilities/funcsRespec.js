@@ -12,7 +12,7 @@ const steps = `
 🟦 • Run \`!bag\` in this channel
 🟦 • Run \`!viewroll\` *If you have unused rolls, __**STOP**__*
 2️⃣ Run \`!respec\`
-3️⃣ [*Optional*] Run \`!rollstats\`
+3️⃣ [*Optional*] Run \`!statroll\`
 🟦 • Respec grants you one new roll
 🟦 • If you wish a second roll, you must purchase it as normal
 🟦 • **Important**: Do __not__ roll before running \`!respec\`
