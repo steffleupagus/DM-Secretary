@@ -69,6 +69,29 @@ function checkPermissions(interaction, command)
 		}
 	}
 
+	const botPermissions = command.userPermissions;
+	if (botPermissions)
+	{
+		const chanPerms = interaction.channel.permissionsFor(interaction.client.user);
+
+		let missingPerms = [];
+		botPermissions.forEach(perm => {
+			if (!chanPerms.has(perm))
+			{
+				perm = Utils.getPermissionStr(perm);
+				missingPerms.push(perm.toString())
+			}
+		});
+
+		if (missingPerms.length > 0)
+		{
+			missingPerms = `\`${missingPerms.join('`,`')}\``;
+			reply(interaction, 
+				  {content:`Bot is missing required permissions for this command: ${missingPerms}`, ephemeral:true });
+			return false;
+		}
+	}	
+
 	const whitelistRoles = command.whitelistRoles;
 	if (whitelistRoles)
 	{
