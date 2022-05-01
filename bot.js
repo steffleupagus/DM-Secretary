@@ -118,52 +118,7 @@ class Bot
 			// Set a new item in the Collection; key = command name, value = exported module
 			this.client.commands.set(command.data.name, command);
 		}
-
-		await this.applyPermissions();
 	}
-
-	async applyPermissions()
-	{
-		if (!this.client.application?.owner) await this.client.application?.fetch()
-		const guild = await this.client.guilds.cache.get(this.client.config.GUILDID)
-		const commands = await guild?.commands.fetch();
-
-		const fullPermissions = [];
-		
-		console.log("Applying command permissions...")
-		commands.each(async (v,k,all)=>
-		{
-			console.log(k, v.name)
-			const name = v.name
-			const command = this.client.commands.get(name);
-			console.log(` - ${name}`)
-			const whitelistRoles = command.whitelistRoles;
-			if (whitelistRoles)
-			{
-//				const currentPermissions = await v?.permissions?.fetch() || [];
-				let permissions = []
-				for (const role of whitelistRoles)
-				{
-//					const perm = currentPermissions.find(obj => { return obj.id === role })
-//					if (!perm?.permission)
-						permissions.push({id:role, type:'ROLE', permission: true})	
-				}
-				if (permissions.length > 0)
-				{
-					console.log(` - Updating perms for ${name}`)
-					//await v.permissions.add({permissions});
-					fullPermissions.push({id:k, permissions:permissions})
-				}
-			}
-		})
-
-		console.log(fullPermissions);
-		await guild?.commands.permissions.set({ fullPermissions });
-	}
-
-
-
-
 
 	/// Handle login and disconnect
 	runBot()
