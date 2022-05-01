@@ -79,5 +79,5 @@ module.exports =
 	execute: execute,
 	message: run,
 	
-	build:config.PRODUCTION || config.DEV
+	build:config.PRODUCTION// || config.DEV
 };
