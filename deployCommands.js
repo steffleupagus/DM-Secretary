@@ -16,6 +16,10 @@ const commands = [];
 const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/commands`)
 					   .filter(file => file.endsWith('.js'));
 
+console.log(`Deploying commands to ${mod}\n`,
+			`Client: ${clientId}\n`,
+			`Guild: ${guildId}\n`);
+
 for (const file of commandFiles) 
 {
 	const command = require(`${process.cwd()}/handlers/commands/${file}`);
@@ -23,12 +27,11 @@ for (const file of commandFiles)
 		delete command.description;
 
 	if (!command.hasOwnProperty("build") || command.build)
+	{
+		console.log(` - ${command.data.name}`)
 		commands.push(command.data.toJSON());
+	}
 }
-
-console.log(`Deploying commands to ${mod}\n`,
-			`Client: ${clientId}\n`,
-			`Guild: ${guildId}\n`);
 
 const rest = new REST({ version: '9' }).setToken(token);
 

@@ -3,7 +3,10 @@ const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 		
-const dmRoles = [config.DMRole, config.ModeratorRole];				
+const dmRoles = [
+					config.DMRole, config.ModeratorRole,
+					config._DMRole, config._ModeratorRole
+				];
 const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;
 const INTERACT_TIME = 30000;
@@ -17,7 +20,7 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 									 time = PROMPT_TIME)
 {
 	var response = defaultOption;
-	var responses = ["cancel","c"]
+	var responses = ["cancel","c","skip","s"]
 	const filter = (m) => 
 	{
 		const userId = m.author.id
@@ -48,7 +51,7 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 }
 
 
-async function promptUserInput(channel, prompt, users, 
+async function promptUserInput(channel, prompt=null, users=[], 
 							   defaultResponse=null, time=PROMPT_TIME)
 {
 	var response = defaultResponse;
@@ -66,6 +69,40 @@ async function promptUserInput(channel, prompt, users,
 	{
 		collected = collected.first();
 		response = collected.content;
+		collected.delete();
+	})
+	.catch(collected => 
+	{
+		channel.send('Timeout waiting for response.')
+		.then(msg => { setTimeout(() => msg.delete(), 30000) });
+	});
+
+	return response;
+}
+
+async function promptUserPing(channel, prompt, users, 
+							  defaultResponse=null, time=PROMPT_TIME)
+{
+	var response = defaultResponse;
+	var responses = ["cancel","c","skip","s","npc"]
+
+	const filter = (m) => 
+	{
+		const userMentions = m.mentions.users;
+		const oneMention = userMentions.size == 1;
+		const alternate = responses.includes(m.content.toLowerCase())	
+		return (oneMention || alternate);
+	};
+
+	await channel.awaitMessages({ filter, max: 1, time: time, errors: ['time'] })
+	.then(collected => 
+	{
+		collected = collected.first();
+		if (!responses.includes(collected.content.toLowerCase()))
+		{
+			const userMentions = collected.mentions.users;
+			response = userMentions.first().id;
+		}
 		collected.delete();
 	})
 	.catch(collected => 
@@ -266,6 +303,7 @@ async function promptUserButtonInteraction(channel, prompt, users, options,
 
 module.exports = 
 {	
+	promptUserPing,	
 	promptUserInput,
 	promptUserReaction,	
 	promptUserInputOption,		

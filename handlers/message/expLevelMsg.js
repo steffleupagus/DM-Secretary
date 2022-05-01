@@ -1,7 +1,9 @@
 /*--------------------------------------------------------------*\
 | Detect Avrae exp and level messages and log them in a database |
 \*--------------------------------------------------------------*/
-const LevelData = require(`${process.cwd()}/utilities/levelUtils.js`)
+const mod = process.env.mod || ""
+const config = require(`../../config/${mod}_config.json`)
+const LevelData = require(`../../utilities/levelUtils.js`)
 
 function shouldHandle(client, message)
 {
@@ -16,5 +18,6 @@ function handle(client, message, interaction=null, sendResult=true)
 module.exports = {
 	name: 'expLevelMsg',
 	shouldHandle: shouldHandle,
-	handle: handle
+	handle: handle,
+//	build: config.PRODUCTION
 };

@@ -60,6 +60,36 @@ function getDuelExp(level)
 	return exp[level];
 }
 
+/*╔════════════════════════════════════════════════════════╗*\
+│ ║ Calculate multiplier from total characters of roleplay ║ │
+\*╚════════════════════════════════════════════════════════╝*/
+function calculateRoleplayExp(rpData)
+{	
+	const {length,level} = rpData;
+	if (level < 0)
+		return 0;
+	const total = length;
+	const low = 1000;
+	const high = 16500;
+	const scale = 0.55;
+	const round = 0.25;
+	const expRound = 25;
+
+	var scaled = (total / high) * 2 * Math.PI; 
+		scaled = scaled - (low/high * 2 * Math.PI);
+	var raw = Math.max(0, Math.atan(scaled*scale));
+	var rounded = Utils.mround(raw, round);
+	var mult = rounded;
+
+	var cap = getExpCap(level);	// * 1.5;
+	var exp = Utils.mround(cap * mult, expRound);
+		exp = Math.min(exp, cap);
+	return exp;
+}
+
+/*╔═════════════════════════════════════╗*\
+│ ║ Calculate exp based on level & mult ║ │
+\*╚═════════════════════════════════════╝*/
 function getExpCap(level)
 {
 	var cap = [ 0,				0,				0,	
@@ -132,7 +162,8 @@ module.exports = {
 	getLevelData,
 	getDuelExp,
 	getExpCap,
-	updateDailyExp
+	updateDailyExp,
+	calculateRoleplayExp,	
 }
 
 async function updateLevelData(search, level)
@@ -344,6 +375,7 @@ function parseAuthor(guild, author)
 	var data = {}
 	var displayName = author.name;
 	let serverMembers = guild.members
+	
 	let matchedMember = serverMembers.cache.find(m => m.displayName === displayName);
 	if (matchedMember)
 	{

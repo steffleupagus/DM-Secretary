@@ -1,6 +1,5 @@
 const { ContextMenuCommandBuilder } = require('@discordjs/builders')
 const { ApplicationCommandType } = require(`../../utilities/enums.js`)
-const Utils = require(`../../utilities/utilFuncs.js`)
 const LevelData = require(`../../utilities/levelUtils.js`)
 
 const mod = process.env.mod || ""
@@ -23,9 +22,6 @@ async function execute(interaction)
 	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 	
-	// const roles = [ config.ModeratorRole, config.DMRole ];
-	// const hasRole = Utils.hasAnyRole(interaction.member, roles);
-
 	if (!message.author.bot)
 		interaction.guild.members.fetch(message.author)
 	
@@ -46,5 +42,5 @@ module.exports =
 		.setName('Parse Level')
 		.setType(ApplicationCommandType.Message),
 	execute: execute,
-	build:config.PRODUCTION || config.DEV
+	build:config.PRODUCTION// || config.DEV
 };
