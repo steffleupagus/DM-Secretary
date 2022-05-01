@@ -2,6 +2,11 @@ async function processBotMessage(client, message)
 {
 	client.messageHandlers.forEach(handler => 
 	{
+		// if (handler.hasOwnProperty("build") && !handler.build)		
+		// {
+		// 	console.log("Wrong Build");
+		// 	return
+		// }
 		if (handler.shouldHandle(client, message))
 			handler.handle(client, message)
 	});
