@@ -41,6 +41,7 @@ const CHAR_MATCH = /(?:[0-9]+:| +-) (.*) <([0-9]+)\/[0-9]+ HP>.*/gim;
 const ROUND_MATCH = /.*\(round ([0-9]+)\)/i;
 const INIT_REGEX = /Initiative [0-9]+ \(round [0-9]+\)/i;
 const INIT_MATCH = /\-*COMBAT ENDED\-*/i;
+const GROUP_REGEX = /.* (?:was )?added to (?:combat with initiative [0-9]+ as part of )?group .*\./gim;
 
 ///
 /// Process the most recent duel in the specified channel
@@ -262,6 +263,8 @@ function parseDuel(messages)
 		
 		//Skip known irrelevant messages & massage the data a little
 		if ((INIT_REGEX.test(event.event))||
+			(GROUP_REGEX.test(event.event))||
+			(event.event.includes("removed from all groups"))||						
 			(event.event.includes("Everyone roll for initiative"))||
 			(event.event.includes("Current initiative"))||
 			(event.event.includes("takes a Long Rest!"))||
@@ -721,13 +724,14 @@ function getApprovalButtons()
 		{style:'SUCCESS', emoji:"✅", label:"Approve", custom_id:"duel.approve"},
 		{style:'DANGER', emoji:"❌", label:"Reject", custom_id:"duel.decline"},	
 //		{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
-//	])
-//	const row2 = Prompt.createButtonRow([
+	])
+	const row2 = Prompt.createButtonRow([
 		{style:'SECONDARY', emoji:"👑", custom_id:"duel.winOnly"},
 		{style:'PRIMARY', emoji:"⏸️", custom_id:"duel.draw"},		
-		{style:'SECONDARY', emoji:"💀", custom_id:"duel.lossOnly"}
+		{style:'SECONDARY', emoji:"💀", custom_id:"duel.lossOnly"},
+		{style:'PRIMARY', emoji:"🔀", custom_id:"duel.reverse"}
 	])	
-	return [row]	//,row2]
+	return [row,row2]
 }
 
 ///
@@ -758,8 +762,9 @@ function getWinLossRatio(subCommand)
 	let winRatio=1
 	let lossRatio=1
 	switch(subCommand)
-	{			
+	{
 		case "duel.approve":  winRatio = 1.0, lossRatio = 1.0; break;
+		case "duel.reverse":  winRatio = 1.0, lossRatio = 1.0; break;			
 		case "duel.winOnly":  winRatio = 1.0, lossRatio = 0.0; break;
 		case "duel.lossOnly": winRatio = 0.0, lossRatio = 1.0; break;
 		case "duel.draw":     winRatio = 0.5, lossRatio = 0.5; break;
@@ -788,6 +793,12 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	}
 	duelData.winner.xp.xp *= winRatio;
 	duelData.loser.xp.xp *= lossRatio;
+
+	if (subCommand == "duel.reverse")
+	{
+		[duelData.loser.xp.xp, duelData.winner.xp.xp] = [duelData.winner.xp.xp, duelData.loser.xp.xp];
+		[duelData.winner,duelData.loser]=[duelData.loser,duelData.winner]
+	}
 	
 	//Update the daily total in the DB
 	const winner = await LevelUtils.updateDailyExp(duelData.winner, cmd, date);
@@ -801,9 +812,9 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	duelData.loser.ratio = lossRatio;
 	duelData.comment = null;
 	
-	if (winRatio < 1 || lossRatio < 1)
+	if (winRatio < 1 || lossRatio < 1 || (subCommand == "duel.reverse"))
 	{
-		const prompt = await channel.send("Please provide a reason for the reduced exp:")
+		const prompt = await channel.send("Please provide a reason for the decision:")
 		duelData.comment = await Prompt.promptUserInput(channel, prompt, [user.id])
 		await prompt.delete();
 	}
@@ -834,16 +845,17 @@ async function postApprovedExp(message, duelData, user)
 		case "duel.approve": emoji = "✅"; reply = "Duel Approved"; break;
 		case "duel.winOnly": emoji = "👑"; reply = "Duel Semi-Approved"; break;
 		case "duel.lossOnly": emoji = "💀"; reply = "Duel Semi-Approved"; break;
+		case "duel.reverse": emoji = "🔀"; reply = "Duel Reversed"; break;				
 		case "duel.draw": emoji = "⚖️"; reply = "Draw Declared"; break;    
 		case "duel.decline": emoji = "❌"; reply = "Duel Rejected"; break
 	}
 
-	/////
-	const unbClient = new unbapi.Client(process.env.UBTOKEN);
-	const bonus = channel?.isThread ? 500 : 250;
-	await unbClient.editUserBalance(guild.id, duelData.winner.uid, { cash: bonus })
-	await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
-	/////
+	// /////
+	// const unbClient = new unbapi.Client(process.env.UBTOKEN);
+	// const bonus = channel?.isThread ? 500 : 250;
+	// await unbClient.editUserBalance(guild.id, duelData.winner.uid, { cash: bonus })
+	// await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
+	// /////
 	
 	const logEmbed = new MessageEmbed().setTitle(`${DUELXPTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
@@ -852,9 +864,9 @@ async function postApprovedExp(message, duelData, user)
 		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
 				  loss + lossNote)
 
-		/////
-		.addField(`${config.rppemoji} Tester RPP Bonus`,`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
-		/////
+		// /////
+		// .addField(`${config.rppemoji} Tester RPP Bonus`,`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
+		// /////
 	
 	if (duelData.comment)
 		logEmbed.addField("DM Comment",duelData.comment)

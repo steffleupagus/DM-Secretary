@@ -65,6 +65,11 @@ module.exports =
 		return Math.floor(x*100)/100;
 	},
 	
+	mround(number, roundto)
+	{
+		return roundto * Math.round(number/roundto);
+	},
+	
 	milliseconds(days=0, hours=0, minutes=0, seconds=0)
 	{
 		hours += days * 24;

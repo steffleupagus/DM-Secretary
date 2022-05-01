@@ -40,14 +40,19 @@ function parseTupperLog(client, message, silent = true)
 }
 
 ///
-///
+/// Identify if a channel is an RP channel
 ///
 function isRoleplayChannel(channel)
 {
-	const isRPChannel = channel.name.includes("🗣")
-	return isRPChannel;
+	return channel.name.includes("🗣");
 }
 
+function isRoleplayThread(channel)
+{
+	return 	channel.isThread && 
+			isRoleplayChannel(channel.parent) && 
+			!channel.name.includes("⚙");
+}
 
 ///
 /// Public
@@ -81,7 +86,8 @@ async function logTupperMessage(client, message, interaction=null, sendResult=tr
 			if (tupperData)
 			{
 				const channel = message.guild.channels.resolve(tupperData.cId);
-				if (channel && isRoleplayChannel(channel))
+				if (channel && (isRoleplayChannel(channel) ||
+							    isRoleplayThread(channel)))
 				{
 					console.log(tupperData)
 					await new tupperSchema(tupperData).save()

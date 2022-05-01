@@ -194,7 +194,20 @@ async function findFenceposts(channel, message, limit = 500)
 	return {start:before.id,end:after.id,messages:messages};
 }
 
-
+///
+/// Get the roleplay data
+///
+async function getRoleplayData(rpChan, message=null)
+{
+	//Get the RP data
+	const roleplay = message 
+		? await findFenceposts(rpChan, message)
+		: await findLastBreak(rpChan);
+	const rpData = await scrapeMessages(roleplay.messages);
+	if (rpData)
+		rpData.start = roleplay.messages[0].url;
+	return rpData;
+}
 
 
 
@@ -372,7 +385,8 @@ function assignUnknown(stats, authorId, name)
 	{
 		unknown.chan.map(chan=>
 		{ 
-			if (!stats[authorId].chan.includes(chan))
+			if (stats[authorId]?.chan && 
+				!stats[authorId]?.chan?.includes(chan))
 				stats[authorId].chan.push(chan)
 		});
 	}
@@ -481,6 +495,7 @@ module.exports =
 	findNextBreak,
 	findFenceposts,
 	scrapeMessages,
+	getRoleplayData,
 	isRoleplayChannel,
 	isRoleplayThread
 }	
