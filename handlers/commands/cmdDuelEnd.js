@@ -1,13 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const DuelUtils = require(`${process.cwd()}/utilities/funcsDuel.js`)
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
-
-// const { MessageEmbed, Permissions } = require('discord.js')
-// const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
-// const index = require(`${process.cwd()}/content/_contentIndex.json`)
-// const wait = require('util').promisify(setTimeout);
 
 async function execute(interaction, message=null)
 {
@@ -15,8 +9,6 @@ async function execute(interaction, message=null)
 	const user  = interaction.user;
 	const reply = await interaction.deferReply({fetchReply:true})//,ephemeral:true})
 	const response = await DuelUtils.processDuel(channel, user, message);
-	//const type = message ? "Menu Command" : "Slash Command";
-	//await interaction.followUp({content:type,ephemeral:true});
 	if (response !== true)
 		await interaction.editReply(response);
 	else if (interaction.ephemeral)
