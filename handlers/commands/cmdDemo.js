@@ -1,10 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Permissions } = require('discord.js')
-const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
-const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
 const Prompt = require(`${process.cwd()}/utilities/promptUtils.js`)
-const wait = require('util').promisify(setTimeout);
 
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
@@ -28,8 +24,6 @@ function getSelectRow()
 function getButtonRow()
 {
 	const options = [
-	// 	// {style:'SUCCESS', label:'Approve', custom_id:"👍"},
-	// 	// {style:'DANGER', label:'Decline', custom_id:"👎"}
 		{style:'PRIMARY', emoji:"☑️", custom_id:"demo.bluecheck"},	
 		{style:'SUCCESS', emoji:"✅", custom_id:"demo.greencheck"},
 		{style:'DANGER', emoji:"❌", custom_id:"demo.redx"},
