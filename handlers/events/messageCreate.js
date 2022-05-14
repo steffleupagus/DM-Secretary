@@ -2,11 +2,7 @@ async function processBotMessage(client, message)
 {
 	client.messageHandlers.forEach(handler => 
 	{
-		// if (handler.hasOwnProperty("build") && !handler.build)		
-		// {
-		// 	console.log("Wrong Build");
-		// 	return
-		// }
+		if (handler.hasOwnProperty("build") && !handler.build) return;	
 		if (handler.shouldHandle(client, message))
 			handler.handle(client, message)
 	});
@@ -30,6 +26,7 @@ async function execute(client, message)
 		const command = client.commands.get(commandName);
 		if (command)
 		{
+			if (command.hasOwnProperty("build") && !command.build) return;		
 			try 
 			{
 				await command.message(client, message, commandName, args);

@@ -13,7 +13,8 @@ async function execute(client, interaction)
 	if (!command) return;
 	const commandPermitted = checkPermissions(interaction, command)
 	if (!commandPermitted) return;
-
+	if (command.hasOwnProperty("build") && !command.build) return;
+	
 	try
 	{
 		//interaction.isMessageComponent()
