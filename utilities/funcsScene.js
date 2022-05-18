@@ -6,4 +6,5 @@
 ///
 async function processScene(channel, user, message)
 {
+	return true
 }
