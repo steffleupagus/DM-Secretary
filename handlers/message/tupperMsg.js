@@ -6,8 +6,8 @@ const RPP = require(`../../database/rppTrackerSchema.js`)
 
 async function shouldHandle(client, message)
 {
-	// if (process.env.mod == "dev")
-	// 	return false;
+	if (process.env.mod == "dev")
+		return false;
 	return Tupper.isTupperLogMessage(client, message) ||
 		   Tupper.isTupperProxyMessage(message)
 }

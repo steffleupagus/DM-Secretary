@@ -7,6 +7,8 @@ const RPP = require(`../../database/rppTrackerSchema.js`)
 
 async function shouldHandle(client, message)
 {
+	if (process.env.mod == "dev")
+		return false;
 	if (message.author.bot) return false;
 	if (MsgUtils.isRoleplayChannel(message.channel) ||
 	   	MsgUtils.isRoleplayThread(message.channel))

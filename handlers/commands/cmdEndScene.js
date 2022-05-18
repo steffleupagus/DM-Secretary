@@ -19,6 +19,7 @@ async function execute(interaction, message=null)
 
 async function run(client, message, command, args)
 {
+	return
 	const channel = message.channel;
 	const user = message.author;
 
