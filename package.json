@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "node": "^16.11.1"
+    "node": "^16.14.2"
   },
   "name": "your-bot",
   "version": "1.0.0",
@@ -17,10 +17,10 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.24.0",
-    "discord.js": "^13.2.0",
-    "express": "^4.17.1",
-    "glob": "^7.2.0",
-    "mongoose": "^6.0.11",
+    "discord.js": "^13.7.0",
+    "express": "^4.18.1",
+    "glob": "^7.2.3",
+    "mongoose": "^6.3.3",
     "string-similarity": "^4.0.4",
     "unb-api": "^1.2.3"
   }
