@@ -1,8 +1,7 @@
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
-
-const tupperSchema = require(`${process.cwd()}/database/tupperSchema.js`)
+const config = require(`../config/${mod}_config.json`);
+const Utils = require(`../utilities/utilFuncs.js`)
+const tupperSchema = require(`../database/tupperSchema.js`)
 
 function parseTupperLog(client, message, silent = true)
 {
@@ -18,13 +17,15 @@ function parseTupperLog(client, message, silent = true)
 		var member = message.guild.members.resolve(authorId);
 		var name = member ? member.displayName : (user ? user.username : null);
 		var content = embed.description;
+		if (content.includes("Proxy Edited"))
+			content = content.substr(content.indexOf("After:")+9)
 		var messageId = embed.footer.text.replace("Message ID ", "");
 		var channelId = embed.fields.find(field => field.name == 'Channel');
 		channelId = channelId.value.match(/[0-9]+/g)[0];
 		if (authorId && content && messageId)
 		{
 			tupperData = {
-				logId:message.id,
+			//	logId:message.id,
 				cId:channelId,
 				mId:messageId,
 				aId:authorId,
@@ -75,36 +76,46 @@ function isTupperLogMessage(client, message)
 	return author && channel && content
 }
 
-async function logTupperMessage(client, message, interaction=null, sendResult=true)
+async function logTupperMessage(client, message)
 {
 	if (isTupperLogMessage(client, message))
 	{
-		const logged = await getTupperLog({logId:message.id});
-		if (!logged)
+		const tupperData = parseTupperLog(client, message)
+		if (tupperData)
 		{
-			const tupperData = parseTupperLog(client, message)
-			if (tupperData)
+			if (process.env.mod == "dev")
+				return tupperData;
+			
+			const channel = message.guild.channels.resolve(tupperData.cId);
+			if (channel && (isRoleplayChannel(channel) ||
+							isRoleplayThread(channel)))
 			{
-				const channel = message.guild.channels.resolve(tupperData.cId);
-				if (channel && (isRoleplayChannel(channel) ||
-							    isRoleplayThread(channel)))
-				{
-					console.log(tupperData)
-					await new tupperSchema(tupperData).save()
-					await message.react('🛢️');
-				}
+				const newResult = await tupperSchema.findOneAndUpdate(
+					{ mId: tupperData.mId },
+					tupperData,
+					{
+						new: true,
+						upsert: true
+					})
+				await message.react('🛢️');
 			}
-			return tupperData;			
 		}
-		else
-		{
-			await message.react('🛢️');
-		}
-		return logged;
+		return tupperData;
 	}
 	return null;
 }
 
+async function deleteTupperProxyMessage(client, message)
+{
+	if (isTupperProxyMessage(message))
+	{
+		const result = await getTupperLog({mId: message.id});
+		console.log(result);
+		await tupperSchema.deleteMany({mId: message.id});
+		return result;
+	}
+	return null;
+}
 
 async function getTupperLogLegacy(search)
 {
@@ -135,6 +146,7 @@ module.exports = {
 	isTupperLogMessage,
 	logTupperMessage,
 	parseTupperLog,
-	getTupperData
+	getTupperData,
+	deleteTupperProxyMessage
 }
 

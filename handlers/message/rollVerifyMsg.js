@@ -1,9 +1,10 @@
 /*--------------------------------------*\
 | Detect Avrae rolls and verify the hash |
 \*--------------------------------------*/
-const verify = require(`${process.cwd()}/utilities/funcsVerify.js`)
+const verify = require(`../../utilities/funcsVerify.js`)
 module.exports = {
 	name: 'rollVerify',
+	bot: true,
 	shouldHandle: verify.shouldHandle,
-	handle: verify.handle
+	handleCreate: verify.handleCreate
 };

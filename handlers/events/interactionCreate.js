@@ -1,4 +1,4 @@
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
+const Utils = require(`../../utilities/utilFuncs.js`)
 async function execute(client, interaction)
 {
 	const commandName = interaction.isMessageComponent() ? 
