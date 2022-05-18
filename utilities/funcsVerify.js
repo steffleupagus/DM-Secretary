@@ -53,7 +53,7 @@ function verifyMessageContent(client, message)
 	return false;
 }
 
-function verifyRoll(client, message, interaction=null, sendResult=true)
+async function verifyRoll(client, message, interaction=null, sendResult=true)
 {
 	var embed = message.embeds[0];
 	var title = embed.title
@@ -218,5 +218,5 @@ function sendVerification(message, color, t, u, hash, mention, dice, interaction
 module.exports = {
 	name: 'verifyRoll',
 	shouldHandle: shouldHandle,
-	handle: verifyRoll
+	handleCreate: verifyRoll
 };

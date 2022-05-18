@@ -5,19 +5,22 @@ const mod = process.env.mod || ""
 const config = require(`../../config/${mod}_config.json`)
 const LevelData = require(`../../utilities/levelUtils.js`)
 
-function shouldHandle(client, message)
+async function shouldHandle(client, message)
 {
 	return LevelData.isLevelMessage(client, message)
 }
 
-function handle(client, message, interaction=null, sendResult=true)
+async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	LevelData.logLevelMessage(client, message, interaction, sendResult)
 }
 
+
+
 module.exports = {
 	name: 'expLevelMsg',
+	bot: true,
 	shouldHandle: shouldHandle,
-	handle: handle,
+	handleCreate: handleCreate
 //	build: config.PRODUCTION
 };

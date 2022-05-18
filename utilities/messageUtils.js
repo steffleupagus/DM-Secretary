@@ -1,7 +1,8 @@
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
-const Tupper = require(`${process.cwd()}/utilities/tupperUtils.js`)
+const Utils = require(`./utilFuncs.js`)
+const Tupper = require(`./tupperUtils.js`)
+const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../config/${mod}_config.json`);
 
 const _regex = "[`-]{3}\n? ?(<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"
 const BreakRegex = new RegExp(_regex);
@@ -225,11 +226,30 @@ function isRoleplayChannel(channel)
 
 function isRoleplayThread(channel)
 {
-	return 	channel.isThread && 
+	return 	channel.isThread() && 
 			isRoleplayChannel(channel.parent) && 
 			!channel.name.includes("⚙");
 }
 
+async function isRPExpChannel(channel)
+{
+	const result = await ChannelMeta.findOne({channelId:channel.id});
+	return result && result.awardsExp;
+}
+
+async function isRPExpThread(channel)
+{
+	if (!channel.isThread()) return false
+	const result = await isRPExpChannel(channel.parent);
+	return result
+}
+
+async function isRPExpEligible(channel)
+{
+	if (channel.isThread())
+		return await isRPExpThread(channel)
+	return await isRPExpChannel(channel)	
+}
 
 ///
 /// Scrape the entire guild for new messages
@@ -497,5 +517,8 @@ module.exports =
 	scrapeMessages,
 	getRoleplayData,
 	isRoleplayChannel,
-	isRoleplayThread
+	isRoleplayThread,
+	isRPExpChannel,
+	isRPExpThread,
+	isRPExpEligible
 }	

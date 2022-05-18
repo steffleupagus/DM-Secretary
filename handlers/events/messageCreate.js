@@ -1,14 +1,12 @@
-async function processBotMessage(client, message)
+const Utils = require(`../../utilities/utilFuncs.js`)
+async function processMessage(client, message)
 {
-	client.messageHandlers.forEach(handler => 
+	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
 	{
-		// if (handler.hasOwnProperty("build") && !handler.build)		
-		// {
-		// 	console.log("Wrong Build");
-		// 	return
-		// }
-		if (handler.shouldHandle(client, message))
-			handler.handle(client, message)
+		if (handler.hasOwnProperty("build") && !handler.build) return;
+		if (handler.bot != message.author.bot) return;
+		const shouldHandle = await handler.shouldHandle(client, message);
+		if (shouldHandle) await handler.handleCreate(client, message)
 	});
 }
 
@@ -16,7 +14,7 @@ async function execute(client, message)
 {
 	if (message.author.bot)
 	{
-		processBotMessage(client, message);
+		processMessage(client, message);
 		return;
 	}
 
@@ -30,6 +28,7 @@ async function execute(client, message)
 		const command = client.commands.get(commandName);
 		if (command)
 		{
+			if (command.hasOwnProperty("build") && !command.build) return;		
 			try 
 			{
 				await command.message(client, message, commandName, args);
@@ -42,6 +41,10 @@ async function execute(client, message)
 		}
 		return;
 	}
+
+	//Finally, if we're all the way through here, check for RP messages
+	if (!message.author.bot)
+		processMessage(client, message)	
 }
 
 module.exports = {

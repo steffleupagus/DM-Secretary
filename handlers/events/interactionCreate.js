@@ -1,4 +1,4 @@
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
+const Utils = require(`../../utilities/utilFuncs.js`)
 async function execute(client, interaction)
 {
 	const commandName = interaction.isMessageComponent() ? 
@@ -13,7 +13,8 @@ async function execute(client, interaction)
 	if (!command) return;
 	const commandPermitted = checkPermissions(interaction, command)
 	if (!commandPermitted) return;
-
+	if (command.hasOwnProperty("build") && !command.build) return;
+	
 	try
 	{
 		//interaction.isMessageComponent()

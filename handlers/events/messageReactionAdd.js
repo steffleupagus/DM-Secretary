@@ -9,7 +9,7 @@ module.exports = {
 	name: 'messageReactionAdd',
 	async execute(client, messageReaction, user) 
 	{
-		if (messageReaction && messageReaction._emoji)
-			console.log(messageReaction._emoji.name);
+		// if (messageReaction && messageReaction._emoji)
+		// 	console.log(messageReaction._emoji.name);
 	}
 };

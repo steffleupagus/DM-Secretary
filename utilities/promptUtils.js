@@ -43,7 +43,7 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 	.catch(collected => 
 	{
 		channel.send('Timeout waiting for response.')
-		.then(msg => { setTimeout(() => msg.delete(), 30000) });
+		.then(msg => { setTimeout(() => { if (msg && !msg.deleted){ msg.delete() } }, 30000) });
 	});
 
 	// console.log("Response: [" + response + "]");
@@ -74,7 +74,7 @@ async function promptUserInput(channel, prompt=null, users=[],
 	.catch(collected => 
 	{
 		channel.send('Timeout waiting for response.')
-		.then(msg => { setTimeout(() => msg.delete(), 30000) });
+		.then(msg => { setTimeout(() => { if (msg && !msg.deleted){ msg.delete() } }, 30000) });
 	});
 
 	return response;
@@ -103,12 +103,16 @@ async function promptUserPing(channel, prompt, users,
 			const userMentions = collected.mentions.users;
 			response = userMentions.first().id;
 		}
+		else
+		{
+			response = collected.content.toLowerCase();
+		}
 		collected.delete();
 	})
 	.catch(collected => 
 	{
 		channel.send('Timeout waiting for response.')
-		.then(msg => { setTimeout(() => msg.delete(), 30000) });
+		.then(msg => { setTimeout(() => { if (msg && !msg.deleted){ msg.delete() } }, 30000) });
 	});
 
 	return response;

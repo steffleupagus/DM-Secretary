@@ -28,7 +28,7 @@ const steps = `
 **Note**: A maximum of 10 rolls will be tracked on a character, after which you will be unable to roll additional stats for them if you choose to continually respec
 `;
 
-function shouldHandle(client, message)
+async function shouldHandle(client, message)
 {
 	let meta = verifyMessageMeta(client, message)
 	let content = verifyMessageContent(client, message)
@@ -153,5 +153,5 @@ async function handleRespec(client, message)
 module.exports = {
 	name: 'respecPurchase',
 	shouldHandle: shouldHandle,
-	handle: handleRespec
+	handleCreate: handleRespec
 };
