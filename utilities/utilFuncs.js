@@ -64,6 +64,13 @@ module.exports =
 	{
 		return Math.floor(x*100)/100;
 	},
+
+	roundMod(number, mod)
+	{
+		mod || (mod = 1.0);
+		var inv = 1.0 / mod;
+		return Math.round(number * inv) / inv;
+	},	
 	
 	mround(number, roundto)
 	{

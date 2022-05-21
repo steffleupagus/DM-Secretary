@@ -20,6 +20,8 @@ class EmbedPaginator
         this._footer_url = null;
         this._footer_text = null;
 
+		this._color = null;
+
         this._default_embed_options = embed_options;
         this._embeds = [new MessageEmbed(embed_options)];
 		this._total_fields = 0;
@@ -54,7 +56,11 @@ class EmbedPaginator
         this._embed_count += value.length
 	}
 
-
+	setColor(value)
+	{
+		this._embeds[this._embeds.length-1].setColor(value);
+	}
+	
 	/// Adds a description to the embed. 
 	/// Appears before any fields. Will throw if the current embed can't fit the value.
     setDescription(value)
@@ -182,7 +188,7 @@ class EmbedPaginator
         if (current_count > EMBED_MAX)
             this.close_embed()
 		if (this._footer_text)
-        	this._embeds[this._embeds.length-1].setFooter(this._footer_text);		
+        	this._embeds[this._embeds.length-1].setFooter(kwargs);		
 	}
 
 	//Terminate the current embed and create a new one.
