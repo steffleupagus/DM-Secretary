@@ -168,7 +168,7 @@ module.exports = {
 
 async function updateLevelData(search, level)
 {
-	if (search.user != null)
+	if (search.user == null)
 		throw "levelUtils.updateLevelData: User is null"
 	
 	const timestamp = Date.now();

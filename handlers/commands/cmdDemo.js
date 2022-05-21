@@ -1,10 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Permissions } = require('discord.js')
-const Prompt = require(`${process.cwd()}/utilities/promptUtils.js`)
+const Prompt = require(`../../utilities/promptUtils.js`)
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
-
+const config = require(`../../config/${mod}_config.json`);
 
 function getSelectRow()
 {
@@ -49,6 +48,10 @@ async function execute(interaction)
 	const select = getSelectRow()
 	const rows = [buttons,select]
 	interaction.reply({embeds:[embed], components: rows})
+
+	const modal = await Prompt.createModal();
+	console.log(modal)
+	interaction.showModal(modal)
 }
 
 async function run(client, message, command, args)

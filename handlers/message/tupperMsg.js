@@ -72,7 +72,7 @@ async function updateRPPFromTupperProxy(record)
 	const query = { user: record.user };
 	const update = {
 		$set: { user: record.user, last: record.last },
-		$inc: { posts: record.posts, chars: record.chars },
+		$inc: { posts: record.posts, proxy: record.proxy, chars: record.chars },
 		$addToSet: {scene: record.scene}	
 	};
 	const options = { new: true, upsert: true }
