@@ -9,7 +9,7 @@ async function shouldHandle(client, message)
 	if (process.env.mod == "dev")
 		return false;
 	return Tupper.isTupperLogMessage(client, message) ||
-		   Tupper.isTupperProxyMessage(message)
+		Tupper.isTupperProxyMessage(message)
 }
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
