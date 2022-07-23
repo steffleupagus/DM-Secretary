@@ -14,7 +14,6 @@ const Embed = require(`../../utilities/EmbedPaginator.js`)
 
 async function execute(interaction)
 {
-	const check = "<:check:868350696293036042>";
 	const d20 = "<:d20:704040692946698361>";
 	const client = interaction.client
 	const guildId = interaction.guildId
@@ -33,7 +32,7 @@ async function execute(interaction)
 	//Start up the Embed that will give the results
 	let embed = new Embed()
 		embed.setTitle(`${d20} RPP Award`)
-		embed.setDescription(`${check} The following amounts have been added to the user's cash balance.`)
+		embed.setDescription(`The following amounts have been added to the user's cash balance.`)
 		embed.setColor([102, 187, 106])
 		embed.addField("** **")
 	if (!award)	
@@ -50,7 +49,7 @@ async function execute(interaction)
 	await Utils.asyncArrayForEach(data, async (record)=>
 	{
 		const userId = record.user
-		const rpp = 1; //record.rpp
+		const rpp = record.rpp
 
 		//Find the user & member
 		let user = client.users.resolve(userId)
@@ -98,13 +97,17 @@ async function execute(interaction)
 
 	await resEmbed.send(channel)
 	await cmdEmbed.send(channel)
-	
+	channel.send("Don't forget to wipe the DB")
 	if (award)
 		channel = await guild.channels.fetch(config.botSpamChannel)
 	await embed.send(channel)
 
-	// if (award)
-	// 	RPP.deleteMany({});
+	if (award)
+	{
+		await RPP.remove({});
+		await RPP.deleteMany({});
+		interaction.followUp("Database cleaned");
+	}
 }
 
 async function run(client, message, command, args)
@@ -174,5 +177,5 @@ module.exports =
 	execute: execute,
 	message: run,
 
-	build:config.DEV
+	build:config.PRODUCTION// || config.DEV
 };
