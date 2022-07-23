@@ -657,7 +657,7 @@ async function sendApprovalMessage(duelData, guild)
 	const encoded = encodeURIComponent(JSON.stringify(duelData));
 	var dmEmbed = new MessageEmbed() 
 		.setTitle(DUELTITLE)
-		.setThumbnail("https://i.imgur.com/Dt8PHkE.png")
+		.setThumbnail("https://i.imgur.com/2U90DwW.png")
 		.addField(`👑 Win: ${winner.char} (Level ${winner.level})`, win)
 		.addField(`💀 Loss: ${loser.char} (Level ${loser.level})`, loss)
 		.addField("Start Links", `[Roleplay](${rpLink})\n[Duel](${duelLink})`, true)
