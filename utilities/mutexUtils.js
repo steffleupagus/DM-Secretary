@@ -26,6 +26,7 @@ function MutexException(channel, value, message)
 
 function test(channel)
 {
+	console.log(mutex);
 	return mutex[channel.id] === true;
 }
 
@@ -38,9 +39,9 @@ function lock(channel, except = false)
 
 function unlock(channel, except = false)
 {
-	if (except && !test(channel))
-		throw new MutexException(channel, ALREADY_UNLOCKED, except);	
 	mutex[channel.id] = false;
+	if (except)
+		throw new MutexException(channel, ALREADY_UNLOCKED, except);
 	return true;
 }
 
