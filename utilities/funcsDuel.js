@@ -1,13 +1,14 @@
-const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
-const Prompt = require(`${process.cwd()}/utilities/promptUtils.js`);
-const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`);
-const LevelUtils = require(`${process.cwd()}/utilities/levelUtils.js`);
-
-const unbapi = require("unb-api");
 const { MessageEmbed } = require('discord.js')
-const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
+
+const mod = process.env.mod || "";
+const config = require(`../config/${mod}_config.json`);
+const Utils = require(`./utilFuncs.js`)
+const Prompt = require(`./promptUtils.js`);
+const MsgUtils = require(`./messageUtils.js`);
+const LevelUtils = require(`./levelUtils.js`);
+
+const Mutex = require(`./mutexUtils.js`);
+const Embed = require(`./EmbedPaginator.js`)
 
 const DEBUG = false;
 const DELETE_ON_UNDO = true
@@ -53,29 +54,26 @@ async function processDuel(channel, user, message)
 {
 	//Resolve the RP/Mech pair into actual channels
 	var channelPair = getChannelPair(channel)
-	if (!channelPair) return unlockMutex(channel, ERROR_WRONG_CHANNEL, user.id);
-
+	if (!channelPair) return Mutex.unlock(channel, ERROR_WRONG_CHANNEL)
+	
 	const guild = channel.guild
 	const rpChan = guild.channels.resolve(channelPair.RP);
 	const mechChan = guild.channels.resolve(channelPair.MECHANICS);
-	if (!mechChan) return unlockMutex(rpChan, ERROR_NO_MECH, user.id);
-
-	if (channelPair.RP == channel.id) return unlockMutex(mechChan, ERROR_RP_CHANNEL, user.id);
 	
+	if (!mechChan) return Mutex.unlock(rpChan, ERROR_NO_MECH);
+	if (channelPair.RP == channel.id) return Mutex.unlock(mechChan, ERROR_RP_CHANNEL);
+
 	//Check pinned messages and early exit if there's an active init
 	const pins = await mechChan.messages.fetchPinned()
-	if (pins.size > 0) return unlockMutex(mechChan, ERROR_ACTIVE_DUEL, user.id);
+	if (pins.size > 0) return Mutex.unlock(mechChan, ERROR_ACTIVE_DUEL);
 	//Mutex to prevent the same duel from being processed twice
-	if (mutex[channelPair.MECHANICS])
-		return unlockMutex(mechChan, ERROR_PROCESS_DUEL, user.id);
-	mutex[channelPair.MECHANICS] = true;	
-
+	Mutex.lock(mechChan, ERROR_PROCESS_DUEL);
 
 	//Get the raw duel & RP data and throw an error if we don't have any
 	const rpData = await getRoleplayData(rpChan, message);
 	let duelData = await getDuelData(mechChan, message);
-	if (!duelData) return unlockMutex(mechChan, ERROR_NO_DUEL, user.id);
-	if (!rpData) return unlockMutex(mechChan, ERROR_NO_RP, user.id); 
+	if (!duelData) return Mutex.unlock(mechChan, ERROR_NO_DUEL);
+	if (!rpData) return Mutex.unlock(mechChan, ERROR_NO_RP); 
 
 
 	
@@ -89,18 +87,18 @@ async function processDuel(channel, user, message)
 	//Verify that there were exactly two participants
 	const participants = await verifyParticipants(duelData);	
 	if (null == message && participants !== true) 
-		return unlockMutex(mechChan, participants, user.id);
+		return Mutex.unlock(mechChan, participants);
 	
 	//Verify that both participants put in sufficient effort in their roleplay
 	//Override / ignore this if the duel is being force-validated by a mod.
 	const rpValid = await verifyRoleplay(duelData);
 	if (null == message && rpValid !== true)
-		return unlockMutex(mechChan, rpValid.errors, rpValid.pings);
+		return Mutex.unlock(mechChan, rpValid.errors);
 
 	//Determine the winner of the duel
 	const outcome = await determineWinner(duelData, channel, user);
 	if (!outcome.winner || !outcome.loser)
-		return unlockMutex(mechChan, outcome, user.id);
+		return Mutex.unlock(mechChan, outcome);
 	duelData.outcome = outcome
 	duelData = calculateExp(duelData);
 
@@ -112,7 +110,7 @@ async function processDuel(channel, user, message)
 	const cleanedData = cleanData(duelData);
 	const confirm = await awaitConfirmation(channel, cleanedData);
 	if (confirm !== true)
-		return unlockMutex(mechChan, confirm.error, confirm.user);
+		return Mutex.unlock(mechChan, confirm.error);
 
 	cleanedData.channel = mechChan.id
 	cleanedData.id = duelData.startId
@@ -149,7 +147,7 @@ async function processDuel(channel, user, message)
 	}
 	await rpChan.send({content:"``` ```",components:button});
 	
-	unlockMutex(mechChan);
+	Mutex.unlock(mechChan);
 	return {embeds:[playerEmbed]}
 }
 
@@ -1006,34 +1004,6 @@ function isDuelRPChannel(channel)
 	const pair = getChannelPair(channel)
 	if (!pair) return false;
 	return (pair.RP == channel.id)
-}
-
-///
-/// We don't want people to resolve the same duel multiple times
-/// so to prevent that, we lock the channel from accepting the command again
-/// 
-var   mutex = {};
-async function unlockMutex(channel, errorMsg = null, pings = null)
-{
-	var pair = getChannelPair(channel);
-	if (pair?.MECHANICS)
-		mutex[pair.MECHANICS] = false;
-	if (errorMsg) return sendError(channel, errorMsg, pings);	
-	return true;
-}
-
-async function sendError(channel, errors, pings = null)
-{
-	var embed = new MessageEmbed()
-	if (pings)
-	{
-		if (!Array.isArray(pings)) pings = [pings];
-		pings = pings.join(`> <${PING_PREFIX}`)
-		pings = `<${PING_PREFIX}${pings}>`;
-	}
-	if (errors && !Array.isArray(errors)) errors = [errors];
-	errors.forEach(error=>{ embed.addField("Error",error) })
-	return {content:pings, embeds:[embed]}
 }
 
 module.exports = {
