@@ -8,13 +8,21 @@ async function execute(interaction, message=null)
 	const channel = interaction.channel;
 	const user  = interaction.user;
 	const reply = await interaction.deferReply({fetchReply:true})//,ephemeral:true})
-	const response = await DuelUtils.processDuel(channel, user, message);
-	if (response !== true)
-		await interaction.editReply(response);
-	else if (interaction.ephemeral)
-		await interaction.editReply("Done")
-	else
-		await interaction.deleteReply();
+
+	try
+	{
+		const response = await DuelUtils.processDuel(channel, user, message);
+		if (response !== true)
+			await interaction.editReply(response);
+		else if (interaction.ephemeral)
+			await interaction.editReply("Done")
+		else
+			await interaction.deleteReply();
+	}
+	catch (error)
+	{
+		throw error.message
+	}
 }
 
 async function run(client, message, command, args)
@@ -23,17 +31,20 @@ async function run(client, message, command, args)
 	const user = message.author;
 
 	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
-	const response = await DuelUtils.processDuel(channel, user, null);
-	if (response !== true)
+	try
 	{
-		if (!response.content)
-			response.content = null
-		await reply.edit(response);
+		const response = await DuelUtils.processDuel(channel, user, null);
+		if (response === true)
+			reply.delete();
+		else
+			await reply.edit(response);
 	}
-	else
+	catch (error)
 	{
-		reply.delete()
+		console.error(error);
+		await reply.edit(`There was an error executing this command:\n${error.message}`);		
 	}
+
 	message.delete()
 }
 
