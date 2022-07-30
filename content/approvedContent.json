@@ -4,15 +4,15 @@
 		"includeTOC":true,
 		"embeds": [
 			{
-				"title": "Aarakocra",
-				"description": null,
-				"url": "https://5e.tools/races.html#aarakocra_eepc",
-				"image": {
-					"url": "https://i.imgur.com/zURDHZi.png"
-				},
-				"footer": {
-					"text": "Races: Aarakocra"
-				}
+					"title": "Aarakocra",
+					"description": null,
+					"url": "https://5e.tools/races.html#aarakocra_eepc",
+					"image": {
+						"url": "https://i.imgur.com/zURDHZi.png"
+					},
+					"footer": {
+						"text": "Races: Aarakocra"
+					}
 			},
 			{
 				"title": "Aasimar",
@@ -944,6 +944,7 @@
 	},
 	"Backgrounds": {
 		"prefix":"✅ ",
+		"includeIndex":true,		
 		"embeds": [
 			{
 				"title": "Backgrounds",
@@ -983,6 +984,7 @@
 	},
 	"Feats": {
 		"prefix":"✅ ",
+		"includeIndex":true,		
 		"embeds": [
 			{
 				"title": "Feats",
