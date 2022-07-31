@@ -1,4 +1,4 @@
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
 const path = require('path')
 const { glob } = require("glob");
@@ -11,9 +11,9 @@ class Bot
 	constructor() 
 	{
 		let intents = [	
-			Intents.FLAGS.GUILDS, 
-			Intents.FLAGS.GUILD_MESSAGES,
-			Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+			GatewayIntentBits.Guilds, 
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildMessageReactions
 		]
 		this.client = new Client({intents: intents});
 		this.loadBot();

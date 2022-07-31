@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed, PermissionsBitField } = require('discord.js')
 const Prompt = require(`../../utilities/promptUtils.js`)
 
 const mod = process.env.mod || "";
@@ -77,7 +77,7 @@ const data = new SlashCommandBuilder()
 	.addChannelOption(option => option.setName('target').setRequired(false)
 									  .setDescription('Specify a target channel'))
 
-const userPermissions = [	Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,
