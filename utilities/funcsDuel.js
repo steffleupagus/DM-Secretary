@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -458,7 +458,7 @@ async function promptWinner(duelData, channel, sender)
 	if (!users.includes(sender.id)) users.push(sender.id);
 	console.log("Authorized responders: ", users);
 	const pings = `<${PING_PREFIX}${users.join("> <"+PING_PREFIX)}>`;
-	var embed = new MessageEmbed();
+	var embed = new EmbedBuilder();
 		embed.setTitle("Select the Winner...");
 		embed.setDescription(prompt);
 
@@ -605,7 +605,7 @@ async function awaitConfirmation(channel, duelData)
 	const win = `${winner.char} (Level ${winner.level})`;
 	const loss = `${loser.char} (Level ${loser.level})`;
 
-	let embed = new MessageEmbed();
+	let embed = new EmbedBuilder();
 	  	embed.setTitle(title);
 	  	embed.setDescription(desc);
 		embed.addField(`👑 Win: ${win}`, `<@${winner.uid}>`);
@@ -653,7 +653,7 @@ async function sendApprovalMessage(duelData, guild)
 	delete duelData.loser.rp
 	delete duelData.transcript
 	const encoded = encodeURIComponent(JSON.stringify(duelData));
-	var dmEmbed = new MessageEmbed() 
+	var dmEmbed = new EmbedBuilder() 
 		.setTitle(DUELTITLE)
 		.setThumbnail("https://i.imgur.com/2U90DwW.png")
 		.addField(`👑 Win: ${winner.char} (Level ${winner.level})`, win)
@@ -678,7 +678,7 @@ async function closeScene(duelData)
 	const fullDate = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")
 	const win 	   = getExpField(duelData.winner)
 	const loss 	   = getExpField(duelData.loser)
-	const playerEmbed = new MessageEmbed()
+	const playerEmbed = new EmbedBuilder()
 		.setTitle(DUELTITLE)
 		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
 		.addField(`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, win)
@@ -855,7 +855,7 @@ async function postApprovedExp(message, duelData, user)
 	// await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
 	// /////
 	
-	const logEmbed = new MessageEmbed().setTitle(`${DUELXPTITLE} - ${shortDate}`)
+	const logEmbed = new EmbedBuilder().setTitle(`${DUELXPTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
 		.addField(`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, 
 				  win + winNote)
@@ -948,7 +948,7 @@ async function generateTranscript(channel, message)
 	const duelData = await getDuelData(channel, message);
 	if (!duelData || !duelData.events)
 	{
-		const embed = new MessageEmbed().setTitle("Error: No Duel Data Found")
+		const embed = new EmbedBuilder().setTitle("Error: No Duel Data Found")
 					.setDescription("Must be done in a mechanics channel")
 		return [embed]	
 	}

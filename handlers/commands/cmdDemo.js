@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, PermissionsBitField } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 const Prompt = require(`../../utilities/promptUtils.js`)
 
 const mod = process.env.mod || "";
@@ -40,7 +40,7 @@ async function execute(interaction)
 	const guildId = interaction.guildId;
 	const messageId = interaction.targetId;
 
-	let embed = new MessageEmbed();
+	let embed = new EmbedBuilder();
 		embed.setTitle("Interaction Demo");
 		embed.setDescription("Demo buttons & select box");
 

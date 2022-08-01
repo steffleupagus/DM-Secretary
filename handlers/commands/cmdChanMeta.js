@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed, PermissionsBitField } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
@@ -56,7 +56,7 @@ async function execute(interaction, expOverride = null)
 	channelMeta.hideActivity ??= oldChannelMeta?.hideActivity;
 
 	//Prepare the embed
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(`Channel Updated`)
 		.addField(`Experience`,`<#${target.id}> ${channelMeta.awardsExp?"is":"is not"} eligible for \`/scene\` experience`)
 

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 async function execute(interaction)
 {
@@ -17,7 +17,7 @@ async function execute(interaction)
 	}
 	else if (interaction.options.getSubcommand() === 'server') 
 	{
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 						.setTitle(interaction.guild.name)
 						.addField("Total Members", `${interaction.guild.memberCount}`);
 		await interaction.reply({embeds:[embed]});

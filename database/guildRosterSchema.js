@@ -5,6 +5,7 @@ const reqNumber = { type:Number, required:true }
 const schema = new mongoose.Schema({
 	guild: reqString,
 	user: reqNumber,
+	char: reqString,
 	rank: reqNumber
 })
 

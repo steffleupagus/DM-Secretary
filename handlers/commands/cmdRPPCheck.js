@@ -2,7 +2,7 @@
 | Calculate RPP awards from user post data |
 \*----------------------------------------*/
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed, PermissionsBitField } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 const unbapi = require("unb-api")
 	
 const commandHistory = require(`../../database/cmdHistSchema.js`)
@@ -104,7 +104,6 @@ async function execute(interaction)
 
 	if (award)
 	{
-		await RPP.remove({});
 		await RPP.deleteMany({});
 		interaction.followUp("Database cleaned");
 	}

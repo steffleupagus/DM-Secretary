@@ -1,3 +1,4 @@
+const { InteractionType } = require('discord.js');
 const Utils = require(`../../utilities/utilFuncs.js`)
 async function execute(client, interaction)
 {
@@ -18,7 +19,9 @@ async function execute(client, interaction)
 	try
 	{
 		//interaction.isMessageComponent()
-		if (interaction.isSelectMenu())
+		if (interaction.type === InteractionType.ApplicationCommandAutocomplete) 
+			await command.autoComplete(interaction);
+		else if (interaction.isSelectMenu())
 			await command.select(interaction);
 		else if (interaction.isButton())
 			await command.button(interaction);

@@ -1,4 +1,4 @@
-const { Client, MessageEmbed } = require("discord.js");
+const { Client, EmbedBuilder } = require("discord.js");
 const { readdirSync } = require("fs");
 const prefix = "/";
 let color = "#36393f";
@@ -83,7 +83,7 @@ module.exports = {
         ccate.push(nome);
       });
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle("SlashCommands Menu:")
         .setDescription(`>>> My prefix is /\nUse the menu, or use \`/help [category]\` to view commands base on their category!\n\n[\`Invite Me\`](https://discord.com/api/oauth2/authorize?client_id=899947566567915531&permissions=8&scope=bot%20applications.commands)  |  [\`Support Server\`](https://dsc.gg/nyancatcommunity)`)
         .addFields(categories)
@@ -164,7 +164,7 @@ module.exports = {
 
 
           if (cots.includes(value.toLowerCase())) {
-            const combed = new MessageEmbed()
+            const combed = new EmbedBuilder()
               // .setTitle(`__${value.charAt(0).formatString + value.slice(1)} Commands!__`)
 							.setTitle(`${formatString(value)} Commands`)
               .setDescription(`Use \`${prefix}help\` followed by a command name to get more information on a command.\nFor example: \`${prefix}help ping\`.\n\n`)
@@ -240,7 +240,7 @@ module.exports = {
           (c) => c.aliases && c.aliases.includes(args[0].toLowerCase())
         );
       if (cots.includes(args[0].toLowerCase())) {
-        const combed = new MessageEmbed()
+        const combed = new EmbedBuilder()
           .setTitle(`__${formatString(args[0].charAt(0) + args[0].slice(1))} Commands!__`)
           .setDescription(`Use \`${prefix}help\` followed by a command name to get more information on a command.\nFor example: \`${prefix}help ping\`.\n\n`)
           .addFields(catts)
@@ -250,13 +250,13 @@ module.exports = {
       };
 
       if (!command) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
           .setTitle(`Invalid command! Use \`${prefix}help\` for all of my commands!`)
           .setColor("RED");
         return interaction.followUp({ embeds: [embed] });
       }
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setTitle("Command Details:")
         .addField(
           "Command:",

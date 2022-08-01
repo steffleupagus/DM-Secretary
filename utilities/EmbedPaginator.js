@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
 const EMBED_MAX = 6000
@@ -23,7 +23,7 @@ class EmbedPaginator
 		this._color = null;
 
         this._default_embed_options = embed_options;
-        this._embeds = [new MessageEmbed(embed_options)];
+        this._embeds = [new EmbedBuilder(embed_options)];
 		this._total_fields = 0;
 		this._current_fields = 0;
 	}	
@@ -194,7 +194,7 @@ class EmbedPaginator
 	//Terminate the current embed and create a new one.
     close_embed(repeatFooter=false)
 	{
-        this._embeds.push(new MessageEmbed(this._default_embed_options));
+        this._embeds.push(new EmbedBuilder(this._default_embed_options));
         this._embed_count = 0;
 		this._current_fields = 0;
 	}
