@@ -1,8 +1,11 @@
-const { MessageActionRow, 
-	    MessageButton, 
-	    MessageSelectMenu, 
-	    Modal, 
-	    TextInputComponent } = require('discord.js')
+const { ActionRowBuilder, 
+		ButtonBuilder,
+		ButtonStyle,
+		ComponentType,
+		SelectMenuBuilder, 
+		ModalBuilder, 
+	    TextInputBuilder,
+		TextInputStyle } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -16,6 +19,8 @@ const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;
 const INTERACT_TIME = 30000;
 
+////
+// Prompt the user for message input that match a numeric filter
 //@channel the prompt should be sent to
 //@prompt displayed to the users
 //@users array of user IDs that can respond to this prompt
@@ -55,7 +60,13 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 	return response;
 }
 
-
+////
+// Prompt the user for message input
+//@channel			- the prompt should be sent to
+//@prompt			- displayed to the users
+//@users			- array of user IDs that can respond to this prompt
+//@defaultResponse	- selected if it times out 
+//@time 			- time (in seconds) to wait for the user input 
 async function promptUserInput(channel, prompt=null, users=[], 
 							   defaultResponse=null, time=PROMPT_TIME)
 {
@@ -85,6 +96,13 @@ async function promptUserInput(channel, prompt=null, users=[],
 	return response;
 }
 
+////
+// Prompt the user to ping another user
+//@channel			- the prompt should be sent to
+//@prompt			- displayed to the users
+//@users			- array of user IDs that can respond to this prompt
+//@defaultResponse	- returned if it times out 
+//@time 			- time (in seconds) to wait for the user input 
 async function promptUserPing(channel, prompt, users, 
 							  defaultResponse=null, time=PROMPT_TIME)
 {
@@ -123,7 +141,16 @@ async function promptUserPing(channel, prompt, users,
 	return response;
 }
 
-
+////
+// Prompt the user to react to the prompt message
+//@channel			- the prompt should be sent to
+//@prompt			- displayed to the users
+//@users			- array of user IDs that can respond to this prompt
+//@options			- react options to attach to the given message
+//@defaultOption	- returned if it times out 
+//@failOptions		- early-exit options will return immediately if any are selected
+//@returnFirst 		- return after the first reaction if true, if false, wait for all @users to react
+//@time 			- time (in seconds) to wait for the user input 
 async function promptUserReaction(channel, prompt, users, options, 
 								  defaultOption=null, failOptions=null,
 								  returnFirst=false, time=REACT_TIME)
@@ -186,63 +213,19 @@ async function promptUserReaction(channel, prompt, users, options,
 	});	
 }
 
-function createSelectRow(customId="select", options=[], min=null, max=null, 
-					   	 placeholder=null)
-{
-	placeholder = placeholder || 'Nothing selected'
-	const row = new MessageActionRow();
-	const select = new MessageSelectMenu()
-						.setCustomId(customId)
-						.setPlaceholder(placeholder)
-						.addOptions(options)
-	if (min)
-		select.setMinValues(min)
-	if (max)
-		select.setMaxValues(max)			
-	row.addComponents(select)
-	
-	console.log(row);
-	return row;
-}
-
-function createButtonRow(options)
-{
-	//Add the button interactions for the users
-	const row = new MessageActionRow()
-	for (let option of options)
-	{
-		if (typeof(option) !== 'object')
-			option = {style:'SECONDARY', emoji:option, custom_id:option}
-		row.addComponents(new MessageButton(option))
-	}	
-	return row;	
-}
-
-async function addMessageSelect(message, customId=select, options=[], 
-								min=null, max=null, placeholder=null)
-{
-	const row = await createSelectRow(customId, options, min, max, placeholder)
-	await message.edit({components: [row]});
-}
-
-async function addMessageButtons(message, options)
-{
-	const row = await createButtonRow(options);
-	await addComponentRows(message, [row])
-}
-
-async function addComponentRows(message, rows)
-{
-	await message.edit({components: rows})
-}
-
-async function promptUserSelectInteraction()
-{	
-}
-
-async function promptUserButtonInteraction(channel, prompt, users, options, 
-										defaultOption=null, failOptions=null,
-				    					returnFirst=false, time=INTERACT_TIME)
+////
+// Prompt users with a series of button options
+//@channel			- the prompt should be sent to
+//@prompt			- displayed to the users
+//@users			- array of user IDs that can respond to this prompt
+//@options			- react options to attach to the given message
+//@defaultOption	- returned if it times out 
+//@failOptions		- early-exit options will return immediately if any are selected
+//@returnFirst 		- return after the first reaction if true, if false, wait for all @users to react
+//@time 			- time (in seconds) to wait for the user input 
+async function promptUserButton(channel, prompt, users, options, 
+								defaultOption=null, failOptions=null,
+				    			returnFirst=false, time=INTERACT_TIME)
 {
 	//Sort the users so we can compare the lists easily later
 	users.sort();
@@ -269,7 +252,7 @@ async function promptUserButtonInteraction(channel, prompt, users, options,
 	return new Promise((resolve, reject) => 
 	{
 		const collector = prompt.createMessageComponentCollector({ 
-			filter, componentType: 'BUTTON', time: time, errors:['time'] 
+			filter, componentType: ComponentType.Button, time: time, errors:['time'] 
 		});
 
 		collector.on('collect', async(i) => 
@@ -310,29 +293,117 @@ async function promptUserButtonInteraction(channel, prompt, users, options,
 	});
 }
 
+
+
+////
+// Create a selection row component to attach to a message
+//@customId			- name of the select
+//@options			- a list of select option objects
+//@min				- minimum number of options that can be selected
+//@max				- maximum number of options that can be selected
+//@placeholder		- string that specifies the text to be displayed prior to selection
+function createSelectRow(customId="select", options=[], min=null, max=null, 
+					   	 placeholder=null)
+{
+	placeholder = placeholder || 'Nothing selected'
+	const row = new ActionRowBuilder();
+	const select = new SelectMenuBuilder()
+						.setCustomId(customId)
+						.setPlaceholder(placeholder)
+						.addOptions(options)
+	if (min)
+		select.setMinValues(min)
+	if (max)
+		select.setMaxValues(max)			
+	row.addComponents(select)
+	
+	console.log(row);
+	return row;
+}
+
+//// Create a select option object
+function createSelectOption(label, description, value)
+{
+	return {label:label, description: description, value: value};
+}
+	
+////
+// Create a button row component to attach to a message
+//@options	- an array of objects that contains button row data
+function createButtonRow(options)
+{
+	//Add the button interactions for the users
+	const row = new ActionRowBuilder()
+	for (let option of options)
+	{
+		if (typeof(option) !== 'object')
+			option = {style:'SECONDARY', emoji:option, custom_id:option}
+		row.addComponents(new ButtonBuilder(option))
+	}	
+	return row;	
+}
+
+////
+// Add a selection row to a specified message
+//@message		- the message to which the component row should be added
+//@customId		- the name of the select row
+//@options		- a list of select option objects
+//@min			- minimum number of options that can be selected
+//@max			- maximum number of options that can be selected
+//@placeholder	- string that specifies the text to be displayed prior to selection
+async function addMessageSelect(message, customId=select, options=[], 
+								min=null, max=null, placeholder=null)
+{
+	const row = await createSelectRow(customId, options, min, max, placeholder)
+	await message.edit({components: [row]});
+}
+
+////
+// Add a button row to a specified message
+//@message	- the message to which the component row should be added
+//@options	- an array of objects that contains button row data
+async function addMessageButtons(message, options)
+{
+	const row = await createButtonRow(options);
+	await addComponentRows(message, [row])
+}
+
+////
+// Add multiple component rows to a specified message
+//@message	- the message to which the component rows should be added
+//@rows		- an array of the component row data
+async function addComponentRows(message, rows)
+{
+	await message.edit({components: rows})
+}
+
+async function promptUserSelectInteraction()
+{	
+}
+
 async function createModal()
 {
 	// Create the modal
-	const modal = new Modal()
+	const modal = new ModalBuilder()
 		.setCustomId('myModal')
 		.setTitle('My Modal');
 	// Add components to modal
 	// Create the text input components
-	const favoriteColorInput = new TextInputComponent()
+	const favoriteColorInput = new TextInputBuilder()
 		.setCustomId('favoriteColorInput')
 		// The label is the prompt the user sees for this input
 		.setLabel("What's your favorite color?")
 		// Short means only a single line of text
-		.setStyle('SHORT');
-	const hobbiesInput = new TextInputComponent()
+		.setStyle(TextInputStyle.Short);
+	const hobbiesInput = new TextInputBuilder()
 		.setCustomId('hobbiesInput')
 		.setLabel("What's some of your favorite hobbies?")
 		// Paragraph means multiple lines of text.
-		.setStyle('PARAGRAPH');
+		.setStyle(TextInputStyle.Paragraph);
 	// An action row only holds one text input,
 	// so you need one action row per text input.
-	const firstActionRow = new MessageActionRow().addComponents(favoriteColorInput);
-	const secondActionRow = new MessageActionRow().addComponents(hobbiesInput);
+	const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
+	const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
 	// Add inputs to the modal
 	modal.addComponents(firstActionRow, secondActionRow);
 	// Show the modal to the user
@@ -340,18 +411,21 @@ async function createModal()
 	return modal
 }
 
+
 module.exports = 
 {	
 	promptUserPing,	
 	promptUserInput,
 	promptUserReaction,	
 	promptUserInputOption,		
-	promptUserButtonInteraction,
-	promptUserSelectInteraction,
+	promptUserButton,
+//	promptUserSelect,
+//	promptInteractSelect,
 	addMessageButtons,
 	addMessageSelect,
 	addComponentRows,
 	createButtonRow,
 	createSelectRow,
+	createSelectOption,
 	createModal,
 }

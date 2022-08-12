@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js')
+const { EmbedBuilder, ButtonStyle } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -139,7 +139,7 @@ async function processDuel(channel, user, message)
 	if (mechChan.isThread)
 	{			
 		button = Prompt.createButtonRow([
-			{style:'SECONDARY', emoji:"⚔️", label:"Start New Duel",
+			{style:ButtonStyle.Secondary, emoji:"⚔️", label:"Start New Duel",
 			 custom_id:"duel.startDuel"}
 		])
 		button = [button]
@@ -617,11 +617,11 @@ async function awaitConfirmation(channel, duelData)
 	// const react = await Prompt.promptUserReaction(channel, embed, players, reacts, "👍","👎");
 	
 	const reacts = [
-		{style:'SUCCESS', emoji:"👍", label:'Approve', custom_id:"👍"},
-		{style:'DANGER', emoji:"👎", label:'Decline', custom_id:"👎"}		
+		{style:ButtonStyle.Success, emoji:"👍", label:'Approve', custom_id:"👍"},
+		{style:ButtonStyle.Danger, emoji:"👎", label:'Decline', custom_id:"👎"}		
 	]
-	const react = await Prompt.promptUserButtonInteraction(channel, embed, players, 
-													 		reacts, "👍", "👎");
+	const react = await Prompt.promptUserButton(channel, embed, players, 
+												reacts, "👍", "👎");
 	
 	embed.delete();
 	if (react.react == "👎")
@@ -719,15 +719,15 @@ async function attachButtons(embed)
 function getApprovalButtons()
 {
 	const row = Prompt.createButtonRow([
-		{style:'SUCCESS', emoji:"✅", label:"Approve", custom_id:"duel.approve"},
-		{style:'DANGER', emoji:"❌", label:"Reject", custom_id:"duel.decline"},	
-//		{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
+		{style:ButtonStyle.Success, emoji:"✅", label:"Approve", custom_id:"duel.approve"},
+		{style:ButtonStyle.Danger, emoji:"❌", label:"Reject", custom_id:"duel.decline"},	
+//		{style:ButtonStyle.Secondary, emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 	])
 	const row2 = Prompt.createButtonRow([
-		{style:'SECONDARY', emoji:"👑", custom_id:"duel.winOnly"},
-		{style:'PRIMARY', emoji:"⏸️", custom_id:"duel.draw"},		
-		{style:'SECONDARY', emoji:"💀", custom_id:"duel.lossOnly"},
-		{style:'PRIMARY', emoji:"🔀", custom_id:"duel.reverse"}
+		{style:ButtonStyle.Secondary, emoji:"👑", custom_id:"duel.winOnly"},
+		{style:ButtonStyle.Primary, emoji:"⏸️", custom_id:"duel.draw"},		
+		{style:ButtonStyle.Secondary, emoji:"💀", custom_id:"duel.lossOnly"},
+		{style:ButtonStyle.Primary, emoji:"🔀", custom_id:"duel.reverse"}
 	])	
 	return [row,row2]
 }
@@ -881,8 +881,8 @@ async function postApprovedExp(message, duelData, user)
 		embed.addField(`${emoji} ${reply}`, link);
 		embed.setFooter(`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`)
 		const row = Prompt.createButtonRow([
-//			{style:'PRIMARY', emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
-			{style:'SECONDARY', emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
+//			{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
+			{style:ButtonStyle.Secondary, emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 		])
 		await message.edit({embeds:[embed], components:[]})	//,components:[row]});
 
