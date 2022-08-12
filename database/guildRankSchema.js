@@ -3,10 +3,10 @@ const mongoose = require('mongoose')
 const reqString = { type:String, required:true }
 const reqNumber = { type:Number, required:true }
 const schema = new mongoose.Schema({
-	guild: reqString,
-	user: reqString,
-	char: reqString,
-	rank: reqNumber
+	guild: String,
+	rank: reqNumber,
+	role: reqString,
+	imageUrl: String,
 })
 
-module.exports = mongoose.model('guildRoster', schema, 'guildRoster')
+module.exports = mongoose.model('guildRanks', schema, 'guildRanks')
