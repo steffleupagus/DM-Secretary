@@ -44,7 +44,7 @@ class EmbedPaginator
 	{
         if (value.length > EMBED_TITLE_MAX || value.length + this._embed_count > EMBED_MAX)
             throw "The current embed cannot fit this title.";
-        this._embeds[this._embeds.length-1].title = value
+        this._embeds[this._embeds.length-1].setTitle(value)
         this._embed_count += value.length
 	}
 
@@ -147,8 +147,9 @@ class EmbedPaginator
         if (this._embed_count + value.length + this._current_field_name.length > EMBED_MAX)
             this.close_embed();
 
-        this._embeds[this._embeds.length-1].addField(this._current_field_name, value,
-													 this._current_field_inline);
+        this._embeds[this._embeds.length-1].addFields([{name:this._current_field_name, 
+														value:value,
+													  	inline:this._current_field_inline}]);
         this._embed_count += value.length + this._current_field_name.length;
 
         this._current_field_name = '';

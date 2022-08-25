@@ -3,6 +3,12 @@ const ApplicationCommandType = {
 	Message: 3
 }
 
+const SortOrder = {
+	ASC: 1,
+	DESC: -1
+}
+
 module.exports = {
-	ApplicationCommandType
+	ApplicationCommandType,
+	SortOrder
 }
