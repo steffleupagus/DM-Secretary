@@ -2,6 +2,7 @@ module.exports = {
 	name: 'error',
 	once: false,
 	execute(client, info) {
-		console.error(`error -> ${info}`);
+		var stackTrace = Error().stack;
+		console.error(`error -> ${info}`, stackTrace);
 	},
 };

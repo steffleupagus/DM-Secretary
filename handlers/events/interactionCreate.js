@@ -39,11 +39,16 @@ async function execute(client, interaction)
 
 function reply(interaction, reply)
 {
+	let identifier = interaction?.commandName || 
+					 interaction?.message?.interaction?.commandName || 
+					 interaction?.customId;	
+	console.log(identifier, reply)
+	
 	if (interaction.deferred)
 		interaction.editReply(reply)
 	else if (interaction.replied)
 		interaction.followUp(reply)
-	else
+	else if (interaction.reply)
 		interaction.reply(reply)
 }
 
