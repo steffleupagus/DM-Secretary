@@ -1,10 +1,68 @@
-const { EmbedBuilder, Permissions } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const root = process.cwd()
+const SortOrder = require(`${root}/utilities/enums.js`)
 
 module.exports =
 {
+	stackTrace()
+	{
+		var stackTrace = Error().stack;
+		console.log(stackTrace);		
+	},
+	
 	isEqual(a, b)
 	{
 		return JSON.stringify(a) === JSON.stringify(b)
+	},
+
+	// `data` is an array of objects, `key` is the key (or property accessor) to group by
+	// reduce runs this anonymous function on each element of `data` (the `item` parameter,
+	// returning the `storage` parameter at the end
+	groupBy(data, key) 
+	{
+		return data.reduce(function(storage, item) 
+		{
+			// get the first instance of the key by which we're grouping
+			var group = item[key];
+			
+			// set `storage` for this instance of group to the outer scope 
+			// (if not empty) or initialize it
+		    storage[group] = storage[group] || [];
+    
+		    // add this item to its group within `storage`
+		    storage[group].push(item);
+    
+		    // return the updated storage to the reduce function, 
+			// which will then loop through the next 
+		    return storage; 
+		}, {}); // {} is the initial value of the storage
+	},
+
+	//compareKeys should be an object { key: SortOrder }
+	priorityCompare(a, b, compareKeys)
+	{
+		let result = null;
+		Object.keys(compareKeys).forEach( key => 
+		{
+			if (result == null)
+			{
+				if (a[key] > b[key])
+					result = 1 * compareKeys[key]
+				else if (a[key] < b[key])
+					result = -1 * compareKeys[key]				
+			}
+		})
+		//console.log(a, b, result)
+		return result;
+	},
+
+	sortDir(a, b, SortOrder)
+	{
+		if (a > b)
+			return 1 * SortOrder
+		else if (a < b)
+			return -1 * SortOrder	
+		return 0
 	},
 	
 	async slowdown(milliseconds)	
@@ -55,8 +113,8 @@ module.exports =
 	},
 	
 	getPermissionStr(perm)
-	{
-		perm = Object.keys(Permissions.FLAGS).find(key => Permissions.FLAGS[key] === perm);
+	{	
+		perm = Object.keys(PermissionsBitField.Flags).find(key => PermissionsBitField.Flags[key] === perm);
 		return perm;
 	},
 
