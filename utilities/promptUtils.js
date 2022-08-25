@@ -18,9 +18,8 @@ const dmRoles = [
 const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;
 const INTERACT_TIME = 30000;
-
-////
-// Prompt the user for message input that match a numeric filter
+ 
+////// Prompt the user for message input that match a numeric filter
 //@channel the prompt should be sent to
 //@prompt displayed to the users
 //@users array of user IDs that can respond to this prompt
@@ -34,15 +33,18 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 	const filter = (m) => 
 	{
 		const userId = m.author.id
+		//Check if the author of the message is a mod or DM
 		const member = m.guild.members.resolve(userId);
 		const modDM = Utils.hasAnyRole(member, dmRoles)
+		//Check if the author of the message is one of the users this prompt is listening for
 		const user  = users.includes(userId);
+		//Check if the message content is a number
 		const isNum = m.content.replace(/\D/g,'').length > 0
+		//Make sure the message is a number or one of the non-numeric responses
 		const valid = isNum || responses.includes(m.content.toLowerCase())	
 		return (valid && (modDM || user));
 	};
 
-//	prompt = await channel.send({embeds:[prompt]});
 	await channel.awaitMessages({ filter, max: 1, time: time, errors: ['time'] })
 	.then(collected => 
 	{
@@ -60,8 +62,7 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 	return response;
 }
 
-////
-// Prompt the user for message input
+////// Prompt the user for message input
 //@channel			- the prompt should be sent to
 //@prompt			- displayed to the users
 //@users			- array of user IDs that can respond to this prompt
@@ -317,14 +318,16 @@ function createSelectRow(customId="select", options=[], min=null, max=null,
 		select.setMaxValues(max)			
 	row.addComponents(select)
 	
-	console.log(row);
 	return row;
 }
 
 //// Create a select option object
 function createSelectOption(label, description, value)
 {
-	return {label:label, description: description, value: value};
+	if (description)
+		return {label:label, description: description, value: value};
+	else
+		return {label:label, value: value};
 }
 	
 ////
@@ -377,8 +380,43 @@ async function addComponentRows(message, rows)
 	await message.edit({components: rows})
 }
 
-async function promptUserSelectInteraction()
-{	
+async function promptInteractSelect(interaction, options, placeholder, customId="select",
+									min=1, max=1, defaultOption=null, time=PROMPT_TIME)
+{
+	const prompt = await interaction.fetchReply();
+	const row = createSelectRow(customId, options, min, max, placeholder)
+	await interaction.editReply({components: [row]})
+
+	const filter = i => 
+	{
+		i.deferUpdate();
+		const member = i.member; 
+		const modDM = Utils.hasAnyRole(member, dmRoles) && !member.user.bot;
+		const validUser = i.member.id == interaction.member.id
+			//users.includes(member.id) && !reactedUsers.includes(member.id);
+		return (modDM || validUser)
+	};
+	
+	return new Promise((resolve, reject) => 
+	{
+		const collector = prompt.createMessageComponentCollector({ 
+			filter, componentType: ComponentType.SelectMenu, time: time, errors:['time'] 
+		});
+
+		collector.on('collect', async(i) => 
+		{
+			// console.log("Collector", i)
+			resolve(i.values);
+			collector.stop();
+		});
+
+		collector.on('end', collected => 
+		{
+			// console.log(`Collected ${collected.size} interactions.`);
+			// console.log(collected)
+			resolve(defaultOption)
+		});
+	});
 }
 
 async function createModal()
@@ -420,7 +458,7 @@ module.exports =
 	promptUserInputOption,		
 	promptUserButton,
 //	promptUserSelect,
-//	promptInteractSelect,
+	promptInteractSelect,
 	addMessageButtons,
 	addMessageSelect,
 	addComponentRows,
