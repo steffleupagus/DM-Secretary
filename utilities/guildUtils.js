@@ -8,6 +8,7 @@ class GuildData
 {
     constructor() 
 	{
+		this.autoCompleteCache = {};
 		this.RefreshGuildData();
     }
 	
@@ -16,7 +17,6 @@ class GuildData
 		//Clear out the data currently cached
 		this.guildData = {};
 		this.rankData = {};
-		
 
 		//Fetch the data from the database
 		let guildData = await guildDataSchema.find({});
@@ -42,6 +42,26 @@ class GuildData
 		console.log("GuildUtils reports ready")
 	}
 
+	GetRoleNames(server)
+	{
+		if (!this.RoleNames)
+		{
+			this.RoleNames = {}
+			for (const [guild, data] of Object.entries(this.guildData)) 
+			{
+				for (const [rank, role] of Object.entries(data.ranks))
+				{
+					this.RoleNames[guild+rank] = server.roles.resolve(role).name;
+				}			
+			}
+			for (const [rank, role] of Object.entries(this.rankData))
+			{
+				this.RoleNames[rank] = server.roles.resolve(role).name;
+			}
+		}
+		return this.RoleNames
+	}
+	
 	GetGuildRanksFromRoles(roles)
 	{
 		let guildRankData = {};
@@ -92,11 +112,45 @@ class GuildData
 	// Check first to make sure the changes to the GVar will be the same as the ones just made
 	async UpdateGVar()
 	{
-		// const content = await Avrae.readGvar(gvar);
-		// interaction.reply({content:content, ephemeral: true})
-		// await Avrae.writeGvar(gvar, content + "\nasdfsadf")	
+		// Get the curent gvar contents
+		const content = await Avrae.readGvar(gvar);
+
+		// TODO: May need to parse the JSON string from the gvar
+		// TODO: Get the total DB
+		// TODO: Validate the total DB against the gvar contents
+		// TODO: Update the content with the changes. May need to stringify the JSON
+
+		// Write the new content back to the gvar
+		await Avrae.writeGvar(gvar, content)	
 	}
+
+	async getAutoCompleteData(user=null, nameFilter=null, guild=null, result = {})
+	{
+		if (user)
+		{
+			if (!this.autoCompleteCache[user])
+				this.autoCompleteCache[user] = await this.GetRosterData({ user:user })
+			result = this.autoCompleteCache[user].reduce((map, record) => 
+			({
+				...map,
+				[record.char]: (map[record.char] || '') + (record.guild == guild ? 
+					`${this.RoleNames[record.guild+record.rank]} ` : '')   
+			}), {})
+		}
 	
+		if (nameFilter)
+		{
+			result = Object.fromEntries(Object.entries(result).filter(([name, guilds]) => 		
+										name.toLowerCase().includes(nameFilter)));		
+		}
+	
+		return result;
+	}
+
+	clearPromptCache(user)
+	{
+		this.autoCompleteCache[user] = null
+	}
 }
 
 module.exports = new GuildData();

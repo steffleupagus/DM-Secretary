@@ -19,6 +19,24 @@ class CharacterData
 		//Clear out the data currently cached
 		this.charCache = await levelUtils.findLevelData({});
 		console.log(`CharUtils reports ready: ${this.charCache.length} chars`)
+	}
+
+	async getUserCharData(user=null, nameFilter=null, guild=null, result={})
+	{
+		this.charCache.forEach(item => 
+		{
+			const matchUser = (user == null || user == item.user);
+			if (matchUser)
+				result[item.name] = result[item.name] || '';
+		})	
+
+		if (nameFilter)
+		{
+			result = Object.fromEntries(Object.entries(result).filter(([name, guilds]) => 		
+										name.toLowerCase().includes(nameFilter)));		
+		}
+		
+		return result;
 	}	
 }
 
