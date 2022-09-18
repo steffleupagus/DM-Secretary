@@ -1,3 +1,4 @@
+const { ActivityType } = require('discord.js');
 const client = require(`${process.cwd()}/bot`)
 
 function execute(client)
@@ -21,9 +22,9 @@ function execute(client)
 //    	];
 
 	const statusArray = [
-		["WATCHING","You Fap"],
-		["LISTENING","You Moan"],
-		["PLAYING","With Myself"],
+		[ActivityType.Watching,"You Fap"],
+		[ActivityType.Listening,"You Moan"],
+		[ActivityType.Playing,"With Myself"],
 	];
 
    	let index = 0;

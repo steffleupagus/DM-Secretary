@@ -13,6 +13,16 @@ class GuildData
 		this.rankData = {};
 		this.autoCompleteCache = {};
 		this.RefreshGuildData();
+
+		this.dataDirty = false;
+		setInterval(async () => 
+		{
+			if(this.dataDirty) 
+			{
+				this.dataDirty = false;
+				await this.UpdateGVar();
+			}
+		}, 15000);		
     }
 	
 	async RefreshGuildData()
@@ -164,26 +174,45 @@ class GuildData
 			record = await guildRosterSchema.findOneAndUpdate(query, update, options);
 		else
 			record = await guildRosterSchema.findOneAndDelete(query);
+
+		this.dataDirty = true;
+		// await this.UpdateGVar();
+		
 		return record;
-	}	
+	}
 
 	// Update the gvar to be in parity with the database.
 	// Check first to make sure the changes to the GVar will be the same as the ones just made
 	async UpdateGVar()
 	{
 		// Get the curent gvar contents
-		const content = await Avrae.readGvar(guild_gvar);
+		let content = await Avrae.readGvar(guild_gvar);
+		// Parse the JSON string from the gvar
+			content = JSON.parse(content);
 		let dirty = false;
 
-		// TODO: May need to parse the JSON string from the gvar
-		// TODO: Get the total DB
-		// TODO: Validate the total DB against the gvar contents
-		// TODO: Update the content with the changes. May need to stringify the JSON
+		// Get the total DB
+		const userData = {}
+		const rawData = await this.GetRawRosterData()
+		rawData.forEach( data => 
+		{
+			const { user, char, guild, rank } = data
+			userData[user] = userData[user] || {}
+			userData[user][char] = userData[user][char] || {}
+			userData[user][char][guild] = rank
+		})
 
-		
+		// Update the content with the changes. May need to stringify the JSON
+		let newContent = {...content, ...userData};
+
+		// Validate the total DB against the gvar contents
+		content = JSON.stringify(content, null, 2)
+		newContent = JSON.stringify(newContent, null, 2)
+		dirty = content !== newContent
+
 		// Write the new content back to the gvar
 		if (dirty)			
-			await Avrae.writeGvar(guild_gvar, content)	
+			await Avrae.writeGvar(guild_gvar, newContent)	
 	}
 
 	async getAutoCompleteData(user=null, nameFilter=null, guild=null, result = {})
