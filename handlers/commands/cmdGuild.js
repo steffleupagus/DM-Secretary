@@ -962,7 +962,7 @@ module.exports =
 	autoComplete: autoComplete,
 	button: handleButton,
 	select: handleSelect,
-	build: config.PRODUCTION || config.DEV
+	build: config.PRODUCTION// || config.DEV
 };
 
 

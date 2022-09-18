@@ -237,5 +237,5 @@ module.exports =
 	button: button,
 	// select: select,
 
-	build:config.PRODUCTION || config.DEV
+	build: config.PRODUCTION// || config.DEV
 };
