@@ -178,7 +178,7 @@ function sendVerification(message, color, t, u, hash, mention, dice, interaction
 		.setURL(message.url)
 		.setDescription(dice)
 		.setColor(color)
-		.setFooter(footer);
+		.setFooter({text: footer});
 
 	if (hash)
 		message.react("✅");

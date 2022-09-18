@@ -488,7 +488,7 @@ async function promptWinner(duelData, channel, sender)
 ///
 async function promptWinnerInput(channel, pings, embed, users)
 {
-	embed.setFooter("Type the number or `c` to cancel.");
+	embed.setFooter({text: "Type the number or `c` to cancel."});
 	embed = await channel.send({content:pings,embeds:[embed]});
 	let response = await Prompt.promptUserInputOption(channel, embed, users)
 	embed.delete();
@@ -507,7 +507,7 @@ async function promptWinnerInput(channel, pings, embed, users)
 ///
 async function promptWinnerReact(channel, pings, embed, users, options)
 {
-	embed.setFooter("Select the winner's reaction, or ❌ to cancel.");
+	embed.setFooter({text:"Select the winner's reaction, or ❌ to cancel."});
 	embed = await channel.send({content:pings,embeds:[embed]});	
 	let response = await Prompt.promptUserReaction(channel, embed, users, 
 										 options,"❌",options,true);
@@ -610,7 +610,7 @@ async function awaitConfirmation(channel, duelData)
 	  	embed.setDescription(desc);
 		embed.addField(`👑 Win: ${win}`, `<@${winner.uid}>`);
 		embed.addField(`💀 Loss: ${loss}`, `<@${loser.uid}>`);
-		embed.setFooter(footer);
+		embed.setFooter({text:footer});
 		embed = await channel.send({content:pings,embeds:[embed]});
 
 	// const reacts = ["👍","👎"];
@@ -661,7 +661,7 @@ async function sendApprovalMessage(duelData, guild)
 		.addField("Start Links", `[Roleplay](${rpLink})\n[Duel](${duelLink})`, true)
 		.addField("Transcript",transcript, true)		
 		.addField("Data","[Data]("+(JSONURL+encoded)+")",true)
-		.setFooter(`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`);
+		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
 
 	const dmChan = guild.channels.resolve(config.dmPingChannel);
 	dmEmbed = await dmChan.send({content:`<@&${config.DMOnDutyRole}>`,embeds:[dmEmbed]})
@@ -683,7 +683,7 @@ async function closeScene(duelData)
 		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
 		.addField(`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, win)
 		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, loss)	
-	playerEmbed.setFooter("Logged at (Server Time): " + fullDate);
+	playerEmbed.setFooter({text:"Logged at (Server Time): " + fullDate});
 
 	return playerEmbed;
 }
@@ -879,7 +879,7 @@ async function postApprovedExp(message, duelData, user)
 		let embed = message.embeds[0];
 		let link = `<@${user.id}> [Link](${msg.url})`
 		embed.addField(`${emoji} ${reply}`, link);
-		embed.setFooter(`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`)
+		embed.setFooter({text:`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`})
 		const row = Prompt.createButtonRow([
 //			{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
 			{style:ButtonStyle.Secondary, emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}

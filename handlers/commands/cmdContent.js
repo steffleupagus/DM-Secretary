@@ -98,7 +98,7 @@ async function publishContent(channel, content)
 	{
 		let embed = new Embed()
 			embed.addField("**Index**", '', true);
-			embed.setFooter("Index")
+			embed.setFooter({text:"Index"})
 		index.forEach( (item)=>
 		{
 			const field = `[${item.title}](${item.url})`
