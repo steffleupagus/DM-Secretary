@@ -1,4 +1,4 @@
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
 const path = require('path')
 const { glob } = require("glob");
@@ -11,9 +11,9 @@ class Bot
 	constructor() 
 	{
 		let intents = [	
-			Intents.FLAGS.GUILDS, 
-			Intents.FLAGS.GUILD_MESSAGES,
-			Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+			GatewayIntentBits.Guilds, 
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildMessageReactions
 		]
 		this.client = new Client({intents: intents});
 		this.loadBot();
@@ -30,6 +30,12 @@ class Bot
 			this.loadDatabase();
 		});				
 		this.runBot();
+
+		process.on('uncaughtException', function(error) 
+		{ 
+			console.error("Unhandled Bullshit: ", error)
+			//console.error(error.stack);
+		});		
 	}
 
 	/// Load configuration file
@@ -124,8 +130,9 @@ class Bot
 	runBot()
 	{
 		//Login
+		console.log("Logging in...")
 		this.client.login(this.client.config.token).catch(console.error);
-
+		
 		//handle trying to re-login on disco
 		this.client.on("disconnect", () => setTimeout(() => 
 		{

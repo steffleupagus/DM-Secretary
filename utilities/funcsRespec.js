@@ -1,7 +1,7 @@
 /*------------------------------------------------------------*\
 | Detect Respec purchases and relay them to the respec channel |
 \*------------------------------------------------------------*/
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 const regex = /You have bought ([0-9]+) \[Character Respec\]/
 
@@ -117,7 +117,7 @@ async function handleRespec(client, message)
 		const yagpdb = client.config.yagpdbId
 
 		//Send an initial message
-		embed = new MessageEmbed()
+		embed = new EmbedBuilder()
 		embed.setTitle(`${name} would like to respec a character`);
 		embed.setDescription(desc);
 		embed.addField("Level",`[Level ${level}](${message.url})`,true);
@@ -135,7 +135,7 @@ async function handleRespec(client, message)
 		await thread.members.add(yagpdb);
 
 		//Send the message to the user
-		embed = new MessageEmbed()
+		embed = new EmbedBuilder()
 		embed.addField("Next Steps",steps)			
 		msg = await thread.send({
 									content:`<@${userId}><@&${dmOnDuty}><@&${moderator}>`, 
@@ -144,7 +144,7 @@ async function handleRespec(client, message)
 		msg.pin();
 		
 		//Send a message directing user to the thread
-		embed = new MessageEmbed()
+		embed = new EmbedBuilder()
 		embed.setDescription(`To complete your respec, go to [the thread](${msg.url}) in <#${client.config.respecChannel}>`)
 		message.reply({content:`<@${userId}>`, embeds:[embed]});
 	}

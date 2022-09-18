@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageMentions } = require('discord.js');
+const { EmbedBuilder, MessageMentions } = require('discord.js');
 
 const debugEnabled = true;
 
@@ -173,7 +173,7 @@ function sendVerification(message, color, t, u, hash, mention, dice, interaction
 {
 	var title = "Roll " + (hash ? "Verified" : "Rejected")
 	var footer= (hash ? t+'X'+u+'X'+hash : "Verification failed...")
-	var embed = new MessageEmbed()
+	var embed = new EmbedBuilder()
 		.setTitle(title)
 		.setURL(message.url)
 		.setDescription(dice)

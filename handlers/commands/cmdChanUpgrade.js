@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Permissions } = require('discord.js')
+const { PermissionsBitField } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
@@ -25,8 +25,8 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('notify').setRequired(false)
 									  .setDescription('Should send channel update notification'))
 
-const userPermissions = [	Permissions.FLAGS.MANAGE_CHANNELS,
-							Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,

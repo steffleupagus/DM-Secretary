@@ -1,6 +1,6 @@
 const ApplicationCommandType = require(`${process.cwd()}/utilities/enums.js`);
 const { ContextMenuCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 async function execute(interaction)
 {
@@ -25,7 +25,7 @@ async function execute(interaction)
 		return m.author.id == user.id
 	};
 
-	const prompt = new MessageEmbed()
+	const prompt = new EmbedBuilder()
 						.setTitle("Enter the new message content")
 						.setDescription(`\`\`\`${message.embeds[0].description}\`\`\``)
 	await interaction.reply({embeds:[prompt], ephemeral: true, fetchReply: true })

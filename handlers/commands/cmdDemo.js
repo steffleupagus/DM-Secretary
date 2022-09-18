@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, Permissions } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField, ButtonStyle } = require('discord.js')
 const Prompt = require(`../../utilities/promptUtils.js`)
 
 const mod = process.env.mod || "";
@@ -13,7 +13,9 @@ function getSelectRow()
 
 	for (let i=0; i < options.length; ++i)
 	{
-		options[i] = {label: options[i], value: options[i]}	
+		options[i] = Prompt.createSelectOption(`Label: ${options[i]}`, 
+											   `Desc: Description for ${options[i]}`,
+											   options[i]);
 	}
 
 	const row = Prompt.createSelectRow("demo.select", options, 0, 3, label)
@@ -23,11 +25,12 @@ function getSelectRow()
 function getButtonRow()
 {
 	const options = [
-		{style:'PRIMARY', emoji:"☑️", custom_id:"demo.bluecheck"},	
-		{style:'SUCCESS', emoji:"✅", custom_id:"demo.greencheck"},
-		{style:'DANGER', emoji:"❌", custom_id:"demo.redx"},
-		{style:'SECONDARY', emoji:"✖️", custom_id:"demo.grayx"},
-		{style:'SECONDARY', emoji:"🔒", custom_id:"demo.locked", disabled:true}
+		{style:ButtonStyle.Primary, emoji:"☑️", custom_id:"demo.bluecheck"},	
+		{style:ButtonStyle.Success, emoji:"✅", custom_id:"demo.greencheck"},
+		{style:ButtonStyle.Danger, emoji:"❌", custom_id:"demo.redx"},
+		{style:ButtonStyle.Secondary, emoji:"✖️", custom_id:"demo.grayx"},
+//		{style:ButtonStyle.Secondary, emoji:"<:silverrose:699470814356963418>", custom_id:"demo.customemoji"},
+		{style:ButtonStyle.Secondary, emoji:"🔒", custom_id:"demo.locked", disabled:true}
 	]
 	const row = Prompt.createButtonRow(options)
 	return row;
@@ -40,7 +43,7 @@ async function execute(interaction)
 	const guildId = interaction.guildId;
 	const messageId = interaction.targetId;
 
-	let embed = new MessageEmbed();
+	let embed = new EmbedBuilder();
 		embed.setTitle("Interaction Demo");
 		embed.setDescription("Demo buttons & select box");
 
@@ -49,9 +52,9 @@ async function execute(interaction)
 	const rows = [buttons,select]
 	interaction.reply({embeds:[embed], components: rows})
 
-	const modal = await Prompt.createModal();
-	console.log(modal)
-	interaction.showModal(modal)
+	// const modal = await Prompt.createModal();
+	// console.log(modal)
+	// interaction.showModal(modal)
 }
 
 async function run(client, message, command, args)
@@ -66,23 +69,24 @@ async function button(interaction)
 
 async function select(interaction)
 {
-	console.log(interaction)
+	// console.log(interaction)
 	interaction.reply({content:`Handling ${interaction.customId}: ${interaction.values.join(", ")}`, ephemeral: true})
 }
 
 const data = new SlashCommandBuilder()
 	.setName('demo')
-	.setDescription('Update the contents of a static channel')
+	.setDescription('Demo Features')
 	.setDefaultPermission(false)	
 	.addChannelOption(option => option.setName('target').setRequired(false)
 									  .setDescription('Specify a target channel'))
 
-const userPermissions = [	Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,
 	whitelistRoles: [
 		config.BuilderRole,
+		config._BuilderRole	
 	],
 	userPermissions: userPermissions,
 	execute: execute,

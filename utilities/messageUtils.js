@@ -33,10 +33,13 @@ async function channelCleanup(channel)
 ///
 async function deleteMessages(messages)
 {
+	let delayCount = 0;
 	await Utils.asyncArrayForEach(messages, async (message) =>
 	{
 		await message.delete();
-		await Utils.slowdown(100);
+		await Utils.slowdown(500);
+		if (++delayCount >= 5)
+			await Utils.slowdown(1500);
 	})
 }
 

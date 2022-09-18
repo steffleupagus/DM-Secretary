@@ -1,13 +1,35 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, Permissions } = require('discord.js')
-const Embed = require(`${process.cwd()}/utilities/EmbedPaginator.js`)
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
-const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
-const index = require(`${process.cwd()}/content/_contentIndex.json`)
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
+const { MessageMentions } = require('discord.js');
+const Embed = require(`../../utilities/EmbedPaginator.js`)
+const Utils = require(`../../utilities/utilFuncs.js`)
+const MsgUtils = require(`../../utilities/messageUtils.js`)
 const wait = require('util').promisify(setTimeout);
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
+const index = require(`../../content/_contentIndex.json`)
+
+function extractMention(embed) 
+{
+	const desc = embed.description || "";
+	const fields = embed.fields || [];
+	const fieldText = fields.map(field => field.value).join(" ");
+	const content = desc + " " + fieldText;
+	
+	// The id is the first and only match found by the RegEx.
+	let matches = content.matchAll(MessageMentions.CHANNELS_PATTERN);
+	// If supplied variable did not include a mention,
+	// matches will be null instead of an array.
+	if (!matches) return false;
+	matches = ([...matches]).map( entry => entry[0]).join(" ");
+
+	if (matches.length == 0)
+		return null;
+	
+	console.log(matches);
+	return matches;
+}
 
 async function publishContent(channel, content)
 {
@@ -15,13 +37,26 @@ async function publishContent(channel, content)
 	await Utils.asyncObjectForEach(content, async (value, key)=>
 	{
 		const header = `\`\`\`md\n# --- ${key} --- #\n\`\`\``;
-		const tableOfContents = await channel.send(header)
+		const tableOfContents = value.includeTOC || value.includeHeader ? 
+									await channel.send(header) : null;
 		let contents = [];
-		await Utils.asyncArrayForEach(value.embeds, async (embed)=>
+
+		if (typeof value === 'string')
 		{
-			let item = await channel.send({embeds:[embed]});
-			contents.push({"title":embed.title,"url":item.url});
-		});
+			await channel.send(value);
+		}
+		else
+		{
+			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
+			{
+				let item = await channel.send({embeds:[embed]});
+				contents.push({"title":embed.title,"url":item.url});
+				let chanMentions = extractMention(embed);
+				if (chanMentions)
+					await channel.send(chanMentions)
+				await wait(1200);
+			});
+		}
 
 		if (value.includeTOC)
 		{
@@ -33,17 +68,26 @@ async function publishContent(channel, content)
 					embed.setDescription(note);
 				embed.setFooter(title)
 				embed.addField(`**${title}**`, '', true);
+			let count = 0;
 			contents.forEach( (item)=>
 			{
 				prefix = item.title?.startsWith('🚫') ? "" : prefix;
 				const field = `${prefix}[${item.title}](${item.url})`
-				embed.extendField(field, "** **", true);			
+				embed.extendField(field, "** **", true);
+				if (value.maxEntriesPerField && ++count >= value.maxEntriesPerField)
+				{
+					embed.close_field();
+					embed.addField(`** **`, '', true);
+					count = 0
+				}
 			});
 
 			embed = embed.embeds()[0];
 			await tableOfContents.edit({content:header, embeds:[embed]})
 		}
-		await channel.send("*_ _*\n*_ _*\n*_ _*\n");
+
+		if (value.includeSectionBreak)
+			await channel.send("*_ _*\n*_ _*\n*_ _*\n");
 
 		if (value.includeTOC || value.includeIndex)
 			index.push({"title":key,"url":tableOfContents.url});
@@ -120,8 +164,8 @@ const data = new SlashCommandBuilder()
 	.addChannelOption(option => option.setName('target').setRequired(false)
 									  .setDescription('Specify a target channel'))
 
-const userPermissions = [	Permissions.FLAGS.MANAGE_CHANNELS,
-							Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.SendMessages		];
 
 module.exports = 
 {

@@ -119,9 +119,9 @@ function processData(record)
 	const postBaseline = 10;		//# posts in a scene
 	const paragraphBaseline = 500;	//# characters in a Paragraph
 	const pointsStep = 250;
-	const charsMax = 200000;
-	const pointsMax = 20000;
-	const pointsUpperAvg = 15000;
+	const charsMax = 175000
+	const pointsMax = 20000
+	const pointsUpperAvg = 15000
 
 	const user = record.user
 	const chars = record.chars
@@ -139,7 +139,7 @@ function processData(record)
 
 	var finalAmt = 0;
 	finalAmt = (chars / charsMax) * 2 * Math.PI;
-	finalAmt = Math.atan(finalAmt / 2);
+	finalAmt = Math.atan(finalAmt);	// / 2);
 	finalAmt = Math.min(pointsMax,finalAmt*pointsUpperAvg);
 	finalAmt = Utils.roundMod(finalAmt, pointsStep);
 

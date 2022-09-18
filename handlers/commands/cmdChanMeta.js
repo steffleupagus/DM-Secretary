@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed, Permissions } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
@@ -56,7 +56,7 @@ async function execute(interaction, expOverride = null)
 	channelMeta.hideActivity ??= oldChannelMeta?.hideActivity;
 
 	//Prepare the embed
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(`Channel Updated`)
 		.addField(`Experience`,`<#${target.id}> ${channelMeta.awardsExp?"is":"is not"} eligible for \`/scene\` experience`)
 
@@ -66,7 +66,7 @@ async function execute(interaction, expOverride = null)
 	
 	//Update the channel topic with the exp icon if the bot has the right permissions
 	const chanPerms = channel.permissionsFor(interaction.client.user);
-	if (null != expIcon && chanPerms.has(Permissions.FLAGS.MANAGE_CHANNELS))
+	if (null != expIcon && chanPerms.has(Permissions.MANAGE_CHANNELS))
 		await updateTopic(target, channelMeta.awardsExp)
 	const hasIcon = channel?.topic?.includes(config.xpemoji)
 	//Update the embed with additional information for the builder reply
@@ -96,9 +96,10 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('icon').setRequired(false)
 					 				  .setDescription('Should update channel topic with exp icon'))
 
-const userPermissions = [	Permissions.FLAGS.MANAGE_CHANNELS,
-							Permissions.FLAGS.VIEW_CHANNEL,						 
-							Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.ViewChannel,						 
+							PermissionsBitField.Flags.SendMessages		];
+
 module.exports = 
 {
 	data: data,
