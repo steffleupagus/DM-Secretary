@@ -49,7 +49,7 @@ async function execute(interaction)
 	await Utils.asyncArrayForEach(data, async (record)=>
 	{
 		const userId = record.user
-		const rpp = record.rpp
+		let   rpp = record.rpp
 
 		//Find the user & member
 		let user = client.users.resolve(userId)
@@ -59,7 +59,7 @@ async function execute(interaction)
 		if (!member)
 		{
 			console.log("Error: Member not found",{id:userId});
-			return
+			rpp = 0
 		}
 	
 		if (rpp > 0)
@@ -100,11 +100,12 @@ async function execute(interaction)
 	channel.send("Don't forget to wipe the DB")
 	if (award)
 		channel = await guild.channels.fetch(config.botSpamChannel)
-	await embed.send(channel)
-
+	let sentMsgs = await embed.send(channel)
+	interaction.followUp(sentMsgs[0].url);
+	
 	if (award)
 	{
-		await RPP.remove({});
+		//await RPP.remove({});
 		await RPP.deleteMany({});
 		interaction.followUp("Database cleaned");
 	}
@@ -165,7 +166,7 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('award').setRequired(false)
 									  .setDescription('Automatically award values'))
 
-const userPermissions = [	PermissionsBitField.Flags.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,

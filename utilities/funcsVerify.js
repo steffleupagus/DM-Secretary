@@ -67,16 +67,18 @@ async function verifyRoll(client, message, interaction=null, sendResult=true)
 	var t = parseInt(foot[0])
 	var color='#'
 
-	//Extract the user ID from the message
-	var playerMatch = MessageMentions.USERS_PATTERN;
-	var match = [...desc.matchAll(playerMatch)];
-	if (match.length > 0)
-	{	//Use it to map the UID to the character
-		playerMatch = match[0][1];
-		console.log("\n\nPLAYER ID: ",playerMatch,"\n\n");
-	}
-	else
-		playerMatch = null;
+	//Extract the user ID from the message	
+	var playerMatch = desc.split('\n')[0]
+	
+	// var playerMatch;// = [...desc.matchAll(MessageMentions.USERS_PATTERN)];
+	// // console.log(playerMatch)
+	// // if (playerMatch.length > 0)
+	// // {	//Use it to map the UID to the character
+	// // 	playerMatch = playerMatch[0][1];
+	// // 	console.log("\n\nPLAYER ID: ",playerMatch,"\n\n");
+	// // }
+	// // else
+	// playerMatch = null;
 
 	//Extract the roll results from the message
 	var regex = new RegExp("`([0-9]+)`","gm");
@@ -185,11 +187,7 @@ function sendVerification(message, color, t, u, hash, mention, dice, interaction
 	else
 		message.react("❌");
 
-	if (mention)
-		mention = "<@" + mention + ">";
-	else
-		mention = "";
-
+	mention = mention || ""
 	if (interaction)
 	{
 		if (interaction.replied)

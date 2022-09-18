@@ -13,7 +13,9 @@ class Bot
 		let intents = [	
 			GatewayIntentBits.Guilds, 
 			GatewayIntentBits.GuildMessages,
-			GatewayIntentBits.GuildMessageReactions
+			GatewayIntentBits.GuildMessageReactions,
+			GatewayIntentBits.MessageContent,
+			GatewayIntentBits.GuildMembers,			
 		]
 		this.client = new Client({intents: intents});
 		this.loadBot();
