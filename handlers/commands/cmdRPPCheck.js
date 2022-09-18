@@ -2,7 +2,7 @@
 | Calculate RPP awards from user post data |
 \*----------------------------------------*/
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed, PermissionsBitField } = require('discord.js')
 const unbapi = require("unb-api")
 	
 const commandHistory = require(`../../database/cmdHistSchema.js`)
@@ -165,7 +165,7 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('award').setRequired(false)
 									  .setDescription('Automatically award values'))
 
-const userPermissions = [	Permissions.FLAGS.SEND_MESSAGES		];
+const userPermissions = [	PermissionsBitField.Flags.SEND_MESSAGES		];
 module.exports = 
 {
 	data: data,
