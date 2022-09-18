@@ -167,7 +167,7 @@ class EmbedPaginator
 	/// Sets the footer on the final embed.
     setFooter(value=null, icon_url=null)
 	{
-        this._footer_text = value	
+		this._footer_text = value.text || value
         this._footer_url = icon_url
 	}
 
