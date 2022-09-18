@@ -101,7 +101,7 @@ async function showRoster(interaction, member=null, guild=null, char=null, rank=
 	embed.setTitle(`Guild Roster:${argStr}`)
 	// if (guild && GuildUtils.guildData[guild].image) 
 	// 	embed.setThumbnail(GuildUtils.guildData[guild].image);
-	embed.setFooter(`/guildroster${argStr}`)
+	embed.setFooter({text:`/guildroster${argStr}`})
 
 	groupKeys = Object.keys(rosterData);
 	groupKeys.sort((a,b)=> { return Utils.sortDir(a, b, keys[groupKey]); })

@@ -36,7 +36,7 @@ async function execute(interaction)
 		embed.setColor([102, 187, 106])
 		embed.addField("** **")
 	if (!award)	
-		embed.setFooter("(This is only a test of the new RPP command)")
+		embed.setFooter({text:"(This is only a test of the new RPP command)"})
 
 	let cmdEmbed = new Embed()
 		cmdEmbed.setTitle(`${d20} RPP Award`)
