@@ -26,6 +26,7 @@ const Toggle =
 ///// Define some constnats
 const ToggleMenu = "ToggleMenu";
 const UnitTestMenu = "UnitTestMenu";
+const GuildRanksEmbed = "GuildRanksEmbed";
 const PromptName = "<PROMPT_NAME>"
 const ERROR_NO_INPUT = (cmd) => `Input timed out (\`${cmd}\`)`
 const ERROR_NO_CHAR = (member, guild=null) => 
@@ -109,6 +110,7 @@ async function execute(interaction)
 	//Hack for Builder to add permanent toggle or Unit Test menus
 	if (char == ToggleMenu) return await showGuildToggleMenu(interaction, {ephemeral: false});
 	else if (char == UnitTestMenu) return await showUnitTestMenu(interaction);
+	else if (char == GuildRanksEmbed) return await showGuildRanksEmbed(interaction);
 
 	if (guild && !rank)
 	{
@@ -756,6 +758,12 @@ async function showGuildRanks(interaction)
 	return await interaction.update({ embeds: [embed] });	
 }
 
+async function showGuildRanksEmbed(interaction)
+{
+	let embed = new EmbedBuilder().setTitle(`Guild Ranks`).addFields(getGuildRankFields())
+	interaction.channel.send({embeds:[embed]})
+}
+
 //// Get a generated list of rank roles for each guild
 function getGuildRankFields() 
 {
@@ -903,6 +911,7 @@ async function autoComplete(interaction) {
 		if (config.OWNERID == user)
 		{
 			response.push({ name: 'Builder: Unit Test Menu', value: UnitTestMenu });
+			response.push({ name: 'Builder: Guild Ranks', value: GuildRanksEmbed });
 			response.push({ name: 'Builder: Create Toggle Menu', value: ToggleMenu });
 		}
 		await interaction.respond(response.length <= 25 ? response : []);
@@ -962,7 +971,7 @@ module.exports =
 	autoComplete: autoComplete,
 	button: handleButton,
 	select: handleSelect,
-	build: config.PRODUCTION// || config.DEV
+	build: config.PRODUCTION //|| config.DEV
 };
 
 
