@@ -203,6 +203,7 @@ async function UpdateGuildRank(interaction, targetMember, guild, char, rank, use
 	const triggeringMember = interaction.member;
 	targetMember = targetMember || triggeringMember;
 	const selfUpdate = targetMember == triggeringMember;
+	const filter = ((item) => !item.description);
 	let embed;
 	
 	//Guild is required. If we don't have one error out before trying to prompt for character
@@ -219,7 +220,7 @@ async function UpdateGuildRank(interaction, targetMember, guild, char, rank, use
 				.setFooter({text:`Dismiss this message to cancel`})
 			interaction.editReply({embeds:[embed]});
 		}
-		char = char || await promptCharacter(interaction, targetMember, guild, true);
+		char = char || await promptCharacter(interaction, targetMember, guild, true, filter);
 
 		if (!char)
 		{
@@ -398,7 +399,7 @@ async function UpdateGuildRoles(member, userData, toggleFlag = null, removedGuil
 async function promptCharacter(interaction, member, guild, includeNPC = false, filter = null)
 {
 	//Get the character list
-	let charList = await getCharacterPromptList(interaction, member, guild, false)
+	let charList = await getCharacterPromptList(interaction, member, guild, includeNPC)
 	//Filter the character list if necessary
 	if (filter) charList = charList.filter(filter);
 	//Add an unlisted NPC option if appropriate
