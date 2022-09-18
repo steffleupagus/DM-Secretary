@@ -30,6 +30,12 @@ class Bot
 			this.loadDatabase();
 		});				
 		this.runBot();
+
+		process.on('uncaughtException', function(error) 
+		{ 
+			console.error("Unhandled Bullshit: ", error)
+			//console.error(error.stack);
+		});		
 	}
 
 	/// Load configuration file
@@ -124,8 +130,9 @@ class Bot
 	runBot()
 	{
 		//Login
+		console.log("Logging in...")
 		this.client.login(this.client.config.token).catch(console.error);
-
+		
 		//handle trying to re-login on disco
 		this.client.on("disconnect", () => setTimeout(() => 
 		{

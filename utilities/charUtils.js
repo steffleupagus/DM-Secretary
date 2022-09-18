@@ -23,6 +23,9 @@ class CharacterData
 
 	async getUserCharData(user=null, nameFilter=null, guild=null, result={})
 	{
+		if (!this.charCache)
+			throw "Please be patient, bot is still loading...\nWait a minute and try again."
+		
 		this.charCache.forEach(item => 
 		{
 			const matchUser = (user == null || user == item.user);

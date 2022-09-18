@@ -2,7 +2,7 @@
 | Calculate RPP awards from user post data |
 \*----------------------------------------*/
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder, PermissionsBitField } = require('discord.js')
+const { MessageEmbed, Permissions } = require('discord.js')
 const unbapi = require("unb-api")
 	
 const commandHistory = require(`../../database/cmdHistSchema.js`)
@@ -104,6 +104,7 @@ async function execute(interaction)
 
 	if (award)
 	{
+		await RPP.remove({});
 		await RPP.deleteMany({});
 		interaction.followUp("Database cleaned");
 	}
@@ -118,9 +119,9 @@ function processData(record)
 	const postBaseline = 10;		//# posts in a scene
 	const paragraphBaseline = 500;	//# characters in a Paragraph
 	const pointsStep = 250;
-	const charsMax = 200000;
-	const pointsMax = 20000;
-	const pointsUpperAvg = 15000;
+	const charsMax = 175000
+	const pointsMax = 20000
+	const pointsUpperAvg = 15000
 
 	const user = record.user
 	const chars = record.chars
@@ -138,7 +139,7 @@ function processData(record)
 
 	var finalAmt = 0;
 	finalAmt = (chars / charsMax) * 2 * Math.PI;
-	finalAmt = Math.atan(finalAmt / 2);
+	finalAmt = Math.atan(finalAmt);	// / 2);
 	finalAmt = Math.min(pointsMax,finalAmt*pointsUpperAvg);
 	finalAmt = Utils.roundMod(finalAmt, pointsStep);
 
@@ -164,7 +165,7 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('award').setRequired(false)
 									  .setDescription('Automatically award values'))
 
-const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
+const userPermissions = [	Permissions.FLAGS.SEND_MESSAGES		];
 module.exports = 
 {
 	data: data,

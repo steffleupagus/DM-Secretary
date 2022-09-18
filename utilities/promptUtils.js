@@ -2,8 +2,9 @@ const { ActionRowBuilder,
 		ButtonBuilder,
 		ButtonStyle,
 		ComponentType,
-		SelectMenuBuilder, 
+	   	InteractionType,
 		ModalBuilder, 
+		SelectMenuBuilder, 
 	    TextInputBuilder,
 		TextInputStyle } = require('discord.js')
 
@@ -18,7 +19,8 @@ const dmRoles = [
 const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;
 const INTERACT_TIME = 30000;
- 
+const MODAL_INPUT_TIME = 10000;
+
 ////// Prompt the user for message input that match a numeric filter
 //@channel the prompt should be sent to
 //@prompt displayed to the users
@@ -358,7 +360,7 @@ async function addMessageSelect(message, customId=select, options=[],
 								min=null, max=null, placeholder=null)
 {
 	const row = await createSelectRow(customId, options, min, max, placeholder)
-	await message.edit({components: [row]});
+	await addComponentRows(message, [row])
 }
 
 ////
@@ -377,15 +379,29 @@ async function addMessageButtons(message, options)
 //@rows		- an array of the component row data
 async function addComponentRows(message, rows)
 {
-	await message.edit({components: rows})
+	if (message.edit)
+		await message.edit({components: rows})
+	else if (message.editReply)
+		await message.editReply({components: rows})
 }
 
 async function promptInteractSelect(interaction, options, placeholder, customId="select",
 									min=1, max=1, defaultOption=null, time=PROMPT_TIME)
 {
-	const prompt = await interaction.fetchReply();
+	await addInteractSelect(interaction, options, placeholder, customId, min, max)
+	const result = await collectInteractSelect(interaction, defaultOption, time);
+	return result;
+}
+
+async function addInteractSelect(interaction, options, placeholder, customId="select", min=1, max=1)
+{
 	const row = createSelectRow(customId, options, min, max, placeholder)
-	await interaction.editReply({components: [row]})
+	await addComponentRows(interaction, [row])
+}
+
+async function collectInteractSelect(interaction, defaultOption=null, time=PROMPT_TIME)
+{
+	const prompt = await interaction.fetchReply();
 
 	const filter = i => 
 	{
@@ -419,35 +435,176 @@ async function promptInteractSelect(interaction, options, placeholder, customId=
 	});
 }
 
-async function createModal()
+
+async function collectSelectInteractions(interaction, callbackMap = {}, defaultOption=null, time=PROMPT_TIME)
 {
+	const prompt = await interaction.fetchReply();
+	return new Promise((resolve, reject) => 
+	{
+		const collector = prompt.createMessageComponentCollector({ 
+			componentType: ComponentType.SelectMenu, time: time, errors:['time'] 
+		});
+
+		collector.on('collect', async(i) => 
+		{
+			// if (i.user.id === interaction.user.id) {
+			// 	i.reply(`${i.user.id} clicked on the ${i.customId} button.`);
+			// } else {
+			// 	i.reply({ content: `These buttons aren't for you!`, ephemeral: true });
+			// }
+			let value = i.values[0]
+			if (callbackMap && callbackMap[value])
+			{
+				try {
+					value = await callbackMap[value].func(i, callbackMap[value].args);
+				} catch (error) {
+					console.error("Callback Error - " + error);
+					resolve(null);
+				}
+
+				if (!i.deferred && !i.replied )
+					i.deferUpdate()
+				resolve(value);
+			}
+			else
+			{
+				i.deferUpdate()
+				resolve(i.values);
+			}
+
+			collector.stop();
+		});
+
+		collector.on('end', collected => 
+		{
+			// console.log(`Collected ${collected.size} interactions.`);
+			// console.log(collected)
+			resolve(defaultOption)
+		});
+	});	
+}
+
+
+async function collectButtonInteractions(interaction, callbackMap = {}, defaultOption=null, time=PROMPT_TIME)
+{
+	const prompt = await interaction.fetchReply();
+	return new Promise((resolve, reject) => 
+	{
+		const collector = prompt.createMessageComponentCollector({ 
+			componentType: ComponentType.Button, time: time, errors:['time'] 
+		});
+
+		collector.on('collect', async(i) => 
+		{
+			// if (i.user.id === interaction.user.id) {
+			// 	i.reply(`${i.user.id} clicked on the ${i.customId} button.`);
+			// } else {
+			// 	i.reply({ content: `These buttons aren't for you!`, ephemeral: true });
+			// }
+
+			let value = i.customId
+
+			//let value = i.value
+			if (callbackMap[value])
+			{
+				try {
+					value = await callbackMap[value].func(i, callbackMap[value].args);
+					if (!i.deferred && !i.replied )
+						i.deferUpdate()
+				} catch (error) {
+					console.error("Callback Error: " + error);
+					resolve(null);
+				}					
+				resolve(value);
+			}
+			else
+			{
+				i.deferUpdate()
+				resolve(value);
+			}
+
+			collector.stop();			
+		});
+
+		collector.on('end', collected => 
+		{
+			// console.log(`Collected ${collected.size} interactions.`);
+			// console.log(collected)
+			resolve(defaultOption)
+		});
+	});	
+}
+
+
+function createTextInputRow(customId="input", label="Input", placeholder="Enter some text...", 
+							   style=TextInputStyle.Short, minLength = null, maxLength = null)
+{
+	let input = new TextInputBuilder()
+		.setCustomId(customId)
+		.setLabel(label)				// The label is the prompt the user sees for this input
+		.setStyle(style)				// TextInputStyle.Short or TextInputStyle.Paragraph
+		.setPlaceholder(placeholder)	// set a placeholder string to prompt the user
+		.setRequired(true);	 			// require a value in this input field	
+
+	if (maxLength)	// set the maximum number of characters to allow
+		input.setMaxLength(maxLength)
+	if (minLength)	// set the minimum number of characters required for submission
+		input.setMinLength(minLength)
+
+	// // set a default value to pre-fill the input
+	// .setValue('Default')
+
+	input = new ActionRowBuilder().addComponents(input)
+	return input
+}
+
+async function promptModal(interaction, title="Modal", customId="modal", inputs = null, time=MODAL_INPUT_TIME)
+{
+	// Add text input components to modal
+	// Note that unlike how you might expect when sending a Message with Components,
+	// MessageActionRows for Modals **can only accept TextInputComponents** (no Buttons or
+	// SelectMenus or other Components), and each Action Row can have a maximum of just one
+	// TextInputComponent. You can have a maximum of 5 Action Rows in a Modal, so you have
+	// a maximum of 5 Text Inputs per Modal.
+	// An action row only holds one text input so you need one action row per text input.
+	inputs = inputs || [createTextInputRow()];
+
 	// Create the modal
 	const modal = new ModalBuilder()
-		.setCustomId('myModal')
-		.setTitle('My Modal');
-	// Add components to modal
-	// Create the text input components
-	const favoriteColorInput = new TextInputBuilder()
-		.setCustomId('favoriteColorInput')
-		// The label is the prompt the user sees for this input
-		.setLabel("What's your favorite color?")
-		// Short means only a single line of text
-		.setStyle(TextInputStyle.Short);
-	const hobbiesInput = new TextInputBuilder()
-		.setCustomId('hobbiesInput')
-		.setLabel("What's some of your favorite hobbies?")
-		// Paragraph means multiple lines of text.
-		.setStyle(TextInputStyle.Paragraph);
-	// An action row only holds one text input,
-	// so you need one action row per text input.
-	const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
-	const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
-	// Add inputs to the modal
-	modal.addComponents(firstActionRow, secondActionRow);
-	// Show the modal to the user
+		.setCustomId(customId)
+		.setTitle(title)
+		.addComponents([...inputs]);		// Add inputs to the modal
 
-	return modal
+	// Show the Modal to the User in response to the Interaction
+	await interaction.showModal(modal)
+
+	// Get the Modal Submit Interaction that is emitted once the User submits the Modal
+	const submitted = await interaction.awaitModalSubmit(
+	{
+		// Timeout after a minute of not receiving any valid Modals
+		time: time,
+		// Make sure we only accept Modals from the User who sent the original Interaction we're responding to
+		filter: i => i.user.id === interaction.user.id,
+	})
+	.catch(error => 
+	{
+		// Catch Errors that are thrown (e.g. if the awaitModalSubmit times out after 60000 ms)
+		console.error(".catch: " + error)
+	})
+	return submitted;
+	
+	// If we got our Modal, we can do whatever we want with it down here. Remember that the Modal
+	// can have multiple Action Rows, but each Action Row can have only one TextInputComponent. You
+	// can use the  helper property to get the value of an input field
+	// from it's Custom ID. See https://discord.js.org/#/docs/discord.js/stable/class/ModalSubmitFieldsResolver for more info.
 }
+
+
+
+
+
+
+
 
 
 module.exports = 
@@ -457,13 +614,16 @@ module.exports =
 	promptUserReaction,	
 	promptUserInputOption,		
 	promptUserButton,
+	promptModal,
 //	promptUserSelect,
 	promptInteractSelect,
+	collectSelectInteractions,
+	collectButtonInteractions,
 	addMessageButtons,
 	addMessageSelect,
 	addComponentRows,
 	createButtonRow,
 	createSelectRow,
 	createSelectOption,
-	createModal,
+	createTextInputRow
 }

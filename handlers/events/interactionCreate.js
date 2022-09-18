@@ -1,5 +1,9 @@
 const { InteractionType } = require('discord.js');
 const Utils = require(`../../utilities/utilFuncs.js`)
+
+const mod = process.env.mod || '';
+const config = require(`../../config/${mod}_config.json`);
+
 async function execute(client, interaction)
 {
 	const commandName = interaction.isMessageComponent() ? 
@@ -30,10 +34,10 @@ async function execute(client, interaction)
 	}
 	catch (error)
 	{
-		console.error(error);
+		console.error("Error",error);
 		await reply(interaction, 
-					{	content: `There was an error executing this command:\n${error}`, 
-						ephemeral: true });
+					{	content: `This command failed to execute:\n${error}`, 
+					 	components: [], ephemeral: true });
 	}
 }
 

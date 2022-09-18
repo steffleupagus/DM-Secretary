@@ -14,14 +14,15 @@ const listener = app.listen(port, () => {
 	console.log(listener.address().port)
 });
 
-app.get('/', (req, res) => {
-//	res.send('Bot Is Up')
-	res.status(200).send('Bot is up!');
-});
-
 // Example of API from your client (discord.js)
 module.exports = client => 
 {
+	app.get('/', (req, res) => {
+	//	res.send('Bot Is Up')
+		res.status(200).send(client.isReady() ? 'Bot is up!' : 'Bot is not ready...');
+	});
+
+	
 // 	// get all guilds the bot is logged in
 // 	app.get('/api/guild/all', (req, res) => 
 // 	{
