@@ -11,20 +11,45 @@ const CharUtils = require(`../../utilities/charUtils.js`);
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
+const GuildRanksEmbed = "GuildRanksEmbed"
+const Permanent = "PermGuildRoster"
+
+////// Gather up data to populate the character prompt / autocomplete
+async function getPromptData(user = null, value = null, guild = null, includeAll = true) 
+{
+	//Use the GuildUtils to grab characters that are part of guilds
+	let result = await GuildUtils.getAutoCompleteData(user, value, guild);
+	if (includeAll)
+		//Use the CharUtils cache to make a list of all the other chars registered to the target user
+		result = await CharUtils.getUserCharData(user, value, guild, result);
+	return result;
+}
 
 ////// Handle autocomplete options for the Character field
 //Use the CharUtils cache to make a list of all chars registered to the target user 
 //Use the GuildUtils to grab characters that aren't 
-async function autoComplete(interaction)
+async function autoComplete(interaction) 
 {
 	const focusedOption = interaction.options.getFocused(true);
 	if (focusedOption.name === 'character') 
 	{
+		const roleNames = GuildUtils.GetRoleNames(interaction.guild);
 		const value = focusedOption.value.toLowerCase();
-		const user = interaction.options.get('user')?.value;		
-		const roleNames = GuildUtils.GetRoleNames(interaction.guild)
-		let response = await GuildUtils.getAutoCompleteData(user, value);
-		response = Object.keys(response).map(choice => ({name: choice, value: choice}))
+		const user = interaction.options.get('user')?.value || interaction.member.id;
+		const target = user;
+
+		//let response = await GuildUtils.getAutoCompleteData(user, value);
+		let response = await getPromptData(target, value);
+		response = Object.keys(response).map(choice => ({ name: choice, value: choice }));
+
+		//Add an "Other" option to the autocomplete list
+		response.push({ name: 'NPC / Other Not Listed', value: 'null' });
+		//Add menu options to the autocomplete list for owner.
+		if (config.OWNERID == user)
+		{
+			response.push({ name: 'Builder: Guild Ranks', value: GuildRanksEmbed });
+			response.push({ name: 'Builder: Perm Guild Roster', value: Permanent });
+		}
 		await interaction.respond(response.length <= 25 ? response : []);
 	}
 }
@@ -40,7 +65,13 @@ async function execute(interaction)
 
 async function showRoster(interaction, member=null, guild=null, char=null, rank=null)
 {
-	const ephemeral = true	
+	let ephemeral = true
+
+	if (char == Permanent) 
+	{
+		ephemeral = false
+		char = null
+	}
 	//// TODO - Add a mechanism to show and update an official roster visible permanently in-channel
 
 	if (!interaction.isButton())
@@ -88,10 +119,7 @@ async function showRoster(interaction, member=null, guild=null, char=null, rank=
 	//Group the data by an appropriate key
 	let groupKey = "guild";
 	if (guild) groupKey = "rank";
-	
-	/* EXPERIMENTAL */
 	if (member) groupKey = "char";
-	/* EXPERIMENTAL */
 	
 	rosterData = Utils.groupBy(rosterData, groupKey);
 	//console.log(rosterData);
