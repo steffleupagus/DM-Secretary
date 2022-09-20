@@ -120,9 +120,9 @@ async function handleRespec(client, message)
 		embed = new EmbedBuilder()
 		embed.setTitle(`${name} would like to respec a character`);
 		embed.setDescription(desc);
-		embed.addField("Level",`[Level ${level}](${message.url})`,true);
+		embed.addFields({name:"Level",value:`[Level ${level}](${message.url})`,inline:true});
 		if (userId)
-			embed.setFooter(name + ": " + userId)
+			embed.setFooter({text: name + ": " + userId})
 
 		msg = await channel.send({embeds:[embed]})
 		
@@ -136,7 +136,7 @@ async function handleRespec(client, message)
 
 		//Send the message to the user
 		embed = new EmbedBuilder()
-		embed.addField("Next Steps",steps)			
+		embed.addFields({name:"Next Steps",value:steps})			
 		msg = await thread.send({
 									content:`<@${userId}><@&${dmOnDuty}><@&${moderator}>`, 
 									embeds:[embed]
