@@ -11,8 +11,7 @@ const CharUtils = require(`../../utilities/charUtils.js`);
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
-const GuildRanksEmbed = "GuildRanksEmbed"
-const Permanent = "PermGuildRoster"
+const PermanentRoster = "PermGuildRoster"
 
 ////// Gather up data to populate the character prompt / autocomplete
 async function getPromptData(user = null, value = null, guild = null, includeAll = true) 
@@ -47,8 +46,7 @@ async function autoComplete(interaction)
 		//Add menu options to the autocomplete list for owner.
 		if (config.OWNERID == user)
 		{
-			response.push({ name: 'Builder: Guild Ranks', value: GuildRanksEmbed });
-			response.push({ name: 'Builder: Perm Guild Roster', value: Permanent });
+			response.push({ name: 'Builder: Perm Guild Roster', value: PermanentRoster });
 		}
 		await interaction.respond(response.length <= 25 ? response : []);
 	}
@@ -67,7 +65,7 @@ async function showRoster(interaction, member=null, guild=null, char=null, rank=
 {
 	let ephemeral = true
 
-	if (char == Permanent) 
+	if (char == PermanentRoster) 
 	{
 		ephemeral = false
 		char = null
