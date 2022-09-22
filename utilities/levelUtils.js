@@ -1,5 +1,6 @@
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
+
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
@@ -189,6 +190,7 @@ async function updateLevelData(search, level)
 		{
 			upsert: true
 		})
+	
 	return result;
 }
 

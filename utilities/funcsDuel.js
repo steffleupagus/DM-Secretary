@@ -608,8 +608,10 @@ async function awaitConfirmation(channel, duelData)
 	let embed = new EmbedBuilder();
 	  	embed.setTitle(title);
 	  	embed.setDescription(desc);
-		embed.addField(`👑 Win: ${win}`, `<@${winner.uid}>`);
-		embed.addField(`💀 Loss: ${loss}`, `<@${loser.uid}>`);
+		embed.addFields([
+				{name:`👑 Win: ${win}`, value:`<@${winner.uid}>`},		
+				{name:`💀 Loss: ${loss}`, value:`<@${loser.uid}>`}
+			]);
 		embed.setFooter({text:footer});
 		embed = await channel.send({content:pings,embeds:[embed]});
 
@@ -656,11 +658,13 @@ async function sendApprovalMessage(duelData, guild)
 	var dmEmbed = new EmbedBuilder() 
 		.setTitle(DUELTITLE)
 		.setThumbnail("https://i.imgur.com/2U90DwW.png")
-		.addField(`👑 Win: ${winner.char} (Level ${winner.level})`, win)
-		.addField(`💀 Loss: ${loser.char} (Level ${loser.level})`, loss)
-		.addField("Start Links", `[Roleplay](${rpLink})\n[Duel](${duelLink})`, true)
-		.addField("Transcript",transcript, true)		
-		.addField("Data","[Data]("+(JSONURL+encoded)+")",true)
+		.addFields([
+			{name: `👑 Win: ${winner.char} (Level ${winner.level})`, value:win},
+			{name: `💀 Loss: ${loser.char} (Level ${loser.level})`, value:loss},
+			{name: "Start Links", value:`[Roleplay](${rpLink})\n[Duel](${duelLink})`, inline: true},
+			{name: "Transcript", value: transcript, inline: true},
+			{name: "Data",value:"[Data]("+(JSONURL+encoded)+")",inline: true}
+		])
 		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
 
 	const dmChan = guild.channels.resolve(config.dmPingChannel);
@@ -681,8 +685,10 @@ async function closeScene(duelData)
 	const playerEmbed = new EmbedBuilder()
 		.setTitle(DUELTITLE)
 		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
-		.addField(`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, win)
-		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, loss)	
+		.addFields([
+			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, value:win},
+			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss}
+		]);
 	playerEmbed.setFooter({text:"Logged at (Server Time): " + fullDate});
 
 	return playerEmbed;
@@ -855,19 +861,15 @@ async function postApprovedExp(message, duelData, user)
 	// await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
 	// /////
 	
-	const logEmbed = new EmbedBuilder().setTitle(`${DUELXPTITLE} - ${shortDate}`)
+	let logEmbed = new EmbedBuilder().setTitle(`${DUELXPTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
-		.addField(`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, 
-				  win + winNote)
-		.addField(`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
-				  loss + lossNote)
-
-		// /////
-		// .addField(`${config.rppemoji} Tester RPP Bonus`,`✅ Added ${config.rppemoji}500 to <@${duelData.winner.uid}>'s cash balance.\n✅ Added ${config.rppemoji}500 to <@${duelData.loser.uid}>'s cash balance.`)
-		// /////
-	
-	if (duelData.comment)
-		logEmbed.addField("DM Comment",duelData.comment)
+		.addFields([
+			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, 
+			 value: win + winNote},
+			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
+			 value: loss + lossNote},
+			{name:"DM Comment",value:duelData.comment ? duelData.comment : "[None]"}
+		]);
 	
 	var pingChan = message.guild.channels.resolve(config.xpLogChannel);
 	if (DEBUG)
@@ -876,9 +878,10 @@ async function postApprovedExp(message, duelData, user)
 	const pings = `<@${duelData.winner.uid}> <@${duelData.loser.uid}> - _Log in <#${config.xpSpamChannel}>_`
 	pingChan.send({content:pings,embeds:[logEmbed]}).then(async (msg)=>
 	{
-		let embed = message.embeds[0];
+		let embed = EmbedBuilder.from(message.embeds[0].toJSON());
 		let link = `<@${user.id}> [Link](${msg.url})`
-		embed.addField(`${emoji} ${reply}`, link);
+		
+		embed.addFields([{name:`${emoji} ${reply}`, value:link}]);
 		embed.setFooter({text:`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`})
 		const row = Prompt.createButtonRow([
 //			{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	

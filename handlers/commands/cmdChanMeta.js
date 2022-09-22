@@ -71,9 +71,9 @@ async function execute(interaction, expOverride = null)
 	const hasIcon = channel?.topic?.includes(config.xpemoji)
 	//Update the embed with additional information for the builder reply
 	if (channelMeta.awardsExp && !hasIcon)
-		embed.addField(`** **`,`*Note: Channel topic does not include exp icon*`)
+		embed.addField([{name:`** **`,value:`*Note: Channel topic does not include exp icon*`}])
 	if (channelMeta?.hideActivity != oldChannelMeta?.hideActivity)
-		embed.addField(`Activity`,`This channel ${channelMeta.hideActivity?"is not":"is"} visible in the activity tracker`)
+		embed.addFields([{name:`Activity`,value:`This channel ${channelMeta.hideActivity?"is not":"is"} visible in the activity tracker`}])
 	interaction.editReply({embeds:[embed]})
 }
 

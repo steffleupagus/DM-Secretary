@@ -4,6 +4,7 @@
 const mod = process.env.mod || ""
 const config = require(`../../config/${mod}_config.json`)
 const LevelData = require(`../../utilities/levelUtils.js`)
+const CharUtils = require(`../../utilities/charUtils.js`)
 
 async function shouldHandle(client, message)
 {
@@ -12,7 +13,8 @@ async function shouldHandle(client, message)
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
-	LevelData.logLevelMessage(client, message, interaction, sendResult)
+	await LevelData.logLevelMessage(client, message, interaction, sendResult)
+	await CharUtils.RefreshCache()
 }
 
 
