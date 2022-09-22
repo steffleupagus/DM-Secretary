@@ -58,7 +58,7 @@ async function execute(interaction, expOverride = null)
 	//Prepare the embed
 	const embed = new EmbedBuilder()
 		.setTitle(`Channel Updated`)
-		.addField(`Experience`,`<#${target.id}> ${channelMeta.awardsExp?"is":"is not"} eligible for \`/scene\` experience`)
+		.addFields([{name:`Experience`,value:`<#${target.id}> ${channelMeta.awardsExp?"is":"is not"} eligible for \`/scene\` experience`}])
 
 	//Send the notification if we should, update the 
 	if (notify && channel != target )
@@ -66,7 +66,7 @@ async function execute(interaction, expOverride = null)
 	
 	//Update the channel topic with the exp icon if the bot has the right permissions
 	const chanPerms = channel.permissionsFor(interaction.client.user);
-	if (null != expIcon && chanPerms.has(Permissions.MANAGE_CHANNELS))
+	if (null != expIcon && chanPerms.has(PermissionsBitField.Flags.ManageChannels))
 		await updateTopic(target, channelMeta.awardsExp)
 	const hasIcon = channel?.topic?.includes(config.xpemoji)
 	//Update the embed with additional information for the builder reply
