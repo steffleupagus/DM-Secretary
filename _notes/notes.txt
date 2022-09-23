@@ -7,3 +7,7 @@ discord.Constants.ApplicationCommandOptionTypes.NUMBER;
 https://discordjs.guide/interactions/registering-slash-commands.html#option-types
 
 https://discordjs.guide/interactions/replying-to-slash-commands.html#command-options
+
+https://how-to.repl.co/discord-ratelimits
+
+https://up.coding398.dev/others
