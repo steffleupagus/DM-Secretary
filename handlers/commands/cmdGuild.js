@@ -174,11 +174,11 @@ async function checkAuthorization(guild, oldRank, newRank, targetMember, trigger
 	const triggeringRank = userData.guildRanks[guild] || 0;
 	
 	//Mods and Builders can override a target's rank at any time
-	const overrideRoles = [config.BuilderRole, config.ModeratorRole] + 
-						  config.DEV ? [config._BuilderRole, config._ModeratorRole] : [];
+	const overrideRoles = [config.BuilderRole, config.ModeratorRole];
+						  //+config.DEV ? [config._BuilderRole, config._ModeratorRole] : [];
 	const triggeringRoles = triggeringMember.roles.cache;
 	const modOverride = Array.from(triggeringRoles.keys()).filter(key =>
-									overrideRoles.includes(key)).length;
+									overrideRoles.includes(key)).length;	
 	//If newRank is lower, user must be higher rank than target's *current* rank
 	const authorized =
 		(newRank < oldRank && triggeringRank > oldRank) ||
