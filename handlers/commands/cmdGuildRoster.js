@@ -1,8 +1,7 @@
 const { SlashCommandBuilder, 
 	   	SlashCommandStringOption, 
-	   	SlashCommandNumberOption } = require('@discordjs/builders');
-const { EmbedBuilder, 
-	   	PermissionsBitField } = require('discord.js')
+	   	SlashCommandNumberOption,
+	    PermissionsBitField } = require('discord.js')
 const Embed = require(`../../utilities/EmbedPaginator.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const { SortOrder } = require(`../../utilities/enums.js`)

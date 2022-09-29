@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, SlashCommandStringOption, SlashCommandNumberOption } = require('@discordjs/builders');
-const { PermissionsBitField,
+const { SlashCommandBuilder, SlashCommandStringOption, SlashCommandNumberOption, 
+	    PermissionsBitField,
 		EmbedBuilder, ActionRowBuilder, ButtonBuilder,
 		ButtonStyle, TextInputStyle
 } = require('discord.js');

@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ActivityType, PermissionsBitField } = require('discord.js')
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 

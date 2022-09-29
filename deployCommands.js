@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { REST, Routes } = require('discord.js');
+//const { Routes } = require('discord-api-types/v9');
 
 let mod = process.env.mod || "";
 //console.log(process.argv)
