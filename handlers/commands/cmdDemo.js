@@ -1,5 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, PermissionsBitField, ButtonStyle } = require('discord.js')
+const { SlashCommandBuilder,
+	    EmbedBuilder, 
+	    PermissionsBitField, 
+	    ButtonStyle } = require('discord.js')
 const Prompt = require(`../../utilities/promptUtils.js`)
 
 const mod = process.env.mod || "";

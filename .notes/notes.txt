@@ -1,9 +1,5 @@
 https://discord.com/api/oauth2/authorize?client_id=912167154906988595&permissions=397553429584&scope=bot%20applications.commands
 
-
-
-discord.Constants.ApplicationCommandOptionTypes.NUMBER;
-
 https://discordjs.guide/interactions/registering-slash-commands.html#option-types
 
 https://discordjs.guide/interactions/replying-to-slash-commands.html#command-options

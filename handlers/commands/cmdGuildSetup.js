@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, 
 	   	SlashCommandStringOption, 
-	   	SlashCommandNumberOption } = require('@discordjs/builders');
-const { EmbedBuilder, 
+	   	SlashCommandNumberOption,
+	    EmbedBuilder, 
 	   	PermissionsBitField } = require('discord.js')
 const guildData = require(`../../database/guildDataSchema.js`);
 const guildRank = require(`../../database/guildRankSchema.js`);

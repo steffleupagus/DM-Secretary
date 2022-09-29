@@ -1,5 +1,6 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder, PermissionsBitField } = require('discord.js')
+const { SlashCommandBuilder,
+	    EmbedBuilder, 
+	    PermissionsBitField } = require('discord.js')
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
