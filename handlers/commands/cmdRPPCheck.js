@@ -1,8 +1,7 @@
 /*----------------------------------------*\
 | Calculate RPP awards from user post data |
 \*----------------------------------------*/
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed, PermissionsBitField } = require('discord.js')
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
 const unbapi = require("unb-api")
 	
 const commandHistory = require(`../../database/cmdHistSchema.js`)

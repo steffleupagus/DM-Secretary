@@ -1,4 +1,4 @@
-const { ContextMenuCommandBuilder } = require('@discordjs/builders')
+const { ContextMenuCommandBuilder } = require('discord.js')
 const { ApplicationCommandType } = require(`../../utilities/enums.js`)
 const LevelData = require(`../../utilities/levelUtils.js`)
 const CharUtils = require(`../../utilities/charUtils.js`)

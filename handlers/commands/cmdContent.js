@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, PermissionsBitField } = require('discord.js')
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
 const { MessageMentions } = require('discord.js');
 const Embed = require(`../../utilities/EmbedPaginator.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)

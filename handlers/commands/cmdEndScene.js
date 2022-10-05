@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const SceneUtils = require(`../../utilities/funcsScene.js`)
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);

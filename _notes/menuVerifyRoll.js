@@ -1,5 +1,5 @@
 const { ApplicationCommandType } = require(`${process.cwd()}/utilities/enums.js`)
-const { ContextMenuCommandBuilder } = require('@discordjs/builders')
+const { ContextMenuCommandBuilder } = require('discord.js')
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
 const mod = process.env.mod || ""
