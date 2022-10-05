@@ -35,5 +35,5 @@ module.exports =
 	],
 	execute: execute,
 
-	build:config.PRODUCTION 
+	build:false//config.PRODUCTION 
 };

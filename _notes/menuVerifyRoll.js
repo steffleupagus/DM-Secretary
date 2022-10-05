@@ -34,5 +34,5 @@ module.exports =
 		.setType(ApplicationCommandType.Message),
 	execute: execute,
 
-	build:config.PRODUCTION
+	build:false//config.PRODUCTION
 };

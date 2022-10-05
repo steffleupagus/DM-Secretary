@@ -22,6 +22,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 module.exports = {
 	name: 'expLevelMsg',
 	bot: true,
+	menu: true,	
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate
 //	build: config.PRODUCTION
