@@ -44,5 +44,5 @@ module.exports =
 		.setName('Parse Level')
 		.setType(ApplicationCommandType.Message),
 	execute: execute,
-	build:config.PRODUCTION// || config.DEV
+	build:false//config.PRODUCTION// || config.DEV
 };

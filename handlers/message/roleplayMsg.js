@@ -78,6 +78,7 @@ async function handleDelete(client, message, interaction=null, sendResult=true)
 module.exports = {
 	name: 'roleplayMsg',
 	bot: false,
+	menu: false,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 	handleUpdate: handleUpdate,

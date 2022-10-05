@@ -1,10 +1,10 @@
 const { ApplicationCommandType } = require(`${process.cwd()}/utilities/enums.js`)
 const { ContextMenuCommandBuilder } = require('@discordjs/builders')
+const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 
 const mod = process.env.mod || ""
 const config = require(`${process.cwd()}/config/${mod}_config.json`)
-const respec = require(`${process.cwd()}/utilities/funcsRespec.js`)
-
+const verify = require(`${process.cwd()}/utilities/funcsVerify.js`)
 async function execute(interaction)
 {
 	const user  = interaction.user;
@@ -13,13 +13,16 @@ async function execute(interaction)
 	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
 
-	if (message && respec.shouldHandle(client, message))
+	const roles = [ config.ModeratorRole, config.DMRole ];
+	const hasRole = Utils.hasAnyRole(interaction.member, roles);
+
+	if (message && verify.shouldHandle(client, message))
 	{
-		await interaction.reply({ 	content: 'Parsing for Respec message', 
+		await interaction.reply({ 	content: 'Parsing for roll message', 
 									ephemeral: true });
-		respec.handleCreate(client, message)
+		verify.handleCreate(client, message, hasRole ? null : interaction);
 	}else{
-		await interaction.reply({ 	content: 'This is not a respec message.', 
+		await interaction.reply({ 	content: 'This is not a roll message.', 
 									ephemeral: true });
 	}
 }
@@ -27,13 +30,9 @@ async function execute(interaction)
 module.exports = 
 {
 	data: new ContextMenuCommandBuilder()
-		.setName('Respec')
-		.setType(ApplicationCommandType.Message)
-		.setDefaultPermission(false),
-	whitelistRoles: [
-		config.ModeratorRole,
-	],
+		.setName('Verify Roll')
+		.setType(ApplicationCommandType.Message),
 	execute: execute,
 
-	build:config.PRODUCTION 
+	build:false//config.PRODUCTION
 };
