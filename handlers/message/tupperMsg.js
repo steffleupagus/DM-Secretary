@@ -26,7 +26,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 			last: tupperData.mId
 		});
 		if (record)
-			console.log(`Proxy logged ${record.user}: ${record.posts} posts | ${record.chars} chars `)		
+			console.log(`Proxy (logged (${record.user}): ${record.posts} posts | ${record.chars} chars `)		
 	}
 }
 
