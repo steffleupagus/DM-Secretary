@@ -896,14 +896,17 @@ async function autoComplete(interaction) {
 		const value = focusedOption.value.toLowerCase();
 		const user = interaction.member.id;
 		const target = interaction.options.get('user') ?.value || user;
+		const guild = interaction.options.get('guild') ?.value || null;
 
 		//let response = await GuildUtils.getAutoCompleteData(user, value);
-		let response = await getPromptData(target, value);
-		response = Object.keys(response).map(choice => 
+		let response = await getPromptData(target, value, guild);
+		console.log(response)
+		response = Object.entries(response).map(([choice,details]) => 
 		({
-			name: choice,
+			name: `${choice} ${details ? '('+details+')' : ""}`,
 			value: choice
 		}));
+//			Object.keys(response).map(choice => 
 
 		//Add an "Other" option to the autocomplete list
 		response.push({ name: 'NPC / Other Not Listed', value: 'null' });

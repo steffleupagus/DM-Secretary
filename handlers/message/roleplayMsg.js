@@ -41,7 +41,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	});
 
 	if (record)
-		console.log(`Post logged ${record.user}: ${record.posts} posts | ${record.chars} chars `)	
+		console.log(`Post (${record.user}): ${record.posts} posts | ${record.chars} chars `)	
 	
 }
 

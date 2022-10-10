@@ -99,7 +99,9 @@ async function execute(interaction)
 	channel.send("Don't forget to wipe the DB")
 	if (award)
 		channel = await guild.channels.fetch(config.botSpamChannel)
-	let sentMsgs = await embed.send(channel)
+
+	console.log(embed)
+	let sentMsgs = await embed.send(channel)	
 	interaction.followUp(sentMsgs[0].url);
 	
 	if (award)
