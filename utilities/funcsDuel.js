@@ -643,8 +643,8 @@ async function sendApprovalMessage(duelData, guild)
 	const fullDate = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")	
 	const winner   = duelData.winner;
 	const loser    = duelData.loser;
-	const win 	   = getExpField(duelData.winner, true)
-	const loss     = getExpField(duelData.loser, true)
+	const win 	   = getExpField(duelData.winner, true, true)
+	const loss     = getExpField(duelData.loser, true, true)
 	const rpLink   = duelData.links.rp
 	const duelLink = duelData.links.duel
 	let transcript = duelData.transcript
@@ -680,8 +680,8 @@ async function closeScene(duelData)
 {
 	const date     = new Date(duelData.logDate);
 	const fullDate = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")
-	const win 	   = getExpField(duelData.winner)
-	const loss 	   = getExpField(duelData.loser)
+	const win 	   = getExpField(duelData.winner, false)
+	const loss 	   = getExpField(duelData.loser, false)
 	const playerEmbed = new EmbedBuilder()
 		.setTitle(DUELTITLE)
 		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
@@ -694,19 +694,27 @@ async function closeScene(duelData)
 	return playerEmbed;
 }
 
-function getExpField(record, includeRP = false)
+function getExpField(record, includeXP = true, includeRP = false)
 {
 	const uid    = record.uid;
 	const name   = record.char;
 	const level  = record.level;
 	const xp     = record.xp;
 	const gain   = xp.total ? "Gain: " : "";
-	var ret = `<@${uid}> - ${gain}\`${xp.xp}\`xp `;
+	var ret = `<@${uid}>`;
 
-	if (xp.total)
-		ret += `[Cap: ||\`${xp.total}\` / \`${xp.cap}\`||]`
+	if (includeXP)
+	{
+		ret += `- ${gain}\`${xp.xp}\`xp `;
+		if (xp.total)
+			ret += `[Cap: ||\`${xp.total}\` / \`${xp.cap}\`||]`
+		else
+			ret += `[of \`${xp.cap}\` cap]`
+	}
 	else
-		ret += `[of \`${xp.cap}\` cap]`
+	{
+		ret += "`Pending DM approval`"
+	}
 
 	if (includeRP && record.rp)
 		ret += `\nRP: \`${record.rp.posts}\` Posts, \`${record.rp.length}\` Chars`;	

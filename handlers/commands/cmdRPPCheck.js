@@ -26,8 +26,8 @@ async function execute(interaction)
 	let data = await RPP.find()
 	for (let i = 0; i < data.length; ++i)
 		data[i] = processData(data[i]);
-	data.sort((a, b) => a.rpp - b.rpp)
-
+	data.sort((a, b) => b.rpp - a.rpp)
+	
 	//Start up the Embed that will give the results
 	let embed = new Embed()
 		embed.setTitle(`${d20} RPP Award`)
@@ -71,8 +71,9 @@ async function execute(interaction)
 			const cmd = `+add-money ${userId} ${rpp}`
 			cmdEmbed.extendField(cmd);
 
-			var desc = `<@${userId}>: ${d20}${rpp}`		
-			console.log(desc)					
+			var desc = `<@${userId}>: ${d20}${rpp}`
+			console.log(record)
+			console.log(desc + ` --- (Total chars: ${record.chars} over ${record.scene.length})`)
 			if (award)
 			{
 				//Automatically apply the amount to the user			
