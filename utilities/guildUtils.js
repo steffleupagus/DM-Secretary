@@ -181,6 +181,15 @@ class GuildData
 		return record;
 	}
 
+	async PurgeUser(user)
+	{
+		if (!user) return;
+		const query = { user: user };
+		const records = await guildRosterSchema.deleteMany(query);
+		console.log("Guild",records);
+		this.dataDirty = true;		
+	}
+	
 	// Update the gvar to be in parity with the database.
 	// Check first to make sure the changes to the GVar will be the same as the ones just made
 	async UpdateGVar()

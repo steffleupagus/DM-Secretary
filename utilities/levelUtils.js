@@ -162,6 +162,16 @@ async function updateDailyExp(data, type, logDate)
 	return data
 }
 
+async function PurgeUser(user)
+{
+	if (!user) return;
+	const query = { user: user };
+	let records = await levelSchema.deleteMany(query);
+	console.log("Chars",records);
+	records = await dailyExpSchema.deleteMany(query);
+	console.log("Daily",records);	
+}
+
 module.exports = {
 	isLevelMessage,
 	logLevelMessage,
@@ -171,6 +181,7 @@ module.exports = {
 	getExpCap,
 	updateDailyExp,
 	calculateRoleplayExp,
+	PurgeUser
 }
 
 async function updateLevelData(search, level)

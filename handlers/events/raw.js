@@ -4,6 +4,14 @@ module.exports =
 	once: false,
 	execute(client, packet) 
 	{
+		const eventHandler = client.eventHandlers.get(packet.t);
+		if (eventHandler && 
+			eventHandler.raw && eventHandler.raw == packet.t)
+		{
+			console.log(packet);
+			eventHandler.processRaw(client, packet);
+		}
+		
 		const packetTypes = ['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'];
 
 		// We don't want this to run on unrelated packets
