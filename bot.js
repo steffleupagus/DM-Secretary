@@ -64,18 +64,27 @@ class Bot
 	async loadEvents()
 	{
 		console.log("Loading events...");
-		
+		this.client.eventHandlers = new Collection();
+
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));	
 		const eventFiles = await globPromise(`${process.cwd()}/handlers/events/*.js`);    
 		eventFiles.map((file) => 
 		{
 			//const event = require(`./events/${file}`);
 			const event = require(file);
-			console.log(" - Event: ", event.name);
-			if (event.once) 
-				this.client.once(event.name, (...args) => event.execute(this.client, ...args));
-			else
-				this.client.on(event.name, (...args) => event.execute(this.client, ...args));
+			if (!event.hasOwnProperty("build") || event.build)
+			{
+				console.log(" - Event: ", event.name);
+				if (event.once) 
+					this.client.once(event.name, (...args) => event.execute(this.client, ...args));
+				else
+					this.client.on(event.name, (...args) => event.execute(this.client, ...args));
+
+				// Set a new item in the Collection; key = command name, value = exported module
+				this.client.eventHandlers.set(event.name, event);
+				if (event.raw)
+					this.client.eventHandlers.set(event.raw, event);
+			}
 		});
 	}
 
@@ -90,7 +99,10 @@ class Bot
 		{
 			const handler = require(`${process.cwd()}/handlers/message/${file}`);
 			console.log(" - Handler: ", handler.name);
-			this.client.messageHandlers.push(handler);
+			if (!handler.hasOwnProperty("build") || handler.build)
+			{
+				this.client.messageHandlers.push(handler);
+			}
 		}		
 	}
 
@@ -105,7 +117,10 @@ class Bot
 		{
 			const handler = require(`${process.cwd()}/handlers/reations/${file}`);
 			console.log(" - Handler: ", handler.name);
-			this.client.reactHandlers.push(handler);
+			if (!handler.hasOwnProperty("build") || handler.build)
+			{
+				this.client.reactHandlers.push(handler);
+			}
 		}		
 	}
 
