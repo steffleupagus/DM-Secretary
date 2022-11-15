@@ -40,14 +40,14 @@ class MutexManager
 			console.log(this.mutex);
 	}
 
-	test(channel){return Test(channel)}	
+	test(channel){return this.Test(channel)}	
 	Test(channel)	
 	{
 		this._Debug();
 		return this.mutex[channel.id] === true;
 	}
 
-	lock(channel, except = false){return Lock(channel,except)}
+	lock(channel, except = false){return this.Lock(channel,except)}
 	Lock(channel, except = false)
 	{
 		if (except && this.Test(channel))
@@ -55,7 +55,7 @@ class MutexManager
 		this.mutex[channel.id] = true;
 	}
 
-	unlock(channel, except = false){return Unlock(channel,except)}	
+	unlock(channel, except = false){return this.Unlock(channel,except)}	
 	Unlock(channel, except = false)
 	{
 		this.mutex[channel.id] = false;
@@ -64,7 +64,7 @@ class MutexManager
 		return true;
 	}
 
-	get(channel=null){return Get(channel)}
+	get(channel=null){return this.Get(channel)}
 	Get(channel=null)
 	{
 		if (channel)
