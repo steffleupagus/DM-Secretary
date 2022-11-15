@@ -257,11 +257,13 @@ async function updateDataFromMessage(client, message)
 			console.log("UPDATE: ", finalData);
 
 			const query = {name: finalData.name, user: finalData.user}
-			const oldRecord = await updateLevelData(query, finalData.level);
-			message.react(config.xpemoji)
+			const oldRecord = await updateLevelData(query, finalData.level);	
+			await message.react(config.xpemoji)
 
 			console.log("PREVIOUS: ", oldRecord)
 			updateLevelMessage = (!oldRecord || finalData.level != oldRecord.level)
+			if (oldRecord && finalData.level != oldRecord.level)
+				await message.react("🥳");			
 		}
 	}
 	return updateLevelMessage;
