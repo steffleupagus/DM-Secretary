@@ -1,6 +1,6 @@
 const Utils = require(`./utilFuncs.js`)
+const chanUtils = require(`./channelUtils.js`)
 const Tupper = require(`./tupperUtils.js`)
-const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 
@@ -23,9 +23,6 @@ async function channelCleanup(channel)
 
 	// let messages = await channel.messages.fetch({limit: 100});
 	// console.log(`Channel cleanup: Deleting ${messages.size} messages.`)
-	// 	await channel.bulkDelete(messages);
-	// if (messages.size >= 2)
-	// 	await channelCleanup(channel);
 }
 
 ///
@@ -213,47 +210,6 @@ async function getRoleplayData(rpChan, message = null)
 	return rpData;
 }
 
-
-
-
-
-
-
-///
-/// Identify if a channel is an RP channel
-///
-function isRoleplayChannel(channel)
-{
-	return channel.name.includes("🗣");
-}
-
-function isRoleplayThread(channel)
-{
-	return channel.isThread() &&
-		isRoleplayChannel(channel.parent) &&
-		!channel.name.includes("⚙");
-}
-
-async function isRPExpChannel(channel)
-{
-	const result = await ChannelMeta.findOne({ channelId: channel.id });
-	return result && result.awardsExp;
-}
-
-async function isRPExpThread(channel)
-{
-	if (!channel.isThread()) return false
-	const result = await isRPExpChannel(channel.parent);
-	return result
-}
-
-async function isRPExpEligible(channel)
-{
-	if (channel.isThread())
-		return await isRPExpThread(channel)
-	return await isRPExpChannel(channel)
-}
-
 ///
 /// Scrape the entire guild for new messages
 ///
@@ -273,7 +229,8 @@ async function scrapeGuildChannels(guild, startMsg, stats = null)
 	await Utils.asyncArrayForEach(guild.channels.cache.values(), async (channel) =>
 	{
 		//If it is an RP channel (includes talking head) process it.
-		if (isRoleplayChannel(channel))
+		if (chanUtils.isRoleplayChannel(channel) ||
+		    chanUtils.isRoleplayThread(channel))
 		{
 			var out = await scrapeChannelMessages(channel, startMsg, null, null, stats);
 			stats = out || stats;
@@ -332,8 +289,8 @@ async function scrapeMessageMetadata(stats, message)
 	var name = user ?.username
 	var tupperData = null
 
-	if (!isRoleplayChannel(message.channel) &&
-		!isRoleplayThread(message.channel))
+	if (!chanUtils.isRoleplayChannel(message.channel) &&
+		!chanUtils.isRoleplayThread(message.channel))
 		return false
 
 	stats = stats || {}	//Assign the stats if they don't already exist
@@ -423,8 +380,10 @@ function assignUnknown(stats, authorId, name)
 function incrementStats(data, id, name, message)
 {
 	const channel = message.channel.id;
-	const length = message.content.length
-
+	const length = message.content.length;
+	let   date  = message.createdAt;
+		  date = `${date.getDate()}.${date.getMonth()}.${date.getYear()}`	
+	
 	if (!data)
 		data = { length: 0, posts: 0, char: {}, chan: [] }
 	data.length += length;
@@ -434,12 +393,18 @@ function incrementStats(data, id, name, message)
 		data.chan.push(channel)
 
 	if (!data.char.hasOwnProperty(name))
-		data.char[name] = { length: 0, posts: 0, chan: [] }
+		data.char[name] = { length: 0, posts: 0, chan: [], dates: {} }
 	data.char[name].length += length;
 	data.char[name].posts += 1;
 	data.char[name].chan = data.char[name].chan || []
 	if (!data.char[name].chan.includes(channel))
 		data.char[name].chan.push(channel)
+
+	data.char[name].dates = data.char[name].dates || {}
+	if (!data.char[name].dates?.hasOwnProperty(date))
+		data.char[name].dates[date] = { length: 0, posts: 0 }
+	data.char[name].dates[date].length += length;
+	data.char[name].dates[date].posts += 1;
 
 	// if (!data.chan.hasOwnProperty(channel))
 	// 	data.chan[channel] = { length: 0, posts: 0 }
@@ -519,9 +484,4 @@ module.exports =
 	findFenceposts,
 	scrapeMessages,
 	getRoleplayData,
-	isRoleplayChannel,
-	isRoleplayThread,
-	isRPExpChannel,
-	isRPExpThread,
-	isRPExpEligible
 }	

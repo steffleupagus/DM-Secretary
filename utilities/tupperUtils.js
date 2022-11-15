@@ -1,6 +1,7 @@
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const Utils = require(`../utilities/utilFuncs.js`)
+const chanUtils = require(`../utilities/channelUtils.js`)
 const tupperSchema = require(`../database/tupperSchema.js`)
 
 function parseTupperLog(client, message, silent = true)
@@ -41,21 +42,6 @@ function parseTupperLog(client, message, silent = true)
 }
 
 ///
-/// Identify if a channel is an RP channel
-///
-function isRoleplayChannel(channel)
-{
-	return channel.name.includes("🗣");
-}
-
-function isRoleplayThread(channel)
-{
-	return 	channel.isThread && 
-			isRoleplayChannel(channel.parent) && 
-			!channel.name.includes("⚙");
-}
-
-///
 /// Public
 ///
 function isTupperProxyMessage(message)
@@ -87,8 +73,8 @@ async function logTupperMessage(client, message)
 				return tupperData;
 			
 			const channel = message.guild.channels.resolve(tupperData.cId);
-			if (channel && (isRoleplayChannel(channel) ||
-							isRoleplayThread(channel)))
+			if (channel && (chanUtils.isRoleplayChannel(channel) ||
+							chanUtils.isRoleplayThread(channel)))
 			{
 				const newResult = await tupperSchema.findOneAndUpdate(
 					{ mId: tupperData.mId },
