@@ -11,7 +11,7 @@
     "start": "node bot.js",
     "deploy": "node deployCommands.js"
   },
-  "//": "node deploy -- dev // node deploy -- prod",
+  "//": "npm run deploy -- dev // npm run deploy -- prod",
   "dependencies": {
     "axios": "^0.27.2",
     "chalk": "^4.1.2",

@@ -53,7 +53,7 @@ async function autoComplete(interaction)
 
 async function execute(interaction)
 {
-	const member = interaction.options.getMember('user') ?? null;
+	const member = interaction.options.getUser('user') ?? null;
 	const guild = interaction.options.getString('guild') ?? null;
 	const char = interaction.options.getString('character') ?? null;
 	const rank = interaction.options.getNumber('rank') ?? null;
