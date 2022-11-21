@@ -42,6 +42,8 @@ async function execute(interaction)
 
 			if (activeThreads.threads.size || archivedThreads.threads.size)
 			{
+//TODO: Add commands to filter out what is displayed: active, archived, both
+//TODO: Add option to unarchive pinned threads or delete cleanup threads				
 				embed.addField(`${channel.name}`, `<#${channel.id}>`);
 				activeThreads.threads.each(thread =>
 				{
