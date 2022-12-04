@@ -131,7 +131,7 @@ function processData(record)
 	const posts = record.posts
 	const avg = Math.round(chars / posts);
 	const amt = Math.floor(chars / 1000) * 100;
-	const scenes = record.scene.length;
+	const scenes = record.scene.length || 1;
 	
 	let pps = Math.round(posts / scenes);
 	let pq = Utils.roundMod(pps / postBaseline, 0.5);

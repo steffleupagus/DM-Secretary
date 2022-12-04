@@ -147,6 +147,9 @@ class EmbedPaginator
         if (this._embed_count + value.length + this._current_field_name.length > EMBED_MAX)
             this.close_embed();
 
+		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
+			this.close_embed();
+		
         this._embeds[this._embeds.length-1].addFields([{name:this._current_field_name, 
 														value:value,
 													  	inline:this._current_field_inline}]);
