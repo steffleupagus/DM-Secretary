@@ -97,7 +97,7 @@ async function showRoster(interaction, member=null, guild=null, char=null, rank=
 		argStr += ` ${_rank}`
 	}
 	else argStr += guild ? ` ${guild}` : ''
-	argStr += user ? ` ${member.nickname || member.user.tag}` : ''	
+	argStr += user ? ` ${member.nickname || member.user || member}` : ''
 	argStr += char ? ` ${char}` : ''	
 
 	//Get the roster data from the query and hierarchically sort it
