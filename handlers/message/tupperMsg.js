@@ -84,7 +84,7 @@ async function updateRPPFromTupperProxy(record)
 module.exports = {
 	name: 'tupperMsg',
 	bot: true,	
-	menu: false,	
+	menu: true,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 	handleUpdate: handleUpdate,
