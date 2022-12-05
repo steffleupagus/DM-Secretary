@@ -4,7 +4,7 @@ const Tupper = require(`./tupperUtils.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 
-const _regex = "[`-]{3}\n? ?(<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"
+const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"	
 const BreakRegex = new RegExp(_regex);
 const DEBUG = false;
 
@@ -284,24 +284,32 @@ async function scrapeMessages(messages, stats = null)
 ///
 async function scrapeMessageMetadata(stats, message)
 {
-	var user = message.author
-	var authorId = user.id
-	var name = user ?.username
-	var tupperData = null
-
 	if (!chanUtils.isRoleplayChannel(message.channel) &&
 		!chanUtils.isRoleplayThread(message.channel))
 		return false
+	
+	let user = message.author;
+	let authorId = user.id;
+	let guildMembers = message.guild?.members;
+	let member = message.member;
+	if (!user.bot && !member)
+	{
+		try { member = await guildMembers.fetch(authorId); }
+		catch (err) { member = null; }
+	}
+	
+	let name = member?.nickname ?? user?.username;
+	let tupperData = null
 
-	stats = stats || {}	//Assign the stats if they don't already exist
+	stats = stats || { tupperMap: {} }	//Assign the stats if they don't already exist
 
 	if (user.bot)
 	{
 		//If the message is a bot, we only care if it's a tupper webhook message
-		const tupperKey = name + user.avatar
+		const tupperKey = name + "" + user.avatar
 		if (stats ?.tupperMap ?.[tupperKey])
 		{
-			authorId = stats ?.tupperMap ?.[tupperKey]
+			authorId = stats ?.tupperMap ?.[tupperKey] ?.aId
 			debug(`Reading tupper map: ${authorId}`)
 		}
 		else if (Tupper.isTupperProxyMessage(message))
@@ -309,7 +317,7 @@ async function scrapeMessageMetadata(stats, message)
 			tupperData = await Tupper.getTupperData(message);
 			authorId = tupperData ? tupperData.aId : 0
 			stats.tupperMap = stats.tupperMap || {}
-			stats.tupperMap[tupperKey] = authorId
+			stats.tupperMap[tupperKey] = { aId: authorId, char: name }
 			debug(`Polling tupper db (${message.id}): ${authorId}`)
 		}
 		else
@@ -339,7 +347,8 @@ async function scrapeMessageMetadata(stats, message)
 		}
 		else if (unknown.uId && authorId && (unknown.uId != authorId))
 		{
-			throw "Multiple chars by the same name?\n" + JSON.stringify(stats);
+			//Can we use Tupper Key to differentiate different users by the same char name?
+			throw `<@${config.OWNERID}> Unhandled edge case: Multiple chars named \`${name}\`, attributed to <@${unknown.uId}> and <@${authorId}>\n`;
 		}
 	}
 	else if (authorId)
@@ -352,27 +361,43 @@ async function scrapeMessageMetadata(stats, message)
 	return stats;
 }
 
+
 function assignUnknown(stats, authorId, name)
 {
 	const unknown = stats ?.[0] ?.char ?.[name];
 
 	stats[authorId] = stats ?.[authorId] || { char: {} }
-	stats[authorId].char[name] = stats ?.[authorId] ?.char ?.[name]
-		|| { length: 0, posts: 0 } 
+	stats[authorId].char[name] = stats ?.[authorId] ?.char ?.[name] || { length: 0, posts: 0 } 
 	stats[authorId].char[name].length += unknown.length || 0;
 	stats[authorId].char[name].posts += unknown.posts || 0;
 	if (unknown.chan)
 	{
-		unknown.chan.map(chan =>
+		stats[authorId].chan = stats[authorId].chan ?? [];
+		unknown.chan.forEach(chan =>
 		{
 			if (stats[authorId] ?.chan &&
 				!stats[authorId] ?.chan ?.includes(chan))
 				stats[authorId].chan.push(chan)
 		});
+		delete unknown.chan;
 	}
+
+	if (unknown.dates)
+	{
+		stats[authorId].char[name].dates = stats[authorId].char[name].dates ?? {};
+		Object.keys(unknown.dates).forEach( date =>
+		{
+			if (!stats[authorId]?.char?.[name]?.dates?.[date])
+				stats[authorId].char[name].dates[date] = { length:0, posts:0 }
+			stats[authorId].char[name].dates[date].length += unknown.dates[date].length
+			stats[authorId].char[name].dates[date].posts += unknown.dates[date].posts									   
+		});
+		delete unknown.dates				
+	}
+	
 	stats[0].char[name] = { uId: authorId }
 
-	console.log(stats[0]);
+	debug(stats[authorId].char[name]);
 
 	return stats;
 }
@@ -382,56 +407,39 @@ function incrementStats(data, id, name, message)
 	const channel = message.channel.id;
 	const length = message.content.length;
 	let   date  = message.createdAt;
-		  date = `${date.getDate()}.${date.getMonth()}.${date.getYear()}`	
+		  date = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`	
 	
-	if (!data)
-		data = { length: 0, posts: 0, char: {}, chan: [] }
+	// if (!data)
+	// 	data = { length: 0, posts: 0, char: {}, chan: [] }
+	data = data ?? { length: 0, posts: 0, char: {}, chan: [] }
 	data.length += length;
 	data.posts += 1;
 	data.chan = data.chan || [];
 	if (!data.chan.includes(channel))
 		data.chan.push(channel)
 
-	if (!data.char.hasOwnProperty(name))
-		data.char[name] = { length: 0, posts: 0, chan: [], dates: {} }
+	//if (!data.char.hasOwnProperty(name))
+	data.char[name] = data.char[name] ?? { length: 0, posts: 0, chan: [], dates: {} }
 	data.char[name].length += length;
 	data.char[name].posts += 1;
-	data.char[name].chan = data.char[name].chan || []
+	
+	data.char[name].chan = data.char[name].chan ?? []
 	if (!data.char[name].chan.includes(channel))
 		data.char[name].chan.push(channel)
 
-	data.char[name].dates = data.char[name].dates || {}
-	if (!data.char[name].dates?.hasOwnProperty(date))
-		data.char[name].dates[date] = { length: 0, posts: 0 }
+	data.char[name].dates = data.char[name].dates ?? {}
+	data.char[name].dates[date] = data.char[name].dates[date] ?? { length: 0, posts: 0 }
 	data.char[name].dates[date].length += length;
 	data.char[name].dates[date].posts += 1;
-
-	// if (!data.chan.hasOwnProperty(channel))
-	// 	data.chan[channel] = { length: 0, posts: 0 }
-	// data.chan[channel].length += length;
-	// data.chan[channel].posts += 1;
+	debug(`--- ${name}: ${date} [${data.char[name].dates[date].posts}]: [${data.char[name].dates[date].length}]\n`,
+		  data.char[name].dates)
 
 	return data;
 }
 
 
 
-
-
-
-
-
 // //Defualt Stats
-// function createStats(guild, history)
-// {
-// 	var stats = 
-// 	{
-// 		charStats: {},
-// 		unknown: {}
-// 	};
-// 	return stats;
-// }
-
 function createAuthorData(name)
 {
 	var authorData =
