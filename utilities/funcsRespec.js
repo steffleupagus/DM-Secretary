@@ -43,7 +43,8 @@ function verifyMessageMeta(client, message)
 	let channel = message.channel.id;
 	let parent  = message.channel.parentId;
 	channel = ((channel == client.config.botSpamChannel)||
-			   (channel == client.config.dmbotSpamChannel))
+			   (channel == client.config.dmbotSpamChannel)||
+			   (channel == client.config.gameSpamChannel))
 	return author && channel;
 }
 
