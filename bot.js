@@ -52,13 +52,19 @@ class Bot
 
 	async loadDatabase()
 	{
+		mongoose.connection.on('error', console.error)
+		mongoose.connection.on('connected', console.log)
+		mongoose.connection.on('disconnected', console.log)
+				
 		await mongoose.connect(process.env.mongodb_url,
 		{
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
 			keepAlive: true
-		}).then(console.log('Mongodb ✅'))
-	}
+		})
+		.then(console.log('Mongodb ✅'))
+		.catch(console.error)		
+	}	
 
 	/// Load individual event files and register the event for dynamic execution
 	async loadEvents()

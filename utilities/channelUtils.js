@@ -1,3 +1,5 @@
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const ChannelMeta = require(`../database/chanMetaSchema.js`)
 
 ///
@@ -38,7 +40,31 @@ async function isRPExpEligible(channel)
 	return await isRPExpChannel(channel)
 }
 
+///
+/// Duel chanels come in pairs of an RP channel and a Mechanics channel
+/// Given one, find the pair.
+/// 
+function getDuelChannelPair(channel)
+{
+	for (let pair of config.duelChannels)
+	{
+		if (channel.isThread && channel.parent.id == pair.RP)
+			pair.MECHANICS = channel.id;
+	
+		if ((channel.id == pair.RP)||(channel.id == pair.MECHANICS))
+			return pair;
+	}
+	return null;
+}
 
+function isDuelRPChannel(channel)
+{
+	const pair = getDuelChannelPair(channel)
+	if (!pair) return false;
+	return (pair.RP == channel.id)
+}
+
+//TODO - Remove duelChannels from config; make it a field in the channel meta database.
 
 module.exports =
 {
@@ -46,5 +72,7 @@ module.exports =
 	isRoleplayThread,
 	isRPExpChannel,
 	isRPExpThread,
-	isRPExpEligible
+	isRPExpEligible,
+	isDuelRPChannel,
+	getDuelChannelPair
 }	

@@ -5,12 +5,13 @@ const config = require(`../config/${mod}_config.json`);
 const Utils = require(`./utilFuncs.js`)
 const Prompt = require(`./promptUtils.js`);
 const MsgUtils = require(`./messageUtils.js`);
+const ChanUtils = require(`./channelUtils.js`);
 const LevelUtils = require(`./levelUtils.js`);
 
 const Mutex = require(`./mutexUtils.js`);
 const Embed = require(`./EmbedPaginator.js`)
 
-const DEBUG = false;
+const DEBUG = config.DEV;
 const DELETE_ON_UNDO = true
 const PING_PREFIX = DEBUG ? "-" : "@";
 const MIN_CHARS = DEBUG ? 0 : 750;
@@ -53,7 +54,7 @@ const GROUP_REGEX = /.* (?:was )?added to (?:combat with initiative [0-9]+ as pa
 async function processDuel(channel, user, message)
 {
 	//Resolve the RP/Mech pair into actual channels
-	var channelPair = getChannelPair(channel)
+	var channelPair = ChanUtils.getDuelChannelPair(channel)	
 	if (!channelPair) return Mutex.unlock(channel, ERROR_WRONG_CHANNEL)
 	
 	const guild = channel.guild
@@ -70,12 +71,10 @@ async function processDuel(channel, user, message)
 	Mutex.lock(mechChan, ERROR_PROCESS_DUEL);
 
 	//Get the raw duel & RP data and throw an error if we don't have any
-	const rpData = await getRoleplayData(rpChan, message);
+	const rpData = await MsgUtils.getRoleplayData(rpChan, message);	
 	let duelData = await getDuelData(mechChan, message);
 	if (!duelData) return Mutex.unlock(mechChan, ERROR_NO_DUEL);
 	if (!rpData) return Mutex.unlock(mechChan, ERROR_NO_RP); 
-
-
 	
 /*/ ^^^ Gathering all necessary data                    \*\
 |*| <<< TODO: Branch off here for informational output  |*|
@@ -279,21 +278,6 @@ function parseDuel(messages)
 		if (event.event == "Combat ended.") break;
 	};
 	return duelData;
-}
-
-///
-/// Get the roleplay data
-///
-async function getRoleplayData(rpChan, message=null)
-{
-	//Get the RP data
-	const roleplay = message 
-		? await MsgUtils.findFenceposts(rpChan, message)
-		: await MsgUtils.findLastBreak(rpChan);
-	const rpData = await MsgUtils.scrapeMessages(roleplay.messages);
-	if (rpData)
-		rpData.start = roleplay.messages[0].url;
-	return rpData;
 }
 
 ///
@@ -993,35 +977,10 @@ function generateTranscriptFromData(duelData)
 	return embed.embeds();
 }
 
-///
-/// Duel chanels come in pairs of an RP channel and a Mechanics channel
-/// Given one, find the pair.
-/// 
-function getChannelPair(channel)
-{
-	for (let pair of config.duelChannels)
-	{
-		if (channel.isThread && channel.parent.id == pair.RP)
-			pair.MECHANICS = channel.id;
-	
-		if ((channel.id == pair.RP)||(channel.id == pair.MECHANICS))
-			return pair;
-	}
-	return null;
-}
-
-function isDuelRPChannel(channel)
-{
-	const pair = getChannelPair(channel)
-	if (!pair) return false;
-	return (pair.RP == channel.id)
-}
-
 module.exports = {
 	processDuel,
 	approveDuel,	
 	undoApproval,
-	isDuelRPChannel,
 	generateTranscript,
 	generateTranscriptFromLog
 }

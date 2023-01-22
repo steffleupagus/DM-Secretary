@@ -7,7 +7,7 @@ async function execute(interaction, message=null)
 {
 	const channel = interaction.channel;
 	const user  = interaction.user;
-	const reply = await interaction.deferReply({fetchReply:true})//,ephemeral:true})
+	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV})
 
 	try
 	{
@@ -87,7 +87,7 @@ async function select(interaction)
 }
 
 const data = new SlashCommandBuilder()
-	.setName('duel')
+	.setName(`duel${config.DEV ? "dev" : ""}`)	
 	.setDescription('Conclude a duel')
 
 module.exports = 
@@ -98,5 +98,10 @@ module.exports =
 	button: button,
 	select: select,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };
+
+const requiredRoles = [ config.ModeratorRole, config.DMRole,
+					  	config._ModeratorRole, config._BuilderRole];
+if (config.DEV)
+	module.exports.whitelistRoles = requiredRoles
