@@ -36,7 +36,7 @@ module.exports = client =>
 		const response = `Discord: ${discordStatus}<br>\nDatabase: ${databaseStatus}`	
 
 		res.status(status).send(response);
-		
+		console.log(response)
 
 		if (!botReady)
 		{

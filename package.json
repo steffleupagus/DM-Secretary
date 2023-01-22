@@ -2,7 +2,7 @@
   "devDependencies": {
     "node": "^16.14.2"
   },
-  "name": "your-bot",
+  "name": "DM-Secretary",
   "version": "1.0.0",
   "description": "",
   "main": "bot.js",
