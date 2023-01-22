@@ -15,7 +15,7 @@ async function execute(interaction)
 	const guildId = interaction.guildId;
 	const opponent = interaction.options?.getUser('opponent') || null
 
-	if (!DuelUtils.isDuelRPChannel(channel))
+	if (!ChanUtils.isDuelRPChannel(channel))
 	{
 		interaction.reply({ephemeral:true, 
 						   content:"Cannot start a duel in this channel"})
