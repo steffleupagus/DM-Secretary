@@ -55,7 +55,8 @@ class Bot
 		mongoose.connection.on('error', console.error)
 		mongoose.connection.on('connected', console.log)
 		mongoose.connection.on('disconnected', console.log)
-				
+
+		mongoose.set('strictQuery', true);
 		await mongoose.connect(process.env.mongodb_url,
 		{
 			useUnifiedTopology: true,
