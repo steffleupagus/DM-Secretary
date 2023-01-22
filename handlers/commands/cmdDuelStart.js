@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const ChanUtils = require(`${process.cwd()}/utilities/channelUtils.js`)
 const DuelUtils = require(`${process.cwd()}/utilities/funcsDuel.js`)
 const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
 const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
