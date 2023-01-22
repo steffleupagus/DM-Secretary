@@ -1,0 +1,28 @@
+{
+	"Embed Test":
+	{
+		"embeds": [
+			{
+				"title":"▶️ Application",
+				"description": "Players active in the server for at least 1 week may submit an application to be a DA in: <#703373885009297518>"
+			},
+			{
+				"title":"▶️ Before posting a table",
+				"fields": [
+					{
+						"name": "🔹 Synopsis",
+						"value": "<#703373885009297518>"
+					},
+					{
+						"name": "🔹 Kinks & Limits",
+						"value": "<#703373885009297518> <#703373885009297518>"
+					},
+					{
+						"name": "🔹 Time Zone",
+						"value": "Don't forget to set your time zone with `-settimezone` before posting your table to ensure players will be able to properly gauge your intended schedule."
+					}
+				]
+			}
+		]
+	}
+}

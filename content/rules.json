@@ -1,0 +1,43 @@
+{
+	"Rules":
+	{
+		"includeIndex":false,
+		"embeds": [
+			{
+				"title": ":one: __**18+ Only**__",
+				"description": "This is an **NSFW Erotic Role Play** server in a DnD setting. Expect to see horny people and explicit sexual content. If this makes you uncomfortable, this is not the server for you.\n\nYou, and any characters you play, must be 18+, regardless of your local age of consent or the age of maturity of your chosen race. We don't care that some DnD races mature before 18 years, you still have to make your character 18+.\n\nDo not even joke about being underage. If you are found to be under the age of 18 you will be banned. In rare cases, a Staff member can send you a direct message and may ask for age verification. While you are not obliged to verify yourself, refusal to do so may result in a ban.\n\nPer Discord Community Guidelines, any sexually explicit content involving a character, fictional or nonfictional, under 18 is strictly prohibited. Any characters that are, or appear to be, underage (lolicon, shotacon, cubs, etc.) will not be tolerated. For the safety and security of our members, please keep all NSFW content in the NSFW channels. Any dubious images will be removed at the discretion of the staff, and repeated offenders will be issued a warning and possibly banned."
+			},
+			{
+				"title": ":two: __**No Harassment**__",
+				"description": "We strive to be an inclusive community, and are LGBTQ+ friendly. We will not tolerate harassment or discrimination. This includes, but is not limited to: discrimination based on race, gender, sexual identity or orientation, slurs, kink shaming, repeated unwanted contact or unwelcome advances, doxing, or stalking.\nThis is not an IRL dating app, and asking people where they live is creepy and stalkery. Just don't.\n\n**DMs**: Do not slide into anyone's DMs without permission of the intended person (the <@&765602999703568385> role is considered implicit permission). If they do not have this role, ask first in general chat if you may DM them. If they refuse, don’t push.\n\n**Pings**: Keep your pings - whether towards an individual or a group - to a minimum. We all have a life. Don't be a dick and demand their attention unless they have given you explicit permission to ping them (such as when replying to a scene). Do not ping individuals for RP unless they have specifically stated in the proper channel that they were looking for roleplaying. That's just rude.\n\nAny violation, abuse, or harassment will be subject to a warning and a possible ban."
+			},
+			{
+				"title": ":three: __**Be Respectful**__",
+				"description": "Be respectful your partners' limits. Do not be afraid to be vocal about your limits to your partner. They are expected to respect you and make adjustments accordingly. Conversely, do not kink shame. If you aren't into something, inform your partner to adjust the scene or end the RP, but do so respectfully.\nBe considerate of potentially community-wide limits by keeping any potentially triggering content (including, but not limited to, extreme kinks such as depictions of graphic sexual violence) behind `||spoiler tags||` to black it out (||like this||) and include an OOC content warning.\n\n__**Safe\"words\"**__\nWe have instituted community-wide safe-emoji. If a scene in which you are involved is moving into potentially limit territory, you may use one of the following to quickly convey to your partner your OOC feelings on the direction of the roleplay. Of course, this should not replace communicating with your partner, but can supplement it.\n✅ (`:white_check_mark:`) or 🆗 (`:ok:`) - This is good/I like this/keep going.\n⚠️(`:warning:`) - This is getting close to my limit territory. We can keep going, but tone it down.\n🛑(`:octagonal_sign:`) or ❌ (`:x:`) - Safe word. I do not like this. Stop this immediately."
+			},
+			{
+				"title": ":four: __**Consent is Key**__",
+				"description": "This may be an extension of respecting your limits and no harassment, but it bears special mention. Any play involving Non-Con/Rape, mental effects that remove consent, sexual violence, or other such potentially triggering topics MUST be discussed with your partner beforehand and be EXPLICITLY consented to.\n\nPet/Owner, Dom/Sub, and other such relationships must likewise receive the consent of both parties, and be ended immediately at the request of either party. Regardless of the progression of roleplay here: no one is owned by, nor obligated to anyone else.\n\nEveryone is here to have fun, and its up to each player who they choose to play with or not. Any attempts to coerce, force, guilt, threaten, or otherwise encourage a player to role-play exclusively with you will not be tolerated, nor will attempts to discourage others from roleplaying with an individual. This includes any attempt to create, or talk of creating, a harem."
+			},
+			{
+				"title": ":five: __**Sensitive Topics**__",
+				"description": "Certain topics are sensitive and potentially inflammatory. In an effort to keep the peace on the server, certain topics should be avoided in general OOC conversation. Real-life Politics and Religion are the most common topics at the center of contention and should not be discussed. In-character politics and religion are permitted, provided it remains civil.\n\nSubjects such as depression, suicide, and self-harm can also be sensitive for some members and should also be avoided. This is not a professional therapy environment, and our members are not licensed to act as therapists (and, if they are, should not be expected to do so for free or in their off-hours).\n\n[If you need immediate help, there are numbers you can call](https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines)"
+			},
+			{
+				"title": ":six: __**Staff's Word is Law**__",
+				"description": "If an admin or moderator asks you to drop a subject, drop it. If you feel a mod has abused their power, you may contact another mod or the server owner to discuss the situation. Failure to comply with the rules will result in a first warning, and possibly a kick/ban depending of the gravity of the act. If you are being disruptive to the server or other members within it, \"It isn't in the rules\" is not a valid excuse. The staff, at their own discretion, has the right to kick a user if they're found to be a bad fit for the server's community.\n\nDM's have leeway at their table to make rule calls. If you disagree with their decision, approach the situation respectfully. Arguing is likely to see you blacklisted from future table sessions. If you and your DM cannot come to an agreement, you may bring it to the attention of another DM or a Moderator, and the staff will discuss how to move forward."
+			},
+			{
+				"title": ":seven: __**Just Don't Be a Dick**__",
+				"description": "You can have a dick. You can enjoy dick. But don’t **be** a dick.\nWe strive to have a friendly community, and actions that make other members feel uncomfortable will not be tolerated. We expect everyone to be polite, respectful, and kind to all members. We're all here to have fun, the mod team included. Those who are rude, antagonistic, or creepy will be warned and banned if they consistently violate this rule. The mods are busy people, and nobody on this server needs to deal with internet drama on top of real world things."
+			}
+		]
+	},
+	"Table Rules":
+	{
+		"includeIndex":false,
+		"embeds": [
+			
+		]
+	}
+}
