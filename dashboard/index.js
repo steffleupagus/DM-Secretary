@@ -36,10 +36,12 @@ module.exports = client =>
 		const response = `Discord: ${discordStatus}<br>\nDatabase: ${databaseStatus}`	
 
 		res.status(status).send(response);
-		console.log(response)
+		console.log(`\n\nHeartbeat Check: \n${response}\n\n`)
 
 		if (!botReady)
 		{
+			time = 15
+			console.log(`Bot not ready. Recheck in ${time}s\n\n`)
 			const myTimeout = setTimeout(() =>
 			{
 				let discordReady = client.isReady()
@@ -47,9 +49,12 @@ module.exports = client =>
 				let databaseReady = (databaseState == 1 || databaseState == 2)
 				let botReady = discordReady && databaseReady
 				if (!botReady)
+				{
+					console.log(`Bot not ready on recheck. Rebooting.\n\n`)				
 					process.kill(1)
+				}
 				clearTimeout(myTimeout);			
-			}, 15000);
+			}, time * 1000);
 		}
 	});
 
