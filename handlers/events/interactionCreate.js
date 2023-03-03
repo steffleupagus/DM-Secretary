@@ -27,7 +27,7 @@ async function execute(client, interaction)
 		{
 			await command.autoComplete(interaction);
 		}
-		else if (interaction.isSelectMenu())
+		else if (interaction.isAnySelectMenu())
 		{
 			if (command.select) await command.select(interaction);
 		}
