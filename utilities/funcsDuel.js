@@ -676,7 +676,8 @@ async function closeScene(duelData)
 		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
 		.addFields([
 			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, value:win},
-			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss}
+			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss},
+			{name:`Awards`, value:`Awards will be posted in <#${config.xpLogChannel}> once the duel has been reviewed by the DM staff.`}			
 		]);
 	playerEmbed.setFooter({text:"Logged at (Server Time): " + fullDate});
 
@@ -702,7 +703,7 @@ function getExpField(record, includeXP = true, includeRP = false)
 	}
 	else
 	{
-		ret += "`Pending DM approval`"
+		//ret += "`Pending DM approval`"
 	}
 
 	if (includeRP && record.rp)
