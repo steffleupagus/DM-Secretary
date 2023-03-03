@@ -3,8 +3,9 @@ const { ActionRowBuilder,
 		ButtonStyle,
 		ComponentType,
 	   	InteractionType,
-		ModalBuilder, 
-		SelectMenuBuilder, 
+	    MessageMentions,
+	   	ModalBuilder, 
+		StringSelectMenuBuilder, 
 	    TextInputBuilder,
 		TextInputStyle } = require('discord.js')
 
@@ -36,7 +37,7 @@ async function promptUserInputOption(channel, prompt, users, defaultOption=null,
 	{
 		const userId = m.author.id
 		//Check if the author of the message is a mod or DM
-		const member = m.guild.members.resolve(userId);
+		const member = m.member;
 		const modDM = Utils.hasAnyRole(member, dmRoles)
 		//Check if the author of the message is one of the users this prompt is listening for
 		const user  = users.includes(userId);
@@ -77,7 +78,7 @@ async function promptUserInput(channel, prompt=null, users=[],
 	const filter = (m) => 
 	{
 		const userId = m.author.id
-		const member = m.guild.members.resolve(userId);
+		const member = m.member
 		const modDM = Utils.hasAnyRole(member, dmRoles)
 		const user  = users.includes(userId);
 		return (modDM || user);
@@ -244,7 +245,7 @@ async function promptUserButton(channel, prompt, users, options,
 		i.deferUpdate();
 		const user = i.user;
 		const msg = i.message.id == prompt.id;		
-		const member = channel.guild.members.resolve(user.id);
+		const member = i.member;
 		const modDM = Utils.hasAnyRole(member, dmRoles) && !user.bot;
 		const validUser = users.includes(user.id) && !reactedUsers.includes(user.id);
 		return (msg && (modDM || validUser));
@@ -261,7 +262,7 @@ async function promptUserButton(channel, prompt, users, options,
 		collector.on('collect', async(i) => 
 		{
 			console.log("Collector")
-			const member = channel.guild.members.resolve(i.user.id);
+			const member = i.member;
 			const modDM = Utils.hasAnyRole(member, dmRoles) && !i.user.bot;
  			if (modDM || returnFirst || failOptions.includes(i.customId))
 			{
@@ -310,7 +311,7 @@ function createSelectRow(customId="select", options=[], min=null, max=null,
 {
 	placeholder = placeholder || 'Nothing selected'
 	const row = new ActionRowBuilder();
-	const select = new SelectMenuBuilder()
+	const select = new StringSelectMenuBuilder()
 						.setCustomId(customId)
 						.setPlaceholder(placeholder)
 						.addOptions(options)
@@ -609,21 +610,21 @@ async function promptModal(interaction, title="Modal", customId="modal", inputs 
 
 module.exports = 
 {	
-	promptUserPing,	
-	promptUserInput,
-	promptUserReaction,	
-	promptUserInputOption,		
-	promptUserButton,
-	promptModal,
-//	promptUserSelect,
-	promptInteractSelect,
-	collectSelectInteractions,
-	collectButtonInteractions,
-	addMessageButtons,
-	addMessageSelect,
-	addComponentRows,
-	createButtonRow,
-	createSelectRow,
-	createSelectOption,
-	createTextInputRow
+ 	promptUserPing,				//<-- funcsScene: Used to ping player of unknown tupper messages
+ 	promptUserInput,			//<-- funcsDuels: Used to prompt for reason for denying exp. TODO: Swap with Modal for general comments
+ 	promptUserReaction,			//<-- funcsDuels: (Deprecated) Use reacts for prompting winner/confirmation. Replaced with Buttons
+ 	promptUserInputOption,		//<-- funcsDuels: Prompt them for which person won. TODO: Swap with Select with options
+ 	promptUserButton,			//<-- funcsDuels: Use buttons for prompting winner/confirmation. Replaces reacts
+ 	promptModal,				//<-- cmdGuild: Prompt for character name
+ 	collectSelectInteractions,	//<-- cmdGuild: Prompt for character from list in main interaction reply
+ 	collectButtonInteractions,	//<-- cmdGuild
+ 	createButtonRow,			//
+ 	createSelectRow,			//
+ 	createSelectOption,			//
+ 	createTextInputRow			//	
+// 	addComponentRows,			//Used internally
+	
+// 	promptInteractSelect,		//Unused
+// 	addMessageButtons,			//Unused
+// 	addMessageSelect,			//Unused
 }

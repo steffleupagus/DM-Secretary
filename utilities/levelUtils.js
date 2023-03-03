@@ -69,33 +69,100 @@ function getDuelExp(level)
 /*╔════════════════════════════════════════════════════════╗*\
 │ ║ Calculate multiplier from total characters of roleplay ║ │
 \*╚════════════════════════════════════════════════════════╝*/
-function calculateRoleplayExp(rpData)
-{	
-	const {length,level} = rpData;
-	if (level < 0)
-		return 0;
-	const total = length;
-	const low = 1000;
-	const high = 16500;
-	const scale = 0.55;
-	const round = 0.25;
-	const expRound = 25;
-
-	var scaled = (total / high) * 2 * Math.PI; 
-		scaled = scaled - (low/high * 2 * Math.PI);
-	var raw = Math.max(0, Math.atan(scaled*scale));
-	var rounded = Utils.mround(raw, round);
-	var mult = rounded;
-
-	var cap = getExpCap(level);	// * 1.5;
-	var exp = Utils.mround(cap * mult, expRound);
-		exp = Math.min(exp, cap);
-	return exp;
+function calculateSingleDayRPMult(total)	
+{
+	const magicA = 1.4
+	const magicB = 0.8
+	const low    = 500
+	const high   = 10000
+	const round  = 0.1
+	
+	let scaled = ( (total - low) / high) * 2 * Math.PI; 
+	let mult   = ( (scaled*magicA) / Math.sqrt(scaled*scaled+magicA*magicA) ) * magicB	
+		mult   = Utils.mround(mult, round)
+	return mult
 }
+
+function calculateMultiDayRPMult(total, dayCap)
+{
+	const magicA = 10
+	const magicB = 3.1
+	const cap    = 3
+	const high   = 20000
+	const round  = 0.1
+
+	let sigma  = magicA * (total / high) - magicB;
+	let mult   = (magicB/(1+Math.exp(-1*sigma)))-(magicB-cap)
+		mult   = Utils.mround(mult, round)
+	return mult
+}
+
+function calculateHybridRPMult(total, days)
+{
+	let mult = 0
+	if (days == 1 || total < 5000)
+		mult = calculateSingleDayRPMult(total)
+	else
+		mult = calculateMultiDayRPMult(total);
+	
+	mult = Utils.precise(Math.min(Math.max(0, mult), days))
+	return mult;
+}
+
+// function calculateRoleplayMult(total, data)	
+// {
+// 	var scaled = ( (total - data.low) / data.high) * 2 * Math.PI; 
+// 	var raw = Math.max(0, Math.atan(scaled)*data.scale);
+// 	var rounded = Utils.mround(raw*data.mult, data.round);
+// 	var mult = Math.min(rounded,data.cap);
+// 	return mult;
+// }
+
+// function calculateTotalRoleplayMult(total)
+// {
+// 	const data = { 
+// 		low: 500, 
+// 		high: 50000, 
+// 		scale: 0.55,
+// 		round: 0.01,
+// 		mult: 4.6,
+// 		cap: 3
+// 	}
+// 	return calculateRoleplayMult(total, data)
+// }
+
+// function calculateDailyRoleplayMult(total)
+// {
+// 	const data = { 
+// 		low: 500, 
+// 		high: 10000, 
+// 		scale: 0.60,
+// 		round: 0.01,
+// 		mult: 1.38,
+// 		cap: 1
+// 	}
+// 	return calculateRoleplayMult(total, data)	
+// }
 
 /*╔═════════════════════════════════════╗*\
 │ ║ Calculate exp based on level & mult ║ │
 \*╚═════════════════════════════════════╝*/
+function calculateRoleplayExp(rpData)
+{
+	let {mult, level} = rpData;
+	if (undefined == mult)
+		mult = calculateRoleplayMult(rpData)
+
+	const expRound = 25;
+	let cap = getExpCap(level);	// * 1.5;
+	let exp = Utils.mround(cap * mult, expRound);
+		exp = Math.min(exp, cap);
+	return exp;	
+}
+
+/*╔════════════════════════════╗*\
+│ ║ Get exp cap based on level ║ │
+\*╚════════════════════════════╝*/
 function getExpCap(level)
 {
 	var cap = [ 0,				0,				0,	
@@ -180,6 +247,9 @@ module.exports = {
 	getDuelExp,
 	getExpCap,
 	updateDailyExp,
+	calculateSingleDayRPMult,
+	calculateMultiDayRPMult,
+	calculateHybridRPMult,		
 	calculateRoleplayExp,
 	PurgeUser
 }
