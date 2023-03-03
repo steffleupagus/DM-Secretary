@@ -86,7 +86,7 @@ class CharacterData
 		var match = matches.bestMatch;
 			match = match.rating >= MIN_THRESHOLD ? 			
 					{ 	name: match.target,
-						user: charTable[match.target].user,
+						...(!user && { user: charTable[match.target].user }),
 						level: charTable[match.target].level,
 					 	rating: match.rating
 					} : null;
@@ -99,7 +99,7 @@ class CharacterData
 				let name = m.target
 				return {
 					name: name,
-					user: charTable[name].user,
+					...(!user && { user: charTable[name].user }),
 					level: charTable[name].level,
 					rating: m.rating
 				}				

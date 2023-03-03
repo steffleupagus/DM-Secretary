@@ -3,11 +3,17 @@ const chanUtils = require(`./channelUtils.js`)
 const Tupper = require(`./tupperUtils.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
+const { MessageMentions } = require('discord.js')
 
 const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"	
 const BreakRegex = new RegExp(_regex);
-const DEBUG = false;
+const _quote = "^>.*"
+const TupperQuote = new RegExp(_quote);
+const _ping  = /\@.*\[jump\]\(\<?https:\/\/discord\.com\/channels\/@me\/[0-9]+\/[0-9]+\>?\)/
+const TupperPing  = new RegExp(_ping);
+const MIN_MESSAGE_LENGTH = 50
 
+const DEBUG = false;
 function debug(msg)
 {
 	if (DEBUG)
@@ -191,7 +197,11 @@ async function findFenceposts(channel, message, limit = 500)
 	console.log(`findFenceposts (${message.id})`)
 	const before = await findLastBreak(channel, message, limit)
 	const after = await findNextBreak(channel, message, limit)
-	const messages = before.messages.concat([message]).concat(after.messages);
+
+	let messages = before.messages.concat(after.messages);
+	if (!messages.includes(message))
+		messages = before.messages.concat([message]).concat(after.messages);
+	
 	return { start: before.id, end: after.id, messages: messages };
 }
 
@@ -279,6 +289,22 @@ async function scrapeMessages(messages, stats = null)
 	return stats;
 }
 
+
+function cleanMessageContent(message)
+{
+	const mention = new RegExp(MessageMentions.UsersPattern,"gi")
+	let content = message.content
+	if (Tupper.isTupperProxyMessage(message))
+	{
+		content = content.replace(TupperQuote,"")
+		content = content.replace(TupperPing,"")
+	}
+	content = content.replaceAll(mention,"")
+	
+	return content
+}
+
+
 ///
 /// Given a message, extract metadata and update the message stats
 ///
@@ -292,6 +318,14 @@ async function scrapeMessageMetadata(stats, message)
 	let authorId = user.id;
 	let guildMembers = message.guild?.members;
 	let member = message.member;
+
+	const content = cleanMessageContent(message)
+	if (content.length < MIN_MESSAGE_LENGTH)
+	{
+		debug (`Skipping short message from ${user.username} (${content.length})`)
+		return false
+	}
+		
 	if (!user.bot && !member)
 	{
 		try { member = await guildMembers.fetch(authorId); }
@@ -307,7 +341,7 @@ async function scrapeMessageMetadata(stats, message)
 	{
 		//If the message is a bot, we only care if it's a tupper webhook message
 		const tupperKey = name + "" + user.avatar
-		if (stats ?.tupperMap ?.[tupperKey])
+		if (stats ?.tupperMap ?.[tupperKey] ?.aId)
 		{
 			authorId = stats ?.tupperMap ?.[tupperKey] ?.aId
 			debug(`Reading tupper map: ${authorId}`)
@@ -343,7 +377,7 @@ async function scrapeMessageMetadata(stats, message)
 		else if (!unknown.uId && authorId)
 		{
 			debug(` ... matched unknown char ${name} to ${authorId}`)
-			stats = assignUnknown(stats, authorId, name)
+			stats = assignUnknown(stats, authorId, name, tupperData)
 		}
 		else if (unknown.uId && authorId && (unknown.uId != authorId))
 		{
@@ -353,16 +387,15 @@ async function scrapeMessageMetadata(stats, message)
 	}
 	else if (authorId)
 	{
-		stats[0].char[name] = { uId: authorId }
+		stats[0].char[name] = stats[0].char[name] || { uId: authorId, t: user.bot ? true : false }
 	}
 
-	stats[authorId] = incrementStats(stats[authorId], authorId, name, message);
+	stats[authorId] = incrementStats(stats[authorId], authorId, name, message, user.bot);
 
 	return stats;
 }
 
-
-function assignUnknown(stats, authorId, name)
+function assignUnknown(stats, authorId, name, tupperData)
 {
 	const unknown = stats ?.[0] ?.char ?.[name];
 
@@ -395,31 +428,30 @@ function assignUnknown(stats, authorId, name)
 		delete unknown.dates				
 	}
 	
-	stats[0].char[name] = { uId: authorId }
+	stats[0].char[name] = { uId: authorId, t: tupperData ? true : false }
 
 	debug(stats[authorId].char[name]);
 
 	return stats;
 }
 
-function incrementStats(data, id, name, message)
+function incrementStats(data, id, name, message, tupperData)
 {
 	const channel = message.channel.id;
-	const length = message.content.length;
-	let   date  = message.createdAt;
-		  date = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`	
+	const content = cleanMessageContent(message)
 	
-	// if (!data)
-	// 	data = { length: 0, posts: 0, char: {}, chan: [] }
-	data = data ?? { length: 0, posts: 0, char: {}, chan: [] }
+	const length  = content.length;
+	let   date    = message.createdAt;
+		  date    = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`	
+	
+	data = data ?? { length: 0, posts: 0, char: {}, chan: [] };	
 	data.length += length;
 	data.posts += 1;
 	data.chan = data.chan || [];
 	if (!data.chan.includes(channel))
 		data.chan.push(channel)
 
-	//if (!data.char.hasOwnProperty(name))
-	data.char[name] = data.char[name] ?? { length: 0, posts: 0, chan: [], dates: {} }
+	data.char[name] = data.char[name] ?? { length: 0, posts: 0, t: tupperData ? true : false, chan: [], dates: {} }
 	data.char[name].length += length;
 	data.char[name].posts += 1;
 	
@@ -490,6 +522,8 @@ module.exports =
 	findLastBreak,
 	findNextBreak,
 	findFenceposts,
+	cleanMessageContent,
 	scrapeMessages,
+	scrapeMessageMetadata,	
 	getRoleplayData,
 }	
