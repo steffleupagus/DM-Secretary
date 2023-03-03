@@ -120,7 +120,8 @@ module.exports =
 
 	precise(x, prec=2) 
 	{
-		return Math.floor(x*100)/100;
+		prec = Math.pow(10,prec)
+		return Math.floor(x*prec)/prec;
 	},
 
 	roundMod(number, mod)

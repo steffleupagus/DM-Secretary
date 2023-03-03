@@ -52,7 +52,7 @@ async function execute(interaction)
 	const buttons = getButtonRow()
 	const select = getSelectRow()
 	const rows = [buttons,select]
-	interaction.reply({embeds:[embed], components: rows})
+	await interaction.reply({embeds:[embed], components: rows})
 
 	// const modal = await Prompt.createModal();
 	// console.log(modal)
@@ -65,14 +65,15 @@ async function run(client, message, command, args)
 
 async function button(interaction)
 {
-	interaction.reply({content:`Handling: ${interaction.customId}`, 
-					  ephemeral: true})
+	await interaction.reply({content:`Handling: ${interaction.customId}`, 
+							 ephemeral: true})
 }
 
 async function select(interaction)
 {
 	// console.log(interaction)
-	interaction.reply({content:`Handling ${interaction.customId}: ${interaction.values.join(", ")}`, ephemeral: true})
+	await interaction.reply({content:`Handling ${interaction.customId}: ${interaction.values.join(", ")}`, 
+							 ephemeral: true})
 }
 
 const data = new SlashCommandBuilder()

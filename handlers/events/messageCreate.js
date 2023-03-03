@@ -20,8 +20,7 @@ async function execute(client, message)
 
 	const prefix = client.config.prefix;
 	//If it starts with the command character, process it as command		
-	if (message.content.startsWith(prefix) && 
-		message.guild.id == client.config.GUILDID)
+	if (message.content.startsWith(prefix))//&& message.guild.id == client.config.GUILDID)
 	{
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const commandName = args.shift().toLowerCase();

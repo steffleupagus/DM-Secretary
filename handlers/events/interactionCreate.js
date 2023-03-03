@@ -24,13 +24,21 @@ async function execute(client, interaction)
 	{
 		//interaction.isMessageComponent()
 		if (interaction.type === InteractionType.ApplicationCommandAutocomplete) 
+		{
 			await command.autoComplete(interaction);
-		else if (interaction.isSelectMenu())
-			await command.select(interaction);
+		}
+		else if (interaction.isAnySelectMenu())
+		{
+			if (command.select) await command.select(interaction);
+		}
 		else if (interaction.isButton())
-			await command.button(interaction);
+		{
+			if (command.button) await command.button(interaction);
+		}
 		else //(interaction.isCommand() || interaction.isContextMenu())
+		{
 			await command.execute(interaction);
+		}
 	}
 	catch (error)
 	{
@@ -41,7 +49,7 @@ async function execute(client, interaction)
 	}
 }
 
-function reply(interaction, reply)
+async function reply(interaction, reply)
 {
 	let identifier = interaction?.commandName || 
 					 interaction?.message?.interaction?.commandName || 
@@ -49,11 +57,11 @@ function reply(interaction, reply)
 	console.log(identifier, reply)
 	
 	if (interaction.deferred)
-		interaction.editReply(reply)
+		await interaction.editReply(reply)
 	else if (interaction.replied)
-		interaction.followUp(reply)
+		await interaction.followUp(reply)
 	else if (interaction.reply)
-		interaction.reply(reply)
+		await interaction.reply(reply)
 }
 
 function checkPermissions(interaction, command)

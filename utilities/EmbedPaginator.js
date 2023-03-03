@@ -11,6 +11,13 @@ class EmbedPaginator
 {
 	constructor(embed_options = {})
 	{
+		this.MAX = {
+			EMBED: EMBED_MAX,
+			FIELD: EMBED_FIELD_MAX,
+			DESC:  EMBED_DESC_MAX,
+			TITLE: EMBED_TITLE_MAX
+		}
+				
         this._current_field_name = '';
         this._current_field_inline = false;
         this._current_field = [];
@@ -68,7 +75,7 @@ class EmbedPaginator
         if (value.length > EMBED_DESC_MAX || value.length + this._embed_count > EMBED_MAX)
             throw "The current embed cannot fit this description.";
 
-        this._embeds[this._embeds.length-1].description = value
+        this._embeds[this._embeds.length-1].setDescription(value)
         this._embed_count += value.length
 	}
 

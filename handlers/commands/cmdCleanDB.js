@@ -21,7 +21,7 @@ async function execute(interaction)
 		const targetMember  = interaction.options.getMember(`user_${i}`);
 		if (targetMember)
 		{
-			interaction.reply({content:`${targetMember} is still active in the server`, ephemeral: ephemeral})
+			await interaction.reply({content:`${targetMember} is still active in the server`, ephemeral: ephemeral})
 			return;
 		}
 		
