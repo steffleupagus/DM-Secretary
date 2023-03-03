@@ -147,6 +147,11 @@ class Bot
 
 			// Set a new item in the Collection; key = command name, value = exported module
 			this.client.commands.set(command.data.name, command);
+
+			// Allow commands to have aliases for non-slash execution
+			command?.aliases?.forEach(alias => {
+				this.client.commands.set(alias, command);			
+			});
 		}
 	}
 

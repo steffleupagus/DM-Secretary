@@ -599,15 +599,20 @@ async function awaitConfirmation(channel, duelData)
 		embed.setFooter({text:footer});
 		embed = await channel.send({content:pings,embeds:[embed]});
 
-	// const reacts = ["👍","👎"];
-	// const react = await Prompt.promptUserReaction(channel, embed, players, reacts, "👍","👎");
-	
-	const reacts = [
-		{style:ButtonStyle.Success, emoji:"👍", label:'Approve', custom_id:"👍"},
-		{style:ButtonStyle.Danger, emoji:"👎", label:'Decline', custom_id:"👎"}		
-	]
-	const react = await Prompt.promptUserButton(channel, embed, players, 
-												reacts, "👍", "👎");
+	let react;
+	if (PROMPT_REACTS)
+	{
+		const reacts = ["👍","👎"];
+		react = await Prompt.promptUserReaction(channel, embed, players, reacts, "👍","👎");
+	}
+	else
+	{
+		const reacts = [
+			{style:ButtonStyle.Success, emoji:"👍", label:'Approve', custom_id:"👍"},
+			{style:ButtonStyle.Danger, emoji:"👎", label:'Decline', custom_id:"👎"}		
+		]
+		react = await Prompt.promptUserButton(channel, embed, players, reacts, "👍", "👎");
+	}
 	
 	embed.delete();
 	if (react.react == "👎")
