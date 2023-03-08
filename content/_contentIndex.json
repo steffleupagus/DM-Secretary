@@ -1,8 +1,14 @@
 {
-	"936433857010483232":
+	"940061953064329216":
 	{
-		"id":"936433857010483232",
-		"name":"dummycontentchannel",
-		"data":"rpItemReference.json"
+		"id":"940061953064329216",
+		"name":"📜│test-content",
+		"data":"lore.json"
+	},
+	"1082341579848687626":
+	{
+		"id":"1082341579848687626",
+		"name":"📌│📜 Lore Rewrite",
+		"data":"lore.json"
 	}
 }

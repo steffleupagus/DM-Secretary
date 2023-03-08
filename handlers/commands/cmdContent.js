@@ -49,14 +49,18 @@ async function publishContent(channel, content)
 			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
 			{
 				let item = await channel.send({embeds:[embed]});
-				contents.push({"title":embed.title,"url":item.url});
-				let chanMentions = extractMention(embed);
+				if (value.includeTOC)
+					contents.push({"title":embed.title,"url":item.url});
+				else if (value.includeIndex)
+					index.push({"title":embed.title,"url":item.url});		
+				
+				let chanMentions = extractMention(embed).trim();
 				if (chanMentions)
 					await channel.send(chanMentions)
 				await wait(1200);
 			});
 		}
-
+				
 		if (value.includeTOC)
 		{
 			let title = value.title || `${key} Index`;
@@ -88,7 +92,7 @@ async function publishContent(channel, content)
 		if (value.includeSectionBreak)
 			await channel.send("*_ _*\n*_ _*\n*_ _*\n");
 
-		if (value.includeTOC || value.includeIndex)
+		if (value.includeTOC && value.includeIndex)
 			index.push({"title":key,"url":tableOfContents.url});
 	});
 
@@ -103,7 +107,7 @@ async function publishContent(channel, content)
 			const field = `[${item.title}](${item.url})`
 			embed.extendField(field, "** **", true);			
 		});
-		embed.send(channel);
+		await embed.send(channel);
 	}
 
 	return true
@@ -113,7 +117,7 @@ async function execute(interaction)
 {
 	//Base functionality (no args/subcommands): write the contents of the channel
 	//   					  channel argument: write contents to the specified channel
-	//Edit subcommand: 
+	//TODO: Edit subcommand
 
 	const user  = interaction.user;
 	const client = interaction.client;
@@ -125,31 +129,35 @@ async function execute(interaction)
 	const channel = await guild?.channels.fetch(channelId);
 	const target = interaction.options.getChannel('target') || channel
 
+	await interaction.deferReply({ephemeral:true});
+	
 	//Make sure this channel has content specified before continuing
-	if (!index.hasOwnProperty(channel.id)) return false
-
-	await interaction.reply(`Writing contents to <#${target.id}>`);
-
-	//Clean up the old messages in the channel
-	await MsgUtils.channelCleanup(channel);
+	if (!index.hasOwnProperty(channel.id))
+	{
+		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
+		return false
+	}
 
 	//Grab the data for the new content according to what goes in this channel
 	const content = require(`${process.cwd()}/content/${index[channel.id].data}`)
+	if (!content)
+	{
+		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
+		return false;
+	}	
+
+	//Clean up the old messages in the channel
+	await interaction.editReply(`Cleaning old content from <#${target.id}>`);
+	await MsgUtils.channelCleanup(channel);
 
 	//Write the content to the channel
+	await interaction.editReply(`Writing contents to <#${target.id}>`);
 	const result = await publishContent(target, content);
 	if (result)
-	{
 		await interaction.followUp({ content: 'Write success!', ephemeral: true });
-	}
 	else
-	{
 		await interaction.followUp({ content: 'Write failure!', ephemeral: true });
-		await interaction.deleteReply();
-	}
-
-	// const string = interaction.options.getString('input');
-	// console.log([string, channel]);
+	interaction.deleteReply();
 }
 
 async function run(client, message, command, args)
