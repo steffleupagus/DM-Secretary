@@ -5,19 +5,18 @@ const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 async function execute(interaction, message=null)
 {
-	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV})
+	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV || message != null})
 	try
 	{	
 		const response = await SceneUtils.processScene(interaction, message);	
 		if (response !== true)
-			await interaction.editReply(response);
-		else if (interaction.ephemeral)
-			await interaction.editReply("Done")
+			await interaction.editReply({content:`${response}`, embeds:[], components:[]});
 		else
-			await interaction.deleteReply();
+			await interaction.editReply({content:"",components:[]});
 	}
 	catch (error)
 	{
+		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
 		throw error.message
 	}
 }
@@ -33,32 +32,31 @@ async function run(client, message, command, args)
 		console.error(error)
 	}
 	return
-
-	
-	const channel = message.channel;
-	const user = message.author;
-
-	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
-	try
-	{
-		const response = await SceneUtils.processScene(channel, user, null);
-		if (response === true)
-			reply.delete();
-		else
-			await reply.edit(response);		
-	}
-	catch (error)
-	{
-		console.error(error);
-		await reply.edit(`There was an error executing this command:\n${error.message}`);		
-	}
-
-	message.delete()
 }
 
 async function button(interaction)
 {
 	const subCommand = interaction.customId;
+	console.log(subCommand)	
+
+	switch(subCommand)
+	{
+		case "scene.approve":
+			await SceneUtils.handleApprove(interaction);
+			return;
+		case "scene.decline":
+			await SceneUtils.handleReject(interaction);
+			return;
+		case "scene.npc":
+			await SceneUtils.handleNPC(interaction);
+			return;			
+		case "scene.edit":
+			await SceneUtils.handleEdit(interaction);
+			return;
+		case "scene.undo":
+			await SceneUtils.handleUndo(interaction);
+			return;			
+	}		
 	return;
 }
 
@@ -86,6 +84,7 @@ module.exports =
 	build:config.DEV //||config.PRODUCTION
 };
 
-const requiredRoles = [ config.BuilderRole, config._BuilderRole	]
+const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
+					    config.DMRole, config._DMRole	]
 if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles

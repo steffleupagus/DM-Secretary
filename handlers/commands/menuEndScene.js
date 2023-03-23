@@ -11,7 +11,7 @@ async function execute(interaction)
 	const message = await channel?.messages.fetch(messageId);
 
 	const command = `scene${config.DEV ? "dev" : ""}`
-	client.commands.get(command).execute(interaction, message)
+	await client.commands.get(command).execute(interaction, message)
 }
 
 module.exports = 
@@ -21,9 +21,11 @@ module.exports =
 		.setType(ApplicationCommandType.Message)
 		.setDefaultPermission(false),
 	execute: execute,
-	build:config.DEV //||config.PRODUCTION
+	build:config.DEV||config.PRODUCTION
 };
 
-const requiredRoles = [ config.BuilderRole, config._BuilderRole	];
+const requiredRoles = [ config.BuilderRole, config._BuilderRole, 
+					    config.DMRole, config._DMRole	]
+
 if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles
