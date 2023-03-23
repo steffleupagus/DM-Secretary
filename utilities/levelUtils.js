@@ -53,16 +53,49 @@ async function getLevelData(search)
 	return null;
 }
 
+/*╔════════════════════════════╗*\
+│ ║ Get exp cap based on level ║ │
+\*╚════════════════════════════╝*/
+function getDuelExpCap(level)
+{
+	const cap = [	0,				0,				0,	
+					150,			250,			500,	
+					600,			750,			900,
+					1100,			1200,			1600,
+					2000,			2200,			2500,
+					2800,			3200,			3900,
+					4200,			4900,			5700		];
+
+	//const cap = [	0,				0,				0,	
+	// 				200,			350,			700,	
+	// 				850,			1000,			1200,
+	// 				1400,			1600,			1600,
+	// 				2000,			2200,			2500,
+	// 				2800,			3500,			4000,
+	// 				4500,			5000,			6000		];	
+	return cap[level];
+}
+
+
 function getDuelExp(level)
 {
 	//Exp table array by level, each entry is an array of [winner, loser]
-	var exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
-				[113, 	37], 	[188,	62], 	[375,	125],	// 3,  4,  5
-				[450, 	150],	[563,	187],	[675,	225],	// 6,  7,  8
-				[825, 	275],	[900,	300],	[1200,	400],	// 9, 10, 11
-				[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
-				[2100,	700],	[2400,	800],	[2925,	975],	//15, 16, 17
-				[3150,	1050],	[3675,	1125],	[4275,	1425]];	//18, 19, 20		
+	const exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
+					[113, 	37], 	[188,	62], 	[375,	125],	// 3,  4,  5
+					[450, 	150],	[563,	187],	[675,	225],	// 6,  7,  8
+					[825, 	275],	[900,	300],	[1200,	400],	// 9, 10, 11
+					[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
+					[2100,	700],	[2400,	800],	[2925,	975],	//15, 16, 17
+					[3150,	1050],	[3675,	1125],	[4275,	1425]];	//18, 19, 20
+
+	// const exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
+	// 				[150,	50],	[265,	90],	[525,	175],	// 3,  4,  5
+	// 				[640,	215],	[750,	250],	[900,	300],	// 6,  7,  8
+	// 				[1050,	350],	[1200,	400],	[1200,	400],	// 9, 10, 11
+	// 				[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
+	// 				[2100,	700],	[2625,	875],	[3000,	1000],	//15, 16, 17
+	// 				[3375,	1125],	[3750,	1250],	[4500,	1500]];	//18, 19, 20
+	
 	return exp[level];
 }
 
@@ -109,61 +142,21 @@ function calculateHybridRPMult(total, days)
 	return mult;
 }
 
-// function calculateRoleplayMult(total, data)	
-// {
-// 	var scaled = ( (total - data.low) / data.high) * 2 * Math.PI; 
-// 	var raw = Math.max(0, Math.atan(scaled)*data.scale);
-// 	var rounded = Utils.mround(raw*data.mult, data.round);
-// 	var mult = Math.min(rounded,data.cap);
-// 	return mult;
-// }
-
-// function calculateTotalRoleplayMult(total)
-// {
-// 	const data = { 
-// 		low: 500, 
-// 		high: 50000, 
-// 		scale: 0.55,
-// 		round: 0.01,
-// 		mult: 4.6,
-// 		cap: 3
-// 	}
-// 	return calculateRoleplayMult(total, data)
-// }
-
-// function calculateDailyRoleplayMult(total)
-// {
-// 	const data = { 
-// 		low: 500, 
-// 		high: 10000, 
-// 		scale: 0.60,
-// 		round: 0.01,
-// 		mult: 1.38,
-// 		cap: 1
-// 	}
-// 	return calculateRoleplayMult(total, data)	
-// }
-
 /*╔═════════════════════════════════════╗*\
 │ ║ Calculate exp based on level & mult ║ │
 \*╚═════════════════════════════════════╝*/
-function calculateRoleplayExp(rpData)
+function calculateRoleplayExp(level, mult)
 {
-	let {mult, level} = rpData;
-	if (undefined == mult)
-		mult = calculateRoleplayMult(rpData)
-
-	const expRound = 25;
-	let cap = getExpCap(level);	// * 1.5;
+	const expRound = 10;
+	let cap = getRPExpCap(level);
 	let exp = Utils.mround(cap * mult, expRound);
-		exp = Math.min(exp, cap);
 	return exp;	
 }
 
 /*╔════════════════════════════╗*\
 │ ║ Get exp cap based on level ║ │
 \*╚════════════════════════════╝*/
-function getExpCap(level)
+function getRPExpCap(level)
 {
 	var cap = [ 0,				0,				0,	
 				150,			250,			500,	
@@ -175,14 +168,17 @@ function getExpCap(level)
 	return cap[level];
 }
 
-/// Update the daily exp log, and cap the exp from this data
+
+/*╔══════════════════════════════════════════════════════════╗*\
+│ ║ Update the daily exp log, and cap the exp from this data ║ │
+\*╚══════════════════════════════════════════════════════════╝*/
 async function updateDailyExp(data, type, logDate)
 {
 	data.xp.total = data.xp.xp
 	const search = {
 		name: data.char,
-		user: data.uid,
-		type: type		
+		user: data.uid || data.user,
+		type: type
 	}
 
 	let oldReset;
@@ -201,6 +197,7 @@ async function updateDailyExp(data, type, logDate)
 		}
 
  		data.xp.xp = Math.min(data.xp.xp, result.cap - result.exp);
+		if (data.xp.xp < 0) data.xp.xp = 0
 		data.xp.total  = result.exp;
 		data.xp.total += data.xp.xp;
 		console.log(`Updating exp total. ${result.exp} => ${data.xp.total}`)
@@ -210,12 +207,14 @@ async function updateDailyExp(data, type, logDate)
 	// console.log("Logged:",logged)
 	// console.log("Now:",Utils.getDate())
 	// console.log("New Reset:",newReset)
-	
+	if (data.xp.xp < 0)
+		data.xp.total = Math.max(0, data.xp.total)
+
 	const newResult = await dailyExpSchema.findOneAndUpdate(
 		search,
 		{
 			name: data.char,
-			user: data.uid,
+			user: data.uid || data.user,
 			type: type,
 			exp: data.xp.total,
 			cap: data.xp.cap,
@@ -245,8 +244,9 @@ module.exports = {
 	getLevelData,
 	findLevelData,
 	getDuelExp,
-	getExpCap,
+	getDuelExpCap,
 	updateDailyExp,
+	getRPExpCap,
 	calculateSingleDayRPMult,
 	calculateMultiDayRPMult,
 	calculateHybridRPMult,		

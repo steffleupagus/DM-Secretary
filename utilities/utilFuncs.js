@@ -15,6 +15,17 @@ module.exports =
 		return JSON.stringify(a) === JSON.stringify(b)
 	},
 
+	//Given an array and a callback that tests each item in the array for matching values
+	//returns an array of indexes into the first array that match the callback
+	findAllIndexes(arr, callback) 
+	{
+    	var indexes = [], i;
+    	for(i = 0; i < arr.length; i++)
+        	if (callback(arr[i]))
+            	indexes.push(i);
+    	return indexes;
+	},	
+
 	// `data` is an array of objects, `key` is the key (or property accessor) to group by
 	// reduce runs this anonymous function on each element of `data` (the `item` parameter,
 	// returning the `storage` parameter at the end
@@ -44,6 +55,7 @@ module.exports =
 		let result = null;
 		Object.keys(compareKeys).forEach( key => 
 		{
+			// console.log(`${compareKeys[key]} | ${key}: ${a[key]} vs ${b[key]}`)			
 			if (result == null)
 			{
 				if (a[key] > b[key])

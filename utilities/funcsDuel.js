@@ -511,12 +511,12 @@ function calculateExp(duelData)
 	const winuid  = duelData.outcome.winner.uid;
 	const winName = duelData.outcome.winner.char;	//players[winuid].char;
 	const winner  = duelData.characters[winName];
-	const winCap  = LevelUtils.getExpCap(winner.level);
+	const winCap  = LevelUtils.getDuelExpCap(winner.level);
 
 	const losuid  = duelData.outcome.loser.uid;
 	const lossName= duelData.outcome.loser.char;	//players[losuid].char;
 	const loser   = duelData.characters[lossName];
-	const lossCap = LevelUtils.getExpCap(loser.level);
+	const lossCap = LevelUtils.getDuelExpCap(loser.level);
 
 	const exp = LevelUtils.getDuelExp(loser.level);
 
@@ -789,7 +789,7 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	//Update the exp being awarded by the ratio
 	if ((winRatio == 0.5)||(lossRatio == 0.5))
 	{
-		const exp = LevelUtils.getExpCap(duelData.loser.level)
+		const exp = LevelUtils.getDuelExpCap(duelData.loser.level)
 		duelData.loser.xp.xp = exp;
 		duelData.winner.xp.xp = exp;
 	}
