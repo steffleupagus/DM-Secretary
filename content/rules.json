@@ -36,8 +36,6 @@
 	"Table Rules":
 	{
 		"includeIndex":false,
-		"embeds": [
-			
-		]
+		"embeds": []
 	}
 }
