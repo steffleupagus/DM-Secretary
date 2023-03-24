@@ -56,6 +56,7 @@ const interactionTimer = {};
 
 async function sceneDebug(message)
 {
+	if (!Debug) return
 	let startTime = performance.now()
 
 	const channel = message.channel;
