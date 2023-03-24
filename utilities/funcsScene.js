@@ -193,7 +193,15 @@ async function generatePlayerXPField(interaction, data, idx)
 				xpData = await LevelUtils.updateDailyExp(xpData, cmd, data.date);
 			if (!xpData)
 				throw "Something went very wrong..."
+			//xpData is an object: {xp (final xp after cap applied), cap, total (cumulative daily total)}
+			
+			if (xpData.xp.xp < data.xpMod)
+			{
+				data.xp  = data.xp - data.xpMod + xpData.xp.xp;
+				data.xpMod = xpData.xp.xp
+			}			
 			data.xpData = xpData.xp;
+			console.log("\n\n\n", data, xpData)
 		}
     
 		const modification = `${data.char} (${data.level}) XP: +${data.xpData.xp} (${data.xpData.total} total)`
@@ -233,9 +241,10 @@ async function generatePlayerXPField(interaction, data, idx)
 		value += `${config.rppemoji} \`${data.rpp}\`\n`		
 	else if (data.xp >= 0)
 	{
-		if (!data?.xpData?.xp) data.xpData = {xp:0} 
-		value += `\nGain: \`${data.xpData.xp}\`xp `
-		if (data.xpData.xp > 0)
+		//if (!data?.xpData?.xp) data.xpData = {xp:0} 
+		value += `\nGain: \`${data.xp}\`xp `
+		//if (data.xpData.xp > 0)
+		if (data.xp > 0)
 			value += `[Cap: ||\`${data.xpData.total}\` / \`${data.xpData.cap}\`||]`
 	}
 	else
@@ -422,9 +431,13 @@ async function handleApprove(interaction)
 	const start = embed?.fields?.find( x => x.name === "Scene" || x.name === "Start");
 	const footer = interaction.message.id;
 
+	const players = [];
+	data.map(x => { if (!players.includes(x.user)) players.push(x.user); })
+	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
+	
 	const xpEmbed = await generateXPEmbed(interaction, start, data, comment, footer)
 	var xpChan = await interaction.guild.channels.resolve(xpLogChannel);
-	const message = await xpChan.send({content: "", embeds:[xpEmbed], components:assignNPC});
+	const message = await xpChan.send({content: pings, embeds:[xpEmbed], components:assignNPC});
 	newField.value += ` [Link](${message.url})`
 
 	const update = EmbedBuilder.from(embed)
@@ -666,8 +679,6 @@ async function handleNPC(interaction)
 		const diff  = Utils.precise(editData.xp - (before?.[0]?.xp || 0) + 0.001, 1)
 		editData.xpMod = Math.max(0, diff);
 	}
-
-	// console.log(editData)
 	
 	xpData[index] = {...editData, edit:response}
 
@@ -685,9 +696,9 @@ async function handleNPC(interaction)
 	//Check if we have any more NPCs we'll need to edit
 	pending = pending.filter( x=> x != editData.name )
 	data    = xpData.filter( x => unassignedNPC(x) && pending.includes(x.name) )
-	const hasNPC = pending.length > 0
+	const hasNPC = data.length > 0
 	const component = [];
-	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];
+	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];	
 	if (hasNPC) component.push( Prompt.createButtonRow(npcButton) )
 	
 	await interaction.message.edit({embeds:[update], components:component})
@@ -779,7 +790,7 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 {	
 	const embed = generateDMEmbed(interaction, start, rpData, footer)
 	var dmPingChan = await interaction.guild.channels.resolve(dmPingChannel);
-	await embed.send(dmPingChan, "<@&699439189447671889>", //attachButtons);
+	await embed.send(dmPingChan, "<@&699439189447671889><@&694285067723210843>", //attachButtons);
 					 (message) => message.edit({ components:[getApprovalButtonRow()] }))
 }
 

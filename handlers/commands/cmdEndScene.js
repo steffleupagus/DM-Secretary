@@ -81,7 +81,7 @@ module.exports =
 	message: run,
 	button: button,
 	select: select,
-	build:config.DEV //||config.PRODUCTION
+	build:config.PRODUCTION||config.DEV
 };
 
 const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
