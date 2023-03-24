@@ -25,7 +25,8 @@ async function run(client, message, command, args)
 {
 	try
 	{		
-		SceneUtils.sceneDebug(message);
+		if (config.DEV)
+			SceneUtils.sceneDebug(message);
 	}
 	catch (error)
 	{
@@ -75,16 +76,18 @@ if (config.DEV)
 
 module.exports = 
 {
-	aliases:["scene"],
 	data: data,
 	execute: execute,
 	message: run,
 	button: button,
 	select: select,
-	build:config.DEV //||config.PRODUCTION
+	build:config.PRODUCTION||config.DEV
 };
 
 const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
 					    config.DMRole, config._DMRole	]
 if (config.DEV)
+{
+	module.exports.aliases = ["scene"]
 	module.exports.whitelistRoles = requiredRoles
+}
