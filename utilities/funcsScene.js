@@ -499,7 +499,9 @@ async function handleEdit(interaction)
 	await interaction.message.edit({embeds:[update]})
 
 	const edit = response != editData.char ? `${response} => ${editData.char}` : editData.char
-	response = new EmbedBuilder().setTitle("Edit Complete").setDescription(`${edit} [Updated](${interaction.message.url})`)
+	response = new EmbedBuilder().setTitle("Edit Complete")
+								 .setDescription(`${edit} [Updated](${interaction.message.url})`)
+								 .setFooter({text:`${interaction.member.displayName}`})
 	await interaction.editReply({content:"",embeds:[response], components:[]})
 	return Mutex.unlock(mutexId);
 }
@@ -702,7 +704,14 @@ async function handleNPC(interaction)
 	if (hasNPC) component.push( Prompt.createButtonRow(npcButton) )
 	
 	await interaction.message.edit({embeds:[update], components:component})
-	await interaction.editReply({content:`Edit Complete: ${response} => ${editData.char}`,embeds:[], components:[]})
+
+	const edit = response != editData.char ? `${response} => ${editData.char}` : editData.char
+	response = new EmbedBuilder().setTitle("Edit Complete")
+								 .setDescription(`${edit} [Updated](${interaction.message.url})`)
+								 .setFooter({text:`${interaction.member.displayName}`})
+	await interaction.editReply({content:"",embeds:[response], components:[]})
+	// await interaction.editReply({content:`Edit Complete: ${response} => ${editData.char}`,embeds:[], components:[]})
+	
 	return Mutex.unlock(mutexId);
 }
 
