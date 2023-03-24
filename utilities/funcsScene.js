@@ -1102,8 +1102,8 @@ async function assignUnknownCharacter(interaction, charRPData, npcAssign = false
 										embed.setDescription(error)
 										await prompt.edit({embeds:[embed], components: []});
 								  	});		
-		if (!Debug)
-			await prompt.delete();
+		// if (!Debug)
+		// 	await prompt.delete();
 	}
 	
 	if (!response || ("default").includes(response))
