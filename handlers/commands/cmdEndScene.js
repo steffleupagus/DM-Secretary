@@ -5,66 +5,86 @@ const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 async function execute(interaction, message=null)
 {
-	const channel = interaction.channel;
-	const reply = await interaction.deferReply({fetchReply:true})//,ephemeral:true})
-	
-	const response = await SceneUtils.processScene(channel, user, message);
-	if (response !== true)
-		await interaction.editReply(response);
-	else if (interaction.ephemeral)
-		await interaction.editReply("Done")
-	else
-		await interaction.deleteReply();
+	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV || message != null})
+	try
+	{	
+		const response = await SceneUtils.processScene(interaction, message);	
+		if (response !== true)
+			await interaction.editReply({content:`${response}`, embeds:[], components:[]});
+		else
+			await interaction.editReply({content:"",components:[]});
+	}
+	catch (error)
+	{
+		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
+		throw error.message
+	}
 }
 
 async function run(client, message, command, args)
 {
+	try
+	{		
+		SceneUtils.sceneDebug(message);
+	}
+	catch (error)
+	{
+		console.error(error)
+	}
 	return
-	const channel = message.channel;
-	const user = message.author;
-
-	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
-	const response = await SceneUtils.processScene(channel, user, null);
-	if (response !== true)
-	{
-		if (!response.content)
-			response.content = null
-		await reply.edit(response);
-	}
-	else
-	{
-		reply.delete()
-	}
-	message.delete()
 }
 
 async function button(interaction)
 {
 	const subCommand = interaction.customId;
+	console.log(subCommand)	
+
+	switch(subCommand)
+	{
+		case "scene.approve":
+			await SceneUtils.handleApprove(interaction);
+			return;
+		case "scene.decline":
+			await SceneUtils.handleReject(interaction);
+			return;
+		case "scene.npc":
+			await SceneUtils.handleNPC(interaction);
+			return;			
+		case "scene.edit":
+			await SceneUtils.handleEdit(interaction);
+			return;
+		case "scene.undo":
+			await SceneUtils.handleUndo(interaction);
+			return;			
+	}		
 	return;
 }
 
 async function select(interaction)
 {
-	console.log(interaction)
-	interaction.reply({content:`Handling ${interaction.customId}: ${interaction.values.join(", ")}`, ephemeral: true})
+	const subCommand = interaction.customId;
+	const values = interaction.values.join(", ")
+	return;
 }
 
 const data = new SlashCommandBuilder()
-	.setName('scene')
+	.setName(`scene${config.DEV ? "dev" : ""}`)
 	.setDescription('Conclude a scene')
-	.setDefaultPermission(false)
+if (config.DEV)
+	data.setDefaultPermission(false)
 
 module.exports = 
 {
+	aliases:["scene"],
 	data: data,
 	execute: execute,
 	message: run,
 	button: button,
 	select: select,
-	whitelistRoles: [
-		config.BuilderRole,
-		config._BuilderRole	
-	],
 	build:config.DEV //||config.PRODUCTION
 };
+
+const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
+					    config.DMRole, config._DMRole	]
+if (config.DEV)
+	module.exports.whitelistRoles = requiredRoles

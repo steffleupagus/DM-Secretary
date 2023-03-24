@@ -21,13 +21,17 @@ async function execute(interaction)
 	if (!message)
 		return interaction.reply({ 	content: 'No message found', ephemeral: true });
 
-	await interaction.reply({ 	content: "```\n" + message.content + "\n```",
+	await interaction.reply({ 	content: "```\n" + message.content.substr(0,1989) + "...\n```",
 								ephemeral: true });
-
+	responses.push(`Before: ${message.content.length} chars`)
+	
 	let stats = await MsgUtils.scrapeMessageMetadata(null, message)
-	responses.push( "```\n" + MsgUtils.cleanMessageContent(message) + "\n```" )
-//	responses.push( "```\n" + JSON.stringify(stats, null, 2) + "\n```");
 
+	let content = MsgUtils.cleanMessageContent(message);
+	responses.push( "```\n" + content + "\n```" )
+	responses.push(`After: ${content.length} chars`)
+	
+	// responses.push( "```\n" + JSON.stringify(stats, null, 2) + "\n```");
 	
 	Utils.asyncArrayForEach(responses, async (response) => 
 	{

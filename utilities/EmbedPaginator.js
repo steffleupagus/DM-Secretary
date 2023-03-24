@@ -14,6 +14,7 @@ class EmbedPaginator
 		this.MAX = {
 			EMBED: EMBED_MAX,
 			FIELD: EMBED_FIELD_MAX,
+			COUNT: EMBED_FIELD_COUNT_MAX,
 			DESC:  EMBED_DESC_MAX,
 			TITLE: EMBED_TITLE_MAX
 		}
@@ -168,6 +169,11 @@ class EmbedPaginator
         this._field_count = 0;
 	}
 
+	calcFieldLength(name='', value='', inline=false)
+	{
+		return name.length + value.length
+	}
+	
 	closeField()
 	{
 		this.close_field()
@@ -203,7 +209,7 @@ class EmbedPaginator
 	}
 
 	//Terminate the current embed and create a new one.
-    close_embed(repeatFooter=false)
+    close_embed()
 	{
         this._embeds.push(new EmbedBuilder(this._default_embed_options));
         this._embed_count = 0;
@@ -221,11 +227,11 @@ class EmbedPaginator
     length()
 	{
 		var total = 0;
-		this._embeds.forEach(e => {
-			total += e.length;
-		});
-
-        return total + this._embed_count;
+		return total + this._embed_count;
+	
+		// this._embeds.forEach(e => {
+		// 	total += e.length;
+		// });
 	}
 
 	/// Returns the rendered list of embeds.

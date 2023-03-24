@@ -56,7 +56,7 @@ class CharacterData
 		return result;
 	}
 
-	async findClosestMatch(char, user = null)
+	async findClosestMatch(char, user = null, forceAll = false)
 	{
 		//Get a list of all characters - character:{level,player}
 		let options = this.charCache;
@@ -71,9 +71,9 @@ class CharacterData
 		var names = Object.keys(charTable);
 		if (names.length == 0)
 			return null;
-
+		
 		//If we have an exact match, skip the rest
-		if (charTable[char])
+		if (charTable[char] && !forceAll)
 		{
 			charTable[char].rating = 1;			
 			charTable[char].name = char;

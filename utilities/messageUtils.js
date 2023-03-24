@@ -201,6 +201,10 @@ async function findFenceposts(channel, message, limit = 500)
 	let messages = before.messages.concat(after.messages);
 	if (!messages.includes(message))
 		messages = before.messages.concat([message]).concat(after.messages);
+
+	if (before && !before.id && before.messages && before.messages.length > 0)
+		before.id = before.messages[0].id
+	console.log(`findFenceposts: ${before.id}->${after.id} | ${messages.length} total messages`)
 	
 	return { start: before.id, end: after.id, messages: messages };
 }
@@ -214,7 +218,17 @@ async function getRoleplayData(rpChan, message = null)
 	const roleplay = message
 		? await findFenceposts(rpChan, message)
 		: await findLastBreak(rpChan);
+
+
+	let users = [];
+	roleplay.messages.map( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
+	const guildMembers = rpChan?.guild?.members;
+	try { await guildMembers.fetch({user:users}) }
+	catch (err) { console.error(err) }
+
+	
 	const rpData = await scrapeMessages(roleplay.messages);
+	
 	if (rpData)
 		rpData.start = roleplay.messages[0].url;
 	return rpData;
@@ -293,6 +307,7 @@ async function scrapeMessages(messages, stats = null)
 function cleanMessageContent(message)
 {
 	const mention = new RegExp(MessageMentions.UsersPattern,"gi")
+	const spaces  = /\s+/g;
 	let content = message.content
 	if (Tupper.isTupperProxyMessage(message))
 	{
@@ -300,9 +315,10 @@ function cleanMessageContent(message)
 		content = content.replace(TupperPing,"")
 	}
 	content = content.replaceAll(mention,"")
-	
-	return content
+	content = content.replaceAll(spaces," ")	
+	return content.trim()
 }
+
 
 
 ///
@@ -325,17 +341,17 @@ async function scrapeMessageMetadata(stats, message)
 		debug (`Skipping short message from ${user.username} (${content.length})`)
 		return false
 	}
-		
-	if (!user.bot && !member)
-	{
-		try { member = await guildMembers.fetch(authorId); }
-		catch (err) { member = null; }
-	}
-	
-	let name = member?.nickname ?? user?.username;
-	let tupperData = null
 
 	stats = stats || { tupperMap: {} }	//Assign the stats if they don't already exist
+	
+	// if (!user.bot && !member)		
+	// {
+	// 	try { member = await guildMembers.fetch(authorId); }
+	// 	catch (err) { member = null; }
+	// }
+
+	let name = member?.nickname ?? user?.username;
+	let tupperData = null
 
 	if (user.bot)
 	{
