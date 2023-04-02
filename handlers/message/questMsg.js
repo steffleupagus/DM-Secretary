@@ -25,8 +25,12 @@ const guildEmoji = {
 
 async function shouldHandle(client, message)
 {
+	console.log("HERE")
+	
 	if (process.env.mod == "dev")
 		return false;
+
+	console.log("AND AFTER")
 	
 	if (!message.author.bot) return false
 	if (message.author.id != config.avraeId) return false
@@ -178,5 +182,6 @@ module.exports = {
 	bot: true,
 	menu: true,
 	shouldHandle: shouldHandle,
-	handleCreate: handleCreate
+	handleCreate: handleCreate,
+	build: config.PRODUCTION
 };
