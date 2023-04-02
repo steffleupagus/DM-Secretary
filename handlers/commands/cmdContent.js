@@ -104,6 +104,7 @@ async function publishContent(channel, content)
 			embed.setFooter({text:"Index"})
 		index.forEach( (item)=>
 		{
+			if (!item.title) return;
 			const field = `[${item.title}](${item.url})`
 			embed.extendField(field, "** **", true);			
 		});
@@ -128,6 +129,7 @@ async function execute(interaction)
 	const guild = guilds.get(guildId);
 	const channel = await guild?.channels.fetch(channelId);
 	const target = interaction.options.getChannel('target') || channel
+	const clear  = interaction.options.getBoolean('clear') ?? false
 
 	await interaction.deferReply({ephemeral:true});
 	
@@ -147,8 +149,11 @@ async function execute(interaction)
 	}	
 
 	//Clean up the old messages in the channel
-	await interaction.editReply(`Cleaning old content from <#${target.id}>`);
-	await MsgUtils.channelCleanup(channel);
+	if (clear)
+	{
+		await interaction.editReply(`Cleaning old content from <#${target.id}>`);
+		await MsgUtils.channelCleanup(channel);
+	}
 
 	//Write the content to the channel
 	await interaction.editReply(`Writing contents to <#${target.id}>`);
@@ -168,8 +173,8 @@ const data = new SlashCommandBuilder()
 	.setName('content')
 	.setDescription('Update the contents of a static channel')
 	.setDefaultPermission(false)	
-	.addChannelOption(option => option.setName('target').setRequired(false)
-									  .setDescription('Specify a target channel'))
+	.addChannelOption(option => option.setName('target').setRequired(false).setDescription('Specify a target channel'))
+	.addBooleanOption(option => option.setName('clear').setRequired(false).setDescription('Clear old messages or not'))
 
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.SendMessages		];

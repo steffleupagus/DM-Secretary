@@ -3,7 +3,15 @@
 	{
 		"id":"940061953064329216",
 		"name":"📜│test-content",
-		"data":"lore.json"
+		"data":"quest.json"
+	},
+
+
+	"1091765016937627740":
+	{
+		"id":"1091765016937627740",
+		"name":"👑🌐│quest-info",
+		"data":"quest.json"		
 	},
 	"1082341579848687626":
 	{

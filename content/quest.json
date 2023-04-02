@@ -1,0 +1,48 @@
+{
+	"Quest":
+	{
+		"includeIndex":true,
+		"embeds": 
+		[
+			{
+				"title":"Introduction",
+				"description": "Something dark has been discovered in the wilds of the Demiplane.\nUnlike anything before seen in or around Ost, or the Demiplane itself.\n\nA rot spreads.\n\nAn ever-present mist hangs in the air. Not the pink mist familiar to every denizen of the Demiplane, but a cloying dark gray fog. Rather than its usual scent of sex and aroma of arousal, it smells of dust and of barren, blighted earth. It seems to leech the color from everything it touches, and sound seems to die beneath its heavy blanket.\n\nThe pristine white-capped peaks of the mountains appear a dirty gray. The normally sparkling and refreshing clear-water mountain streams which flow from it, running a similar dull and lifeless hue. Rife with the unpleasant taste and smell of taint and stagnation, one is unlikely to find many bathing provocatively in such befouled waters.\n\nThe Sapphire Lake into which those streams flow, have likewise lost much of its luster. The ever-vibrant sparkling blue of those waters appear flat and dull, as though the very vibrant saturation of its sapphire color had been drained from it. The ever-present nymphs and merfolk who play and fornicate in the shallows are nowhere to be seen.\n\nEven the verdant depths of the Moaning Wood, the normally thriving dryad forests left ashen and sallow, and eerily quiet; the moaning for which the forest is named, notably absent.\n\nUnderstandably concerned for her city, the Queen has called upon all interested parties to discover what they can about this unknown threat, and find a way to put a stop to it in defense of Ost and the Demiplane as a whole.\n\n"					
+			},
+			{
+				"image":{"url":"https://i.imgur.com/WSVNxYz.png"}
+			},
+			{
+				"title": "OOC Information",
+				"description": "This is a server-wide event for the server anniversary, and all denizens of the realm welcome to participate!\nRP surrounding the event can be run in <#1082152121803227166>\n(I will be opening several threads to keep this from becoming too unruly).\nThis will be __self-run__ RP with other characters.\n**I will be providing quest events as prompts, __not__ running individual RP.**\n\nOOC discussion and questions can be directed to <#785341784443846696>, and rolls for the quest can be done in <#1091904242899501096> (character sheet required).\n\nThis event is **cooperative**. Attacks, spells (both healing and damage), and skill rolls will all be tracked and factored into your success! At the end of every few days (up to a week), your cumulative totals will be tallied up, and some new development presented in this ongoing saga.\n\n*This is an ambitious and experimental event. Please be patient with me.*",
+				"footer":{"text":"OOC Information"}
+			},
+			{
+				"title": "Quest Mechanics",
+				"description": "Every 24 hours (reset at midnight, server-time), each character may perform a total of 3 actions in the event. These actions may be a skill roll, attack (as enemies are discovered), or spell (healing and damage spells will both be tracked). To take any other kind of action or cast spells which fall outside of basic damage/healing, please ping <@659069077872181248>).\n**You __must__ add the `quest` snippet at the end of your Avrae command in order for it to apply to the quest**.\n\nFor multi-part actions, you may include the `-i` flag to not count it against your actions for that day. If you use it, provide an explanation for it. *This will be on the honor system, and if I catch anyone abusing that flag to take more actions, they will be removed from the event and forfeit any rewards.*",
+				"fields": [
+					{
+						"name": "🔹 Guild Banners",
+						"value": "You may (optionally) quest under a guild banner! Doing so may provide some benefit over the course of the event, and possibly catch the eye of the guild master and earn you renown and prestige in your chosen guild. You may dedicate each action to one guild by including the guild's name after the `quest` snippet. For example: `!a longsword quest guardian` will dedicate your attack to the glory of the Guardian guild, and `!cast fireball quest arcanum` will cast fireball in the name of the Arcanum guild. If no guild is specified, you quest for your own glory.\n\n`arcanum`, `hand`, `faith`, `guardian`, `outrider`, `thorn`"
+					},
+					{
+						"name": "🔹 Combat",
+						"value": "Joining initiative will **not** be generally necessary to engage in combat with any enemies discovered over the course of the quest. Those who have effects or boosts which automatically apply a bonus to their attacks may want to, anyway.\n\nAll damage from weapon attacks and spells will be tracked, provided the `quest` snippet is included... otherwise, you may find your attacks have no effect.\n\n`!a <weapon> -t <target> quest [guild]`\n`!cast <spell> -t <target> quest [guild]`"
+					},
+					{
+						"name": "🔹 Skills",
+						"value": "`!c <skill> quest [guild]`\nAny skill roll you might choose will have some bearing on the quest, in some form or another, be it information revealed, morale improved, wounds tended, or some other form of influence. Those who engage in a given skill under the banner of a guild (optional) may find their guild offering some benefit towards their success."
+					},
+					{
+						"name": "🔹 Healing Spells",
+						"value": "As with damaging spells mentioned in the Combat section, healing spells will also be tracked. For the most part, damage will **not** be inflicted on your characters ... though there may be other effects applied. Healing spells may be chosen as an action to apply general healing to citizens or adventurers in general, rather than a specific target."
+					},
+					{
+						"name": "🔹 Other Spells or Actions",
+						"value": "The `quest` snippet will help track the rolls and results of attacks, spells, and skills, but any action, feature, or spell which falls outside of that or doesn't include rolls and automation will have to be tracked manually.\nPlease ping <@659069077872181248> when attempting such an action."
+					}
+				],
+				"footer":{"text":"Quest Mechanics"}
+			}
+		]
+	}
+}
