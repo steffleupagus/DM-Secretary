@@ -731,7 +731,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
 	
 	rpData = consolidateData(rpData);
 	rpData = assignExperience(rpData);
- 	start  = `${interaction?.channel} [Start](${start})`;
+ 	start  = `${interaction?.channel.name}\n${interaction?.channel} [Start](${start})`;
 	footer = `Logged at (Server Time): ${fullDate}\nProcTime: ${footer}`;
 
 	const title = SCENE_EMBED_TITLE;
@@ -769,7 +769,10 @@ function generateDMEmbed(interaction, start, rpData, footer)
 		let encode = encodeURIComponent(JSON.stringify(data));
 		let value  = ""
 		if (data.name != data.char)
+		{
+			data.name = data.name.split("\u200B").join("`,`")
 			value += `*RP as \`${data.name}\`*\n`
+		}
 		if (data.rpp >= 0)
 			value += `<@${data.user}>: ${config.rppemoji}\`${data.rpp}\` RPP\n`
 		else //if (data.xp >= 0)
