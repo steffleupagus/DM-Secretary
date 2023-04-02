@@ -485,8 +485,14 @@ async function handleEdit(interaction)
 
 	var index = data.findIndex(x => x.char === response);
 	let editData = data[index]
+
+	let sameUser = data.filter(x => x.user === editData.user && x.char != editData.char)
+					   .map(x => { return {name:x.char,level:x.level} })
+	editData.sameUser = sameUser;
+	
 	try {	editData = await processCharData(interaction, editData, true); }
 	catch(err) { 
+		console.error(err)
 		await interaction.editReply({content: "Cancelled Edit", embeds:[], components:[]})
 		return Mutex.unlock(mutexId);
 	}
@@ -1190,14 +1196,27 @@ async function processCharData(interaction, charRPData, forcePrompt = false, npc
 		const charDBData = await CharUtils.findClosestMatch(charRPData.name, charRPData.user, forcePrompt);
 		charRPData.match =  charDBData?.match;
 		charRPData.matches = charDBData?.matches;
-				
+
+		if (charRPData.sameUser)
+		{
+			charRPData.matches = charRPData.matches ?? [];
+			charRPData.sameUser.forEach(x => 
+			{
+				if (!charRPData?.matches?.find(y => y.name == x.name))
+					charRPData.matches.push({...x, rating:0})
+			})
+			delete charRPData.sameUser;
+		}
+		
+console.log(charRPData)
+		
 		const matchRating = charRPData.match?.rating || 0;
 		if (matchRating < MATCH_THRESHOLD || forcePrompt)
 		{
-			const numChars = charRPData.matches?.length || 0;								
+			const numChars = charRPData.matches?.length || 0;
 			if (numChars > 0)
 			{
-				try { 
+				try {
 					startTime = performance.now()					
 					charRPData.match = await assignUnknownCharacter(interaction, charRPData, npcAssign) 
 					endTime = performance.now()
