@@ -24,10 +24,7 @@ const guildEmoji = {
 }
 
 async function shouldHandle(client, message)
-{
-	if (process.env.mod == "dev")
-		return false;
-	
+{	
 	if (!message.author.bot) return false
 	if (message.author.id != config.avraeId) return false
 
@@ -48,6 +45,10 @@ async function shouldHandle(client, message)
 	////Skill Check
 	skillIdent.lastIndex = 0
 	const skill = skillIdent.test(embed.title);
+
+	if (embed.description.includes("is too exhausted to continue questing!"))
+		return false
+	
 		
 	return isQuest && (dtype || skill)
 }
@@ -70,8 +71,9 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const userId = /\(\|\|uid\: ?([0-9]*)\|\|\)/i
 	let   user   = false;
 
-	const action = /★*☆* \(\-1\)/gi
+	const action = /★*☆* \(\-([0-9])\)/i
 	let   actInc = false;
+	let   actCnt = 0;
 	
 	const damage = /\*\*(?:Damage|Healing)(?: \(CRIT\!\):?)?\*\*:.*\[.*\] = `(\-?[0-9]*)`/gi
 	const result = /[0-9]*d20.* = `([0-9]*)`/gi
@@ -79,8 +81,13 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	let   total  = fields.map(field => 
 	{
 		user   = user || field.value.match(userId)?.[1];
-		actInc = actInc || field.value.match(action)
-		console.log(actInc)
+		let act = field.value.match(action);
+		if (act)
+		{
+			actInc = true
+			actCnt = parseInt(act?.[1] || "1")
+		}
+		console.log(actInc, actCnt)
 		
 		let amt = [...field.value.matchAll(skill ? result : damage)];
 			amt = (amt.length > 0) ? amt.reduce( (total, cur) => total + parseInt(cur[1]), 0) : 0			
@@ -117,7 +124,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	record.skills = record.skills || []
 	record.guilds = record.guilds || []
 
-	inc = actInc ? 1 : 0
+	inc = actInc ? actCnt : 0
 	const guildData = {guild:guild, count:inc, skill:0, damage:0, healing:0}
 	
 	if (skill)
@@ -173,10 +180,12 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 }
 
+const schemaName = `questMsg${config.DEV ? "dev" : ""}`
 module.exports = {
-	name: 'questMsg',
+	name: schemaName,
 	bot: true,
 	menu: true,
 	shouldHandle: shouldHandle,
-	handleCreate: handleCreate
+	handleCreate: handleCreate,
+	build: config.PRODUCTION //|| config.DEV
 };
