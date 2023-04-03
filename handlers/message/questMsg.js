@@ -137,7 +137,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 		}
 		else
 		{
-			record.skills.push({skill:skill, count:1, total:total})
+			record.skills.push({skill:skill, count:inc, total:total})
 			record.skills.sort( (a,b) => a.skill < b.skill )			
 		}
 		guildData.skill += total
