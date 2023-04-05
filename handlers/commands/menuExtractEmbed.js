@@ -24,7 +24,7 @@ async function execute(interaction)
 		message.content = message.content.replace('\`','\\`')
 
 	message.embeds.forEach(embed => {
-		responses.push( "```\n" + JSON.stringify(embed.toJSON()) + "```")
+		responses.push( "```\n" + JSON.stringify(embed.toJSON(),null,"\t") + "```")
 	})
 
 	await interaction.reply({ 	content: "```\n" + message.content + "\n```", 							 	
