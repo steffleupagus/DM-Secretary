@@ -988,8 +988,8 @@ async function assignUnknownUser(interaction, name)
 	let message = await interaction.editReply({embeds:[embed], ephemeral: interaction.ephemeral});	//.followUp(
 	let response = await Prompt.promptUserPing(channel, message, null)
 
-	if (!Debug)
-		await message.delete();	
+	// if (!Debug)
+	// 	await message.delete();	
 	let authorId = null
 	if (response)
 	{
