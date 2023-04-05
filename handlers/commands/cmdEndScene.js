@@ -16,6 +16,7 @@ async function execute(interaction, message=null)
 	}
 	catch (error)
 	{
+		
 		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
 		throw error.message
 	}

@@ -46,7 +46,7 @@ async function shouldHandle(client, message)
 	skillIdent.lastIndex = 0
 	const skill = skillIdent.test(embed.title);
 
-	if (embed.description.includes("is too exhausted to continue questing!"))
+	if (embed?.description?.includes("is too exhausted to continue questing!"))
 		return false
 	
 		
