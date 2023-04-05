@@ -23,9 +23,6 @@ const guildEmoji = {
 
 async function execute(interaction)
 {
-	const ephemeral = true;
-	await interaction.deferReply({ephemeral: ephemeral});
-
 	// Gather necessary data (or defaults) from the command
 	const global  = interaction.options.getBoolean('global') || false;
 	const channel = global ? null : interaction.channel;
@@ -34,6 +31,9 @@ async function execute(interaction)
 	const char    = interaction.options.getString('character') ?? null;
 	const type    = interaction.options.getString('type') ?? null; 
 	const guild   = interaction.options.getString('guild') ?? null; 
+	const ephem   = interaction.options.getBoolean('ephemeral') ?? true; 
+
+	await interaction.reply({content:"*Generating Output*",ephemeral: ephem});
 
 	const query = {
 		...(chan && { chan: chan.id }),
@@ -43,6 +43,9 @@ async function execute(interaction)
 
 	console.log(query)
 	let questData = await quest.find(query)
+
+	// console.log(util.inspect(questData, false, null, true /* enable colors */))
+
 	questData = questData.map( record => 
 	{
 		const newRecord = { chan: record.chan, user: record.user, char: record.char };
@@ -82,13 +85,14 @@ async function execute(interaction)
 		return include;		
 	})
 
-	console.log(util.inspect(questData, false, null, true /* enable colors */))
+	// console.log(util.inspect(questData, false, null, true /* enable colors */))
 
-	
-	let	embed = null;
-		embed = new EmbedBuilder()	
-	interaction.editReply({embeds:[embed]})
+	// let	embed = null;
+	// 	embed = new EmbedBuilder()	
+	// interaction.editReply({embeds:[embed]})
 
+	ShowBySkill(interaction, questData)
+	ShowBySkillDetailed(interaction, questData)
 	ShowByGuild(interaction, questData)
 
 //guild
@@ -104,12 +108,6 @@ async function execute(interaction)
 //channel
 //global
 
-
-
-
-
-
-	
 	// //Generate the output
 	// let embed = new Embed();
 	// embed.setTitle(`Name Match`)
@@ -132,6 +130,107 @@ async function execute(interaction)
 	// Utils.asyncArrayForEach(embeds, async embed => {
 	// 	await interaction.followUp({embeds:[embed], ephemeral: true})
 	// })	
+}
+
+async function ShowBySkill(interaction, data)
+{
+	const skillData = {};
+	data.forEach( x => { if (x?.skills?.length > 0)
+	{
+		x.skills.forEach(skill =>
+		{
+			skillData[skill.skill] ??= [];
+			skillData[skill.skill].push({char:x.char, 
+										 count:skill.count, total:skill.total});				
+		})
+	}})	
+	
+	const skills = Object.keys(skillData)
+	skills.sort();
+
+	const lineLen = 69
+	const totalLen = 10
+	const countLen = 3
+	const avgLen   = 10
+	const nameLen = lineLen - totalLen - countLen - avgLen
+	const pad = ' '	
+
+	let embed = new EmbedBuilder()
+		embed.setTitle("Skills")
+	let title = `\`${"Name".padEnd(nameLen,pad)}${"#".padStart(countLen,pad)}${"Total".padStart(totalLen,pad)}${"Avg".padStart(avgLen,pad)}\``
+	let value = ""
+
+	skills.forEach( skill => 
+	{
+		console.log(skill, skillData[skill])
+		
+		if (skillData[skill].length == 0) return;		
+		let count = skillData[skill].reduce( (total, cur) => total + cur.count, 0)		
+		let total = skillData[skill].reduce( (total, cur) => total + cur.total, 0)		
+		let avg = (total / count).toFixed(2) 
+		
+		skill = skill.padEnd(nameLen,pad)
+		count = count.toString().padStart(countLen,pad)
+		total = total.toString().padStart(totalLen,pad)
+		avg = avg.toString().padStart(avgLen,pad)
+		value += `\`${skill}${count}${total}${avg}\`\n`		
+	})
+
+	embed.addFields([{name:title,value:value}])
+	await interaction.editReply({content:"",embeds:[embed],ephemeral:true})			
+}
+
+async function ShowBySkillDetailed(interaction, data)
+{
+	const skillData = {};
+	data.forEach( x => {
+		if (x?.skills?.length > 0)
+		{
+			x.skills.forEach(skill =>
+			{
+				skillData[skill.skill] ??= [];
+				skillData[skill.skill].push({char:x.char, 
+											 count:skill.count, total:skill.total});				
+			})
+		}
+	})	
+	const skills = Object.keys(skillData)
+	skills.sort();
+	
+	const lineLen = 69
+	const totalLen = 6
+	const nameLen = lineLen - totalLen
+	const pad = '.'	
+	Utils.asyncArrayForEach(skills, async (skill) => 
+	{
+		if (skillData[skill].length == 0)
+			return;
+		
+		skillData[skill].sort( (a,b) => b.total - a.total )
+
+		let total = skillData[skill].reduce( (total, cur) => total + cur.total, 0)
+		
+		let embed = new EmbedBuilder()
+			embed.setTitle(`${skill}`)
+		let title = `\`${"Total".padEnd(nameLen,pad)}${total.toString().padStart(totalLen,pad)}\`\n\n\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
+		let value = skillData[skill].map( x => {
+			let n = x.char.padEnd(nameLen,pad);
+			let t = x.total.toString().padStart(totalLen,pad)
+			return `\`${n}${t}\``;
+		}).join('\n')
+		
+		// console.log(title,"\n\n",value);
+		try
+		{
+			embed.addFields([{name:title,value:value}])
+			await interaction.followUp({embeds:[embed],ephemeral:true})			
+		}catch (e){
+			console.error(e)
+			
+			console.log(embed)
+		}
+		// console.log("\n\n\n")
+	})
 }
 
 async function ShowByGuild(interaction, data)
@@ -166,13 +265,7 @@ async function ShowByGuild(interaction, data)
 
 async function ShowByType(interaction, data)
 {
-	
 }
-
-
-
-
-
 
 
 ////// Gather up data to populate the character prompt / autocomplete
@@ -216,8 +309,8 @@ const guildOption = new SlashCommandStringOption()
 		{ name: 'Arcanum', value: 'Arcanum' },
 		{ name: 'Black Hand', value: 'Black Hand' },
 		{ name: 'Faith Council', value: 'Faith Council' },
-		{ name: 'Guardians', value: 'Guardians' },
-		{ name: 'Outriders', value: 'Outriders' },
+		{ name: 'Guardian', value: 'Guardian' },
+		{ name: 'Outrider', value: 'Outrider' },
 		{ name: 'Silver Thorn', value: 'Silver Thorn' },
 		{ name: 'Unaligned', value: 'Unaligned' }
 	);
@@ -274,6 +367,11 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option
 			.setName('global')
 			.setDescription('Get all results regardless of channel it occurred in')	
+			.setRequired(false)
+		)
+	.addBooleanOption(option => option
+			.setName('ephemeral')
+			.setDescription('If the output should be hidden. Defaults to TRUE')
 			.setRequired(false)
 		)
 
