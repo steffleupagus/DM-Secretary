@@ -265,13 +265,7 @@ async function ShowByGuild(interaction, data)
 
 async function ShowByType(interaction, data)
 {
-	
 }
-
-
-
-
-
 
 
 ////// Gather up data to populate the character prompt / autocomplete
