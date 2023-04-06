@@ -74,7 +74,7 @@ async function updateLevelMessage(channel)
 		}
 	}
 
-//	await MsgUtils.channelCleanup(channel)
+	await MsgUtils.channelCleanup(channel)
 	embed.send(channel)
 	return;
 }
@@ -378,19 +378,27 @@ async function updateDataFromMessage(client, message)
 	});
 	if (finalData.hasOwnProperty('name') && finalData.name != "")
 	{
+		const query = {name: finalData.name, user: finalData.user}
+		
 		if (finalData.hasOwnProperty('delete'))
 		{
-			console.log("DELETE: ", finalData.delete);
-
-			// message.react("💀")
-			// updateLevelMessage = true;
-			// levelData.removeItem(finalData.delete);
+			console.log("DELETE: ", finalData, "\n", query);
+			if (query.name && query.user)
+			{
+				const oldRecord = await PurgeChar(query);	
+				if (oldRecord)
+				{
+					await message.react("💀")			
+					updateLevelMessage = true;
+				}
+				else
+					await message.react("❓")
+			}
 		}
 		else
 		{
 			console.log("UPDATE: ", finalData);
 
-			const query = {name: finalData.name, user: finalData.user}
 			const oldRecord = await updateLevelData(query, finalData.level);	
 			await message.react(config.xpemoji)
 
