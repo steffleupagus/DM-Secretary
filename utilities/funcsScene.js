@@ -92,7 +92,7 @@ async function processScene(interaction, message)
 	//Check to make sure it's an Exp eligible scene or early out.
 	const channel = interaction.channel
 	const validChannel = await CheckValidChannel(channel);
-//	if (!validChannel) return SCENE_BREAK_CLOSER;
+	if (!validChannel && !Debug) return SCENE_BREAK_CLOSER;
 
 	//Lock the channel so additional attempts to end this scene will fail	
 	Mutex.lock(channel, ERROR_SCENE_LOCKED);	
