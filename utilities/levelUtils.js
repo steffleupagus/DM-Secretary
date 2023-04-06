@@ -2,6 +2,7 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 
 const Embed = require(`../utilities/EmbedPaginator.js`)
+const Utils = require(`../utilities/utilFuncs.js`)
 const MsgUtils = require(`../utilities/messageUtils.js`)
 
 const levelSchema = require(`../database/levelSchema.js`)
