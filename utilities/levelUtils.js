@@ -285,7 +285,7 @@ async function updateDailyExp(data, type, logDate)
 async function PurgeChar(char)
 {
 	if (!char) return;
-	let records = await levelSchema.findOne/*AndDelete*/(char);
+	let records = await levelSchema.findOneAndDelete(char);
 	console.log("Chars",records)
 	return records
 }

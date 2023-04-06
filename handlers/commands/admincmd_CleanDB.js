@@ -1,4 +1,5 @@
 const { SlashCommandBuilder,
+	   	EmbedBuilder,
 	    PermissionsBitField } = require('discord.js')
 
 const mod = process.env.mod || "";
@@ -8,6 +9,7 @@ const charUtils = require(`../../utilities/charUtils.js`);
 const LevelUtils = require(`../../utilities/levelUtils.js`);
 const GuildUtils = require(`../../utilities/guildUtils.js`);
 const Utils = require(`../../utilities/utilFuncs.js`)
+const Prompt = require(`../../utilities/promptUtils.js`)
 
 async function execute(interaction)
 {
@@ -20,16 +22,40 @@ async function execute(interaction)
 	const level = interaction.options.getInteger('level') || null
 	if (char && level)
 	{
-		let query = {name:char, level}
-		let result = await LevelUtils.PurgeChar(query)
-		console.log(result)
-		delete query.name
-		query.char = char
-		query.user = result.user
-		result = await GuildUtils.PurgeChar(query)	
-		console.log(result)
+		await interaction.deferReply({ephemeral: false});
 		
-		await interaction.deferReply({ephemeral: ephemeral});
+		const levelQuery = {name:char, level}
+		const levelResult = await LevelUtils.getLevelData(levelQuery);
+		const user = levelResult?.user;
+
+		const guildQuery = {char, user}
+		const guildResult = await GuildUtils.GetRawRosterData(guildQuery, true);
+		console.log(guildResult)
+		const guilds = guildResult.map( x => {
+			return `${x.guild} (${x.rank})`
+		}).join("\n")
+		
+		const embed = new EmbedBuilder()
+			.setTitle("Char Cleanup")
+			.addFields([
+				{name:"Char",value:`${levelResult.name} (${levelResult.level})`,inline:true},
+				{name:"User",value:`<@${levelResult.user}>`,inline:true},
+				{name:"Guilds", value:guilds || "None"}
+			])		
+
+		const prompt = await interaction.followUp({embeds:[embed], ephemeral:false})
+		const confirm = await Prompt.confirmDialog(prompt,[interaction.user.id])
+		if (confirm)
+		{	
+			let result = await LevelUtils.PurgeChar(levelQuery)
+			console.log(result)
+			if (guilds)
+			{
+		 		result = await GuildUtils.PurgeChar(guildQuery)	
+				console.log(result)
+			}
+		}
+		await prompt.delete();				
 		return;		
 	}
 		
