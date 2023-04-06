@@ -13,8 +13,14 @@ async function shouldHandle(client, message)
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
-	await LevelData.logLevelMessage(client, message, interaction, sendResult)
+	const updated = await LevelData.logLevelMessage(client, message, interaction, sendResult)
 	await CharUtils.RefreshCache()
+
+	if (updated)
+	{
+		const channel = message.guild.channels.resolve(config.levelOutputChan)
+		await LevelData.updateLevelMessage(channel);
+	}	
 }
 
 

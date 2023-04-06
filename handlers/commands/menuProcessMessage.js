@@ -17,6 +17,8 @@ async function execute(interaction)
 	if (!message)
 		return interaction.reply({ 	content: 'No message found', ephemeral: true });
 
+	const author = await interaction.guild.members.fetch(message.author)
+	
 	let reply = `Processing [message](${message.url})\n`
 	await interaction.reply({ 	content: reply, 
 								ephemeral: true });
