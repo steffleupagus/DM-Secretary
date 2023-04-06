@@ -10,7 +10,7 @@
 				"footer":{"text":"OOC Information"}
 			},
 			{
-				"title": "Quest Mechanics (Updated)",
+				"title": "Quest Mechanics",
 				"description": "Every 24 hours (reset at midnight, server-time), each character may perform a total of 3 actions in the event. These actions may be a skill roll, attack (as enemies are discovered), or spell (healing and damage spells will both be tracked). To take any other kind of action or cast spells which fall outside of basic damage/healing, please ping <@659069077872181248>).\n**You __must__ add the `quest` snippet at the end of your Avrae command in order for it to apply to the quest**.\n\nFor multi-part actions, you may include the `-i` flag to not count it against your actions for that day. If you use it, provide an explanation for it. *This will be on the honor system, and if I catch anyone abusing that flag to take more actions, they will be removed from the event and forfeit any rewards.*",
 				"fields": [
 					{
@@ -35,7 +35,7 @@
 					},
 					{
 						"name": "🔹 Buffs & Support",
-						"value": "Your Bonus Action spells, features, and effects which provide buffs to actions may be applied without using a Quest action (i.e. do not require the use of the `quest` snippet) provided you include an explanation of the source immediately preceeding or following the roll which used it. If your buff (Bardic inspiration, for instance) applies to someone else, both players should mention it. Spells or effects which take an action to apply *are* required to use the `quest` snippet, and will take one of your actions."
+						"value": "Your Bonus Action spells, features, and effects which provide buffs to actions may be applied without using a Quest action (i.e. do not require the use of the `quest` snippet) provided you include an explanation of the source immediately preceeding or following the roll which used it. If your buff (Bardic inspiration, for instance) applies to someone else, both players should mention it.\nFor spells or features which take an action to apply, you may take a single 'prep round' to apply a single such buff to yourself per quest action. Any such effects beyond the first, or applied to buff another, will take one of your quest actions, and are required to use the `quest` snippet."
 					}
 				],
 				"footer":{"text":"Quest Mechanics"}

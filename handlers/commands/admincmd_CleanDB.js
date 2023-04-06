@@ -16,6 +16,26 @@ async function execute(interaction)
 	const guild = interaction.guild;
 	const ephemeral = true;
 
+	const char = interaction.options.getString('char') || null
+	const level = interaction.options.getInteger('level') || null
+	if (char && level)
+	{
+		let query = {name:char, level}
+		let result = await LevelUtils.PurgeChar(query)
+		console.log(result)
+		delete query.name
+		query.char = char
+		query.user = result.user
+		result = await GuildUtils.PurgeChar(query)	
+		console.log(result)
+		
+		await interaction.deferReply({ephemeral: ephemeral});
+		return;		
+	}
+		
+
+
+	
 	for (var i=0; i < 5; ++i)
 	{
 		const targetMember  = interaction.options.getMember(`user_${i}`);
@@ -77,6 +97,15 @@ const data = new SlashCommandBuilder()
 	.setName('cleandb')
 	.setDescription('Check the database data for invalid members and remove their records')
 	.setDefaultPermission(false)	
+	.addStringOption(option => option
+			.setName('char')
+			.setDescription('Character to clean from the databases')
+			.setRequired(false))
+	.addIntegerOption(option => option
+			.setName('level')
+			.setDescription('Level of the char to clean from the databases')
+			.setRequired(false))
+	
 	.addUserOption(option => option
 			.setName('user_0')
 			.setDescription('User to clean from the databases')
@@ -97,6 +126,7 @@ const data = new SlashCommandBuilder()
 			.setName('user_4')
 			.setDescription('User to clean from the databases')
 			.setRequired(false))
+
 
 const userPermissions = [	PermissionsBitField.Flags.ManageGuild	];
 module.exports = 
