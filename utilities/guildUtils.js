@@ -185,7 +185,7 @@ class GuildData
 	async PurgeChar(char)
 	{
 		if (!char) return;
-		let records = await guildRosterSchema.findOne/*AndDelete*/(char);
+		let records = await guildRosterSchema.findOneAndDelete(char);
 		console.log("Guild",records)
 		this.dataDirty = true;
 		return records
