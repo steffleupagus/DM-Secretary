@@ -1,0 +1,17 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title": "🧠 Flashes of Memory",
+				"description":"The mists intrude once more upon your mind. As before, the sights, sounds, and smells of battle dim and fade to nothing, and images not your own once more flash across your memory. This time, however, the memories are more clear.\n\nQueen Sel'ani (still but a princess in the time of this memory) and her sister, both of unsurpassed beauty in the small kingdom, caught the eye of a mage. You witness flashes of his courtship to Princess Sel'ani, illicit liaisons, and whispers in the night conspiring against her sister This time, a few fragments of whispered phrases reach your ears.\n\n_`...we cannot be together as long as my sister desires you...`_\n_`...I would do anything to remove her as an obstacle...`_\n_`...if she takes the throne all is lost...`_\n_`...the throne will be yours, my love, I swear it...`_\n\nOnce more the flash of the Archmage weaving his spell, and once more your vision goes black. But, this time, it does not remain so.\n\nA mote of light flashes in the darkness. Then another, accompanied by a moan. Then a dozen more, each flash giving you the smallest fraction of an orgasm. Each flash illuminating a pink mist like a flint and steel. Then more. Faster. Brighter. Until the next spark starts before the first had died, and the mist flikers as if illuminated by a dancing candle flame. Then brighter, until it is a torch. Then a bonfire. Then the sun that bathes a featureless demiplane in light.\n\nWhen you blink, the featureless demiplane vanishes and you are back in the battle..."
+			},
+			{
+				"title": "Mechanics",
+				"description":"As the mists once again intrude upon your mind, drawing more of your energy out and pushing memories into your head, it begins to take its toll. Your energy wanes, and the greater the exposure the more potent its effects have grown. A -2 penalty has been imposed on your Quest Actions.\n\nYou may, however, take ONE additional Quest action for free (using the `-i` flag) to do an Arcana or History check."
+			}				
+		]
+	}
+}

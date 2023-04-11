@@ -13,6 +13,24 @@
 		"name":"👑🌐│quest-info",
 		"data":"quest.json"		
 	},
+	"1094791565106491392":
+	{
+		"id":"1094791565106491392",
+		"name":"Failed Save (1)",
+		"data":"questSaveFail_1.json"		
+	},
+	"1095164645901348894":
+	{
+		"id":"1095164645901348894",
+		"name":"Failed Save (2)",
+		"data":"questSaveFail_2.json"		
+	},
+	"1095165252494180372":
+	{
+		"id":"1095165252494180372",
+		"name":"Failed Save (3)",
+		"data":"questSaveFail_3.json"		
+	},
 	"1082341579848687626":
 	{
 		"id":"1082341579848687626",
