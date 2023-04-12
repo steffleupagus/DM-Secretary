@@ -345,7 +345,7 @@ function createSelectRow(customId="select", options=[], min=null, max=null,
 						.setCustomId(customId)
 						.setPlaceholder(placeholder)
 						.addOptions(options)
-	if (min)
+	if (min !== null)
 		select.setMinValues(min)
 	if (max)
 		select.setMaxValues(max)			

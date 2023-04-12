@@ -1,10 +1,19 @@
-const mongoose = require('mongoose')
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
+const mongoose = require('mongoose')
+const schemaName = `channelmeta${config.DEV ? "dev" : ""}`
+
+//const stringArray = { type:[String] }
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	channelId: reqString,
 	awardsExp: Boolean,
-	hideActivity: Boolean,	
+	userOwner: String,
+	guildHall: String,
+	threadMax: Number,
+	locations: [String],
+	trackActivity: Boolean	
 })
-
-module.exports = mongoose.model('channelmeta', schema, 'channelmeta')
+	
+module.exports = mongoose.model(schemaName, schema, schemaName)
