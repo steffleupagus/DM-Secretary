@@ -5,16 +5,18 @@ const config = require(`${process.cwd()}/config/${mod}_config.json`);
 async function execute(interaction)
 {
 	const client = interaction.client
-	client.commands.get('chanmeta').execute(interaction, true)	
+	const command = `chanmeta${config.DEV ? "dev" : ""}`
+	client.commands.get(command).execute(interaction, true)	
 }
 
 async function run(client, message, command, args)
 {
-	client.commands.get('chanmeta').run(client, message, command, args)
+	// const command = `chanmeta${config.DEV ? "dev" : ""}`
+	// client.commands.get(command).run(client, message, command, args)
 }
 
-const data = new SlashCommandBuilder()
-	.setName('upgrade')
+const data = new SlashCommandBuilder()	
+	.setName(`upgrade${config.DEV ? "dev" : ""}`)
 	.setDescription('Upgrade the given channel to make it eligible for RP exp via the /scene cmd')
 	.setDefaultPermission(false)
 	.addChannelOption(option => option.setName('target').setRequired(false)
@@ -36,7 +38,7 @@ module.exports =
 	userPermissions: userPermissions,
 	botPermissions: userPermissions,
 	execute: execute,
-	message: run,
+//	message: run,
 
-	build:config.PRODUCTION //||config.DEV
+	build:config.PRODUCTION||config.DEV
 };

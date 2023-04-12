@@ -24,8 +24,8 @@ const guildEmoji = {
 async function execute(interaction)
 {
 	// Gather necessary data (or defaults) from the command
-	const global  = interaction.options.getBoolean('global') || false;
-	const channel = global ? null : interaction.channel;
+	const local   = interaction.options.getBoolean('local') ?? false;
+	const channel = local ? interaction.channel : null;
 	const chan    = interaction.options.getChannel('chan') || channel;
 	const user    = interaction.options.getMember('user') ?? null;
 	const char    = interaction.options.getString('character') ?? null;
@@ -55,7 +55,7 @@ async function execute(interaction)
 		{
 			newRecord.skills = [];
 			record.skills.forEach( x => {
-				if (!type || type.includes(x.skill)) newRecord.skills.push( { skill: x.skill, count: x.count, total: x.total } )
+				if (!type || type.startsWith("Skill")) newRecord.skills.push( { skill: x.skill, count: x.count, total: x.total } )
 			})
 			if (newRecord.skills.length == 0) delete newRecord.skills
 		}
@@ -85,15 +85,22 @@ async function execute(interaction)
 		return include;		
 	})
 
-	// console.log(util.inspect(questData, false, null, true /* enable colors */))
-
-	// let	embed = null;
-	// 	embed = new EmbedBuilder()	
-	// interaction.editReply({embeds:[embed]})
-
-	ShowBySkill(interaction, questData)
-	ShowBySkillDetailed(interaction, questData)
-	ShowByGuild(interaction, questData)
+	switch (type)
+	{
+		case "Damage":
+		case "Healing":
+			await ShowByDamage(interaction, questData);
+			break;
+		case "Guild":
+			await ShowByGuild(interaction, questData)
+			break;
+		case "Skill":
+			await ShowBySkill(interaction, questData)
+			break;
+		case "Skill Detail":
+			await ShowBySkillDetailed(interaction, questData)
+			break;
+	}
 
 //guild
 		// { name: 'Arcanum', value: 'Arcanum' },
@@ -106,7 +113,7 @@ async function execute(interaction)
 //user
 //character
 //channel
-//global
+//
 
 	// //Generate the output
 	// let embed = new Embed();
@@ -132,6 +139,51 @@ async function execute(interaction)
 	// })	
 }
 
+
+
+async function ShowByDamage(interaction, data)
+{
+	const lineLen = 50
+	const totalLen = 13
+	const nameLen = lineLen - totalLen
+	const pad = '.'
+	
+	let embed = new EmbedBuilder()
+		embed.setTitle(`Total Damage`)
+
+	let total = 0;
+		data = data.map( record => 
+		{
+			if (!record?.damage?.total) return null
+			let t = record.damage.total;
+			let c = record.damage.count;			
+			total += t;			
+			record.guild = t;
+			return record;
+		}).filter( x=>x);
+
+	let title = `\`${"Total".padEnd(nameLen,pad)}${`${total}`.padStart(totalLen,pad)}\`\n\n` +
+				`\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
+	
+		data.sort((a,b) => b.damage.total - a.damage.total)
+		let value = data.map( record => 
+			{
+				if (!record?.damage.total) return null
+				let n = record.char.padEnd(nameLen,pad);							
+				let t = record.damage.total.toString().padStart(totalLen,pad)
+				return `\`${n}${t}\``;
+			}).filter(x => x)
+	
+		if (value.length > 0)
+		{
+			console.log(title, value);		
+			embed.addFields({name:title,value:value.join('\n')})
+			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+		}
+
+}
+
+
 async function ShowBySkill(interaction, data)
 {
 	const skillData = {};
@@ -148,7 +200,7 @@ async function ShowBySkill(interaction, data)
 	const skills = Object.keys(skillData)
 	skills.sort();
 
-	const lineLen = 69
+	const lineLen = 50
 	const totalLen = 10
 	const countLen = 3
 	const avgLen   = 10
@@ -177,7 +229,7 @@ async function ShowBySkill(interaction, data)
 	})
 
 	embed.addFields([{name:title,value:value}])
-	await interaction.editReply({content:"",embeds:[embed],ephemeral:true})			
+	await interaction.editReply({content:"",embeds:[embed],ephemeral:interaction.ephemeral})			
 }
 
 async function ShowBySkillDetailed(interaction, data)
@@ -197,11 +249,11 @@ async function ShowBySkillDetailed(interaction, data)
 	const skills = Object.keys(skillData)
 	skills.sort();
 	
-	const lineLen = 69
+	const lineLen = 50
 	const totalLen = 6
 	const nameLen = lineLen - totalLen
 	const pad = '.'	
-	Utils.asyncArrayForEach(skills, async (skill) => 
+	await Utils.asyncArrayForEach(skills, async (skill) => 
 	{
 		if (skillData[skill].length == 0)
 			return;
@@ -223,7 +275,7 @@ async function ShowBySkillDetailed(interaction, data)
 		try
 		{
 			embed.addFields([{name:title,value:value}])
-			await interaction.followUp({embeds:[embed],ephemeral:true})			
+			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
 		}catch (e){
 			console.error(e)
 			
@@ -235,30 +287,43 @@ async function ShowBySkillDetailed(interaction, data)
 
 async function ShowByGuild(interaction, data)
 {
-	const lineLen = 69
-	const totalLen = 6
+	const lineLen = 50
+	const totalLen = 13
 	const nameLen = lineLen - totalLen
 	const pad = '.'
-	Utils.asyncArrayForEach(guildOption.choices, async (guild) => {
+	
+	await Utils.asyncArrayForEach(guildOption.choices, async (guild) => {
 		guild = guild.name
 		let embed = new EmbedBuilder()
 			embed.setTitle(`${guildEmoji[guild]} ${guild}`)
+		let total = 0;
 
-		let title = `\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
+		data = data.map( record => {
+			let g = record.guilds?.find( x=> x.guild == guild);
+			let t = 0;
+			if (g) t = g.damage + g.skill - g.healing;
+			total += t;			
+			record.guild = t;
+			return record
+		})
+
+		let title = `\`${"Total".padEnd(nameLen,pad)}${`${total}`.padStart(totalLen,pad)}\`\n\n` +
+					`\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
+		data.sort((a,b) => b.guild - a.guild)			
 		let value = data.map( record => {
-							let n = record.char.padEnd(nameLen,pad);
-							let g = record.guilds?.find( x=> x.guild == guild)	
-							if (!g) return null
-							let t = g.damage + g.skill - g.healing
-								t = t.toString().padStart(totalLen,pad)
+							if (!record?.guild) return null
+							let n = record.char.padEnd(nameLen,pad);							
+							let t = record.guild.toString().padStart(totalLen,pad)
 							return `\`${n}${t}\``;
 						})
 						.filter(record => record)
+
+		
 		if (value.length > 0)
 		{
 			console.log(title, value);		
 			embed.addFields({name:title,value:value.join('\n')})
-			await interaction.followUp({embeds:[embed],ephemeral:true})
+			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
 		}
 	})
 }
@@ -319,53 +384,37 @@ const typeOption = new SlashCommandStringOption()
 	.setDescription('Type of quest engagement')
 	.setRequired(false)
 	.addChoices(
+		{ name: 'Guild',   value: 'Guild' },
+		{ name: 'User',   value: 'User' },
 		{ name: 'Damage',  value: 'Damage' },
 		{ name: 'Healing', value: 'Healing' },
 		{ name: 'Skill',   value: 'Skill' },
-		{ name: 'Skill: Acrobatics', value: 'Skill|Acrobatics' },
-		{ name: 'Skill: Animal Handling', value: 'Skill|Acrobatics' },
-		{ name: 'Skill: Arcana', value: 'Skill|Arcana' },
-		{ name: 'Skill: Athletics', value: 'Skill|Athletics' },
-		{ name: 'Skill: Deception', value: 'Skill|Deception' },
-		{ name: 'Skill: History', value: 'Skill|History' },
-		{ name: 'Skill: Insight', value: 'Skill|Insight' },
-		{ name: 'Skill: Intimidation', value: 'Skill|Intimidation' },
-		{ name: 'Skill: Investigation', value: 'Skill|Investigation' },
-		{ name: 'Skill: Medicine', value: 'Skill|Medicine' },
-		{ name: 'Skill: Nature', value: 'Skill|Nature' },
-		{ name: 'Skill: Perception', value: 'Skill|Perception' },
-		{ name: 'Skill: Performance', value: 'Skill|Performance' },
-		{ name: 'Skill: Persuasion', value: 'Skill|Persuasion' },
-		{ name: 'Skill: Religion', value: 'Skill|Religion' },
-		{ name: 'Skill: Sleight of Hand', value: 'Skill|Sleight of Hand' },
-		{ name: 'Skill: Stealth', value: 'Skill|Stealth' },
-		{ name: 'Skill: Survival', value: 'Skill|Survival' }
+		{ name: 'Skill Detail', value: 'Skill Detail'}
 	)
 
 const data = new SlashCommandBuilder()
 	.setName('quest')
-	.setDescription('Get info from the ongoing quest')
+	.setDescription('Filter by guild')
 	// .setDefaultPermission(false)	
 	.addStringOption(guildOption)
 	.addUserOption(option => option
 			.setName('user')
-			.setDescription('A user to narrow down search results')
+			.setDescription('Filter by user')
 			.setRequired(false)
 		)
 	.addStringOption(option => option
 			.setName('character')
-			.setDescription('Select from registered characters!')
+			.setDescription('Filter by character')
 			.setRequired(false)
 			.setAutocomplete(true)
 		)
-	.addStringOption(typeOption)
 	.addChannelOption(option => option
 			.setName('channel')
-			.setDescription('Select from the available channels the quest occurred in')
+			.setDescription('Filter by channel')
 			.setRequired(false)
 		)
 	.addBooleanOption(option => option
-			.setName('global')
+			.setName('local')
 			.setDescription('Get all results regardless of channel it occurred in')	
 			.setRequired(false)
 		)
@@ -374,6 +423,7 @@ const data = new SlashCommandBuilder()
 			.setDescription('If the output should be hidden. Defaults to TRUE')
 			.setRequired(false)
 		)
+	.addStringOption(typeOption)
 
 const userPermissions = [PermissionsBitField.Flags.SendMessages];
 module.exports = 
