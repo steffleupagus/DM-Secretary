@@ -10,7 +10,7 @@
 			},
 			{
 				"title": "Mechanics",
-				"description":"As the mists once again intrude upon your mind, drawing more of your energy out and pushing memories into your head, it begins to take its toll. Your energy wanes, and the greater the exposure the more potent its effects have grown. A -2 penalty has been imposed on your Quest Actions.\n\nYou may, however, take ONE additional Quest action for free (using the `-i` flag) to do an Arcana or History check."
+				"description":"As the mists once again intrude upon your mind, drawing more of your energy out and pushing memories into your head, it begins to take its toll. Your energy wanes, and the greater the exposure the more potent its effects have grown. A -1 penalty will be imposed on your Quest Actions.\n\n"
 			}				
 		]
 	}
