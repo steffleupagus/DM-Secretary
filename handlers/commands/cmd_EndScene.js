@@ -24,15 +24,8 @@ async function execute(interaction, message=null)
 
 async function run(client, message, command, args)
 {
-	try
-	{		
-		if (config.DEV)
-			SceneUtils.sceneDebug(message);
-	}
-	catch (error)
-	{
-		console.error(error)
-	}
+	const reply = await message.reply("*This command has been disabled. Please use `/scene` going forward.*")
+	message.delete()
 	return
 }
 
@@ -82,7 +75,7 @@ module.exports =
 	message: run,
 	button: button,
 	select: select,
-	build:config.PRODUCTION||config.DEV
+	build:config.PRODUCTION//||config.DEV
 };
 
 const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
