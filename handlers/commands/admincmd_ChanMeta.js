@@ -377,6 +377,7 @@ async function handleInteraction(interaction)
 	let publicFlag = false;
 	console.log(`HandleSelect: ${customId} for ${chanMeta?.channelId}`)
 	if (!chanMeta) return;		
+	chanMeta.threadMax = chanMeta.threadMax ?? 0
 	switch(customId)
 	{
 		case `${data.name}.incThread`:
