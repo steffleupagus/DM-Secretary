@@ -18,7 +18,8 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 	if (updated)
 	{
-		const channel = message.guild.channels.resolve(config.levelOutputChan)
+		const channel = await message.guild.channels.resolve(config.levelOutputChan)
+		console.log(channel.id)
 		await LevelData.updateLevelMessage(channel);
 	}	
 }
