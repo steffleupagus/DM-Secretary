@@ -4,6 +4,21 @@ const SortOrder = require(`${root}/utilities/enums.js`)
 
 module.exports =
 {
+	// helper function to convert channel name to something usable as a title
+	toSentenceCase(str, stripPrefix = false)
+	{
+		if ((str===null) || (str==='')) return false;
+	
+		str = str.toString();
+
+		if (stripPrefix) str = str.split("│")[1]
+		
+		str = str.replace(/[\|\-]/g," ")
+	    str = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+		str = str.replace(/ i*/ig, function(txt){return txt.toUpperCase()});					 
+		return str.trim()
+	},	
+	
 	stackTrace()
 	{
 		var stackTrace = Error().stack;
