@@ -33,6 +33,8 @@ const STEP_PROCESS_DATA  = "Processing scene data. Please be patient."
 const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
 
 const SCENE_EMBED_TITLE  = `${config.xpemoji} Scene Complete`;
+const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Complete`;
+const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
 const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your level looks wrong__: \n• React with 👎 to cancel`
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.xpLogChannel}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
 const CONFIRM_FOOTER = `👍 confirm (all players) / 👎 cancel (any player).\nWill auto-confirm after 30 seconds.`
@@ -54,7 +56,7 @@ const dmRoles = [
 
 const interactionTimer = {};
 
-async function sceneDebug(message)
+async function autoCloseScene(message)
 {
 	if (!Debug) return
 	let startTime = performance.now()
@@ -72,8 +74,15 @@ async function sceneDebug(message)
 	// console.log(util.inspect(rpData, false, null, true /* enable colors */))
 
 	let endTime = performance.now()
-	await sendDMApprovalMessage(message, start, data, SCENE_COMMAND_TIME(startTime, endTime));	
-	// LogDebugResult(message, data, message.url, channel, SCENE_COMMAND_TIME(startTime,endTime,"Scene Processing: "))
+	await sendDMApprovalMessage(message, start, data, SCENE_COMMAND_TIME(startTime, endTime) + "\nScene auto-closed");	
+
+	const embeds = generatePlayerConfirmEmbed(data)
+	Utils.asyncArrayForEach(embeds, async embed => {
+		embed.setTitle(SCENE_EMBED_TITLE_AUTO);
+		embed.setFooter({text: "This scene has been automatically closed\n" + SCENE_EMBED_FOOTER })
+		await channel.send({embeds:[embed]})
+	})
+	await channel.send(SCENE_BREAK_CLOSER)
 }
 
 
@@ -296,7 +305,7 @@ async function generateXPEmbed(interaction, start, rpData, comment = "", footer 
 
 module.exports = {
 	processScene,
-	sceneDebug,
+	autoCloseScene,
 	handleApprove,
 	handleEdit,
 	handleNPC,
@@ -809,7 +818,7 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 {	
 	const embed = generateDMEmbed(interaction, start, rpData, footer)
 	var dmPingChan = await interaction.guild.channels.resolve(dmPingChannel);
-	await embed.send(dmPingChan, "<@&699439189447671889><@&694285067723210843>", //attachButtons);
+	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.DMOnDutyRole}>`, //attachButtons);
 					 (message) => message.edit({ components:[getApprovalButtonRow()] }))
 }
 
@@ -825,20 +834,11 @@ function getApprovalButtonRow()
 
 
 
-
-
-///
-/// Pause and wait for confirmation from the player(s) before continuing
-///
-async function awaitConfirmation(interaction, expData)
-{	
-	const players = [];
-	expData.map(x => { if (!players.includes(x.user)) players.push(x.user); })
-	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
-
+function generatePlayerConfirmEmbed(expData)
+{
 	let embed = new Embed();
 	embed.setTitle(SCENE_EMBED_TITLE);
-	embed.setFooter({text:"If any of this information looks incorrect, inform a `@DM On Duty`."});
+	embed.setFooter({text:SCENE_EMBED_FOOTER});
 
 	const data = expData.filter(x=>(x.level > 0 && x.xp > 0));
 	const npcs = expData.filter(x=>(x.level == 0 && x.xp > 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
@@ -855,11 +855,27 @@ async function awaitConfirmation(interaction, expData)
 	if (norp) embed.addField(`Insufficient RP`, norp);
 		
 	let embeds = embed.embeds();
-		embed = embeds.shift();
-	await interaction.editReply({content:pings, embeds:[embed], components:[]})	
+	return embeds
+}
+
+
+
+///
+/// Pause and wait for confirmation from the player(s) before continuing
+///
+async function awaitConfirmation(interaction, expData)
+{	
+	const players = [];
+	expData.map(x => { if (!players.includes(x.user)) players.push(x.user); })
+	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
+
+	const embeds = generatePlayerConfirmEmbed(expData)
+	const embed  = embeds.shift();
+	
+	await interaction.editReply({content:pings, embeds:[embed], components:[]})
 	Utils.asyncArrayForEach(embeds, async embed => {
 		await interaction.followUp({embeds:[embed], ephemeral: interaction.ephemeral})
-	})			
+	})
 
 	if (interaction.isContextMenuCommand())
 		return true;

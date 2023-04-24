@@ -1,0 +1,35 @@
+{
+	"silverThornEvent":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Silver Thorn Blindfold Room",
+				"description":"<#768318521674301470>",
+				"image": { "url": "https://i.imgur.com/U7UFyKQ.png" }
+			},
+			{
+				"description":"<#699456079096184862>",
+				"image": { "url": "https://i.imgur.com/wIdCDPi.png" }
+			},
+			{
+				"Title":"Blindfolded",
+				"description":"<#699456106388389958>",
+				"image": { "url": "https://i.imgur.com/V8Oe6ih.png" }
+			},
+			{
+				"Title":"Blindfolded",
+				"description":"``` ```__A sign posted at the entrance to the event room reads__\n> *Enjoy those blindfolded; they are here for everyone's pleasure.*\n> *Degradation is acceptable, but any who inflict harm upon them will be forcibly removed, and any offending limbs confiscated.*"
+			},
+
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n<:belt:862101053126475826> Enter the blindfold room without a blindfold\n\n<:blindfold:768311547058716743> Put on a blindfold before entering\n\n<:silverrose:699470814356963418> Leave the blindfold room and return to the <#697166960592683008>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:BrothelEvent nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

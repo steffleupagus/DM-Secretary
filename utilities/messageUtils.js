@@ -161,6 +161,9 @@ async function findRegexBreak(channel, regex, limit = 500, bookend = null, forwa
 
 		if (breakId)
 			break;
+
+		if (limit > 500)
+			await Utils.slowdown(limit / 5);
 	}
 
 	return { id: breakId, messages: retMsgs };
@@ -207,6 +210,11 @@ async function findFenceposts(channel, message, limit = 500)
 	console.log(`findFenceposts: ${before.id}->${after.id} | ${messages.length} total messages`)
 	
 	return { start: before.id, end: after.id, messages: messages };
+}
+
+function isSceneBreak(message)
+{
+	return BreakRegex.test(message?.content || message)
 }
 
 ///
@@ -542,4 +550,5 @@ module.exports =
 	scrapeMessages,
 	scrapeMessageMetadata,	
 	getRoleplayData,
+	isSceneBreak
 }	

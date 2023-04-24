@@ -1,0 +1,38 @@
+{
+	"colosseum":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Colosseum",
+				"description":"<#695712096322584607>",
+				"image": { "url": "https://i.imgur.com/SLoGaCU.png" }
+			},
+			{
+				"Title":"Side Arena",
+				"description":"<#699332551071760525> <#740619253635612693>",
+				"image": { "url": "https://i.imgur.com/mZPWC9k.jpg" }
+			},
+			{
+				"Title":"Lockers",
+				"description":"<#833469470290083887> <#909641705299509268>",
+				"image": { "url": "https://i.imgur.com/HbvlsqK.png" }
+			},
+			{
+				"Title":"Baths",
+				"description":"<#833469756903653386>",
+				"image": { "url": "https://i.imgur.com/qWu6L2n.png" }
+			},
+		
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏯 Exit the Colosseum to the Administrative District\n\n🎭 Exit the Colosseum to the Entertainment District\n\n⚔️ Enter the Guardian Guild Barracks\n(*Only members of the <@&702481674344071178> will succeed*)"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Colosseum nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"area":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Outrider's Lodge",
+				"description":"<#853363208109948938>",
+				"image": { "url": "https://i.imgur.com/y4hoeUx.png" }
+			},
+			{
+				"Title":"Lodge",
+				"description":"<#853364033612152842>",
+				"image": { "url": "https://i.imgur.com/wIYdL51.png" }
+			},
+			{
+				"Title":"Lodge Quarters",
+				"description":"<#853364287954485248>",
+				"image": { "url": "https://i.imgur.com/5J45A8r.jpg" }
+			},
+			{
+				"Title":"Warden's Chambers",
+				"description":"<#853363954499452928>",
+				"image": { "url": "https://i.imgur.com/WL2nsvq.jpg" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🚪 Leave the lodge and return to the <#833791497862119444>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Wilderness skip:2 nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

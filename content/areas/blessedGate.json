@@ -1,0 +1,32 @@
+{
+	"blessedGate":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Blessed Gate",
+				"description":"<#833425039251472384>\n<#694283478719791124> <#695239086033862737>",
+				"image": { "url": "https://i.imgur.com/zSBHUou.jpg" }
+			},
+			{
+				"Title":"Coastal Highway",
+				"description":"<#1099785390367440966>",
+				"image": { "url": "https://i.imgur.com/qNaMeSu.jpg" }
+			},
+			{
+				"Title":"Countryside",
+				"description":"<#699802570952015872>",
+				"image": { "url": "https://i.imgur.com/4ge8S0M.jpg" }
+			},
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n⛩️ - Pass through the Blessed Gate into the city\n\n🏔️ - Adventure to the <#833791497862119444> beyond the mountain pass\n\n🪦 - Circle around the city to the <#697166768887824465>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Gates nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title": "🧠 Hidden Histories",
+				"description":"Once more the mists overwhelm you, casting your mind back into the past and reliving anothers' memories - and there is no longer any doubt that that is what is transpiring. Each time it pushes deeper into your mind, becomes harder to shake, leaving your present further buried beneath the weight of the experience. This time, when it probes deeper, it sends you back farther, to a memory before the Archfey's imprisonment.\n\nIn the memory, a queen rests upon the throne, regal beyond words, but sickly and enfeebled. The queen's twin daughters, the princesses Aoife and Sel'ani, each eyed the throne. Each knows the healers have done all they can, and knowing the throne's vacancy is imminent. The courtiers and sycophants, anticipating an epic power struggle, have already begun casting their lot to support one princess over the other. They would be disappointed.\n\nIn the wee hours of night, after the ambitious advisors and ambassadors had retired for the evening, the two sisters stepped into the throne room of the palace of Ost. Two words broke the silence, and left Sel'ani staring at her sister in surprise:\n`It's yours`.\n\nBefore dawn arose, a bargain had been struck. Aoife would relinquish her claim to the throne, and the crown would always belong to Sel'ani. In exchange, Aoife could collect a small tithe from the people of the kingdom. A trifle, really... something they would never even miss...\n\nThe queen had succumbed to her illness in the night, and the following day Sel'ani ascended the throne, donned the crown, and took rulership of her kingdom. Aoife could only smile as the first piece had been put into place. In her hand, she held a small mote of lust, the first tithe collected."
+			},
+			{
+				"title": "Mechanics",
+				"description":"The toll of the mists continues to grow. Each action will be at Disadvantage. However, your mind has numbed to the effects of the mists, granting additional bonus to resisting further effects."
+			}				
+		]
+	}
+}
