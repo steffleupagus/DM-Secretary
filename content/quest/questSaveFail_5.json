@@ -1,0 +1,17 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title": "🧠 Glimpses of Truth",
+				"description":"The memory which invades your mind this time brings with it flashes of a prior vision, the Archmage weaving a potent spell. But, unlike the prior vision, Aoife dismisses his magic with a casual wave of her hand.\n\n`That is unnecessary, I assure you,` *Aoife states, her tone disinterested.*\n*The Archmage's eyes bore into her, his hands already beginning to form the gestures for another spell.* `I'm sorry, my lady, for Sel'ani to take the throne, you must be removed. There is nothing I would not do for her...`\n*Aoife repeated, her lips curling into a cunning smile.* `It is unnecessary, Magus. There is a way for us all to get what we want... I will step aside, my sister will get her throne, you will have her true feelings.`\n*The Archmage looked incredulous,* `And what do you get?`\n*Aoife smiled again, enigmatically.* `Why, I get imprisoned, of course.`\n\nLike pieces of a puzzle, the memories begin to resolve themselves into a tapestry. Aoife striking bargains with her sister and the Archmage, and relinquishing the throne as promised. Despite their bargain, Sel'ani mistrusted her sister and conspired with the Archmage. The Archmage sealed Aoife away with his magic ... just as Aoife had intended.\n\nEven in her prison, their pacts remained intact. The promised tithe of lust flowed ceaselessly into her ~~prison~~ chrysalis, providing her all the raw material she needed to construct her demiplane - so kindly provided by the Archmage's spell of imprisonment.\n\nWhen her Domain of Delight, and her metamorphosis into an Archfey, was completed, the obelisk, which served as both prison and coccoon, shattered..."
+			},
+			{
+				"title": "Mechanics",
+				"description":"Each time you emerge from one of the visions, more time has passed than before. You awaken in a different place than you were before, your body seeming to move of its own accord. This time, when you come to, your hand hovers inches from the shard, the air around it so cold that your skin nearly burns from it. The toll of the mists continues to grow, draining all but the barest will to act. You are drained of two quest actions per day."
+			}				
+		]
+	}
+}

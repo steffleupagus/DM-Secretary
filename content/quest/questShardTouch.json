@@ -1,0 +1,20 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title":"✋ Touching the Shard",
+				"description": "Reaching out to touch the shard, even briefly, brings a strange mixture of pain and euphoria. The stone is cold to the touch in a manner beyond mere physical temperature, and it renders your entire arm numb from even the very first touch. Touching it for the duration of your casting proves to be an effort of willpower. And yet, even before the first syllable of your verbal component leaves your lips, you can feel the raw power of the demiplane's magic that it's absorbed contained within, and there is no doubt it is magically imbued.\n\nThough you set out to identify the shard, the shard, it seems, has other plans, and your mind is flooded with visions and memories not your own. You see the stone obelisk in the courtyard of the Queen's palace - a shimmering, opalescent stone, wrapped in bands of gold and etched with runes. Simultaneously you see, within it, the Queen's sister, and the nascent Demiplane of Lust.\nCenturies pass with the obelisk unmoving from that spot in Queen Sel'ani's courtyard. Motes of lust and tiny fragments of orgasms drawn to it like a lodestone, and all the while it shimmers and radiates magic. While centuries pass in the Prime Material, millennia pass within - long enough for the Queen's sister to use the essence of lust to shape her prison into her own Domain of Delight.\n\nFinally, you witness the shattering. A purple-robed mage approaches and lays his hand on the obelisk. The opalescent stone shatters, exploding outward. Inside, the sky shatters and implodes. The demiplane turns inside out and outside in. The Queen's sister emerges as if from a chrysalis, the city of Ost transported wholly into the very demiplane built within her prison.\n\nBut that is not the end. The final thing you see, before your vision ends, are the shards of the obelisk. Propelled like shrapnel from the force of the explosion, each still absorbing motes of lust, trapping and containing their power.",
+				"fields":[
+					{"name":"⚙️ Mechanics", "value":"Touching the shard saps away a significant portion of your energy, sapping your energy and your will to action. Mustering the energy to take any action is exceedingly difficult, limiting you to only one Quest action per day."}
+				]				
+			},
+			{
+				"title":"🔮 Identify",
+				"description": "*The above is experienced simply through touching the shard. The following is the results of Identify.*\n\n||As you finally emerge from your vision, it is impossible to tell how much time has passed. Your arm is so numb it hurts, but you've apparently been casting the spell the entire time - so perhaps it's been only a minute? As you utter the final syllable, you learn the following, which only seems to confirm what the visions have already told you: It is clearly a magically-imbued object, created by the 9th level Abjuration spell, Imprisonment. But it has also been imbued with powerful magic of an archfey that most closely resembles the spell Demiplane, but not *exactly*. Its properties are fairly straightforward: it was a prison built to contain a fey but, through some quirk, it draws raw emotions of lust and passion into it. Even shattered, the shard is attempting to fulfill that purpose.||"
+			}
+		]
+	}
+}

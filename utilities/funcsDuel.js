@@ -161,11 +161,11 @@ async function getDuelData(mechChan, message=null)
 		if (parseInitiative(message))
 			duel = await MsgUtils.findNextBreak(mechChan, message)
 		else
-			duel = await MsgUtils.findFenceposts(mechChan, message)
+			duel = await MsgUtils.findFenceposts(mechChan, message, 5000)
 	}
 	else
 	{
-		duel = await MsgUtils.findLastBreak(mechChan);
+		duel = await MsgUtils.findLastBreak(mechChan, 1000);
 	}
 	if (!duel) return null;
 

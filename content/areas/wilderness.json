@@ -1,0 +1,69 @@
+{
+	"wilderness":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Mountain Foothills",
+				"description":"<#696775878671204403>",
+				"image": { "url": "https://i.imgur.com/Ei6rgWg.jpg" }
+			},
+			{
+				"Title":"Lookout Point",
+				"description":"<#744714003619643472>",
+				"image": { "url": "https://i.imgur.com/ia95Wb2.png" }
+			},
+			{
+				"Title":"Sapphire Lake",
+				"description":"<#762044371800948778>",
+				"image": { "url": "https://i.imgur.com/h4fttln.png" }
+			},
+			{
+				"description":"<#732008548166533201>",
+				"image": { "url": "https://i.imgur.com/RLkVJlJ.png" }
+			},
+			{
+				"Title":"Moaning Wood",
+				"description":"<#732009498331578388> <#762044475610234880>",
+				"image": { "url": "https://i.imgur.com/nJCh0bA.png" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/D3oiWtD.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/N13iwAX.jpg" }
+			},
+			{
+				"Title":"Druid Grove",
+				"description":"<#762044526134951956>",
+				"image": { "url": "https://i.imgur.com/fYKU0kT.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/AfMe2ex.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/rEpWR76.jpg" }
+			},
+			{
+				"Title":"Baal's Deep",
+				"description":"<#840453499870642196>",
+				"image": { "url": "https://i.imgur.com/NXx3uN3.jpg" }
+			},
+			{
+				"Title":"Island off the Coast",
+				"description":"<#833467268863623199>",
+				"image": { "url": "https://i.imgur.com/0U4xbKf.jpg" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏔️ - Travel through the mountain pass to the city\n\n🏕️ - Attempt to locate the trail to the Outrider's Lodge\n(*Only <@&853346385545920522> guild members will succeed*)"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Wilderness nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

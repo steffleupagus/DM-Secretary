@@ -33,7 +33,8 @@
 	"debugLogChannel": "1046251287919988837",
 	
 	"levelOutputChan":"825183131355185212",
-	"activityChannel":"833758148212424764",
+	"old_activityChannel":"833758148212424764",
+	"activityChannel":"1099439209284116531",
 	"profileChannel":"694861975896719450",
 
 	"duelChannels":[
