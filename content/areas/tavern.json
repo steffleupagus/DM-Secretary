@@ -1,0 +1,31 @@
+{
+	"cityTavern":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Manticore's Dream Tavern",
+				"description":"<#696536671302320188> <#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/RGgDlfU.jpg" }
+			},
+			{
+				"Title":"Tavern Loft",
+				"description":"<#697832426432626762> <#737326955191599304>",
+				"image": { "url": "https://i.imgur.com/3sur5Es.jpg" }
+			},
+			{
+				"title":"Manticore Tavern Menu",
+				"description":"**Tankard of Ale** - 50 RPP [`+buy tankard` / `+use tankard`]"
+			},
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏘️ Leave the Manticore's Dream Tavern into the Residential Quarter\n\n🏚️ Leave through the back alley to the Slums"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Tavern nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

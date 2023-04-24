@@ -1,0 +1,50 @@
+{
+	"area":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Mercantile Plaza",
+				"description":"<#695638277914624061>",
+				"image": { "url": "https://i.imgur.com/KSAogmM.png" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/um5cKUo.jpg" }
+			},
+			{
+				"Title":"Market",
+				"description":"<#694285592955191336>",
+				"image": { "url": "https://i.imgur.com/MPoT0CF.png" }
+			},
+			{
+				"Title":"Bazaar",
+				"description":"<#694286716302786570>",
+				"image": { "url": "https://i.imgur.com/apIZlY7.png" }
+			},
+			{
+				"Title":"Artisan Workshop",
+				"description":"<#902984302575362068>",
+				"image": { "url": "https://i.imgur.com/MN7Q0FZ.png" }
+			},
+			{
+				"Title":"Merchant Shop",
+				"description":"<#902984322762547220>",
+				"image": { "url": "https://i.imgur.com/yyvNibI.png" }
+			},
+			{
+				"Title":"Creamy Bean Café",
+				"description":"<#902984632599994418>",
+				"image": { "url": "https://i.imgur.com/uaqolZq.jpg" }
+			},
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n⛲ Return to the <#833415826778357760>\n\n🥂 Visit the <#711727898939097138>\n\n⚓ Travel to the <#713002614589227028>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Mercantile nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

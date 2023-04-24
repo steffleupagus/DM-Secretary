@@ -46,17 +46,25 @@ async function publishContent(channel, content)
 		}
 		else
 		{
+			let lastMessage = null;
 			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
 			{
+				if (embed?.description?.includes("<last_id>"))
+					embed.description = embed.description.replace("<last_id>",lastMessage)
+				
 				let item = await channel.send({embeds:[embed]});
 				if (value.includeTOC)
 					contents.push({"title":embed.title,"url":item.url});
 				else if (value.includeIndex)
 					index.push({"title":embed.title,"url":item.url});		
+
+				lastMessage = item.id
 				
 				let chanMentions = extractMention(embed).trim();
 				if (chanMentions)
 					await channel.send(chanMentions)
+
+				const waitTime = value.waitTime ?? 1200				
 				await wait(1200);
 			});
 		}
@@ -154,7 +162,7 @@ async function execute(interaction)
 		await interaction.editReply(`Cleaning old content from <#${target.id}>`);
 		await MsgUtils.channelCleanup(channel);
 	}
-
+	
 	//Write the content to the channel
 	await interaction.editReply(`Writing contents to <#${target.id}>`);
 	const result = await publishContent(target, content);
@@ -162,6 +170,9 @@ async function execute(interaction)
 		await interaction.followUp({ content: 'Write success!', ephemeral: true });
 	else
 		await interaction.followUp({ content: 'Write failure!', ephemeral: true });
+
+	
+	
 	interaction.deleteReply();
 }
 

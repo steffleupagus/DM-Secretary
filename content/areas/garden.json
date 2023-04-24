@@ -1,0 +1,46 @@
+{
+	"garden":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Garden Promenade",
+				"description":"<#708026473264578601>",
+				"image": { "url": "https://i.imgur.com/a5SbhcV.jpg" }
+			},
+			{
+				"Title":"Garden Nook",
+				"description":"<#762043570869108824>",
+				"image": { "url": "https://i.imgur.com/yfdV8l8.jpg" }
+			},
+			{
+				"Title":"Arcane Falls",
+				"description":"<#708026959728214136> <#831365120999424010>",
+				"image": { "url": "https://i.imgur.com/U1NPeP6.jpg" }
+			},
+			{
+				"Title":"Hidden Grotto",
+				"description":"<#732009031765458964>",
+				"image": { "url": "https://i.imgur.com/FmbhZ7o.png" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/Kek1JpH.png" }
+			},
+			{
+				"Title":"Hot Springs",
+				"description":"<#732009747401932820>",
+				"image": { "url": "https://media.discordapp.net/attachments/1099734278025265192/1099738856175173733/unknown.png" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏘️ Leave the Gardens and return to the <#695638364862414858>\n\n🔮 Cross the river to the <#699226459025309736>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Garden nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}
