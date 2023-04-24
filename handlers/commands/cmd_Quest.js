@@ -41,21 +41,31 @@ async function execute(interaction)
 		...(char && { char: char })
 	}
 
-	console.log(query)
+	console.log("Query", query)
 	let questData = await quest.find(query)
 
 	// console.log(util.inspect(questData, false, null, true /* enable colors */))
 
 	questData = questData.map( record => 
 	{
+		let count = 0;
 		const newRecord = { chan: record.chan, user: record.user, char: record.char };
-		if (!type || type == "Damage") newRecord.damage = { count:record.damage.count, total:record.damage.total }; 
-		if (!type || type == "Healing") newRecord.healing = { count:record.healing.count, total:record.healing.total }; 
-		if (!type || type.startsWith("Skill"))
+		//if (!type || type == "Damage") 
+		count += record.damage.count
+		if (record.damage.count)
+			newRecord.damage = { count:record.damage.count, total:record.damage.total }; 
+		//if (!type || type == "Healing") 
+		count += record.healing.count
+		if (record.healing.count)
+			newRecord.healing = { count:record.healing.count, total:record.healing.total }; 
+		//if (!type || type.startsWith("Skill"))
 		{
 			newRecord.skills = [];
 			record.skills.forEach( x => {
-				if (!type || type.startsWith("Skill")) newRecord.skills.push( { skill: x.skill, count: x.count, total: x.total } )
+				//if (!type || type.startsWith("Skill")) 
+				count += x.count
+				if (x.count)
+					newRecord.skills.push( { skill: x.skill, count: x.count, total: x.total } )
 			})
 			if (newRecord.skills.length == 0) delete newRecord.skills
 		}
@@ -69,13 +79,14 @@ async function execute(interaction)
 		})
 		if (newRecord.guilds.length == 0) delete newRecord.guilds		
 
+		newRecord.totalCount = count;
 		return newRecord;
 	}).filter( record => 
 	{
 		let include = true;
 		if (guild) include = include && record?.guilds?.find( x => x.guild == guild);
-		if (type == "Damage") include = include && (record.damage.total > 0 && record.damage.count > 0)
-		if (type == "Healing") include = include && (record.healing.total > 0 && record.healing.count > 0)
+		if (type == "Damage") include = include && (record?.damage?.total > 0 && record.damage.count > 0)
+		if (type == "Healing") include = include && (record?.healing?.total > 0 && record.healing.count > 0)
 		if (type && type.startsWith("Skill")) include = include && record.skills && record.skills.length > 0
 		if (type && type.startsWith("Skill|"))
 		{
@@ -99,6 +110,9 @@ async function execute(interaction)
 			break;
 		case "Skill Detail":
 			await ShowBySkillDetailed(interaction, questData)
+			break;
+		case "Player":
+			await ShowByPlayer(interaction, questData)
 			break;
 	}
 
@@ -139,7 +153,47 @@ async function execute(interaction)
 	// })	
 }
 
+async function ShowByPlayer(interaction, data)
+{
+	data = Utils.groupBy(data, "user")
 
+	let embed = new Embed()
+ 		embed.setTitle(`Player Breakdown`)
+
+	let skip = 0
+	
+	const users = Object.keys(data);
+
+	embed.addField("** **")
+	
+	users.forEach(user => {
+		if (skip > 0) return	
+	 	const charData = CharUtils.charByUser[user]
+	 	if (!charData) return
+
+		let userData = ""
+		if (!interaction.ephemeral)
+			userData += `<@${user}> [${user}]\n`
+
+		characters = data[user];
+		characters.forEach(char => 
+		{
+			const found = charData.find(x => x.name == char.char) || {level:"???"}
+			if (interaction.ephemeral)
+				userData += `${user}|${char.char}|Lvl ${found.level}|${char.totalCount} act\n` 
+			else
+				userData += `${char.char} - Level ${found.level}\n`
+		})
+		if (interaction.ephemeral)
+			userData = userData.trim();
+		embed.extendField(userData)
+	})
+
+	const embeds = embed.embeds()
+	embeds.forEach(async embed => {
+		await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+	});				
+}
 
 async function ShowByDamage(interaction, data)
 {
@@ -148,7 +202,7 @@ async function ShowByDamage(interaction, data)
 	const nameLen = lineLen - totalLen
 	const pad = '.'
 	
-	let embed = new EmbedBuilder()
+	let embed = new Embed()
 		embed.setTitle(`Total Damage`)
 
 	let total = 0;
@@ -164,21 +218,30 @@ async function ShowByDamage(interaction, data)
 
 	let title = `\`${"Total".padEnd(nameLen,pad)}${`${total}`.padStart(totalLen,pad)}\`\n\n` +
 				`\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
-	
+
+		embed.addField(title,"")
 		data.sort((a,b) => b.damage.total - a.damage.total)
 		let value = data.map( record => 
 			{
 				if (!record?.damage.total) return null
 				let n = record.char.padEnd(nameLen,pad);							
 				let t = record.damage.total.toString().padStart(totalLen,pad)
-				return `\`${n}${t}\``;
+
+				record = `\`${n}${t}\``;
+				console.log(record)
+				embed.extendField(record)
+				//value.join('\n')
+				return record;
 			}).filter(x => x)
 	
 		if (value.length > 0)
 		{
-			console.log(title, value);		
-			embed.addFields({name:title,value:value.join('\n')})
-			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+			console.log(title, value);
+			const embeds = embed.embeds();
+			Utils.asyncArrayForEach(embeds, async embed => {
+				await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})	
+			});		  
+//			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
 		}
 
 }
@@ -383,9 +446,10 @@ const typeOption = new SlashCommandStringOption()
 	.setName('type')
 	.setDescription('Type of quest engagement')
 	.setRequired(false)
-	.addChoices(
+	.addChoices(	
+		{ name: 'Player',  value: 'Player' },
 		{ name: 'Guild',   value: 'Guild' },
-		{ name: 'User',   value: 'User' },
+		{ name: 'User',    value: 'User' },
 		{ name: 'Damage',  value: 'Damage' },
 		{ name: 'Healing', value: 'Healing' },
 		{ name: 'Skill',   value: 'Skill' },
