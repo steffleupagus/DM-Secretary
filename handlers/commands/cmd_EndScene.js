@@ -15,8 +15,8 @@ async function execute(interaction, message=null)
 			await interaction.editReply({content:"",components:[]});
 	}
 	catch (error)
-	{
-		
+	{		
+		console.log(error.stack, Error().stack)
 		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
 		throw error.message
 	}
