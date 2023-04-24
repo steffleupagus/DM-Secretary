@@ -209,6 +209,11 @@ async function findFenceposts(channel, message, limit = 500)
 	return { start: before.id, end: after.id, messages: messages };
 }
 
+function isSceneBreak(message)
+{
+	return BreakRegex.test(message?.content || message)
+}
+
 ///
 /// Get the roleplay data
 ///
@@ -542,4 +547,5 @@ module.exports =
 	scrapeMessages,
 	scrapeMessageMetadata,	
 	getRoleplayData,
+	isSceneBreak
 }	

@@ -22,6 +22,11 @@ async function execute(interaction, message=null)
 	}
 }
 
+async function autoClose(message)
+{
+	await SceneUtils.autoCloseScene(message)
+}
+
 async function run(client, message, command, args)
 {
 	const reply = await message.reply("*This command has been disabled. Please use `/scene` going forward.*")
@@ -75,6 +80,7 @@ module.exports =
 	message: run,
 	button: button,
 	select: select,
+	autoClose: autoClose,
 	build:config.PRODUCTION//||config.DEV
 };
 

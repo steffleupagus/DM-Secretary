@@ -157,28 +157,42 @@ async function ShowByPlayer(interaction, data)
 {
 	data = Utils.groupBy(data, "user")
 
-	let embed = new EmbedBuilder()
+	let embed = new Embed()
  		embed.setTitle(`Player Breakdown`)
 
 	let skip = 0
 	
 	const users = Object.keys(data);
+
+	embed.addField("** **")
+	
 	users.forEach(user => {
 		if (skip > 0) return	
 	 	const charData = CharUtils.charByUser[user]
 	 	if (!charData) return
 
-		let userData = `<@${user}> [${user}]\n`
+		let userData = ""
+		if (!interaction.ephemeral)
+			userData += `<@${user}> [${user}]\n`
+
 		characters = data[user];
 		characters.forEach(char => 
 		{
 			const found = charData.find(x => x.name == char.char) || {level:"???"}
-	 		userData += `${char.char} - Level ${found.level} - ${char.totalCount} actions\n` 
+			if (interaction.ephemeral)
+				userData += `${user}|${char.char}|Lvl ${found.level}|${char.totalCount} act\n` 
+			else
+				userData += `${char.char} - Level ${found.level}\n`
 		})
-	 	embed.addFields({name:"** **",value:userData})
+		if (interaction.ephemeral)
+			userData = userData.trim();
+		embed.extendField(userData)
 	})
 
-	await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+	const embeds = embed.embeds()
+	embeds.forEach(async embed => {
+		await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+	});				
 }
 
 async function ShowByDamage(interaction, data)

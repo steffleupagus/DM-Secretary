@@ -30,6 +30,7 @@ class Bot
 		{
 			this.loadCommands();
 			this.loadDatabase();
+			this.loadTimers();		
 		});				
 		this.runBot();
 
@@ -127,6 +128,25 @@ class Bot
 			if (!handler.hasOwnProperty("build") || handler.build)
 			{
 				this.client.reactHandlers.push(handler);
+			}
+		}
+	}
+
+	loadTimers()
+	{
+		console.log("Loading timers...");
+		const timers = fs.readdirSync(`${process.cwd()}/handlers/timers`)
+						 .filter(file => file.endsWith('.js'));
+
+		this.client.timers = [];
+		for (const file of timers) 
+		{
+			const timer = require(`${process.cwd()}/handlers/timers/${file}`);
+			console.log(" - Timer: ", timer.name, (timer.build ?? true) ? "(Enabled)" : "(Disabled)" );
+			if (!timer.hasOwnProperty("build") || timer.build)
+			{
+				this.client.timers.push(timer);
+				timer.startTimer(this.client);
 			}
 		}		
 	}
