@@ -1,5 +1,28 @@
 const { ChannelType, EmbedBuilder, time } = require('discord.js')
-const ChannelMeta = require(`../../database/chanMetaSchema.js`)
+
+
+
+
+const mongoose = require('mongoose')
+const schemaName = `channelmetadev`
+const reqString = { type:String, required:true }
+const schema = new mongoose.Schema({
+	channelId: reqString,
+	name:      reqString,
+	awardsExp: Boolean,
+	userOwner: [String],
+	guildHall: String,
+	threadMax: Number,
+	locations: [String],
+	trackActivity: Boolean	
+})
+const ChannelMeta = mongoose.model(schemaName, schema, schemaName)
+
+
+
+
+
+//const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const ChanUtils = require(`../../utilities/channelUtils.js`)
 const AreaMeta = require(`../../database/areaMetaSchema.js`)
 const MsgUtils = require(`../../utilities/messageUtils.js`)
@@ -23,12 +46,15 @@ async function startTimer(client)
 	const channelId = config.activityChannel;
 	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);;
 
+	// runUpdate(guild, channel);
+	// return;
+	
 	let index = 0
 	setInterval(async () => 
 	{
 		console.log(`Timer Fired: ${timerData.name} at index ${index}`)
 		index = await runUpdate(guild, channel, index);
-	}, 3 * msps * spm);	//Update one channel group every 3 minutes
+	}, 5 * msps * spm);	//Update one channel group every 3 minutes
 }
 
 //Organize by location role
@@ -79,11 +105,7 @@ async function runUpdate(guild, targetChannel, index=0)
 	}//)
 
 	console.log(`\t${area.name} updated`)
-
-	++index;
-	if (index >= areas.length)
-		index = 0	
-
+	if (++index >= areas.length) index = 0	
 	console.log(`\tOn Deck: ${index} (${areas[index].name})`)
 	return index;
 }
@@ -143,15 +165,17 @@ async function getChannelStatus(channel)
 async function generateEmbed(guild, area, channels)
 {
 	const channelManager = guild.channels
-
 	const embed = new EmbedBuilder()
-					 .setTitle(`${area.icon ? area.icon : ""} ${area.name}`.trim())
 					 .setDescription(`\`${"".padEnd(69," ")}\``)
+
+	let areaexp = true;
+	
 	await Utils.asyncArrayForEach( channels, async channel =>
 	{
 		//If the channel is set not to track, skip it
 		if (!channel.trackActivity) return
 		const xpEmoji = channel.awardsExp ? config.xpemoji : ""
+			  areaexp = areaexp && channel.awardsExp
 		const hasThreads = channel.threadMax
 		if (!hasThreads)
 			console.log(`\t\t\tThreads: ${channel.name}`)
@@ -177,6 +201,9 @@ async function generateEmbed(guild, area, channels)
 		embed.addFields({name,value})
 	})		
 
+	areaexp = areaexp ? config.xpemoji : ""
+	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
+	
 	//Add the last updated to the embed
 	var d = new Date();
 	d = d.toLocaleTimeString("en-US", {timeZone: "America/New_York"});
