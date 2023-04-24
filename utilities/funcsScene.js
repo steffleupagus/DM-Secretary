@@ -870,7 +870,7 @@ async function awaitConfirmation(interaction, expData)
 	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
 
 	const embeds = generatePlayerConfirmEmbed(expData)
-	const embed  = embeds.shift();
+	let   embed  = embeds.shift();
 	
 	await interaction.editReply({content:pings, embeds:[embed], components:[]})
 	Utils.asyncArrayForEach(embeds, async embed => {
