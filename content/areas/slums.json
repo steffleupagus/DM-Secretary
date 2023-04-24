@@ -1,0 +1,58 @@
+{
+	"slums":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"City Slums",
+				"description":"<#833537974166618122>",
+				"image": { "url": "https://i.imgur.com/4IrsDfE.jpg" }
+			},
+			{
+				"Title":"Shanty Town",
+				"description":"<#833537957918933003>",
+				"image": { "url": "https://i.imgur.com/IikJ0fX.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/RcHPDEk.png" }
+			},
+			{
+				"Title":"Dirty Alleyway",
+				"description":"<#697782747724382248>",
+				"image": { "url": "https://i.imgur.com/lFN89Gj.jpg" }
+			},
+			{
+				"Title":"Queen's Legs Tavern",
+				"description":"<#701882885854199858>",
+				"image": { "url": "https://i.imgur.com/95LkDIP.png" }
+			},
+			{
+				"Title":"Gambling Den",
+				"description":"<#701884468415168632>",
+				"image": { "url": "https://i.imgur.com/qO58vGz.png" }
+			},
+			{
+				"Title":"Black Market",
+				"description":"<#701884701362880803>",
+				"image": { "url": "https://i.imgur.com/fUydjzc.jpg" }
+			},
+			
+			
+			{
+				"Title":"Undercity Tunnels",
+				"description":"<#833891230294736926>",
+				"image": { "url": "https://i.imgur.com/DYGtCwQ.jpg" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏡 Travel to the Residential Quarter\n\n🍻 Enter the Manticore Dream Tavern\n\n⛵ Walk to the City Docks\n\n💰 Head to the Mercantile District\n\n🧤 Pass through the secret door and enter a Den of Iniquity\n(*Only members of the <@&697848468986921030> will be successful*)"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Slum nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

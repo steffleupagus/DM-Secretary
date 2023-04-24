@@ -1,0 +1,26 @@
+{
+	"citySquare":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"City Square",
+				"description":"<#694285683249905714> <#744709462723526666>",
+				"image": { "url": "https://i.imgur.com/ue2I4b1.jpg" }
+			},
+			{
+				"Title":"Streets Off the Square",
+				"description":"<#748757788787736636> <#748757872627810354>\n<#748757913941573733> <#748757974356328569>",
+				"image": { "url": "https://i.imgur.com/USJzpOX.png" }
+			},
+			{
+				"title":"Travel",
+				"description": "*A sign posted in the square points the direction to the various sections of the city.*\n\n⛩️ - Leave the city by way of the Blessed Gate\n\n🏘️ - Travel to the Residential Quarter\n\n💰 - Travel to the Mercantile Quarter\n\n🏯 - Travel to the Administrative District\n\n🎭 - Enter the Entertainment District\n\n🪦 - Leave the city by way of the Cursed Gate"
+			},
+			{
+				"fields":[{"name":"*Menu Command*","value":"`/rolemenu create group:Loc:CitySquare nodm:True rr:True m:???`"}]
+			}	
+		]
+	}
+}

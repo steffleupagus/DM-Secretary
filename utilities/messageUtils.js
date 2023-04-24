@@ -161,6 +161,9 @@ async function findRegexBreak(channel, regex, limit = 500, bookend = null, forwa
 
 		if (breakId)
 			break;
+
+		if (limit > 500)
+			await Utils.slowdown(limit / 5);
 	}
 
 	return { id: breakId, messages: retMsgs };

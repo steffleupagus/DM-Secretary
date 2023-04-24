@@ -1,0 +1,23 @@
+{
+	"area":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"",
+				"description":"<#>",
+				"image": { "url": "" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🚪 Leave the Ample Ogre and return to the <#695638364862414858>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Inn nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

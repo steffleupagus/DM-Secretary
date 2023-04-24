@@ -1,0 +1,47 @@
+{
+	"cityInn":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Ample Ogre Inn Common Room",
+				"description":"<#762042861637861386>",
+				"image": { "url": "https://i.imgur.com/vCa6ICU.jpg" }
+			},
+			{
+				"description":"<#696554217158082630>",
+				"image": { "url": "https://i.imgur.com/52X3coz.jpg" }
+			},
+
+			{
+				"Title":"Inn Rooms",
+				"description":"<#697831832749736067> <#697832108646727712> <#727201032827961387>",
+				"image": { "url": "https://i.imgur.com/MS2llxQ.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/nelthwF.jpg" }
+			},
+
+
+			{
+				"Title":"Communal Bath",
+				"description":"<#775202925756678164> <#759944916989640735>",
+				"image": { "url": "https://i.imgur.com/H5Vu7Sr.png" }
+			},
+			
+			{
+				"Title":"Proprietors",
+				"image": { "url": "https://i.imgur.com/2XgcwhC.png" }
+			},
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🚪 Leave the Ample Ogre and return to the <#695638364862414858>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Inn nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

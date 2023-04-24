@@ -1,0 +1,103 @@
+{
+	"citySquare":
+	{
+		"waitTime":3000,
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title":"Temple Courtyard",
+				"description":"<#748749699464429629>",
+				"image": { "url": "https://i.imgur.com/5q3uIEx.jpg" }
+			},			
+			{
+				"title":"Arcana Domain Temple",
+				"image": { "url": "https://i.imgur.com/p1KgHgH.jpg" }
+			},
+			{
+				"title":"Death Domain Temple",
+				"image": { "url": "https://i.imgur.com/SJXTTdI.jpg" }
+			},
+			{
+				"title":"Forge Domain Temple",
+				"image": { "url": "https://i.imgur.com/lKq92G1.jpg" }
+			},
+			{
+				"title":"Grave Domain Temple",
+				"image": { "url": "https://i.imgur.com/Z5TjgIK.jpg" }
+			},
+			{
+				"title":"Knowledge Domain Temple",
+				"image": { "url": "https://i.imgur.com/kxwnNe7.jpg" }
+			},
+			{
+				"title":"Life Domain Temple",
+				"image": { "url": "https://i.imgur.com/lRisQF9.jpg" }
+			},
+			{
+				"title":"Light Domain Temple",
+				"image": { "url": "https://i.imgur.com/B3M7wEz.jpg" }
+			},
+			{
+				"title":"Nature Domain Temple",
+				"image": { "url": "https://i.imgur.com/6H133KT.jpg" }
+			},
+			{
+				"title":"Order Domain Temple",
+				"image": { "url": "https://i.imgur.com/4dJzwWy.jpg" }
+			},
+			{
+				"title":"Peace Domain Temple",
+				"image": { "url": "https://i.imgur.com/qgnG8lG.jpg" }
+			},
+			{
+				"title":"Protection Domain Temple",
+				"image": { "url": "https://i.imgur.com/iFtZACb.jpg" }
+			},
+			{
+				"title":"Tempest Domain Temple",
+				"image": { "url": "https://i.imgur.com/lPF6rBH.jpg" }
+			},
+			{
+				"title":"Trickery Domain Temple",
+				"image": { "url": "https://i.imgur.com/GxUcupW.jpg" }
+			},
+			{
+				"title":"Twilight Domain Temple",
+				"image": { "url": "https://i.imgur.com/VoskGUy.jpg" }
+			},
+			{
+				"title":"War Domain Temple",
+				"image": { "url": "https://i.imgur.com/0RQ9i6y.jpg" }
+			},
+
+			{
+				"image": { "url": "https://i.imgur.com/9iyV5fA.png" }
+			},
+
+			{
+				"title":"Sleeping Cell",
+				"description":"<#766039136535707688>",
+				"image": { "url": "https://i.imgur.com/Sd9LMZs.png" }
+			},
+			{
+				"title":"Bath Chamber",
+				"description":"<#766039658777280532>",
+				"image": { "url": "https://i.imgur.com/cEXKCYU.png" }
+			},
+			{
+				"title":"Hierophant's Chamber",
+				"description":"<#766038186756538388>",
+				"image": { "url": "https://i.imgur.com/ZZ2a3CD.jpg" }
+			},
+
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏯 Exit the Temples and return to the Administrative District\n\n🚪 Return to the Temple Courtyard\n\n🕯️ Pray for guidance to the temple's inner sanctuary\n(*Only members of the <@&766031516038987786> will succeed*)"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Temple nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

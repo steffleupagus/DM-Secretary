@@ -1,0 +1,69 @@
+{
+	"arcanumTower":
+	{
+		"waitTime":3000,
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"image": { "url": "https://i.imgur.com/3u3ckhu.jpg" }				
+			},
+			{
+				"Title":"Tower Entrance",
+				"description":"<#699208736601931778>",
+				"image": { "url": "https://i.imgur.com/4EqaUjU.jpg" }
+			},
+			{
+				"Title":"Archive",
+				"description":"<#699226033240539186>",
+				"image": { "url": "https://i.imgur.com/LQEv2R7.jpg" }
+			},
+			{
+				"Title":"Alchemy Lab",
+				"description":"<#699226177801420820>",
+				"image": { "url": "https://i.imgur.com/dlgt1mK.jpg" }
+			},
+			{
+				"Title":"Artificer's Workshop",
+				"description":"<#700502195384221786>",
+				"image": { "url": "https://i.imgur.com/RsYLqU0.jpg" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/dlfCWrx.png" }				
+			},			
+			{
+				"Title":"Resident Parlour",
+				"description":"<#699233051598782595>",
+				"image": { "url": "https://i.imgur.com/heiMGuX.png" }
+			},
+			{
+				"Title":"Resident Bedroom",
+				"description":"<#699233162231939102>",
+				"image": { "url": "https://i.imgur.com/wUVVeW5.png" }
+			},
+			{
+				"Title":"Bath Chamber",
+				"description":"<#699233311884836985>",
+				"image": { "url": "https://i.imgur.com/f2rRW2G.png" }
+			},
+			{
+				"Title":"Tower Balcony",
+				"description":"<#699235759009431653>",
+				"image": { "url": "https://i.imgur.com/wny03bX.jpg" }
+			},
+			{
+				"Title":"High Magus Chamber",
+				"description":"<#699241091777560596>",
+				"image": { "url": "https://i.imgur.com/3jzuQi5.jpg" }
+			},
+
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏯 Exit the Arcanum Tower and return to the Administrative District\n\n🚪 Descend the Tower to the public area\n\n🔮 Ascend the Tower\n(*Only members of the <@&702348143752118372> will succeed*)"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Arcanum nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

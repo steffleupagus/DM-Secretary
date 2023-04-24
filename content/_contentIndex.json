@@ -1,9 +1,35 @@
 {
+	"833415826778357760":{"data":"areas/citySquare.json"},
+	"695638496143999007":{"data":"areas/cityAdmin.json"},
+	"699226459025309736":{"data":"areas/arcanumTower.json"},
+	"833819895875239956":{"data":"areas/templeDistrict.json"},
+	"695638653950492673":{"data":"areas/entertainment.json"},
+	"695808881573625978":{"data":"areas/colosseum.json"},
+	"699438898643730462":{"data":"areas/barracks.json"},
+	"697166960592683008":{"data":"areas/silverThorn.json"},
+	"699589168304488559":{"data":"areas/silverThornSuites.json"},
+	"768318521674301470":{"data":"areas/silverThornEvent.json"},
+	"695638364862414858":{"data":"areas/residential.json"},
+	"696536603778089001":{"data":"areas/tavern.json"},
+	"696553906045714492":{"data":"areas/inn.json"},
+	"708025677236142161":{"data":"areas/garden.json"},
+	"833537974166618122":{"data":"areas/slums.json"},
+	"701879121365565600":{"data":"areas/blackHand.json"},
+	"695638243504553994":{"data":"areas/mercantile.json"},
+	"711727898939097138":{"data":"areas/restaurant.json"},
+	"713002614589227028":{"data":"areas/docks.json"},
+	"697166768887824465":{"data":"areas/cursedGate.json"},
+	"833425039251472384":{"data":"areas/blessedGate.json"},
+	"833791497862119444":{"data":"areas/wilderness.json"},
+	"853363208109948938":{"data":"areas/outriders.json"},
+
+	
+	
 	"940061953064329216":
 	{
 		"id":"940061953064329216",
 		"name":"📜│test-content",
-		"data":"quest.json"
+		"data":"areas/silverThornSuites.json"
 	},
 
 
@@ -31,6 +57,37 @@
 		"name":"Failed Save (3)",
 		"data":"questSaveFail_3.json"		
 	},
+	"1097739700241961081":
+	{
+		"id":"1097739700241961081",
+		"name":"Failed Save (4)",
+		"data":"questSaveFail_4.json"		
+	},
+	"1098385616812654603":
+	{
+		"id":"1098385616812654603",
+		"name":"Failed Save (5)",
+		"data":"questSaveFail_5.json"		
+	},
+	"1099026918721982554":
+	{
+		"id":"1099026918721982554",
+		"name":"Failed Save (6)",
+		"data":"questSaveFail_6.json"
+	},
+	
+	"1099026973071786065":
+	{
+		"id":"1099026973071786065",
+		"name":"Shard - Identify",
+		"data":"questShardTouch.json"
+	},	
+	"1099027027429949450":
+	{
+		"id":"1099027027429949450",
+		"name":"Shard - Legend Lore",
+		"data":"questShardLegend.json"
+	},	
 	"1082341579848687626":
 	{
 		"id":"1082341579848687626",

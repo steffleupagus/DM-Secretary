@@ -1,0 +1,66 @@
+{
+	"silverThorn":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Silver Thorn Suites",
+				"description":"<#699589168304488559>",
+				"image": { "url": "https://i.imgur.com/a0XGPIJ.jpg" }
+			},
+			{
+				"Title":"Mistress Suite ",
+				"description":"<#699589233983094834>",
+				"image": { "url": "https://i.imgur.com/oFMV8HI.jpg" }
+			},
+			{
+				"Title":"Suites",
+				"description":"<#699588115458687016>",
+				"image": { "url": "https://i.imgur.com/hMTs7Od.jpg" }
+			},
+			{
+				"description":"<#699587998907367475>",
+				"image": { "url": "https://i.imgur.com/lYYRWeG.jpg" }
+			},
+			{
+				"description":"<#704379754434002964>",
+				"image": { "url": "https://i.imgur.com/9wtrmeS.png" }
+			},
+			{
+				"description":"<#705546694984466573>",
+				"image": { "url": "https://i.imgur.com/EE8BUou.jpg" }
+			},
+			{
+				"description":"<#730461020358705203>",
+				"image": { "url": "https://i.imgur.com/gG0K7qj.jpg" }
+			},
+			{
+				"Title":"Silver Thorn Roses",
+				"image": { "url": "https://i.imgur.com/QzSFyK0.png" }
+			},
+			{
+				"Title":"Brothel Baths",
+				"description":"<#722618344641134622>",
+				"image": { "url": "https://i.imgur.com/JG31WDl.png" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/oIwLXvI.png" }
+			},
+			{
+				"Title":"Brothel Dungeon",
+				"description":"<#722622076061745233>",
+				"image": { "url": "https://i.imgur.com/h1RiIXP.png" }
+			},
+
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🚪 Return to the front of the <#697166960592683008>"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Brothel skip:2 nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

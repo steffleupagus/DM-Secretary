@@ -1,0 +1,42 @@
+{
+	"administrativeDistrict":
+	{
+		"waitTime":3000,
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Administrative District",
+				"description":"<#695638537575596122>",
+				"image": { "url": "https://i.imgur.com/bcEZW5P.jpg" }
+			},
+			{
+				"Title":"Queen's Citadel",
+				"description":"<#697169394131796008>",
+				"image": { "url": "https://i.imgur.com/V6gKTol.jpg" }
+			},
+			{
+				"Title":"Throne Room",
+				"description":"<#707928290832416798>",
+				"image": { "url": "https://i.imgur.com/FCDRWfL.jpg" }
+			},
+			{
+				"Title":"Public Stockades",
+				"description":"<#833464807860207638>",
+				"image": { "url": "https://i.imgur.com/3jlB2lC.jpg" }
+			},
+			{
+				"Title":"Dungeon Cell",
+				"description":"<#833463963047821358>",
+				"image": { "url": "https://i.imgur.com/zqnCxq4.jpg" }
+			},
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n⛲ Travel to the City Square\n\n🔮 Enter the Tower of the Arcanum \n\n🛕 Enter the Temple District\n\n🏟️ Enter the Colosseum"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Administrative nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

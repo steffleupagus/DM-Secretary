@@ -1,0 +1,38 @@
+{
+	"guardianBarracks":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Mess Hall",
+				"description":"<#699570321950244914>",
+				"image": { "url": "https://i.imgur.com/ekeyF8l.jpg" }
+			},
+			{
+				"Title":"Barracks Quarters",
+				"description":"<#699573766195511307>",
+				"image": { "url": "https://i.imgur.com/8Dlhs7c.jpg" }
+			},
+			{
+				"Title":"Barracks Baths",
+				"description":"<#699574231238836334>",
+				"image": { "url": "https://i.imgur.com/0cfYj5M.jpg" }
+			},
+			{
+				"Title":"Champion Chambers",
+				"description":"<#699571359893946398>",
+				"image": { "url": "https://i.imgur.com/zms147u.jpg" }
+			},
+		
+			
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n:stadium: Return to the public Colosseum "
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Colosseum skip:3 nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}

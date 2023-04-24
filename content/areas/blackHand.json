@@ -1,0 +1,33 @@
+{
+	"blackhand":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"Title":"Guild Quarters",
+				"description":"<#697757268258717749>",
+				"image": { "url": "https://i.imgur.com/uJvk8Ln.png" }
+			},
+			{
+				"Title":"Bath House",
+				"description":"<#701880984584585447>",
+				"image": { "url": "https://i.imgur.com/NTeKQk8.png" }
+			},
+			{
+				"Title":"Meeting Hall",
+				"description":"<#701882177583054941>",
+				"image": { "url": "https://i.imgur.com/qQyOimz.png" }
+			},
+			
+					
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🚪 Exit to the Slums"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Den nodm:True rr:True m:<last_id>`"
+			}	
+		]
+	}
+}
