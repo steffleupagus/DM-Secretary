@@ -35,7 +35,7 @@ class CharacterData
 		console.log(`CharUtils reports ready: ${this.charCache.length} chars across ${userCount} users`)
 	}
 
-	async getUserCharData(user=null, nameFilter=null, guild=null, result={})
+	getUserCharData(user=null, nameFilter=null, guild=null, result={})
 	{
 		if (!this.charCache)
 			throw "Please be patient, bot is still loading...\nWait a minute and try again."

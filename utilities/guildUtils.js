@@ -11,6 +11,7 @@ class GuildData
 		this.isReady = false;
 		this.guildData = {};
 		this.rankData = {};
+		this.rawRosterData = [];
 		this.autoCompleteCache = {};
 		this.RefreshGuildData();
 
@@ -20,10 +21,16 @@ class GuildData
 			if(this.dataDirty) 
 			{
 				this.dataDirty = false;
+				await this.RefreshRoster();
 				await this.UpdateGVar();
 			}
 		}, 15000);		
     }
+
+	async RefreshRoster()
+	{
+		this.rawRosterData = await guildRosterSchema.find({})
+	}
 	
 	async RefreshGuildData()
 	{
@@ -35,6 +42,8 @@ class GuildData
 		//Fetch the data from the database
 		let guildData = await guildDataSchema.find({});
 		let guildRank = await guildRankSchema.find({});
+
+		await this.RefreshRoster();
 		
 		//Process the data into convenient object(s) for use
 		guildData.forEach( data => 
@@ -106,6 +115,7 @@ class GuildData
 			if (char) query.char = char
 			if (rank) query.rank = rank
 		}
+
 		const rosterData = await guildRosterSchema.find(query);
 		return rosterData
 	}
@@ -235,13 +245,19 @@ class GuildData
 			await Avrae.writeGvar(guild_gvar, newContent)	
 	}
 
-	async getAutoCompleteData(user=null, nameFilter=null, guild=null, result = {})
+	getAutoCompleteData(user=null, nameFilter=null, guild=null, result = {})
 	{
 		if (user)
 		{
 			//If we don't have autocomplete data cached, get the raw roster data
 			if (!this.autoCompleteCache[user])
-				this.autoCompleteCache[user] = await this.GetRawRosterData({ user:user })
+			{
+				this.autoCompleteCache[user] = this.rawRosterData.filter( record => 
+				{
+					return record.user == user;
+				});
+//				this.autoCompleteCache[user] = await this.GetRawRosterData({ user:user })
+			}
 			result = this.autoCompleteCache[user].reduce((map, record) => 
 			({
 				...map,

@@ -16,10 +16,10 @@ const PermanentRoster = "PermGuildRoster"
 async function getPromptData(user = null, value = null, guild = null, includeAll = true) 
 {
 	//Use the GuildUtils to grab characters that are part of guilds
-	let result = await GuildUtils.getAutoCompleteData(user, value, guild);
+	let result = GuildUtils.getAutoCompleteData(user, value, guild);
 	if (includeAll)
 		//Use the CharUtils cache to make a list of all the other chars registered to the target user
-		result = await CharUtils.getUserCharData(user, value, guild, result);
+		result = CharUtils.getUserCharData(user, value, guild, result);
 	return result;
 }
 
@@ -36,7 +36,6 @@ async function autoComplete(interaction)
 		const user = interaction.options.get('user')?.value || interaction.member.id;
 		const target = user;
 
-		//let response = await GuildUtils.getAutoCompleteData(user, value);
 		let response = await getPromptData(target, value);
 		response = Object.keys(response).map(choice => ({ name: choice, value: choice }));
 
