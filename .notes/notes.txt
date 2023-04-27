@@ -7,3 +7,10 @@ https://discordjs.guide/interactions/replying-to-slash-commands.html#command-opt
 https://how-to.repl.co/discord-ratelimits
 
 https://up.coding398.dev/others
+
+
+
+
+
+
+https://replit.com/talk/ask/How-to-kill-a-running-process/14683
