@@ -867,7 +867,7 @@ async function getCharacterPromptList(interaction, member, guild = null, include
 {
 	const roleNames = GuildUtils.GetRoleNames(interaction.guild);
 	//Get a list of options of characters from the prompt data
-	let charList = await getPromptData(member.id, null, guild, includeAll);
+	let charList = getPromptData(member.id, null, guild, includeAll);
 	charList = Object.keys(charList).map(choice => 
 	{
 		const details = charList[choice];
@@ -877,18 +877,19 @@ async function getCharacterPromptList(interaction, member, guild = null, include
 }
 
 ////// Gather up data to populate the character prompt / autocomplete
-async function getPromptData(user = null, value = null, guild = null, includeAll = true) 
+function getPromptData(user = null, value = null, guild = null, includeAll = true) 
 {
 	//Use the GuildUtils to grab characters that are part of guilds
-	let result = await GuildUtils.getAutoCompleteData(user, value, guild);
+	let result = GuildUtils.getAutoCompleteData(user, value, guild);
 	if (includeAll)
 		//Use the CharUtils cache to make a list of all the other chars registered to the target user
-		result = await CharUtils.getUserCharData(user, value, guild, result);
+		result = CharUtils.getUserCharData(user, value, guild, result);
 	return result;
 }
 
 ////// Handle autocomplete options for the Character field
-async function autoComplete(interaction) {
+async function autoComplete(interaction) 
+{
 	const focusedOption = interaction.options.getFocused(true);
 	if (focusedOption.name === 'character') 
 	{
@@ -898,8 +899,7 @@ async function autoComplete(interaction) {
 		const target = interaction.options.get('user') ?.value || user;
 		const guild = interaction.options.get('guild') ?.value || null;
 
-		//let response = await GuildUtils.getAutoCompleteData(user, value);
-		let response = await getPromptData(target, value, guild);
+		let response = getPromptData(target, value, guild);
 		console.log(response)
 		response = Object.entries(response).map(([choice,details]) => 
 		({
@@ -917,7 +917,11 @@ async function autoComplete(interaction) {
 			response.push({ name: 'Builder: Guild Ranks', value: GuildRanksEmbed });
 			response.push({ name: 'Builder: Create Toggle Menu', value: ToggleMenu });
 		}
-		await interaction.respond(response.length <= 25 ? response : []);
+
+		try {
+			interaction.respond(response.length <= 25 ? response : []);
+		}
+		catch (e) {}
 	}
 }
 

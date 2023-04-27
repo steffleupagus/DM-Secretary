@@ -36,7 +36,6 @@ async function shouldHandle(client, message)
 	////Quest Phrase
 	questIdent.lastIndex = 0;
 	const isQuest = questIdent.test(embed.description);
-	console.log(`${embed.title}: ${isQuest}`)
 
 	////Damage Type
 	damageType.lastIndex = 0
@@ -47,8 +46,7 @@ async function shouldHandle(client, message)
 	const skill = skillIdent.test(embed.title);
 
 	if (embed?.description?.includes("is too exhausted to continue questing!"))
-		return false
-	
+		return false	
 		
 	return isQuest && (dtype || skill)
 }

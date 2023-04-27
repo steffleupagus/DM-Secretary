@@ -448,8 +448,10 @@ async function handleInteraction(interaction)
 			chanMeta = getCurrentChanMeta(channel, chanMeta, true)
 			break;			
 		case `${data.name}.refreshTopic`:
+			await editReply(interaction, chanMeta, publicFlag)			
 			try { await updateChannelTopic(channel, chanMeta) } 
 			catch(e) { interaction.followUp({content:e, ephemeral:true}) }
+			return
 		default: dirty = false;
 	}	
 	if (dirty)
