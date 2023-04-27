@@ -153,6 +153,58 @@ async function execute(interaction)
 	// })	
 }
 
+
+async function ShowByGuild(interaction, data)
+{
+	const lineLen = 50
+	const totalLen = 13
+	const nameLen = lineLen - totalLen
+	const pad = ' '
+
+	await Utils.asyncArrayForEach(guildOption.choices, async (guild) => 
+	{
+		guild = guild.name
+		let embed = new EmbedBuilder()
+			embed.setTitle(`${guildEmoji[guild]} ${guild}`)
+		let total = 0;
+
+		guildData = data.map( record => {
+			const newRecord = {}
+			let g = record.guilds?.find( x=> x.guild == guild);
+			newRecord.user = record.user
+			newRecord.char = record.char;
+			newRecord.guild = g;
+			total += g?.count ?? 0;
+			return newRecord
+		}).filter( record => record.guild )
+		guildData.sort((a,b) => b.guild.count - a.guild.count)
+
+		let title = `\`${"Total".padEnd(nameLen,pad)}${`${total}`.padStart(totalLen,pad)}\`\n\n` +
+					`\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
+
+		let value = guildData.map( record => {
+							if (!record?.guild) return null
+							let n = record.char.padEnd(nameLen,pad);							
+							let t = record.guild.count.toString().padStart(totalLen,pad)
+							return `\`${n}${t}\``;
+						})
+						.filter(record => record)
+		if (value.length > 0)
+		{
+			console.log(title, value);
+			value = value.join('\n')
+			if (value.length <= 1024)
+			{
+				embed.addFields({name:title,value:value})	
+				await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
+			}
+		}
+	})
+}
+
+
+
+
 async function ShowByPlayer(interaction, data)
 {
 	data = Utils.groupBy(data, "user")
@@ -348,63 +400,20 @@ async function ShowBySkillDetailed(interaction, data)
 	})
 }
 
-async function ShowByGuild(interaction, data)
-{
-	const lineLen = 50
-	const totalLen = 13
-	const nameLen = lineLen - totalLen
-	const pad = '.'
-	
-	await Utils.asyncArrayForEach(guildOption.choices, async (guild) => {
-		guild = guild.name
-		let embed = new EmbedBuilder()
-			embed.setTitle(`${guildEmoji[guild]} ${guild}`)
-		let total = 0;
-
-		data = data.map( record => {
-			let g = record.guilds?.find( x=> x.guild == guild);
-			let t = 0;
-			if (g) t = g.damage + g.skill - g.healing;
-			total += t;			
-			record.guild = t;
-			return record
-		})
-
-		let title = `\`${"Total".padEnd(nameLen,pad)}${`${total}`.padStart(totalLen,pad)}\`\n\n` +
-					`\`${"Name".padEnd(nameLen,pad)}${"Total".padStart(totalLen,pad)}\``
-		data.sort((a,b) => b.guild - a.guild)			
-		let value = data.map( record => {
-							if (!record?.guild) return null
-							let n = record.char.padEnd(nameLen,pad);							
-							let t = record.guild.toString().padStart(totalLen,pad)
-							return `\`${n}${t}\``;
-						})
-						.filter(record => record)
-
-		
-		if (value.length > 0)
-		{
-			console.log(title, value);		
-			embed.addFields({name:title,value:value.join('\n')})
-			await interaction.followUp({embeds:[embed],ephemeral:interaction.ephemeral})
-		}
-	})
-}
-
 async function ShowByType(interaction, data)
 {
 }
 
 
 ////// Gather up data to populate the character prompt / autocomplete
-async function getPromptData(user = null, value = null, guild = null) 
+function getPromptData(user = null, value = null, guild = null) 
 {
-	let result = await CharUtils.getUserCharData(user, value, guild);
+	let result = CharUtils.getUserCharData(user, value, guild);
 	return result;
 }
 
 ////// Handle autocomplete options for the Character field
-async function autoComplete(interaction) 
+function autoComplete(interaction) 
 {
 	const focusedOption = interaction.options.getFocused(true);
 	if (focusedOption.name === 'character') 
@@ -414,15 +423,14 @@ async function autoComplete(interaction)
 		const target = interaction.options.get('user') ?.value || null;
 		const guild = interaction.options.get('guild') ?.value || null;
 
-		//let response = await GuildUtils.getAutoCompleteData(user, value);
-		let response = await getPromptData(target, value, guild);
+		let response = getPromptData(target, value, guild);
 		console.log(response)
 		response = Object.entries(response).map(([choice,details]) => 
 		({
 			name: `${choice} ${details ? '('+details+')' : ""}`,
 			value: choice
 		}));
-		await interaction.respond(response.length <= 25 ? response : []);
+		interaction.respond(response.length <= 25 ? response : []);
 	}
 }
 
