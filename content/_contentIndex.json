@@ -22,7 +22,7 @@
 	"833425039251472384":{"data":"areas/blessedGate.json"},
 	"833791497862119444":{"data":"areas/wilderness.json"},
 	"853363208109948938":{"data":"areas/outriders.json"},
-
+	"780154517710700574":{"data":"lore.json"},
 	
 	
 	"940061953064329216":
@@ -87,11 +87,5 @@
 		"id":"1099027027429949450",
 		"name":"Shard - Legend Lore",
 		"data":"questShardLegend.json"
-	},	
-	"1082341579848687626":
-	{
-		"id":"1082341579848687626",
-		"name":"📌│📜 Lore Rewrite",
-		"data":"lore.json"
 	}
 }

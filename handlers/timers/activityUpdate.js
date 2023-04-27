@@ -1,28 +1,6 @@
 const { ChannelType, EmbedBuilder, time } = require('discord.js')
 
-
-
-
-const mongoose = require('mongoose')
-const schemaName = `channelmetadev`
-const reqString = { type:String, required:true }
-const schema = new mongoose.Schema({
-	channelId: reqString,
-	name:      reqString,
-	awardsExp: Boolean,
-	userOwner: [String],
-	guildHall: String,
-	threadMax: Number,
-	locations: [String],
-	trackActivity: Boolean	
-})
-const ChannelMeta = mongoose.model(schemaName, schema, schemaName)
-
-
-
-
-
-//const ChannelMeta = require(`../../database/chanMetaSchema.js`)
+const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const ChanUtils = require(`../../utilities/channelUtils.js`)
 const AreaMeta = require(`../../database/areaMetaSchema.js`)
 const MsgUtils = require(`../../utilities/messageUtils.js`)
@@ -36,26 +14,120 @@ const sph=60*spm  //Seconds per Hour
 const spd=24*sph  //Seconds per Day
 const msps=1000	  //Milliseconds per second
 
+let timerInterval;
+
 async function startTimer(client)
 {
+	await Utils.slowdown(2500)
 	console.log(`        • Starting timer: ${timerData.name}`)
 
 	//Get the guild from the ID in the config
 	const guildId   = config._GUILDID || config.GUILDID
 	const guild     = client.guilds.resolve(guildId)
 	const channelId = config.activityChannel;
-	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);;
+	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);
 
-	// runUpdate(guild, channel);
-	// return;
+	const messages  = await channel.messages.fetch()
+	if (!messages.size)
+	{
+		console.log("No activity status messages. Generating stubs.")	
+		await createStubMessages(guild, channel);
+	}
+//	await runUpdate(guild, channel, -1);
 	
 	let index = 0
-	setInterval(async () => 
+	timerInterval = setInterval(async () => 
 	{
 		console.log(`Timer Fired: ${timerData.name} at index ${index}`)
 		index = await runUpdate(guild, channel, index);
 	}, 5 * msps * spm);	//Update one channel group every 3 minutes
 }
+
+function stopTimer()
+{
+	clearInterval(timerInterval);
+}
+								
+async function triggerTimer(client)
+{
+	//Get the guild from the ID in the config
+	const guildId   = config._GUILDID || config.GUILDID
+	const guild     = client.guilds.resolve(guildId)
+	const channelId = config.activityChannel;
+	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);
+	
+	const messages  = await channel.messages.fetch()
+	if (!messages.size)
+	{
+		console.log("No activity status messages. Generating stubs.")	
+		await createStubMessages(guild, channel);
+	}
+	await runUpdate(guild, channel, -1);
+}
+	
+//Create embed stubs
+async function createStubMessages(guild, targetChannel)
+{
+	if (!targetChannel) return console.log("Log channel missing?")
+	
+	const channels = await ChannelMeta.find({});
+	const channelByLocation = {}
+	channels.forEach(channel => {
+		channel.locations.forEach(location => {
+			channelByLocation[location] = channelByLocation[location] || []
+			channelByLocation[location].push(channel)
+		})
+	})
+
+	let areas = await AreaMeta.find({});
+	await Utils.asyncArrayForEach( areas, async (area, i) =>
+	{
+		console.log(`○\tStubbing area: ${area.name})`)
+		const channels = []
+		area.roleId.forEach(location => 
+		{
+			channelByLocation[location].forEach(channel => 
+			{
+				if (!channels.includes(channel))
+					channels.push(channel)
+			})			
+		})	
+		const embed = await generateEmbedStub(guild, area, channels);	
+		const message = await targetChannel.send({embeds:[embed]});
+ 		await Utils.slowdown(1000);
+		
+		console.log(`\t${area.name} stubbed`)
+	})
+}
+
+//Generate a group's embed message from the collected data
+async function generateEmbedStub(guild, area, channels)
+{
+	const channelManager = guild.channels
+	const embed = new EmbedBuilder()
+					 .setDescription(`\`${"".padEnd(69," ")}\``)
+	let areaexp = true;
+	channels.forEach( channel => {
+		//If the channel is set not to track, skip it
+		if (!channel.trackActivity) return
+		areaexp = areaexp && channel.awardsExp
+		if (!channel.awardsExp)
+			console.log(channel)
+		channel = channelManager.resolve(channel.channelId)
+		if (!channel) return console.log(`Could not resolve ${channelId}`)
+	})
+	areaexp = areaexp ? config.xpemoji : ""
+	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
+
+	//Add the last updated to the embed
+	var d = new Date();
+	d = d.toLocaleTimeString("en-US", {timeZone: "America/New_York"});
+	const footer = `Last updated: ${d} server time.`
+	embed.setFooter({text:footer});	//Set the category ID as the footer to find later
+	
+	return embed;
+}
+
 
 //Organize by location role
 async function runUpdate(guild, targetChannel, index=0)
@@ -73,12 +145,19 @@ async function runUpdate(guild, targetChannel, index=0)
 
 	const embeds = await targetChannel.messages.fetch();
 	
-	const areas = await AreaMeta.find({});
-	const area = areas[index];
-	console.log(`○\tUpdating area ${index} (${area.name})`)
-	
-//	await Utils.asyncArrayForEach( areas, async (area, i) =>
+	let areas = await AreaMeta.find({});
+	let onDeck = areas[0];
+	if (index >= 0)
 	{
+		const area = areas[index];
+		if (++index >= areas.length) index = 0		
+		onDeck = areas[index]
+		areas = [area]
+	}
+	
+	await Utils.asyncArrayForEach( areas, async (area, i) =>
+	{
+		console.log(`○\tUpdating area ${area.name}`)
 		const channels = []
 		area.roleId.forEach(location => 
 		{
@@ -90,7 +169,7 @@ async function runUpdate(guild, targetChannel, index=0)
 		})	
 		const embed = await generateEmbed(guild, area, channels);	
 		const targetEmbed = embeds.find( (value, key, collection) => {
-			return embed.data.title == value.embeds[0].title 
+			return embed.data.title == value?.embeds?.[0]?.title 
 		})
 
 		try{
@@ -102,11 +181,14 @@ async function runUpdate(guild, targetChannel, index=0)
 		catch (e) { console.error(e, embed.toJSON())}
 
  		await Utils.slowdown(1500);
-	}//)
+		
+		console.log(`\t${area.name} updated`)
 
-	console.log(`\t${area.name} updated`)
-	if (++index >= areas.length) index = 0	
-	console.log(`\tOn Deck: ${index} (${areas[index].name})`)
+		if (index < 0)
+			Utils.slowdown(3500);
+	})
+
+	console.log(`\tOn Deck: ${index} (${onDeck.name})`)
 	return index;
 }
 
@@ -185,7 +267,7 @@ async function generateEmbed(guild, area, channels)
 		const chanName = Utils.toSentenceCase(channel.name,true);
 		let   {status,lastMsg,elapsed,author} = await getChannelStatus(channel);
 		const name  = `** **`;
-		lastMsg =`${lastMsg} ${elapsed} ${author}`
+		lastMsg =`${lastMsg} ${elapsed} ${author}`.trim()
 		let   value = `${status} **${chanName}** (<#${channel.id}>) ${xpEmoji}\n*${lastMsg}*`
 
 		if (hasThreads)
@@ -205,21 +287,31 @@ async function generateEmbed(guild, area, channels)
 	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
 	
 	//Add the last updated to the embed
-	var d = new Date();
+	let d = new Date();
+	let r = Math.floor(Date.now() / 1000);	
 	d = d.toLocaleTimeString("en-US", {timeZone: "America/New_York"});
-	const footer = `Last updated: ${d} server time.`
-	embed.setFooter({text:footer});	//Set the category ID as the footer to find later
-	
+	const updated = `*Last updated: ${d} server time (<t:${r}:R>)*`
+	embed.addFields({name:"** **", value:updated})
+
+	// embed.setFooter({text:footer});	//Set the category ID as the footer to find later
+	// embed.setTimestamp(Date.now());
 	return embed;
 }
 
 const timerData = {
 	name: 'activityUpdate',
 	startTimer,
+	stopTimer,
+	triggerTimer,
 	build:config.PRODUCTION //||config.DEV
 };
 
 module.exports = timerData
+
+
+
+
+
 
 
 

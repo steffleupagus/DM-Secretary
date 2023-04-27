@@ -26,11 +26,11 @@ class Bot
 		this.loadConfig();
 		await this.loadEvents();
 		await this.loadMessageHandlers();
-		this.client.on("ready", () => 
+		this.client.on("ready", async () => 
 		{
-			this.loadCommands();
-			this.loadDatabase();
-			this.loadTimers();		
+			await this.loadCommands();
+			await this.loadDatabase();
+			await this.loadTimers();		
 		});				
 		this.runBot();
 
@@ -138,14 +138,14 @@ class Bot
 		const timers = fs.readdirSync(`${process.cwd()}/handlers/timers`)
 						 .filter(file => file.endsWith('.js'));
 
-		this.client.timers = [];
+		this.client.timers = new Collection();
 		for (const file of timers) 
 		{
 			const timer = require(`${process.cwd()}/handlers/timers/${file}`);
 			console.log(" - Timer: ", timer.name, (timer.build ?? true) ? "(Enabled)" : "(Disabled)" );
 			if (!timer.hasOwnProperty("build") || timer.build)
 			{
-				this.client.timers.push(timer);
+				this.client.timers.set(timer.name, timer)	//.push(timer);
 				timer.startTimer(this.client);
 			}
 		}		
