@@ -20,7 +20,7 @@ async function execute(client, oldThread, newThread)
 			if (user)
 			{
 				console.log(newThread)		
-				await user.send(`${newThread} archived: ${newThread.archived}`)
+				await user.send(`${newThread.name} ${newThread} archived: ${newThread.archived}`)
 			}
 			
 			console.log("\n\n\n\n\n-------------------------------------")			
