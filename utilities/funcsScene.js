@@ -192,6 +192,10 @@ async function generatePlayerXPField(interaction, data, idx)
 	data.xpMod = data.xpMod ?? data.xp;
 	data.xp = data.level > 0 ? LevelUtils.calculateRoleplayExp(level, data.xp) : 0
 	data.xpMod = data.level > 0 ? LevelUtils.calculateRoleplayExp(level, data.xpMod) : 0;
+
+
+	console.log(data)
+	
 	
 	if (data.level && data.xpMod > 0)
 	{		
@@ -247,7 +251,7 @@ async function generatePlayerXPField(interaction, data, idx)
 	value += `<@${data.user}> - `;
 	if ((data.level == 0)&&(!data.rpp))
 		value += `\`NPC (Pending)\`\n`
-	else if (data.rpp > 0 || data.rppMod)
+	else if (data.level == 0 && (data.rpp > 0 || data.rppMod))
 		value += `${config.rppemoji} \`${data.rpp}\`\n`		
 	else if (data.xp >= 0)
 	{
@@ -453,7 +457,7 @@ async function handleApprove(interaction)
 	const update = EmbedBuilder.from(embed)
 							   .spliceFields(-1, 1, newField)
 	const undo = [Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"scene.undo"}])]
-	await interaction.editReply({embeds:[update], components:undo})
+	await interaction.editReply({content:"", embeds:[update], components:undo})
 
 	return Mutex.unlock(mutexId);
 }
