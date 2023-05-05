@@ -14,7 +14,8 @@ async function execute(interaction)
 	const channel = interaction.channel;
 	const guildId = interaction.guildId;
 	const opponent = interaction.options?.getUser('opponent') || null
-
+	const button = interaction.options?.getBoolean('button') || false
+	
 	if (!ChanUtils.isDuelRPChannel(channel))
 	{
 		interaction.reply({ephemeral:true, 
@@ -22,6 +23,15 @@ async function execute(interaction)
 		return
 	}
 
+	const isBuilder= Utils.hasAnyRole(interaction.member, builderRoles);	
+	if (button)
+	{
+		interaction.reply({ephemeral:true,content:"Resetting duel button"})
+		await DuelUtils.resetDuelButton(channel)
+		return
+	}
+	
+	
 	await interaction.reply("Starting duel...");
 	if (interaction.message)
 		await interaction.message.edit({content:"``` ```",components:[]})
@@ -68,11 +78,15 @@ async function run(client, message, command, args)
 {
 }
 
+const builderRoles  = [	config.BuilderRole, config._BuilderRole	];
 const data = new SlashCommandBuilder()
 	.setName('startduel')
 	.setDescription('Start a thread for a duel')
 	.addUserOption(option => option.setName('opponent')
 			.setDescription('The opponent to invite to the thread')
+			.setRequired(false))
+	.addBooleanOption(option => option.setName('button')
+			.setDescription('Show the start duel button instead of starting the duel')
 			.setRequired(false));
 module.exports = 
 {
