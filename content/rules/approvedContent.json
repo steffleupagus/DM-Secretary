@@ -535,7 +535,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Alchemist](https://5e.tools/classes.html#artificer_erlw,state:sub-alchemist-erlw=b1)\n✅ [Armorer](https://5e.tools/classes.html#artificer_tce,state:sub-armorer-tce=b1)\n✅ [Artillerist](https://5e.tools/classes.html#artificer_erlw,state:sub-artillerist-erlw=b1)\n✅ [Battlesmith⚠️](https://5e.tools/classes.html#artificer_erlw,state:sub-battle-smith-erlw=b)"
+					"value": "✅ [Alchemist](https://5e.tools/classes.html#artificer_erlw,state:sub-alchemist-erlw=b1)\n✅ [Armorer](https://5e.tools/classes.html#artificer_tce,state:sub-armorer-tce=b1)\n✅ [Artillerist](https://5e.tools/classes.html#artificer_erlw,state:sub-artillerist-erlw=b1)\n✅ [Battlesmith](https://5e.tools/classes.html#artificer_erlw,state:sub-battle-smith-erlw=b)⚠️"
 				}]
 			},
 			{
@@ -605,7 +605,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Dreams](https://5e.tools/classes.html#druid_phb,state:sub-dreams-xge=b1)\n✅ [Land](https://www.dndbeyond.com/classes/druid#CircleoftheLand)\n✅ [Moon](https://5e.tools/classes.html#druid_phb,state:sub-moon-phb=b1)\n✅ [Shepherd](https://5e.tools/classes.html#druid_phb,state:sub-shepherd-xge=b1)\n✅ [Spores](https://5e.tools/classes.html#druid_phb,state:sub-spores-ggr=b1)\n✅ [Stars](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1)\n✅ [Twilight (UA)](https://5e.tools/classes.html#druid_phb,state:sub-twilight-ua-uad=b1)\n✅ [Wildfire️️⚠️](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1~sub-wildfire-tce=b1)\n🚫 Primeval (UA) - *Disallowed*"
+					"value": "✅ [Dreams](https://5e.tools/classes.html#druid_phb,state:sub-dreams-xge=b1)\n✅ [Land](https://www.dndbeyond.com/classes/druid#CircleoftheLand)\n✅ [Moon](https://5e.tools/classes.html#druid_phb,state:sub-moon-phb=b1)\n✅ [Shepherd](https://5e.tools/classes.html#druid_phb,state:sub-shepherd-xge=b1)\n✅ [Spores](https://5e.tools/classes.html#druid_phb,state:sub-spores-ggr=b1)\n✅ [Stars](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1)\n✅ [Twilight (UA)](https://5e.tools/classes.html#druid_phb,state:sub-twilight-ua-uad=b1)\n✅ [Wildfire️️](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1~sub-wildfire-tce=b1)⚠️\n🚫 Primeval (UA) - *Disallowed*"
 				}]
 			},
 			{
@@ -662,7 +662,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Beast Master ⚠️](https://5e.tools/classes.html#ranger_phb,state:sub-beast-master-phb=b1)\n✅ [Drakewarden ⚠️](https://5e.tools/classes.html#ranger_phb,state:sub-drakewarden-ftd=b1)\n✅ [Fey Wanderer](https://5e.tools/classes.html#ranger_phb,state:sub-fey-wanderer-tce=b1)\n✅ [Gloom Stalker](https://5e.tools/classes.html#ranger_phb,state:sub-gloom-stalker-xge=b1)\n✅ [Horizon Walker](https://5e.tools/classes.html#ranger_phb,state:sub-horizon-walker-xge=b1)\n✅ [Hunter](https://www.dndbeyond.com/classes/ranger#Hunter)\n✅ [Monster Slayer](https://5e.tools/classes.html#ranger_phb,state:sub-monster-slayer-xge=b1)\n✅ [Swarmkeeper](https://5e.tools/classes.html#ranger_phb,state:sub-swarmkeeper-tce=b1)\n🚫 Deep Stalker (UA) - *See Gloom Stalker*\n🚫 Primeval Guardian (UA) - *Disallowed*"
+					"value": "✅ [Beast Master](https://5e.tools/classes.html#ranger_phb,state:sub-beast-master-phb=b1)⚠️\n✅ [Drakewarden](https://5e.tools/classes.html#ranger_phb,state:sub-drakewarden-ftd=b1)⚠️\n✅ [Fey Wanderer](https://5e.tools/classes.html#ranger_phb,state:sub-fey-wanderer-tce=b1)\n✅ [Gloom Stalker](https://5e.tools/classes.html#ranger_phb,state:sub-gloom-stalker-xge=b1)\n✅ [Horizon Walker](https://5e.tools/classes.html#ranger_phb,state:sub-horizon-walker-xge=b1)\n✅ [Hunter](https://www.dndbeyond.com/classes/ranger#Hunter)\n✅ [Monster Slayer](https://5e.tools/classes.html#ranger_phb,state:sub-monster-slayer-xge=b1)\n✅ [Swarmkeeper](https://5e.tools/classes.html#ranger_phb,state:sub-swarmkeeper-tce=b1)\n🚫 Deep Stalker (UA) - *See Gloom Stalker*\n🚫 Primeval Guardian (UA) - *Disallowed*"
 				}]
 			},
 			{
