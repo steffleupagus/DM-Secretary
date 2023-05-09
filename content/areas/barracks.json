@@ -5,22 +5,22 @@
 		"embeds": 
 		[
 			{
-				"Title":"Mess Hall",
+				"title":"Mess Hall",
 				"description":"<#699570321950244914>",
 				"image": { "url": "https://i.imgur.com/ekeyF8l.jpg" }
 			},
 			{
-				"Title":"Barracks Quarters",
+				"title":"Barracks Quarters",
 				"description":"<#699573766195511307>",
 				"image": { "url": "https://i.imgur.com/8Dlhs7c.jpg" }
 			},
 			{
-				"Title":"Barracks Baths",
+				"title":"Barracks Baths",
 				"description":"<#699574231238836334>",
 				"image": { "url": "https://i.imgur.com/0cfYj5M.jpg" }
 			},
 			{
-				"Title":"Champion Chambers",
+				"title":"Champion Chambers",
 				"description":"<#699571359893946398>",
 				"image": { "url": "https://i.imgur.com/zms147u.jpg" }
 			},

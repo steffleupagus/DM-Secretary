@@ -5,7 +5,7 @@
 		"embeds": 
 		[
 			{
-				"Title":"Mercantile Plaza",
+				"title":"Mercantile Plaza",
 				"description":"<#695638277914624061>",
 				"image": { "url": "https://i.imgur.com/KSAogmM.png" }
 			},
@@ -13,27 +13,27 @@
 				"image": { "url": "https://i.imgur.com/um5cKUo.jpg" }
 			},
 			{
-				"Title":"Market",
+				"title":"Market",
 				"description":"<#694285592955191336>",
 				"image": { "url": "https://i.imgur.com/MPoT0CF.png" }
 			},
 			{
-				"Title":"Bazaar",
+				"title":"Bazaar",
 				"description":"<#694286716302786570>",
 				"image": { "url": "https://i.imgur.com/apIZlY7.png" }
 			},
 			{
-				"Title":"Artisan Workshop",
+				"title":"Artisan Workshop",
 				"description":"<#902984302575362068>",
 				"image": { "url": "https://i.imgur.com/MN7Q0FZ.png" }
 			},
 			{
-				"Title":"Merchant Shop",
+				"title":"Merchant Shop",
 				"description":"<#902984322762547220>",
 				"image": { "url": "https://i.imgur.com/yyvNibI.png" }
 			},
 			{
-				"Title":"Creamy Bean Café",
+				"title":"Creamy Bean Café",
 				"description":"<#902984632599994418>",
 				"image": { "url": "https://i.imgur.com/uaqolZq.jpg" }
 			},

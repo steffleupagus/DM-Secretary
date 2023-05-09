@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"Entertainment Plaza",
+				"title":"Entertainment Plaza",
 				"description":"<#695638703250341958>",
 				"image": { "url": "https://i.imgur.com/zTa8Ncp.jpg" }
 			},
 			{
-				"Title":"Amphitheater",
+				"title":"Amphitheater",
 				"description":"<#840447125916483614> <#840452873401794580>",
 				"image": { "url": "https://i.imgur.com/lSMmc98.jpg" }
 			},

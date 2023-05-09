@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"City Slums",
+				"title":"City Slums",
 				"description":"<#833537974166618122>",
 				"image": { "url": "https://i.imgur.com/4IrsDfE.jpg" }
 			},
 			{
-				"Title":"Shanty Town",
+				"title":"Shanty Town",
 				"description":"<#833537957918933003>",
 				"image": { "url": "https://i.imgur.com/IikJ0fX.jpg" }
 			},
@@ -18,29 +18,29 @@
 				"image": { "url": "https://i.imgur.com/RcHPDEk.png" }
 			},
 			{
-				"Title":"Dirty Alleyway",
+				"title":"Dirty Alleyway",
 				"description":"<#697782747724382248>",
 				"image": { "url": "https://i.imgur.com/lFN89Gj.jpg" }
 			},
 			{
-				"Title":"Queen's Legs Tavern",
+				"title":"Queen's Legs Tavern",
 				"description":"<#701882885854199858>",
 				"image": { "url": "https://i.imgur.com/95LkDIP.png" }
 			},
 			{
-				"Title":"Gambling Den",
+				"title":"Gambling Den",
 				"description":"<#701884468415168632>",
 				"image": { "url": "https://i.imgur.com/qO58vGz.png" }
 			},
 			{
-				"Title":"Black Market",
+				"title":"Black Market",
 				"description":"<#701884701362880803>",
 				"image": { "url": "https://i.imgur.com/fUydjzc.jpg" }
 			},
 			
 			
 			{
-				"Title":"Undercity Tunnels",
+				"title":"Undercity Tunnels",
 				"description":"<#833891230294736926>",
 				"image": { "url": "https://i.imgur.com/DYGtCwQ.jpg" }
 			},

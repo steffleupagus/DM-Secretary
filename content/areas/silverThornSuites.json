@@ -5,17 +5,17 @@
 		"embeds": 
 		[
 			{
-				"Title":"Silver Thorn Suites",
+				"title":"Silver Thorn Suites",
 				"description":"<#699589168304488559>",
 				"image": { "url": "https://i.imgur.com/a0XGPIJ.jpg" }
 			},
 			{
-				"Title":"Mistress Suite ",
+				"title":"Mistress Suite ",
 				"description":"<#699589233983094834>",
 				"image": { "url": "https://i.imgur.com/oFMV8HI.jpg" }
 			},
 			{
-				"Title":"Suites",
+				"title":"Suites",
 				"description":"<#699588115458687016>",
 				"image": { "url": "https://i.imgur.com/hMTs7Od.jpg" }
 			},
@@ -36,11 +36,11 @@
 				"image": { "url": "https://i.imgur.com/gG0K7qj.jpg" }
 			},
 			{
-				"Title":"Silver Thorn Roses",
+				"title":"Silver Thorn Roses",
 				"image": { "url": "https://i.imgur.com/QzSFyK0.png" }
 			},
 			{
-				"Title":"Brothel Baths",
+				"title":"Brothel Baths",
 				"description":"<#722618344641134622>",
 				"image": { "url": "https://i.imgur.com/JG31WDl.png" }
 			},
@@ -48,7 +48,7 @@
 				"image": { "url": "https://i.imgur.com/oIwLXvI.png" }
 			},
 			{
-				"Title":"Brothel Dungeon",
+				"title":"Brothel Dungeon",
 				"description":"<#722622076061745233>",
 				"image": { "url": "https://i.imgur.com/h1RiIXP.png" }
 			},
