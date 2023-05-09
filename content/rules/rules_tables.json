@@ -1,0 +1,48 @@
+{
+	"Rules":
+	{
+		"includeIndex":true,
+		"embeds": [
+			{
+				"prefix": ":one: ",
+				"title": "One Table at a Time",
+				"description": "This is a **player-based** lock, meaning (apart from certain exceptions, noted below) a player cannot use one of their characters in one table, and then apply to a second table with another character. The table must be **completed** and **logged** by the DM before the player is free to participate in another table.",
+				"fields":[
+					{"name":"Scheduling Conflicts","value":"This is to avoid scheduling conflicts with other tables, even if they are run at different times. Do not assume a table will be wrapped up in the estimated time frame or even in a single session, as it’s often not the case."},
+					{"name":"Fairness","value":"There are quite a few players looking to level their characters, and far fewer DMs available to run tables. This limit also serves the interest of fairness and giving others a greater chance of being able to participate in tables."},
+					{"name":"Automatic Enforcement","value":"While you have a table session role, you will be unable to sign up for another table, or even view the <#695306420148633750> channel. It is in your best interest to leave your previous table once it has concluded."},
+					{"name":"A note for DMs","value":"Be aware of who to consider for your table, making sure they aren’t already participating in one. Check the recent role calls for other tables that other DMs have posted in <#695306420148633750> and verify if their table is still ongoing. Once your table is complete, it may be a good idea to edit your table posting to state that it’s finished."}	
+				]
+			},
+			{
+				"prefix": ":two: ",
+				"title": "Exceptions",
+				"description": "A player may apply to participate in a second table under certain exceptions:",
+				"fields":[
+					{"name":"Indefinite Hiatus","value":"Life happens, and sometimes tables must be put on pause so more important matters can be handled. Regardless if the pause was preemptively communicated, or if the DM or a player is unable to be reached, a player who is in a table may not apply to join another table until a period of 72 hours has passed since the end of the last session.\nAfter 72 hours have passed, a player may apply for a second table. Said player is given last priority should there be greater interest in the table than can be accommodated."},
+					{"name":"Isolated Campaign","value":"Isolated campaigns are treated as a separate from the server's Ost-in-Edhil canon, and typically follow a set schedule. A player may join another table, but only if it does not conflict with the isolated campaign they are in. However, campaigns require a lot of planning, and you made a commitment to give the DM your undivided attention for it."},
+					{"name":"DM-as-Player","value":"DMs are players, too. As such they should be given the opportunity to join in tables even if they have one that is ongoing but not actively in session. Naturally, the DM must communicate with their group any schedule changes to accommodate for this."},
+					{"name":"Server Event","value":"Server events, such as those taking place during the holidays or large-scale open-RP sessions, do not count towards the table-lock. Any rewards received from these events, however, must follow the **Rewards** rule below."}
+				]
+			},
+			{
+				"prefix": ":three: ",
+				"title": "Undivided Attention",
+				"description": "If you apply for a seat at a table, please ensure you will be available for that table if you are chosen. Delaying everyone because you couldn't keep track of time is rude. Everyone understand that we all have real lives, and a player may need to take a break to commute, eat, sleep, and so on. It is in your best interest to communicate such delays to your DM and the other participants instead of just vanishing without explanation.",
+				"fields":[
+					{"name":"Multiple Tables", "value":"If, through one of the exceptions above, a player does wind up enrolled in multiple tables that are running simultaneously, inform both DMs immediately. You will be expected to give one table your undivided attention. Likewise, DMs should not attempt to run a table at the same time as they are participating in one. It's easy to get distracted while participating in one table as it is. It's disrespectful to your DM and your fellow players to split your attention with another table. Again, this is why joining two tables is highly discouraged."}
+				]				
+			},
+			{
+				"prefix": ":four: ",
+				"title": "Different Character",
+				"description": "If a player is eligible to join another table, they **must** use a different character.\nBy no means should a character be in multiple tables simultaneously. It's a logistics nightmare in regard to HP, spells, custom counters, etc. This restriction extends to arena duels, as it can complicate any combat on your table and should be avoided in most cases. You may continue to roleplay with your character outside of tables, but may not gain exp from your scenes while in an ongoing table - see the **Rewards** rule below."
+			},			
+			{
+				"prefix": ":five: ",
+				"title": "Rewards",
+				"description": "A character in a table may not add any rewards (exp or items) from other sources until the DM logs the rewards for their active table. Such sources include server events, arena duels, roleplay exp, and any other source that may provide any sort of rewards. They may participate in these activities and be rewarded exp and items from them, but said exp and items must not be added to their sheet until after their table concludes to avoid potentially levelling up and disrupting the balancing of the DM's encounters."
+			}
+		]
+	}
+}
