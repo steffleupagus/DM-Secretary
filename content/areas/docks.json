@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"Dockyard",
+				"title":"Dockyard",
 				"description":"<#713002614589227028> <#713002716590374973>",
 				"image": { "url": "https://i.imgur.com/eVqeC7y.jpg" }
 			},
 			{
-				"Title":"Frisky Fairy Tavern",
+				"title":"Frisky Fairy Tavern",
 				"description":"<#840447148251807784>",
 				"image": { "url": "https://i.imgur.com/xYZbHm7.jpg" }
 			},
@@ -18,21 +18,21 @@
 				"image": { "url": "https://i.imgur.com/3d0c3CU.png" }
 			},
 			{
-				"Title":"Frisky Fairy Tavern Proprietor (NPC)",
+				"title":"Frisky Fairy Tavern Proprietor (NPC)",
 				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099780531983487098/fairy_3.jpg" }
 			},
 			{
-				"Title":"Dockyard Wharf | Pier",
+				"title":"Dockyard Wharf | Pier",
 				"description":"<#744711990500524052> <#744711929708150965>",
 				"image": { "url": "https://i.imgur.com/ru0NSit.jpg" }
 			},
 			{
-				"Title":"Dockyard Warehouse",
+				"title":"Dockyard Warehouse",
 				"description":"<#748759431180976258>",
 				"image": { "url": "https://i.imgur.com/W40K9OU.jpg" }
 			},
 			{
-				"Title":"Docked Vessel",
+				"title":"Docked Vessel",
 				"description":"<#829840323823927306>",
 				"image": { "url": "https://i.imgur.com/07jkpFg.jpg" }
 			},

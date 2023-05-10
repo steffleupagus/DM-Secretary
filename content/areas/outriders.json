@@ -5,22 +5,22 @@
 		"embeds": 
 		[
 			{
-				"Title":"Outrider's Lodge",
+				"title":"Outrider's Lodge",
 				"description":"<#853363208109948938>",
 				"image": { "url": "https://i.imgur.com/y4hoeUx.png" }
 			},
 			{
-				"Title":"Lodge",
+				"title":"Lodge",
 				"description":"<#853364033612152842>",
 				"image": { "url": "https://i.imgur.com/wIYdL51.png" }
 			},
 			{
-				"Title":"Lodge Quarters",
+				"title":"Lodge Quarters",
 				"description":"<#853364287954485248>",
 				"image": { "url": "https://i.imgur.com/5J45A8r.jpg" }
 			},
 			{
-				"Title":"Warden's Chambers",
+				"title":"Warden's Chambers",
 				"description":"<#853363954499452928>",
 				"image": { "url": "https://i.imgur.com/WL2nsvq.jpg" }
 			},

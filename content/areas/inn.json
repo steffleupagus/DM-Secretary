@@ -5,7 +5,7 @@
 		"embeds": 
 		[
 			{
-				"Title":"Ample Ogre Inn Common Room",
+				"title":"Ample Ogre Inn Common Room",
 				"description":"<#762042861637861386>",
 				"image": { "url": "https://i.imgur.com/vCa6ICU.jpg" }
 			},
@@ -15,7 +15,7 @@
 			},
 
 			{
-				"Title":"Inn Rooms",
+				"title":"Inn Rooms",
 				"description":"<#697831832749736067> <#697832108646727712> <#727201032827961387>",
 				"image": { "url": "https://i.imgur.com/MS2llxQ.jpg" }
 			},
@@ -25,13 +25,13 @@
 
 
 			{
-				"Title":"Communal Bath",
+				"title":"Communal Bath",
 				"description":"<#775202925756678164> <#759944916989640735>",
 				"image": { "url": "https://i.imgur.com/H5Vu7Sr.png" }
 			},
 			
 			{
-				"Title":"Proprietors",
+				"title":"Proprietors",
 				"image": { "url": "https://i.imgur.com/2XgcwhC.png" }
 			},
 			

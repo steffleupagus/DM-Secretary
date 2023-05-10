@@ -5,22 +5,22 @@
 		"embeds": 
 		[
 			{
-				"Title":"Garden Promenade",
+				"title":"Garden Promenade",
 				"description":"<#708026473264578601>",
 				"image": { "url": "https://i.imgur.com/a5SbhcV.jpg" }
 			},
 			{
-				"Title":"Garden Nook",
+				"title":"Garden Nook",
 				"description":"<#762043570869108824>",
 				"image": { "url": "https://i.imgur.com/yfdV8l8.jpg" }
 			},
 			{
-				"Title":"Arcane Falls",
+				"title":"Arcane Falls",
 				"description":"<#708026959728214136> <#831365120999424010>",
 				"image": { "url": "https://i.imgur.com/U1NPeP6.jpg" }
 			},
 			{
-				"Title":"Hidden Grotto",
+				"title":"Hidden Grotto",
 				"description":"<#732009031765458964>",
 				"image": { "url": "https://i.imgur.com/FmbhZ7o.png" }
 			},
@@ -28,7 +28,7 @@
 				"image": { "url": "https://i.imgur.com/Kek1JpH.png" }
 			},
 			{
-				"Title":"Hot Springs",
+				"title":"Hot Springs",
 				"description":"<#732009747401932820>",
 				"image": { "url": "https://media.discordapp.net/attachments/1099734278025265192/1099738856175173733/unknown.png" }
 			},

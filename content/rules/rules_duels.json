@@ -1,0 +1,47 @@
+{
+	"Rules":
+	{
+		"includeIndex":true,
+		"embeds": [
+			{
+				"title": "Rules for Duels in the Colosseum"
+			},
+			{
+				"prefix":":one: ",
+				"title": "Duels are Non-Lethal",
+				"description": "Duels are meant to be friendly spectacles, and are non-lethal.\nEven if a blow is dealt that would normally kill a character outright [that is, damage past 0 meets or exceeds the character’s maximum HP], that character is still only considered incapacitated until the end of the match."
+			},
+			{
+				"prefix":":two: ",
+				"title": "Duels are 1v1",
+				"description": "While other configurations combat can be run, the exp bot will not recognize them as valid - there are simply too many permutations to be accounted for to create a comprehensive set of rules for automatically awarding exp for PVP across a range of levels and participants. As a result, __duels will only award experience if they are 1v1__. The bot *should* account for companions, summons, and wild shape."
+			},
+			{
+				"prefix":":three: ",
+				"title": "Duels are Fought to Zero HP",
+				"description": "For duels to be considered valid and a winner to be determined, one of the combatants HP must be reduced to zero. A combatant whose HP has been dropped to 0 may not be healed by an ally or outside force so as to resume and prolong the fight. A combatant's own self-restorative feature that would bring them back into consciousness (e.g. Half-Orc's Relentless Endurance) may be used.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when one party is reduced to zero HP.",
+				"fields":[{"name":"Throwing Fights","value":"Surrendering or otherwise throwing the victory to the opponent will not be permitted. This includes, but is not limited to, a player rage-quitting by manually setting their HP to zero, or a high-level character allowing a low-level character to defeat them for a greater share of exp. If the DMs catch you doing this, you may lose your ability to gain exp from duels."}]
+			},
+			{
+				"prefix":":four: ",
+				"title": "Initial Setup & Preparation",
+				"description": "Parties will begin at either 30 feet, or the distance reflecting the lowest movement speed of any of the combatants. While most race/class combinations have a minimum of 30 feet of movement, accommodations should be made so as not to put those with lower movement at a severe disadvantage."
+			},
+			{
+				"prefix":":five: ",
+				"title": "Prep Round (Optional)",
+				"description":"If both parties agree before initiative is rolled, the first round may count as a prep round.\n\nDuring this round, **only** personal and party buffs/enhancements are allowed. This includes spells with a Range of Self (Blur, Mirror Image), enhance the abilities of yourself or your allies (Bless, False Life), and race/class features that create similar effects (Druid’s Wild Shape, Shifter’s Shifting). Effects with a duration of greater than an hour, such as Mage Armor, may be used prior to arriving in the colosseum, and may be used without a Prep Round, provided the relevant resource is expended to reflect its use. Persistent companions (familiars, Artificer Steel Defenders, Ranger Companions, etc) may be present without using a prep round.\n\nSpells and features that target or affect opposing party members or the battlefield in any way are NOT allowed. Attacks or damaging spells, debuffs (Bane, Hex, Hunter’s Mark), conjuration spells (non-persistent summons, etc.), and race/class features that create similar effects (Fallen Aasimar’s Necrotic Shroud).\n\nCombatants MAY NOT use any Action other than the aforementioned buffs and enhancements. Such disallowed Actions include the Ready/Hold Action for an attack or spell, Help, or Dodge. This includes any spell, race, or class feature that confers a similar result (Rogue’s Cunning Action, Monk’s ki features)."
+			},
+			{ 
+				"prefix":":six: ",
+				"title": "Ending Duels: `/duel`",
+				"description": "At the end of the duel, enter the `/duel` command!\n\nA bot will log your duel for a DM to review & award at their earliest convenience. Be patient (we have lives).\n\nA DM will check both the mechanics channel to ensure nothing was done blatantly incorrectly, and check the RP channel to ensure you put some effort into roleplaying the actions of the duel. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands.",
+				"fields":[
+					{"name":"Verify your Level!","value":"Prior to concluding a duel, make sure you (and your opponent) have `!setup` your character in <#704307298407022622>. The bot will ask you to confirm the duel details before posting them to the DMs for review. If your level is wrong, click CANCEL, and run the `!xp` command in <#704307298407022622> before trying the `/duel` command again."},
+					{"name":"<:xp:858887927899226112> Experience Awarded","value":"Each combatant can earn an amount of exp per day up to an amount based on their level (see the table below). If the above EXP puts your character over their daily cap, any extra is lost and they cannot earn any more EXP from sparring for the day. The amount of exp awarded is calculated based on the level of the **losing** combatant. 75% of their cap is awarded to the winner, and the remaining 25% to the loser."},
+					{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   150 │   113 │    37  ║\n║   4  │   250 │   188 │    62  ║\n║   5  │   500 │   375 │   125  ║\n║   6  │   600 │   450 │   150  ║\n║   7  │   750 │   563 │   187  ║\n║   8  │   900 │   675 │   225  ║\n║   9  │ 1,100 │   825 │   275  ║\n║  10  │ 1,200 │   900 │   300  ║\n║  11  │ 1,600 │ 1,200 │   400  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,200 │ 2,400 │   800  ║\n║  17  │ 3,900 │ 2,925 │   975  ║\n║  18  │ 4,200 │ 3,150 │ 1,050  ║\n║  19  │ 4,900 │ 3,675 │ 1,125  ║\n║  20  │ 5,700 │ 4,275 │ 1,425  ║\n╚══════╧═══════╧═══════╧════════╝\n```"}
+				]
+			}
+		]
+	}
+}

@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"City Square",
+				"title":"City Square",
 				"description":"<#694285683249905714> <#744709462723526666>",
 				"image": { "url": "https://i.imgur.com/ue2I4b1.jpg" }
 			},
 			{
-				"Title":"Streets Off the Square",
+				"title":"Streets Off the Square",
 				"description":"<#748757788787736636> <#748757872627810354>\n<#748757913941573733> <#748757974356328569>",
 				"image": { "url": "https://i.imgur.com/USJzpOX.png" }
 			},

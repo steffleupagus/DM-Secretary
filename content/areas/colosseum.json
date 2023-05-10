@@ -5,22 +5,22 @@
 		"embeds": 
 		[
 			{
-				"Title":"Colosseum",
+				"title":"Colosseum",
 				"description":"<#695712096322584607>",
 				"image": { "url": "https://i.imgur.com/SLoGaCU.png" }
 			},
 			{
-				"Title":"Side Arena",
+				"title":"Side Arena",
 				"description":"<#699332551071760525> <#740619253635612693>",
 				"image": { "url": "https://i.imgur.com/mZPWC9k.jpg" }
 			},
 			{
-				"Title":"Lockers",
+				"title":"Lockers",
 				"description":"<#833469470290083887> <#909641705299509268>",
 				"image": { "url": "https://i.imgur.com/HbvlsqK.png" }
 			},
 			{
-				"Title":"Baths",
+				"title":"Baths",
 				"description":"<#833469756903653386>",
 				"image": { "url": "https://i.imgur.com/qWu6L2n.png" }
 			},
