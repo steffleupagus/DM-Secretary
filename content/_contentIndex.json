@@ -23,69 +23,35 @@
 	"833791497862119444":{"data":"areas/wilderness.json"},
 	"853363208109948938":{"data":"areas/outriders.json"},
 	"780154517710700574":{"data":"lore.json"},
+
+	"709941516818448384":{"data":"rules/rules.json"},
+	"911129455345405992":{"data":"rules/approvedContent.json"},	
+	"698568383846940703":{"data":"rules/rules_duels.json"},
+	"1105301940717490267":{"data":"rules/rules_roleplay.json"},
+	"1105303752702959726":{"data":"rules/rules_tables.json"},
 	
+	"walkthroughchannel":{"data":"rules/walkthrough_base.json"},
+	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},
+	"gsheet walkthrough":{"data":"rules/walkthrough_gsheet.json"},
 	
 	"940061953064329216":
 	{
-		"id":"940061953064329216",
 		"name":"📜│test-content",
-		"data":"areas/silverThornSuites.json"
+		"data":"rules/approvedContent.json"
+	},
+	"1105312140564373554":
+	{
+		"name":"📜│test-content-ii",
+		"data":"rules/approvedContent.json"		
 	},
 
-
-	"1091765016937627740":
-	{
-		"id":"1091765016937627740",
-		"name":"👑🌐│quest-info",
-		"data":"quest.json"		
-	},
-	"1094791565106491392":
-	{
-		"id":"1094791565106491392",
-		"name":"Failed Save (1)",
-		"data":"questSaveFail_1.json"		
-	},
-	"1095164645901348894":
-	{
-		"id":"1095164645901348894",
-		"name":"Failed Save (2)",
-		"data":"questSaveFail_2.json"		
-	},
-	"1095165252494180372":
-	{
-		"id":"1095165252494180372",
-		"name":"Failed Save (3)",
-		"data":"questSaveFail_3.json"		
-	},
-	"1097739700241961081":
-	{
-		"id":"1097739700241961081",
-		"name":"Failed Save (4)",
-		"data":"questSaveFail_4.json"		
-	},
-	"1098385616812654603":
-	{
-		"id":"1098385616812654603",
-		"name":"Failed Save (5)",
-		"data":"questSaveFail_5.json"		
-	},
-	"1099026918721982554":
-	{
-		"id":"1099026918721982554",
-		"name":"Failed Save (6)",
-		"data":"questSaveFail_6.json"
-	},
-	
-	"1099026973071786065":
-	{
-		"id":"1099026973071786065",
-		"name":"Shard - Identify",
-		"data":"questShardTouch.json"
-	},	
-	"1099027027429949450":
-	{
-		"id":"1099027027429949450",
-		"name":"Shard - Legend Lore",
-		"data":"questShardLegend.json"
-	}
+	"1091765016937627740":{ "data":"quest.json"	},
+	"1094791565106491392":{ "data":"questSaveFail_1.json" },
+	"1095164645901348894":{	"data":"questSaveFail_2.json" },
+	"1095165252494180372":{ "data":"questSaveFail_3.json" },
+	"1097739700241961081":{ "data":"questSaveFail_4.json" },
+	"1098385616812654603":{ "data":"questSaveFail_5.json" },
+	"1099026918721982554":{ "data":"questSaveFail_6.json" },	
+	"1099026973071786065":{ "data":"questShardTouch.json" },	
+	"1099027027429949450":{ "data":"questShardLegend.json" }
 }

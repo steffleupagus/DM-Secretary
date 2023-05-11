@@ -134,21 +134,36 @@ async function processDuel(channel, user, message)
 	cleanedData.link = dmEmbed.url;
 	const playerEmbed = await closeScene(cleanedData);
 
-	let button = []
 	if (mechChan.isThread)
-	{			
+		await rpChan.send({embeds:[playerEmbed]})
+	await resetDuelButton(rpChan)
+	
+	Mutex.unlock(mechChan);
+	return {embeds:[playerEmbed]}
+}
+
+///
+///
+///
+async function resetDuelButton(rpChan)
+{
+	// //Resolve the RP/Mech pair into actual channels
+	// var channelPair = ChanUtils.getDuelChannelPair(channel)	
+	// if (!channelPair) return Mutex.unlock(channel, ERROR_WRONG_CHANNEL)
+	
+	// const guild = channel.guild
+	// const rpChan = guild.channels.resolve(channelPair.RP);
+	// const mechChan = guild.channels.resolve(channelPair.MECHANICS);
+	
+	let button = []
 		button = Prompt.createButtonRow([
 			{style:ButtonStyle.Secondary, emoji:"⚔️", label:"Start New Duel",
 			 custom_id:"duel.startDuel"}
 		])
 		button = [button]
-		await rpChan.send({embeds:[playerEmbed]})
-	}
 	await rpChan.send({content:"``` ```",components:button});
-	
-	Mutex.unlock(mechChan);
-	return {embeds:[playerEmbed]}
 }
+
 
 ///
 /// Get the duel data
@@ -987,6 +1002,7 @@ module.exports = {
 	processDuel,
 	approveDuel,	
 	undoApproval,
+	resetDuelButton,
 	generateTranscript,
 	generateTranscriptFromLog
 }

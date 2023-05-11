@@ -5,17 +5,17 @@
 		"embeds": 
 		[
 			{
-				"Title":"Guild Quarters",
+				"title":"Guild Quarters",
 				"description":"<#697757268258717749>",
 				"image": { "url": "https://i.imgur.com/uJvk8Ln.png" }
 			},
 			{
-				"Title":"Bath House",
+				"title":"Bath House",
 				"description":"<#701880984584585447>",
 				"image": { "url": "https://i.imgur.com/NTeKQk8.png" }
 			},
 			{
-				"Title":"Meeting Hall",
+				"title":"Meeting Hall",
 				"description":"<#701882177583054941>",
 				"image": { "url": "https://i.imgur.com/qQyOimz.png" }
 			},

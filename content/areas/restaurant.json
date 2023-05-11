@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"Restaurant Bar",
+				"title":"Restaurant Bar",
 				"description":"<#829836773823479828> <#1062439554772107304>",
 				"image": { "url": "https://i.imgur.com/p2ew6Ok.jpg" }
 			},
 			{
-				"Title":"Restaurant Dining",
+				"title":"Restaurant Dining",
 				"description":"<#711728175163506848> <#1062439598950715422>",
 				"image": { "url": "https://i.imgur.com/DVtZF03.png" }
 			},
@@ -21,7 +21,7 @@
 				"image": { "url": "https://i.imgur.com/SGIFTb6.png" }
 			},
 			{
-				"Title":"Cyu'unt Menu",
+				"title":"Cyu'unt Menu",
 				"description":"Elven Vi'ras Aov Wine - [`+buy wine`]\nGourmet Three-Course Elven Meal - [`+buy meal`]"
 			},
 			

@@ -5,12 +5,12 @@
 		"embeds": 
 		[
 			{
-				"Title":"Residential Quarter",
+				"title":"Residential Quarter",
 				"description":"<#695638409368305704> <#709377269726183474>",
 				"image": { "url": "https://i.imgur.com/kGoYwjh.png" }
 			},
 			{
-				"Title":"Elven Domicile",
+				"title":"Elven Domicile",
 				"description":"<#696556128171196466> <#833466554191446016>",
 				"image": { "url": "https://i.imgur.com/QCFyjg1.png" }
 			},
@@ -18,7 +18,7 @@
 				"image": { "url": "https://i.imgur.com/lDFibvv.jpg" }
 			},
 			{
-				"Title":"Horn Pub",
+				"title":"Horn Pub",
 				"description":"<#840447167293816842>",
 				"image": { "url": "https://i.imgur.com/ZKKlByS.jpg" }
 			},
