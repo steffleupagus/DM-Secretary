@@ -14,6 +14,9 @@ const threadIcon = "🧵";
 const ERROR_OWNER = (owner) => `Only the owner of this channel (${owner}) can manage threads.`
 const ERROR_MAX_THREADS = 'This channel already has the maximum number of active threads.'
 
+///
+///
+///
 async function createThreadIfPossible(interaction, channel) 
 {
 	//Early out if we don't have metadata, threads aren't enabled, or this isn't an RP channel
@@ -82,61 +85,73 @@ async function createThreadIfPossible(interaction, channel)
 	await thread.members.add(interaction.user.id);
 	await thread.send(`@ping your parner(s) to add them to the thread. They will need to have this location visible.`)
 }
-			
-async function getBuilderComponents(interaction, useGuildLocations, locationOverride = [])
-{	
-	const channel = interaction.channel;
-	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
-		locations = locations.map( role => 
-		{
-			if (locationOverride.includes(role.value))
-				role.default = true
-			if (channel.permissionsFor(role.value).has(PermissionsBitField.Flags.ViewChannel) && !locationOverride.length)
-				role.default = true
-			return role;
-		})	
-	if (!useGuildLocations) locations.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
-	const guild = useGuildLocations ? ".guild" : ""
-	const location = Prompt.createSelectRow(`${data.name}.location${guild}`,locations,0,5,"Locations (None Selected)");
-	
-	const locationPub = {style:ButtonStyle.Secondary,
-						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
-						 custom_id:`${data.name}.guildLocations.${!useGuildLocations}`}	
-	const createMenu = {style:ButtonStyle.Primary,
-						 label:`Create Menu`, 
-						 custom_id:`${data.name}.createThreadMenu`}	
-	
-	const components = [];
-	components.push(location);
 
-	const miscButtons = [locationPub, createMenu];
-	components.push(Prompt.createButtonRow(miscButtons));
 
-	// components.push(Prompt.createButtonRow(buttons))
-
-	return components
-}
-
-async function showBuilderMenu(interaction, useGuildLocations = false, locationOverride = [])
-{
-	
-	const embed = new EmbedBuilder()
-						.setTitle("🛠️ Builder Thread Menu")
-	const components = await getBuilderComponents(interaction, useGuildLocations, locationOverride)
-
-	await interaction.editReply({ embeds: [embed], components: components });
-}
 
 async function execute(interaction)
 {
 	await interaction.deferReply({ephemeral:true})
-
 	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);		
-	if (!isBuilder)
-		return await createThreadIfPossible(interaction, interaction.channel);
-	
+	if (!isBuilder) return await createThreadIfPossible(interaction, interaction.channel);
+
+	// return await addThreadButton(interaction)	
 	return await showBuilderMenu(interaction)
 }
+
+const data = new SlashCommandBuilder()
+	.setName(`thread${config.DEV ? "dev" : ""}`)
+	.setDescription('Open an RP thread')
+	// .setDefaultMemberPermission(false)
+	
+const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.ViewChannel,						 
+							PermissionsBitField.Flags.SendMessages		];
+const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+
+module.exports = 
+{
+	data: data,
+	whitelistRoles: whitelistRoles,
+	userPermissions: userPermissions,
+	botPermissions: userPermissions,
+	execute: execute,
+	button: handleInteraction,
+	select: handleInteraction,
+
+	build:config.DEV //||config.PRODUCTION
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function handleInteraction(interaction)
 {
@@ -233,68 +248,49 @@ async function createThreadMenu(interaction)
 	return await interaction.channel.send({embeds:[embed],components:[component,listbutton]})
 }
 
-// helper function to convert channel name to something usable as a title
-function toSentenceCase(str)
+
+
+
+
+
+	
+async function showBuilderMenu(interaction, useGuildLocations = false, locationOverride = [])
 {
-	if ((str===null) || (str==='')) return false;
+	const channel = interaction.channel;
+	const embed = new EmbedBuilder().setTitle("🛠️ Builder Thread Menu")
 
-	str = str.toString();
-	str = str.replace(/[\|\-]/g," ")
-    str = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	str = str.replace(/ i*/ig, function(txt){return txt.toUpperCase()});					 
-	return str
-}
-
-// helper function to convert number to Roman numeral
-function toRomanNumeral(number) 
-{
-	const romans = [
-	    { value: 1000, numeral: 'M' },
-	    { value: 900, numeral: 'CM' },
-	    { value: 500, numeral: 'D' },
-	    { value: 400, numeral: 'CD' },
-	    { value: 100, numeral: 'C' },
-	    { value: 90, numeral: 'XC' },
-	    { value: 50, numeral: 'L' },
-	    { value: 40, numeral: 'XL' },
-	    { value: 10, numeral: 'X' },
-	    { value: 9, numeral: 'IX' },
-	    { value: 5, numeral: 'V' },
-	    { value: 4, numeral: 'IV' },
-	    { value: 1, numeral: 'I' }
-	];
-
-	let result = '';
-	for (const { value, numeral } of romans) 
-	{
-    	while (number >= value) 
+	const chanMeta = await ChannelMeta.findOne({channelId:channel.id});
+	const roleIds  = chanMeta.locations;
+		
+	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
+		locations = locations.map( role => 
 		{
-			result += numeral;
-			number -= value;
-	    }
-  	}
-	return result;
+			if (locationOverride.includes(role.value))
+				role.default = true
+			else if (!locationOverride.length && roleIds.includes(role.value))				
+				role.default = true;		
+			// else if (channel.permissionsFor(role.value).has(PermissionsBitField.Flags.ViewChannel) && !locationOverride.length)
+			// 	role.default = true
+			return role;
+		})
+	
+	if (!useGuildLocations) locations.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
+	const guild = useGuildLocations ? ".guild" : ""
+	const location = Prompt.createSelectRow(`${data.name}.location${guild}`,locations,0,5,"Locations (None Selected)");
+	
+	const locationPub = {style:ButtonStyle.Secondary,
+						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
+						 custom_id:`${data.name}.guildLocations.${!useGuildLocations}`}	
+	const createMenu = {style:ButtonStyle.Primary,
+						 label:`Create Menu`, 
+						 custom_id:`${data.name}.createThreadMenu`}	
+	
+	const components = [];
+	components.push(location);
+
+	const miscButtons = [locationPub, createMenu];
+	components.push(Prompt.createButtonRow(miscButtons));
+
+	await interaction.editReply({ embeds: [embed], components: components });
 }
-	
-const data = new SlashCommandBuilder()
-	.setName(`thread${config.DEV ? "dev" : ""}`)
-	.setDescription('Open an RP thread')
-	.setDefaultPermission(false)
-	
-const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
-							PermissionsBitField.Flags.ViewChannel,						 
-							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
 
-module.exports = 
-{
-	data: data,
-	whitelistRoles: whitelistRoles,
-	userPermissions: userPermissions,
-	botPermissions: userPermissions,
-	execute: execute,
-	button: handleInteraction,
-	select: handleInteraction,
-
-	build:config.DEV //||config.PRODUCTION
-};
