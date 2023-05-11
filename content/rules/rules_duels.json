@@ -2,9 +2,10 @@
 	"Rules":
 	{
 		"includeIndex":true,
+		"inlineIndex":false,
 		"embeds": [
 			{
-				"title": "Rules for Duels in the Colosseum"
+				"title": "Rules for Colosseum Duels"
 			},
 			{
 				"prefix":":one: ",
@@ -24,24 +25,62 @@
 			},
 			{
 				"prefix":":four: ",
-				"title": "Initial Setup & Preparation",
-				"description": "Parties will begin at either 30 feet, or the distance reflecting the lowest movement speed of any of the combatants. While most race/class combinations have a minimum of 30 feet of movement, accommodations should be made so as not to put those with lower movement at a severe disadvantage."
+				"title": "Initiative Setup",
+				"description": "Parties will begin at either 30 feet, or the distance reflecting the lowest movement speed of any of the combatants. While most race/class combinations have a minimum of 30 feet of movement, accommodations should be made so as not to put those with lower movement at a severe disadvantage.",
+				"fields":[{"name":"Starting Combat","value":"One participant should run the Avrae command `!i begin` in the mechanics thread of the arena channel to start initiative. Once the combat is created, all participants should use the `!i join` command to roll initiative. If you are unfamiliar with Avrae combat, you may want to review [avrae commands](avrae.io/commands#inittracker) or try running through the\n `!tutorial Initiative (Player)` in <#697620228703649892>."}]
 			},
 			{
 				"prefix":":five: ",
+				"title": "Map Setup (Optional)",
+				"description": "Many requests have been made to provide map options for arena duels. Regardless, this step is **entirely optional**. Many who are new to Avrae may find it to be more trouble than it's worth, and Theater of the Mind combat often works just fine for arena duels. Before using a map, discuss it with your opponent and reach an agreement on the use of a map, as well as *which* map you wish to use. Several options are provided below.",
+				"fields":[
+					{"name":"Selecting a Map","value":"There are quite a few battle maps set up for use in the arenas. Images, along with some details, appear in the post following this one.\n`arena` - [image](https://i.imgur.com/xTFhOwl.png) - Main Colossuem [Recommended] - Has variants\n`arena_round` - [image](https://i.imgur.com/aX7ovJG.png) - Main Colossuem [Alternate]\n`sidearena1` - [image](https://i.imgur.com/QCrX0cg.jpg) - Side Arena Option\n`sidearena2` - [image](https://i.imgur.com/9ktKmsY.png) - Side Arena Option\n\n*If you find other arena battlemap images you think would be fitting inclusions, you may post them in <#694306844079947838>*"},
+					{"name":"Adding the Map","value":"In order for the map to track correctly, it will need to be added to initiative. (*Note that this will appear in turn order, and will need to be skipped, so pay close attention and try not to do your attack on the map's turn.*). One player should run these commands:\n\n`!map add 0 Map -p 69`\n`!map -loadmap <map_name>`\n\nReplace `<map_name>` with the name of your selection, for example:\n`!map -loadmap arena`"},
+					{"name":"Adding & Moving your Tokens","value":"Using the `!move <coordinate>` command will place your token. For example, `!move g10` will move your token to that corresponding square.\n`!move <coordinate> -t <target>` will move another target's token, as above. This can be used to move summons or familiars, for instance."},
+					{"name":"More Mapping Mayhem","value":"This covers just the barest basics of using the `!map` alias. If you want to explore it more, feel free to read and experiment with it\n(__**DO NOT**__ do so in the colosseum channels. Use <#697620228703649892>) "}
+				]
+			},
+			{
+				"description":"**Map Name**: `arena`\n**Map Size**: `42x26`\n**1v1 Start Coords**: `S13` & `Y13`\nRecommended for use as the main Colosseum.\nLarge elliptical arena, with a large variety of additional options to spice up your duels. (Optional rules for the variants is still being considered, and suggestions may be posted in <#694306844079947838>).",
+				"image":{"url":"https://i.imgur.com/xTFhOwl.png"},
+				"fields":[{"name":"Variants","value":"`arena_night` ([link](https://i.imgur.com/LdbfoPM.png)) - A night time version \n`arena_glow` ([link](https://i.imgur.com/ci5QUX7.png)) - A dark version with blue glow\n`arena_platform`  ([link](https://i.imgur.com/IuySNnV.png)) - A platform surrounded by pillars\n`arena_columns` ([link](https://i.imgur.com/TUIt1hW.png)) - Rows of columns for cover\n`arena_arcane` ([link](https://i.imgur.com/hmAh1IH.png)) - Glowing arcane sigils and wards\n`arena_hill` ([link](https://i.imgur.com/5xlLYgU.png)) - A King of the Hill variant\n`arena_air` ([link](https://i.imgur.com/W5vbPmw.png)) - Wind swirls in the center\n`arena_earth` ([link](https://i.imgur.com/OhejPaS.png)) - Stone rubble provides obstacles and cover\n`arena_fire` ([link](https://i.imgur.com/qGcEq2q.png)) - Narrow corridors surrounded by flame\n`arena_water` ([link](https://i.imgur.com/ND5XmPe.png)) - Narrow walkways over water"}],
+				"attachments":["https://i.imgur.com/LdbfoPM.png","https://i.imgur.com/ci5QUX7.png","https://i.imgur.com/IuySNnV.png","https://i.imgur.com/TUIt1hW.png","https://i.imgur.com/hmAh1IH.png","https://i.imgur.com/5xlLYgU.png","https://i.imgur.com/W5vbPmw.png","https://i.imgur.com/OhejPaS.png","https://i.imgur.com/qGcEq2q.png","https://i.imgur.com/ND5XmPe.png"]
+			},
+			{
+				"description":"**Map Name**: `arena_round`\n**Map Size**: `30x29`\n**URL**: https://i.imgur.com/aX7ovJG.png\n**1v1 Start Coords**: `L15` & `S15`\nA large no-frills circular arena.",
+				"image":{"url":"https://i.imgur.com/aX7ovJG.png"}
+			},
+			{
+				"description":"**Map Name**: `sidearena1`\n**Map Size**: `22x21`\n**URL**: https://i.imgur.com/QCrX0cg.jpg\n**1v1 Start Coords**: `H11` & `O12`\nA small circular arena",
+				"image":{"url":"https://i.imgur.com/QCrX0cg.jpg"}
+			},
+			{
+				"description":"**Map Name**: `sidearena2`\n**Map Size**: `24x15`\n**URL**: https://i.imgur.com/9ktKmsY.png\n**1v1 Start Coords**: `I8` & `P8`\nA small oval arena with pillars",
+				"image":{"url":"https://i.imgur.com/9ktKmsY.png"}
+			},			
+			{
+				"prefix":":six: ",
 				"title": "Prep Round (Optional)",
-				"description":"If both parties agree before initiative is rolled, the first round may count as a prep round.\n\nDuring this round, **only** personal and party buffs/enhancements are allowed. This includes spells with a Range of Self (Blur, Mirror Image), enhance the abilities of yourself or your allies (Bless, False Life), and race/class features that create similar effects (Druid’s Wild Shape, Shifter’s Shifting). Effects with a duration of greater than an hour, such as Mage Armor, may be used prior to arriving in the colosseum, and may be used without a Prep Round, provided the relevant resource is expended to reflect its use. Persistent companions (familiars, Artificer Steel Defenders, Ranger Companions, etc) may be present without using a prep round.\n\nSpells and features that target or affect opposing party members or the battlefield in any way are NOT allowed. Attacks or damaging spells, debuffs (Bane, Hex, Hunter’s Mark), conjuration spells (non-persistent summons, etc.), and race/class features that create similar effects (Fallen Aasimar’s Necrotic Shroud).\n\nCombatants MAY NOT use any Action other than the aforementioned buffs and enhancements. Such disallowed Actions include the Ready/Hold Action for an attack or spell, Help, or Dodge. This includes any spell, race, or class feature that confers a similar result (Rogue’s Cunning Action, Monk’s ki features)."
+				"description":"If both parties agree, the first round may count as a prep round.\n\nDuring this round, **only** personal and party buffs/enhancements are allowed. This includes spells with a Range of Self (Blur, Mirror Image), enhance the abilities of yourself or your allies (Bless, False Life), and race/class features that create similar effects (Druid’s Wild Shape, Shifter’s Shifting). Effects with a duration of greater than an hour, such as Mage Armor, may be used prior to arriving in the colosseum, and may be used without a Prep Round, provided the relevant resource is expended to reflect its use. Persistent companions (familiars, Artificer Steel Defenders, Ranger Companions, etc) may be present without using a prep round.\n\nSpells and features that target or affect opposing party members or the battlefield in any way are NOT allowed. Attacks or damaging spells, debuffs (Bane, Hex, Hunter’s Mark), conjuration spells (non-persistent summons, etc.), and race/class features that create similar effects (Fallen Aasimar’s Necrotic Shroud).\n\nCombatants MAY NOT use any Action other than the aforementioned buffs and enhancements. Such disallowed Actions include the Ready/Hold Action for an attack or spell, Help, or Dodge. This includes any spell, race, or class feature that confers a similar result (Rogue’s Cunning Action, Monk’s ki features)."
 			},
 			{ 
-				"prefix":":six: ",
+				"prefix":":seven: ",
 				"title": "Ending Duels: `/duel`",
 				"description": "At the end of the duel, enter the `/duel` command!\n\nA bot will log your duel for a DM to review & award at their earliest convenience. Be patient (we have lives).\n\nA DM will check both the mechanics channel to ensure nothing was done blatantly incorrectly, and check the RP channel to ensure you put some effort into roleplaying the actions of the duel. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands.",
 				"fields":[
 					{"name":"Verify your Level!","value":"Prior to concluding a duel, make sure you (and your opponent) have `!setup` your character in <#704307298407022622>. The bot will ask you to confirm the duel details before posting them to the DMs for review. If your level is wrong, click CANCEL, and run the `!xp` command in <#704307298407022622> before trying the `/duel` command again."},
 					{"name":"<:xp:858887927899226112> Experience Awarded","value":"Each combatant can earn an amount of exp per day up to an amount based on their level (see the table below). If the above EXP puts your character over their daily cap, any extra is lost and they cannot earn any more EXP from sparring for the day. The amount of exp awarded is calculated based on the level of the **losing** combatant. 75% of their cap is awarded to the winner, and the remaining 25% to the loser."},
-					{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   150 │   113 │    37  ║\n║   4  │   250 │   188 │    62  ║\n║   5  │   500 │   375 │   125  ║\n║   6  │   600 │   450 │   150  ║\n║   7  │   750 │   563 │   187  ║\n║   8  │   900 │   675 │   225  ║\n║   9  │ 1,100 │   825 │   275  ║\n║  10  │ 1,200 │   900 │   300  ║\n║  11  │ 1,600 │ 1,200 │   400  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,200 │ 2,400 │   800  ║\n║  17  │ 3,900 │ 2,925 │   975  ║\n║  18  │ 4,200 │ 3,150 │ 1,050  ║\n║  19  │ 4,900 │ 3,675 │ 1,125  ║\n║  20  │ 5,700 │ 4,275 │ 1,425  ║\n╚══════╧═══════╧═══════╧════════╝\n```"}
-				]
+					{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   150 │   113 │    37  ║\n║   4  │   250 │   188 │    62  ║\n║   5  │   500 │   375 │   125  ║\n║   6  │   600 │   450 │   150  ║\n║   7  │   750 │   563 │   187  ║\n║   8  │   900 │   675 │   225  ║\n║   9  │ 1,100 │   825 │   275  ║\n║  10  │ 1,200 │   900 │   300  ║\n║  11  │ 1,600 │ 1,200 │   400  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,200 │ 2,400 │   800  ║\n║  17  │ 3,900 │ 2,925 │   975  ║\n║  18  │ 4,200 │ 3,150 │ 1,050  ║\n║  19  │ 4,900 │ 3,675 │ 1,125  ║\n║  20  │ 5,700 │ 4,275 │ 1,425  ║\n╚══════╧═══════╧═══════╧════════╝\n```"}					
+				],
+				"hiddenFields":[{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   200 │   150 │    50  ║\n║   4  │   350 │   265 │    90  ║\n║   5  │   700 │   525 │   175  ║\n║   6  │   850 │   640 │   215  ║\n║   7  │ 1,000 │   750 │   250  ║\n║   8  │ 1,200 │   900 │   300  ║\n║   9  │ 1,400 │ 1,050 │   350  ║\n║  10  │ 1,600 │ 1,200 │   400  ║\n║  11  │ 1,800 │ 1,350 │   450  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,500 │ 2,625 │   875  ║\n║  17  │ 4,000 │ 3,000 │ 1,000  ║\n║  18  │ 4,500 │ 3,375 │ 1,125  ║\n║  19  │ 5,000 │ 3,750 │ 1,250  ║\n║  20  │ 6,000 │ 4,500 │ 1,500  ║\n╚══════╧═══════╧═══════╧════════╝```"},
+					{"name":":coin: Gold Awarded","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │ Total │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   4gp │   3gp │   1gp  ║\n║   4  │   7gp │   5gp │   2gp  ║\n║   5  │  14gp │  11gp │   3gp  ║\n║   6  │  17gp │  13gp │   4gp  ║\n║   7  │  20gp │  15gp │   5gp  ║\n║   8  │  24gp │  18gp │   6gp  ║\n║   9  │  28gp │  21gp │   7gp  ║\n║  10  │  32gp │  24gp │   8gp  ║\n║  11  │  36gp │  27gp │   9gp  ║\n║  12  │  40gp │  30gp │  10gp  ║\n║  13  │  44gp │  33gp │  11gp  ║\n║  14  │  50gp │  38gp │  12gp  ║\n║  15  │  56gp │  42gp │  14gp  ║\n║  16  │  70gp │  53gp │  17gp  ║\n║  17  │  80gp │  60gp │  20gp  ║\n║  18  │  90gp │  68gp │  22gp  ║\n║  19  │ 100gp │  75gp │  25gp  ║\n║  20  │ 120gp │  90gp │  30gp  ║\n╚══════╧═══════╧═══════╧════════╝```"}]
 			}
+
+
+
+
+
+			
 		]
 	}
 }
