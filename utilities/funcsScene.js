@@ -626,12 +626,15 @@ async function handleNPC(interaction)
 	const dmMsgId = footer.split('|')[0] || null;
 	const dmEmbed = await dmChan?.messages?.fetch(dmMsgId) || null;
 	const xpData  = retrieveData(dmEmbed);
+
 	const start   = xpEmbed?.fields?.find( x => x.name === "Scene" || x.name === "Start");
 	//Extract a list of pending NPCs and filter the data by the ones this person can edit
 	let   pending = xpEmbed.fields.filter( field => field.name.includes("(NPC)") && field.value.includes("Pending") )
 								  .map( field => field.name.replace(" (NPC)","") )
 	let   data    = xpData.filter( x => unassignedNPC(x) && pending.includes(x.name) && (modDM ||
 										(x.user == interaction.user.id)))
+	const unassigned = JSON.parse(JSON.stringify(data));
+	
 	let	 response = null
 	//Early out if we have no pending NPCs this user can edit
 	if (!data.length)
@@ -664,6 +667,7 @@ async function handleNPC(interaction)
 	//Re-process this NPC and update the xpData with the new information
 	var index = xpData.findIndex(x => x.char === response);
 	let editData = xpData[index]
+	let assignedName = editData.name;
 	try {	editData = await processCharData(interaction, {...editData, t:true}, true, true);	}
 	catch(err) { 
 		await interaction.editReply({content: "Cancelled Edit...", embeds:[], components:[]})
@@ -714,10 +718,15 @@ async function handleNPC(interaction)
 		update.spliceFields(dupes[0],1,updateField)
 		update.spliceFields(index, 1, {name:updateField.name, value:"`Merged with previous`"})
 	}
-	
+
 	//Check if we have any more NPCs we'll need to edit
-	pending = pending.filter( x=> x != editData.name )
-	data    = xpData.filter( x => unassignedNPC(x) && pending.includes(x.name) )
+	pending = pending.filter( x=> x != editData.name && x != assignedName )
+	data    = unassigned.filter( x => unassignedNPC(x) && pending.includes(x.name) )
+
+
+	
+console.log(pending,"\n\n",data)
+	
 	const hasNPC = data.length > 0
 	const component = [];
 	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];	
@@ -729,6 +738,7 @@ async function handleNPC(interaction)
 	response = new EmbedBuilder().setTitle("Edit Complete")
 								 .setDescription(`${edit} [Updated](${interaction.message.url})`)
 								 .setFooter({text:`${interaction.member.displayName}`})
+	
 	await interaction.editReply({content:"",embeds:[response], components:[]})
 	// await interaction.editReply({content:`Edit Complete: ${response} => ${editData.char}`,embeds:[], components:[]})
 	
