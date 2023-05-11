@@ -8,7 +8,7 @@ const wait = require('util').promisify(setTimeout);
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 const index = require(`../../content/_contentIndex.json`)
-const TEST_CHAN = "1105312140564373554"
+const TEST_CHAN = ["940061953064329216","1105312140564373554"];
 
 function extractMention(embed) 
 {
@@ -55,35 +55,42 @@ async function publishContent(channel, content)
 				if (embed?.description?.includes("<last_id>"))
 					embed.description = embed.description.replace("<last_id>",lastMessage)
 
+				//Prep the prefix & cleanup
 				const prefix = embed.prefix ?? "";
 				delete embed.prefix;
-
+				//Prep the title with the prefix & cleanup
 				const title = embed.title || embed.Title || "";
 				delete embed.Title;
 				embed.title = `${prefix}${title}`.trim()				
-				
+				//Prep the thread and cleanup
 				let thread = embed.thread || null;
 				delete embed.thread;
+				//Prep the index field break and cleanup
 				let fieldBreak = embed.indexBreak ?? false
 				delete embed.indexBreak
-				
+				//Prep the attachments and cleanup
+				const attachments = embed.attachments || null;
+				delete embed.attachments;
+				delete embed.hiddenFields;
+				//Send the embed and (if we have attachments) send those as a separate message
 				let item = await channel.send({embeds:[embed]});
+				if (attachments) await channel.send({files:attachments});
+				//Push the link into the ToC or the Index
 				if (value.includeTOC && title)
 					contents.push({"prefix":prefix,"title":title,"url":item.url});
 				else if (value.includeIndex && title)
 					index.push({"prefix":prefix,"title":title,"url":item.url,"break":fieldBreak});
-				
-				if (thread)
-					await item.startThread({name:thread})
-				
+				//If we have a thread, start it				
+				if (thread) await item.startThread({name:thread})
+								
 				lastMessage = item.id
-				
+				//Extract any channel mentions and send them separately?
 				let chanMentions = extractMention(embed).trim();
-				if (chanMentions)
-					await channel.send(chanMentions)
+				if (chanMentions) await channel.send(chanMentions)
 
+				//Stall so we don't hit ratelimit
 				const waitTime = value.waitTime ?? 1200				
-				await wait(1200);
+				await wait(waitTime);
 			});
 		}
 				
@@ -210,7 +217,7 @@ async function run(client, message, command, args)
 async function autoComplete(interaction) 
 {
 	const focusedOption = interaction.options.getFocused(true);
-	if (interaction.channel.id == TEST_CHAN && focusedOption.name === 'content') 
+	if (TEST_CHAN.includes(interaction.channel.id) && focusedOption.name === 'content') 
 	{
 		const value = focusedOption.value.toLowerCase();
 		console.log(value);
