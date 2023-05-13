@@ -722,17 +722,13 @@ async function handleNPC(interaction)
 	//Check if we have any more NPCs we'll need to edit
 	pending = pending.filter( x=> x != editData.name && x != assignedName )
 	data    = unassigned.filter( x => unassignedNPC(x) && pending.includes(x.name) )
-
-
-	
-console.log(pending,"\n\n",data)
 	
 	const hasNPC = data.length > 0
 	const component = [];
 	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];	
 	if (hasNPC) component.push( Prompt.createButtonRow(npcButton) )
 	
-	await interaction.message.edit({embeds:[update], components:component})
+	await interaction.message.edit({embeds:[update]});	//, components:component})
 
 	const edit = response != editData.char ? `${response} => ${editData.char}` : editData.char
 	response = new EmbedBuilder().setTitle("Edit Complete")
