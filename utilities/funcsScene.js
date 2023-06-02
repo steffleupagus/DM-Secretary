@@ -114,7 +114,12 @@ async function processScene(interaction, message)
 	try 	  { rpData = await MsgUtils.getRoleplayData(channel, message); }
 	catch(err){	Mutex.unlock(channel, err)	}
 	
-	const start = rpData.start;
+	const start = rpData?.start;
+	if (!start)
+	{
+		Mutex.unlock(channel);	
+		return SCENE_BREAK_CLOSER
+	}
 	
 /*/ ^^^ Gathering all necessary data                    \*\
 |*| <<< TODO: Branch off here for informational output  |*|
