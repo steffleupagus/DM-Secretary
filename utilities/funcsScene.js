@@ -33,7 +33,7 @@ const STEP_PROCESS_DATA  = "Processing scene data. Please be patient."
 const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
 
 const SCENE_EMBED_TITLE  = `${config.xpemoji} Scene Complete`;
-const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Complete`;
+const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Closed`;
 const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
 const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your level looks wrong__: \n• React with 👎 to cancel`
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.xpLogChannel}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
@@ -58,7 +58,7 @@ const interactionTimer = {};
 
 async function autoCloseScene(message)
 {
-	if (!Debug) return
+//	if (!Debug) return
 	let startTime = performance.now()
 
 	const channel = message.channel;
@@ -114,7 +114,12 @@ async function processScene(interaction, message)
 	try 	  { rpData = await MsgUtils.getRoleplayData(channel, message); }
 	catch(err){	Mutex.unlock(channel, err)	}
 	
-	const start = rpData.start;
+	const start = rpData?.start;
+	if (!start)
+	{
+		Mutex.unlock(channel);	
+		return SCENE_BREAK_CLOSER
+	}
 	
 /*/ ^^^ Gathering all necessary data                    \*\
 |*| <<< TODO: Branch off here for informational output  |*|
@@ -722,17 +727,13 @@ async function handleNPC(interaction)
 	//Check if we have any more NPCs we'll need to edit
 	pending = pending.filter( x=> x != editData.name && x != assignedName )
 	data    = unassigned.filter( x => unassignedNPC(x) && pending.includes(x.name) )
-
-
-	
-console.log(pending,"\n\n",data)
 	
 	const hasNPC = data.length > 0
 	const component = [];
 	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];	
 	if (hasNPC) component.push( Prompt.createButtonRow(npcButton) )
 	
-	await interaction.message.edit({embeds:[update], components:component})
+	await interaction.message.edit({embeds:[update]});	//, components:component})
 
 	const edit = response != editData.char ? `${response} => ${editData.char}` : editData.char
 	response = new EmbedBuilder().setTitle("Edit Complete")
@@ -763,7 +764,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
  	start  = `${interaction?.channel.name}\n${interaction?.channel} [Start](${start})`;
 	footer = `Logged at (Server Time): ${fullDate}\nProcTime: ${footer}`;
 
-	const title = SCENE_EMBED_TITLE;
+	const title = footer.includes("auto-close") ? SCENE_EMBED_TITLE_AUTO : SCENE_EMBED_TITLE;
 	
 	const embed = new Embed();
 	const openEmbed = (embed) => 

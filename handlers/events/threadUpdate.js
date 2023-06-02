@@ -25,12 +25,6 @@ async function execute(client, oldThread, newThread)
 		if (ChanUtils.isRoleplayThread(newThread))
 		{		
 			const isExpChannel = await ChanUtils.isRPExpThread(newThread)
-			if (user)
-			{
-				const dm = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}`
-				await user.send(dm)
-			}
-
 			if (isExpChannel)
 			{
 				const messages = await newThread.messages.fetch({limit:1});
@@ -40,9 +34,22 @@ async function execute(client, oldThread, newThread)
 	
 					const commandName = `scene${config.DEV ? "dev" : ""}`
 					const command = client.commands.get(commandName);
-					if (command) await command.autoClose(message)
+					if (command)
+					{
+						await command.autoClose(message)
+						await newThread.setArchived(true)
+						
+						const dm = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}`
+						await user.send(dm)
+					}
 				}
 			}
+			else if (user)
+			{
+				const dm = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}`
+				await user.send(dm)
+			}
+
 		}
 	}
 }

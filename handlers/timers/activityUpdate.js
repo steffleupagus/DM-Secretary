@@ -251,7 +251,7 @@ async function generateEmbed(guild, area, channels)
 					 .setDescription(`\`${"".padEnd(69," ")}\``)
 
 	let areaexp = true;
-	
+	const fields = [];
 	await Utils.asyncArrayForEach( channels, async channel =>
 	{
 		//If the channel is set not to track, skip it
@@ -264,6 +264,8 @@ async function generateEmbed(guild, area, channels)
 		
 		channel = channelManager.resolve(channel.channelId)
 		if (!channel) return console.log(`Could not resolve ${channelId}`)
+		
+		const order = channel.position;
 		const chanName = Utils.toSentenceCase(channel.name,true);
 		let   {status,lastMsg,elapsed,author} = await getChannelStatus(channel);
 		const name  = `** **`;
@@ -276,13 +278,17 @@ async function generateEmbed(guild, area, channels)
 				threads = threads.all;
 			await Utils.asyncCollectionForEach(threads, async thread => {
 				const {status,lastMsg,elapsed,author} = await getChannelStatus(thread);
-				const detail = `\n\`     ${lastMsg}\`${elapsed} ${author} `
-				value += `\n\`• ${status}\` <#${thread.id}> ${detail}`
+				const detail = `\n\`     \`${lastMsg} ${elapsed} ${author} `
+				value += `\n\`🧵${status}\` <#${thread.id}> ${detail}`
 			})
-		}				
-		embed.addFields({name,value})
+		}
+		fields.push({name,value,order})
+//		embed.addFields({name,value})
 	})		
 
+	fields.sort((a,b) => a.order - b.order); // b - a for reverse sort
+	embed.addFields(fields)
+	
 	areaexp = areaexp ? config.xpemoji : ""
 	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
 	
