@@ -33,7 +33,7 @@ const STEP_PROCESS_DATA  = "Processing scene data. Please be patient."
 const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
 
 const SCENE_EMBED_TITLE  = `${config.xpemoji} Scene Complete`;
-const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Complete`;
+const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Closed`;
 const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
 const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your level looks wrong__: \n• React with 👎 to cancel`
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.xpLogChannel}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
@@ -58,7 +58,7 @@ const interactionTimer = {};
 
 async function autoCloseScene(message)
 {
-	if (!Debug) return
+//	if (!Debug) return
 	let startTime = performance.now()
 
 	const channel = message.channel;
@@ -759,7 +759,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
  	start  = `${interaction?.channel.name}\n${interaction?.channel} [Start](${start})`;
 	footer = `Logged at (Server Time): ${fullDate}\nProcTime: ${footer}`;
 
-	const title = SCENE_EMBED_TITLE;
+	const title = footer.includes("auto-close") ? SCENE_EMBED_TITLE_AUTO : SCENE_EMBED_TITLE;
 	
 	const embed = new Embed();
 	const openEmbed = (embed) => 
