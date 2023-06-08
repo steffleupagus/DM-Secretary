@@ -23,8 +23,13 @@
 			},
 			{
 				"prefix":":three: ",
+				"title": "Multiple Scenes",
+				"description": "A character is not considered RP-locked, and may be in more than one scene simultaneously. We don't explicitly cap the number of simultaneous scenes you can be in, but RP locations ARE limited, so try not to take up too many channels or lock them for too long without replies. Channels which go for too long without replies might be considered dead, and the scenes ended. See below."
+			},
+			{
+				"prefix":":four: ",
 				"title": "Dead Scenes",
-				"description": "If a scene has gone for an extended period of time without a response from either party, the channel may be free to use. Use the following as a guideline.\nNOTE: If taking over a channel from a stale scene, you MUST first end the previous scene with the `/scene` command. If the bot needs help ending the scene, and you aren't sure, ask a <@&694285067723210843> for help.",
+				"description": "While you are free to end your own scenes at any time and for any reason, please be respectful of other players and don't close other people's scenes unless they meet certain criteria. If a scene has gone for an extended period of time without a response from either party, the channel may be free to use. Use the following as a guideline.\nNOTE: If taking over a channel from a stale scene, you MUST first end the previous scene with the `/scene` command. If the bot needs help ending the scene, and you aren't sure, ask a <@&694285067723210843> for help.",
 				"fields":[
 					{"name":":no_entry: < 3 Days","value":"Less than three days: Channel is still being actively used"},
 					{"name":":question: 3-7 Days","value":"Last reply was 3-7 days ago: Ask participants if they are still using it. Do not take the channel unless given permission."},
@@ -33,7 +38,7 @@
 				]
 			},
 			{ 
-				"prefix":":four: ",
+				"prefix":":five: ",
 				"title": "Ending Scenes",
 				"description": "The server has a bot that will close scenes and award experience to participants. To close a scene, input the `/scene` command. The bot will attempt to find a best-match for each character, but may ask if it isn't sure. If the bot needs help ending the scene, and you aren't sure, ask a <@&694285067723210843> for help.",
 				"fields":[
