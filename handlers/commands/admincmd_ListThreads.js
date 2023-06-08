@@ -70,7 +70,7 @@ async function run(client, message, command, args)
 }
 
 const data = new SlashCommandBuilder()
-	.setName('listthreads')
+	.setName(`listthreads${config.DEV ? "dev" : ""}`)
 	.setDescription('Go through every channel and find every thread')
 	.setDefaultPermission(false)
 

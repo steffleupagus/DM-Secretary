@@ -15,6 +15,11 @@ const defaultThreadMax = 5;
 const locationPermission = { ViewChannel: true };
 const ownerPermission = { ViewChannel: true, ManageChannels: true, ManageMessages: true, ManageThreads: true }
 
+function getDefaultChanMeta(channel)
+{
+	return { channelId: channel.id, ...defaultChanMeta};
+}
+
 function getCurrentChanMeta(channel, chanMeta, sync = false)
 {
 	const locations = {}
@@ -25,7 +30,7 @@ function getCurrentChanMeta(channel, chanMeta, sync = false)
 	if (null === chanMeta)
 	{	
 		sync = true;
-		chanMeta = { channelId: channel.id, ...defaultChanMeta};
+		chanMeta = getDefaultChanMeta(channel)
 	}
 
 	if (sync)
@@ -161,6 +166,12 @@ async function updateChannelTopic(channel, chanMeta)
 
 }
 
+
+async function deleteDBRecord(channelId)
+{
+	await ChannelMeta.findOneAndDelete({channelId:channelId})
+}
+
 async function updateDBRecord(chanMeta)
 {
 	const channelId = chanMeta.channelId;
@@ -263,7 +274,8 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	const locationPub = {style:ButtonStyle.Secondary,
 						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
 						 custom_id:`${data.name}.publicLocation.${useGuildLocations}`}
-	const revertPerms = {style:ButtonStyle.Secondary,emoji:"⏮️", label:'Reset Perm', custom_id:`${data.name}.syncPerms`}	
+	const deleteMeta  = {style:ButtonStyle.Danger,emoji:"🗑️", label: "Delete", custom_id:`${data.name}.deleteRecord`}
+	const revertPerms = {style:ButtonStyle.Secondary,emoji:"⏮️", label:'Reset Perm', custom_id:`${data.name}.syncPerms`}
 	const topicButton = {style:ButtonStyle.Secondary,emoji:"🔄", label:'Refresh Topic', custom_id:`${data.name}.refreshTopic`}
 
 	const components = [];
@@ -273,6 +285,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	if (isBuilder && chanMeta.userOwner.length) components.push(ownerSelect)//Row 4 - Owner Edit (Builder Only)
 	
 	const miscButtons = [];										
+	if (isBuilder) miscButtons.push(deleteMeta)								//		- Delete the database record (Builder Only)
 	if (isBuilder && chanMeta.guildHall) miscButtons.push(locationPub)		//		- Public/Guild Hall Loc Toggle (Builder Only)	
 	if (isBuilder) miscButtons.push(revertPerms)							//		- Revert permissions to current
 	//if (isBuilder) miscButtons.push(permDebug)							//		- Log the permissions to the console.
@@ -372,30 +385,35 @@ async function handleInteraction(interaction)
 	console.log(`HandleSelect: ${customId} for ${chanMeta?.channelId}`)
 	if (!chanMeta) return;		
 	chanMeta.threadMax = chanMeta.threadMax ?? 0;
-	chanMeta.name = channel.name;	
-	switch(customId)
+	chanMeta.name = channel.name;
+
+	const prefix = `${data.name}.`
+	if (!customId.startsWith(prefix))
+		throw new Error("Interaction routed to incorrect command")
+	const command = customId.replace(prefix,"");	
+	switch(command)
 	{
-		case `${data.name}.incThread`:
+		case `incThread`:
 			if (!isBuilder) return;
 			chanMeta.threadMax++;
 			break;			
-		case `${data.name}.decThread`:			
+		case `decThread`:			
 			if (!isBuilder) return;
 			chanMeta.threadMax--;
 			chanMeta.threadMax = Math.max(0, chanMeta.threadMax);
 			break;
-		case `${data.name}.toggleThread`: 			
+		case `toggleThread`: 			
 			if (!isBuilder) return;
 			chanMeta.threadMax = chanMeta.threadMax ? 0 : defaultThreadMax;
 			// chanMeta.threadMax = defaultThreadMax - chanMeta.threadMax;
 			// chanMeta.threadMax = Math.max(0, chanMeta.threadMax);
 			break;			
-		case `${data.name}.clearOwner`:
+		case `clearOwner`:
 			if (!isBuilder) return;
 			chanMeta.userOwner = [];
 			permsDirty = true;
 			break;
-		case `${data.name}.assignOwner`:
+		case `assignOwner`:
 			const modal = await Prompt.promptModal(interaction, "Enter user ID", "owner"+interaction.id);
 			if (modal?.fields)
 			{
@@ -414,40 +432,46 @@ async function handleInteraction(interaction)
 				if (!user) await modal.reply({content:`${newOwner} is not a valid user`,ephemeral: true});
 			}
 			break;
-		case `${data.name}.modifyOwners`:
+		case `modifyOwners`:
 			chanMeta.userOwner = interaction.values
 			permsDirty = true;
 			break;
-		case `${data.name}.location`:
+		case `location`:
 			chanMeta.locations = interaction.values
 			permsDirty = true;
 			break;
-		case `${data.name}.toggleTrack`:
+		case `toggleTrack`:
 			if (!isBuilder) return;
 			chanMeta.trackActivity = !chanMeta.trackActivity;
 			break;
-		case `${data.name}.toggleExp`:
+		case `toggleExp`:
 			if (!isBuilder) return;
 			chanMeta.awardsExp = !chanMeta.awardsExp;
 			break;
-		case `${data.name}.guild`:
+		case `guild`:
 			if (!isBuilder) return;
 			chanMeta.guildHall = interaction.values[0];			
 			if (chanMeta.guildHall == "none") chanMeta.guildHall = ""
 			break;			
-		case `${data.name}.publicLocation.true`:
+		case `publicLocation.true`:
 			publicFlag = true;
-		case `${data.name}.publicLocation.false`:
+		case `publicLocation.false`:
 			dirty = false;
 			break;			
-		case `${data.name}.permDebug`:
+		case `permDebug`:
 			getCurrentChanMeta(channel, chanMeta)
 			dirty = false;
 			break;			
-		case `${data.name}.syncPerms`:
+		case `syncPerms`:
 			chanMeta = getCurrentChanMeta(channel, chanMeta, true)
-			break;			
-		case `${data.name}.refreshTopic`:
+			break;
+		case `deleteRecord`:
+			deleteDBRecord(channel.id)
+			chanMeta = getDefaultChanMeta(channel)
+			dirty = false;
+			permsDirty = false;
+			break;
+		case `refreshTopic`:
 			await editReply(interaction, chanMeta, publicFlag)			
 			try { await updateChannelTopic(channel, chanMeta) } 
 			catch(e) { interaction.followUp({content:e, ephemeral:true}) }

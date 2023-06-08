@@ -34,7 +34,7 @@ function execute(client)
 		const status = statusArray[index];
 		client.user.setActivity(status[1], { type: status[0] });
 		index++;
-	}, 8000);
+	}, 60000);
 }
 
 // when the client is ready, run this code
