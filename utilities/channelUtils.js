@@ -26,6 +26,12 @@ async function isRPExpChannel(channel)
 	return result && result.awardsExp;
 }
 
+async function isTrackedChannel(channel)
+{
+	const result = await ChannelMeta.findOne({ channelId: channel.id })
+	return result && result.trackActivity
+}
+
 async function isRPExpThread(channel)
 {
 	if (!channel.isThread()) return false
@@ -132,6 +138,7 @@ module.exports =
 	isRPExpChannel,
 	isRPExpThread,
 	isRPExpEligible,
+	isTrackedChannel,
 	isDuelRPChannel,
 	getDuelChannelPair,
 	fetchThreads,
