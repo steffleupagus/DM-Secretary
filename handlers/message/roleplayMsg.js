@@ -1,6 +1,8 @@
 /*---------------------------------------------------*\
 | Detect Roleplay messages and log them in a database |
 \*---------------------------------------------------*/
+const mod = process.env.mod || "";
+const config = require(`${process.cwd()}/config/${mod}_config.json`)
 
 const MsgUtils = require(`../../utilities/messageUtils.js`);
 const ChanUtils = require(`../../utilities/channelUtils.js`);
@@ -8,9 +10,6 @@ const RPP = require(`../../database/rppTrackerSchema.js`)
 
 async function shouldHandle(client, message)
 {
-	if (process.env.mod == "dev")
-		return false;
-	if (message.author.bot) return false;
 	if (ChanUtils.isRoleplayChannel(message.channel) ||
 	   	ChanUtils.isRoleplayThread(message.channel))
 		return true;
@@ -84,5 +83,7 @@ module.exports = {
 	handleCreate: handleCreate,
 	handleUpdate: handleUpdate,
 	handleDelete: handleDelete,
-	updateRecord: updateRecord
+	updateRecord: updateRecord,
+	
+	build: config.PRODUCTION //|| config.DEV	
 };

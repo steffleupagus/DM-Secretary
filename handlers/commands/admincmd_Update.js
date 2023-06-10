@@ -14,8 +14,9 @@ async function execute(interaction)
 	}
 }
 
+const cmdName = `update${config.DEV ? "dev" : ""}`
 const data = new SlashCommandBuilder()
-			.setName('update')
+			.setName(cmdName)
 			.setDescription('Update the activity tracker')
 const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
@@ -24,5 +25,5 @@ module.exports =
 	whitelistRoles: [ config.BuilderRole, config._BuilderRole ],
 	userPermissions: userPermissions,
 	execute: execute,
-	build:config.PRODUCTION //|| config.DEV
+	build:config.PRODUCTION || config.DEV
 };
