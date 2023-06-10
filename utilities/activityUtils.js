@@ -1,6 +1,10 @@
 
 const ChanActivity = require(`../database/chanActivitySchema.js`)
 const MsgUtils  = require(`../utilities/messageUtils.js`);
+const minute=60      	//seconds per Minute
+const hour=60*minute  	//Seconds per Hour
+const day=24*hour  		//Seconds per Day
+const msps=1000	  		//Milliseconds per second
 
 function getRecordFromMessage(message)
 {
@@ -16,6 +20,7 @@ function getRecordFromMessage(message)
 		thread: thread,
 		time:	time,
 		scene: 	scene,
+		update: time
 	}
 }
 
@@ -35,7 +40,8 @@ async function updateActivityRecord(record)
 			user: 	record.user,
 			thread: record.thread,
 			time:	record.time,
-			scene: 	record.scene
+			scene: 	record.scene,
+			update: Date.now()
 		}
 	};
 	const options = { new: true, upsert: true }
@@ -69,15 +75,22 @@ function getAuthorData(message)
 
 async function getChannelStatus(channel)
 {
+	const now = Date.now()
 	let messageData = await ChanActivity.findOne({ chan: channel.id });
 	if (messageData)
 	{
 		console.log(`Database Record: <#${messageData.chan}> - ${messageData.user}`);		
+
+		const updated = messageData.update || 0;
+		const timePassed = (now - updated) / 1000;
+		if (timePassed >= (3 * day))
+			messageData = null;
 	}
-	else //if (!messageData)
+	
+	if (!messageData)
 	{
-		console.log(`No record found for <#${channel.id}>. Polling message`);
 		messageData = null;
+		console.log(`Record for <#${channel.id}> missing or expired. Polling message.`);
 		await channel.messages.fetch({ limit: 1 }).then(async messages => 
 		{
 			const message = messages.first()
@@ -98,12 +111,7 @@ function getChannelStatusFromMessageData(messageData)
 	let author  = ""
 	let elapsed = ""
 	if (messageData)
-	{
-		const minute=60      	//seconds per Minute
-		const hour=60*minute  	//Seconds per Hour
-		const day=24*hour  		//Seconds per Day
-		const msps=1000	  		//Milliseconds per second
-	
+	{	
 		//Time data
 		let created = messageData.time;
 		let now = Date.now();

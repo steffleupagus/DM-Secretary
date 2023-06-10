@@ -258,76 +258,7 @@ const timerData = {
 	startTimer,
 	stopTimer,
 	triggerTimer,
-	build:config.PRODUCTION || config.DEV
+	build:config.PRODUCTION //|| config.DEV
 };
 
 module.exports = timerData
-
-
-
-
-
-
-
-
-
-
-async function channelTest(guild)
-{
-	const channelManager = guild.channels
-	console.log(channelManager.cache.size)
-
-	//Loop through all the channels in the server
-	await channelManager.cache.each( async (channel) => 
-	{
-		if (channel.type == ChannelType.GuildCategory)
-		{
-			console.log(channel.name + ": " + channel.id)
-			Utils.slowdown(50)
-		}
-	})
-
-	LocationRoles = {}
-	ChanUtils.locations.forEach(location => LocationRoles[location.value] = location.label)
-	ChanUtils.guildLocations.forEach(location => LocationRoles[location.value] = location.label)
-	Object.keys(LocationRoles).forEach(location => {
-		console.log(LocationRoles[location] + ": " + location)
-	})
-
-	console.log("Done")	
-}
-
-//Organize by channel category
-async function gatherChannels(guild)
-{
-	// await this.asyncForEach(channelManager.cache.array(), async (channel) =>
-	{
-	// 		//Find all the text RP channels that aren't private.
-	// 		if(	channel.name.startsWith("🗣") && 
-	// 			channel.type == "text")
-	// 		{
-	// 			//Gather data from the channel
-	// 			var parent = channel.parent;
-	// 			var chanpos = channel.position;
-	// 			if (chanpos < 10) chanpos = "0" + chanpos;
-	// 			var catpos = parent ? channel.parent.position : 0;
-	// 			var relpos = parseFloat(catpos + "." + chanpos);
-	// 			//Organize the data into a json blob
-	// 			var data = {
-	// 				id:channel.id,
-	// 				name:channel.name,
-	// 				category: parent ? channel.parent.name : "",
-	// 				catid: parent ? parent.id : "",
-	// 				relpos: relpos,
-	// 				lastMessage: channel.lastMessageID
-	// 			}				
-	// 			//Set it into the config file
-	// 			this.activityData.setItem(channel.name, data);
-	// 		}
-	// 		else if (channel.name.includes("🗣"))
-	// 			console.log("Skipping: " + channel.name);
-	// 	});
-	// 	//Sort the activity data for the messages
-	// 	this.activityData.sortItemsNumeric("relpos",true);
-	}	
-}

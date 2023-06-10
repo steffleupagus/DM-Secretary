@@ -11,7 +11,8 @@ const schema = new mongoose.Schema({
 	user:	reqString,
 	thread: Boolean,
 	time:	Number,
-	scene: 	Boolean
+	scene: 	Boolean,
+	update: Number
 })
 	
 module.exports = mongoose.model(schemaName, schema, schemaName)
