@@ -228,7 +228,7 @@ async function generateEmbed(guild, area, channels)
 			await Utils.asyncCollectionForEach(threads, async thread => {
 				const {status,lastMsg,elapsed,author} = await ActivityUtils.getChannelStatus(thread);
 				const detail = `\n\`     \`${lastMsg} ${elapsed} ${author} `
-				value += `\n\`🧵${status}\` <#${thread.id}> ${detail}`
+				value += `\n\`${status}\` <#${thread.id}> ${detail}`
 			})
 		}
 		fields.push({name,value,order})
