@@ -1,10 +1,12 @@
 const { ChannelType, EmbedBuilder, time } = require('discord.js')
 
+const ActivityUtils = require(`../../utilities/activityUtils.js`)
+const ChanActivity = require(`../../database/chanActivitySchema.js`)
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
-const ChanUtils = require(`../../utilities/channelUtils.js`)
-const AreaMeta = require(`../../database/areaMetaSchema.js`)
+const ChanUtils  = require(`../../utilities/channelUtils.js`)
+const AreaMeta  = require(`../../database/areaMetaSchema.js`)
 const MsgUtils = require(`../../utilities/messageUtils.js`)
-const Utils = require(`../../utilities/utilFuncs.js`)
+const Utils   = require(`../../utilities/utilFuncs.js`)
 
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
@@ -33,7 +35,6 @@ async function startTimer(client)
 		console.log("No activity status messages. Generating stubs.")	
 		await createStubMessages(guild, channel);
 	}
-//	await runUpdate(guild, channel, -1);
 	
 	let index = 0
 	timerInterval = setInterval(async () => 
@@ -66,9 +67,9 @@ async function triggerTimer(client)
 }
 	
 //Create embed stubs
-async function createStubMessages(guild, targetChannel)
+async function createStubMessages(guild, activityChannel)
 {
-	if (!targetChannel) return console.log("Log channel missing?")
+	if (!activityChannel) return console.log("Log channel missing?")
 	
 	const channels = await ChannelMeta.find({});
 	const channelByLocation = {}
@@ -93,7 +94,7 @@ async function createStubMessages(guild, targetChannel)
 			})			
 		})	
 		const embed = await generateEmbedStub(guild, area, channels);	
-		const message = await targetChannel.send({embeds:[embed]});
+		const message = await activityChannel.send({embeds:[embed]});
  		await Utils.slowdown(1000);
 		
 		console.log(`\t${area.name} stubbed`)
@@ -128,11 +129,10 @@ async function generateEmbedStub(guild, area, channels)
 	return embed;
 }
 
-
 //Organize by location role
-async function runUpdate(guild, targetChannel, index=0)
+async function runUpdate(guild, activityChannel, index=0)
 {
-	if (!targetChannel) return console.log("Log channel missing?")
+	if (!activityChannel) return console.log("Log channel missing?")
 	
 	const channels = await ChannelMeta.find({});
 	const channelByLocation = {}
@@ -143,7 +143,7 @@ async function runUpdate(guild, targetChannel, index=0)
 		})
 	})
 
-	const embeds = await targetChannel.messages.fetch();
+	const embeds = await activityChannel.messages.fetch();
 	
 	let areas = await AreaMeta.find({});
 	let onDeck = areas[0];
@@ -176,7 +176,7 @@ async function runUpdate(guild, targetChannel, index=0)
 			if (targetEmbed)
 				await targetEmbed.edit({embeds:[embed]})
 			else	
-				await targetChannel.send({embeds:[embed]})
+				await activityChannel.send({embeds:[embed]})
 		}
 		catch (e) { console.error(e, embed.toJSON())}
 
@@ -190,57 +190,6 @@ async function runUpdate(guild, targetChannel, index=0)
 
 	console.log(`\tOn Deck: ${index} (${onDeck.name})`)
 	return index;
-}
-
-async function getChannelStatus(channel)
-{
-	let status  = "🟢";
-	let lastMsg = "( Unused Channel )"
-	let author  = ""
-	let elapsed = ""
-	await channel.messages.fetch({ limit: 1 }).then(messages => 
-	{
-		const message = messages.first()
-		if (message)
-		{
-			const isBreak = MsgUtils.isSceneBreak(message)
-				
-			//Time data
-			let created = message.createdTimestamp;
-			let now = Date.now();
-			let time = Math.floor((now - created) / 1000); // elapsed time in seconds
-			// let secs = (Math.floor(time % spm)).toString().padStart(2, ' ');
-			// let mins = (Math.floor(time / spm) % 60).toString().padStart(2, ' ');
-			// let hour = (Math.floor(time / sph) % 24).toString().padStart(2, ' ');
-			// let days = (Math.floor(time / spd)).toString().padStart(3, ' ');
-			// const elapsed = `(${days}d ${hour}h ${mins}m ago)`;
-			elapsed = `<t:${Math.round(created / 1000)}:R>`
-				
-			//Author data
-			author = message.author;
-			const tupper = " - Tupper (" + author.username + ")";
-			if (author.bot && message.webhookID) author = tupper
-			else author = " - <@" + author.id + ">";
-			if (channel.name.includes("gloryhole")) author = "<Anonymous>";				
-			lastMsg = `Last post`;
-			
-			//Figure out what status icon to apply to it.
-			if (isBreak)
-			{
-				lastMsg = `Scene ended`
-				author  = ''
-			}
-			else
-			{
-				if (time <= (3 * spd)) 		status = "⛔"; 
-				else if (time < (5 * spd))	status = "❓";
-				else if (time < (7 * spd))	status = "⚠️";
-				else if (time > (14 * spd))	status += "💀";				
-			}
-		}
-	});
-
-	return {status,lastMsg,elapsed,author}
 }
 
 //Generate a group's embed message from the collected data
@@ -267,7 +216,7 @@ async function generateEmbed(guild, area, channels)
 		
 		const order = channel.position;
 		const chanName = Utils.toSentenceCase(channel.name,true);
-		let   {status,lastMsg,elapsed,author} = await getChannelStatus(channel);
+		let   {status,lastMsg,elapsed,author} = await ActivityUtils.getChannelStatus(channel);
 		const name  = `** **`;
 		lastMsg =`${lastMsg} ${elapsed} ${author}`.trim()
 		let   value = `${status} **${chanName}** (<#${channel.id}>) ${xpEmoji}\n*${lastMsg}*`
@@ -277,7 +226,7 @@ async function generateEmbed(guild, area, channels)
 			let threads = await ChanUtils.fetchThreads(channel);
 				threads = threads.all;
 			await Utils.asyncCollectionForEach(threads, async thread => {
-				const {status,lastMsg,elapsed,author} = await getChannelStatus(thread);
+				const {status,lastMsg,elapsed,author} = await ActivityUtils.getChannelStatus(thread);
 				const detail = `\n\`     \`${lastMsg} ${elapsed} ${author} `
 				value += `\n\`🧵${status}\` <#${thread.id}> ${detail}`
 			})
@@ -309,76 +258,7 @@ const timerData = {
 	startTimer,
 	stopTimer,
 	triggerTimer,
-	build:config.PRODUCTION //||config.DEV
+	build:config.PRODUCTION //|| config.DEV
 };
 
 module.exports = timerData
-
-
-
-
-
-
-
-
-
-
-async function channelTest(guild)
-{
-	const channelManager = guild.channels
-	console.log(channelManager.cache.size)
-
-	//Loop through all the channels in the server
-	await channelManager.cache.each( async (channel) => 
-	{
-		if (channel.type == ChannelType.GuildCategory)
-		{
-			console.log(channel.name + ": " + channel.id)
-			Utils.slowdown(50)
-		}
-	})
-
-	LocationRoles = {}
-	ChanUtils.locations.forEach(location => LocationRoles[location.value] = location.label)
-	ChanUtils.guildLocations.forEach(location => LocationRoles[location.value] = location.label)
-	Object.keys(LocationRoles).forEach(location => {
-		console.log(LocationRoles[location] + ": " + location)
-	})
-
-	console.log("Done")	
-}
-
-//Organize by channel category
-async function gatherChannels(guild)
-{
-	// await this.asyncForEach(channelManager.cache.array(), async (channel) =>
-	{
-	// 		//Find all the text RP channels that aren't private.
-	// 		if(	channel.name.startsWith("🗣") && 
-	// 			channel.type == "text")
-	// 		{
-	// 			//Gather data from the channel
-	// 			var parent = channel.parent;
-	// 			var chanpos = channel.position;
-	// 			if (chanpos < 10) chanpos = "0" + chanpos;
-	// 			var catpos = parent ? channel.parent.position : 0;
-	// 			var relpos = parseFloat(catpos + "." + chanpos);
-	// 			//Organize the data into a json blob
-	// 			var data = {
-	// 				id:channel.id,
-	// 				name:channel.name,
-	// 				category: parent ? channel.parent.name : "",
-	// 				catid: parent ? parent.id : "",
-	// 				relpos: relpos,
-	// 				lastMessage: channel.lastMessageID
-	// 			}				
-	// 			//Set it into the config file
-	// 			this.activityData.setItem(channel.name, data);
-	// 		}
-	// 		else if (channel.name.includes("🗣"))
-	// 			console.log("Skipping: " + channel.name);
-	// 	});
-	// 	//Sort the activity data for the messages
-	// 	this.activityData.sortItemsNumeric("relpos",true);
-	}	
-}

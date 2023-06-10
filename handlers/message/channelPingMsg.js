@@ -12,15 +12,11 @@ const config = require(`${process.cwd()}/config/${mod}_config.json`);
 
 async function shouldHandle(client, message)
 {
-	//if (message.author.id != config.OWNERID) return false;
-		
-	if (process.env.mod == "dev") return false;
-	if (message.author.bot) return false;
-
+	let handle = false;	
 	if (message?.mentions?.channels?.size > 0)
-		return true;
-
-	return false;
+		handle = true;
+	
+	return handle;
 }
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
@@ -39,4 +35,6 @@ module.exports = {
 	menu: false,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
+
+	build: config.PRODUCTION //|| config.DEV	//
 };
