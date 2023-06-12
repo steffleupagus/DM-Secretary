@@ -9,7 +9,7 @@ const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	chan:	reqString,
 	user:	reqString,
-	thread: Boolean,
+	thread: String,
 	time:	Number,
 	scene: 	Boolean,
 	update: Number

@@ -1,18 +1,22 @@
 
 const ChanActivity = require(`../database/chanActivitySchema.js`)
 const MsgUtils  = require(`../utilities/messageUtils.js`);
+const Utils = require(`../utilities/utilFuncs.js`)
 const minute=60      	//seconds per Minute
 const hour=60*minute  	//Seconds per Hour
 const day=24*hour  		//Seconds per Day
 const msps=1000	  		//Milliseconds per second
 
+///
+/// Given a message, generate an update record for its channel/thread
+///
 function getRecordFromMessage(message)
 {
 	const channel = message.channel
 	const scene   = MsgUtils.isSceneBreak(message);
 	const author  = getAuthorData(message);
 	const time    = message.createdTimestamp;
-	const thread  = channel.isThread();
+	const thread  = channel.isThread() ? channel.parentId : null;
 	
 	return {
 		chan:	channel.id,
@@ -24,6 +28,9 @@ function getRecordFromMessage(message)
 	}
 }
 
+///
+/// Update the activity record when a new message is posted
+/// 
 async function updateActivity(message)
 {
 	let record = getRecordFromMessage(message)
@@ -31,6 +38,9 @@ async function updateActivity(message)
 	return record;
 }
 
+///
+/// Update the DB record
+///
 async function updateActivityRecord(record)
 {
 	const query = { chan: record.chan }
@@ -52,6 +62,9 @@ async function updateActivityRecord(record)
 	return record;	
 }
 
+///
+/// Get the author data from a message
+///
 function getAuthorData(message)
 {
 	const channel = message.channel
@@ -65,14 +78,9 @@ function getAuthorData(message)
 	return author
 }
 
-
-
-
-
-
-
-
-
+///
+/// Get the status for a given channel from the database, refreshing it if necessary
+///
 async function getChannelStatus(channel)
 {
 	const now = Date.now()
@@ -104,12 +112,48 @@ async function getChannelStatus(channel)
 	return getChannelStatusFromMessageData(messageData);
 }
 
+/// 
+/// Get the status of all threads from a given channel
+/// 
+async function getAllThreadsStatus(channel, allThreads)
+{
+	const threadStatus = {}
+	let messagesData   = await ChanActivity.find({ thread: channel.id })
+	messagesData.map(x => threadStatus[x.chan] = getChannelStatusFromMessageData(x));
+
+	//Find any threads that weren't in the database
+	await Utils.asyncCollectionForEach(allThreads, async thread => 
+	{
+		if (!threadStatus[thread.id])
+			threadStatus[thread.id] = await getChannelStatus(thread);
+	});
+
+	//Sort threads alphabetically by name
+	const threadKeys = Object.keys(threadStatus)
+	threadKeys.sort((a,b) => 
+	{
+		const names = {a:allThreads?.get(a)?.name, b:allThreads?.get(b)?.name}
+		return (names['a'] > names['b']) ? 1 : ((names['b'] > names['a']) ? -1 : 0)
+	});
+
+	const threads = [];
+	threadKeys.forEach(id => {
+		threads.push({id, ...threadStatus[id]})
+	});
+
+	return threads
+}
+
+///
+/// Get some thread status info from a given message data record
+///
 function getChannelStatusFromMessageData(messageData)
 {
 	let status  = "🟢";
 	let lastMsg = "( Unused Channel )"
 	let author  = ""
 	let elapsed = ""
+	let scene   = false
 	if (messageData)
 	{	
 		//Time data
@@ -140,11 +184,12 @@ function getChannelStatusFromMessageData(messageData)
 		if (messageData.fetch)
 			status += '.'
 	}
-	return {status,lastMsg,elapsed,author}
+	return {status,lastMsg,elapsed,author,scene};
 }
 
 module.exports = {
 	getAuthorData,
 	updateActivity,
-	getChannelStatus
+	getChannelStatus,
+	getAllThreadsStatus
 };
