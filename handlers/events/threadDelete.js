@@ -1,3 +1,5 @@
+const mod = process.env.mod || "";
+const config = require(`../../config/${mod}_config.json`);
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const ChanActivity = require(`../../database/chanActivitySchema.js`)
 
@@ -12,11 +14,12 @@ async function cleanRecord(channelId)
 
 async function execute(client, channel)
 {
-	console.log("Channel delete: ", channel.id, channel.name)
-	cleanRecord(channel.id);
+	console.log("Thread delete: ", channel.id, channel.name)
+	await cleanRecord(channel.id);
 }
 
 module.exports = {
-	name: 'channelDelete',
-	execute: execute
+	name: 'threadDelete',
+	execute: execute,
+	build: config.DEV || config.PRODUCTION
 };

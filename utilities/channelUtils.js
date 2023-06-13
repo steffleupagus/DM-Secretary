@@ -1,6 +1,7 @@
 const mod = process.env.mod || "";
 const config = require(`${process.cwd()}/config/${mod}_config.json`);
 const ChannelMeta = require(`../database/chanMetaSchema.js`)
+const AreaMeta = require(`../database/chanMetaSchema.js`)
 
 ///
 /// Identify if a channel is an RP channel
@@ -28,6 +29,8 @@ async function isRPExpChannel(channel)
 
 async function isTrackedChannel(channel)
 {
+	if (channel.isThread())
+		return await isTrackedChannel(channel.parent)
 	const result = await ChannelMeta.findOne({ channelId: channel.id })
 	return result && result.trackActivity
 }
@@ -105,7 +108,6 @@ const locations = [
 	{value:"833787998150590481", label:"Wilderness"},	
 	{value:"696807848117534820", label:"Silver Thorn Brothel"},
 	{value:"699064641950842880", label:"Silver Thorn Suites"}
-
 ]
 
 const guildLocations = [
@@ -128,7 +130,9 @@ const guildLocations = [
 	
 	{value:"696807848117534820", label:"Silver Thorn Brothel"},
 	{value:"699064641950842880", label:"Silver Thorn Suites"},
-	{value:"768307340625575977", label:"Brothel Blindfold Room"}
+	{value:"768307340625575977", label:"Brothel Blindfold Room"},
+
+	{value:"1117612647421063268", label:"Testing"}
 ]
 
 module.exports =

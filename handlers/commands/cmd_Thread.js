@@ -1,8 +1,10 @@
 const { SlashCommandBuilder, ButtonStyle,
 	   	EmbedBuilder, ThreadManager, ThreadAutoArchiveDuration,
 		PermissionsBitField } = require('discord.js')
+const ActivityUtils = require(`../../utilities/activityUtils.js`)
+const MessageUtils = require(`../../utilities/messageUtils.js`)
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
-const ChanUtils = require(`../../utilities/channelUtils.js`)
+const ChanUtils  = require(`../../utilities/channelUtils.js`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const util = require('util')
@@ -14,254 +16,252 @@ const threadIcon = "🧵";
 const ERROR_OWNER = (owner) => `Only the owner of this channel (${owner}) can manage threads.`
 const ERROR_MAX_THREADS = 'This channel already has the maximum number of active threads.'
 
-///
-///
-///
-async function createThreadIfPossible(interaction, channel) 
-{
-	//Early out if we don't have metadata, threads aren't enabled, or this isn't an RP channel
-	const chanMeta = await ChannelMeta.findOne({ channelId: channel.id });
-	if (!chanMeta || !ChanUtils.isRoleplayChannel(channel))
-		return await interaction.editReply(`${channel} is not set up for RP threads.`)
+const MENU_DESC = "The following threads already exist, subject to the same guidelines for dead scenes as other channels. Alternately, you may select a channel in the dropdown to open a thread. Each channel has a limited number of threads, so some threads may be recycled, and some may not have threads available."
 
-	// check if user is an owner of the channel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///
+/// Find an archived or closed scene thread to recycle if one is available
+///
+async function findRecycleThread(threads)
+{
+	let thread = null;
+
+	//If we have any archived threads, grab one of those first and be done with it
+	if (!thread && threads.archive.threads.size > 0)
+ 		thread = threads.archive.threads.first();
+	
+	//Check to see if we have any threads with an ended scene by looking at the last post
+	await Utils.asyncCollectionForEach(threads.active.threads, async (value) => 
+	{
+		if (thread)	return
+
+		//Check each thread's last post to see if it's a scene break divider
+		let message = await value.messages.fetch({ limit: 1 });
+			message = message?.first();
+		if (MessageUtils.isSceneBreak(message))
+			thread = value;
+	})
+	
+	return thread	
+}
+
+///
+/// Create a thread or re-open a recycled one if possible
+///
+async function openThreadIfPossible(interaction, channel = null) 
+{
+	channel = channel || interaction.channel;
+	
+	//Get channel meta data for the current channel
+	const chanMeta = await ChannelMeta.findOne({ channelId: channel.id });
+	
+	//Early out if we don't have metadata, if threads aren't enabled, or this isn't an RP channel
+	if (!chanMeta || !ChanUtils.isRoleplayChannel(channel))
+		throw new Error(`${channel} is not set up for RP threads.`)
+
+	//Check for channel ownership, and if the interaction.user is an owner
 	const hasOwner = Array.isArray(chanMeta.userOwner) ? chanMeta.userOwner.length > 0 : chanMeta.userOwner; 
 	if (hasOwner)
 	{
 		const isOwner = Array.isArray(chanMeta.userOwner) ? 
 							chanMeta.userOwner.includes(interaction.user.id) : 
 							chanMeta.userOwner === interaction.user.id;
-		const hasManageThreadsPermission = channel.permissionsFor(interaction.user).has(PermissionsBitField.Flags.ManageThreads);
-		if (!isOwner && !hasManageThreadsPermission) 
+		const hasManageThreadsPermission = channel.permissionsFor(interaction.user)
+												  .has(PermissionsBitField.Flags.ManageThreads);
+		if (!isOwner || !hasManageThreadsPermission)
 		{
-			chanMeta.userOwner = Array.isArray(chanMeta.userOwner) ? chanMeta.userOwner : [chanMeta.userOwner];
-			chanMeta.userOwner = chanMeta.userOwner.map( x => `<@${x}>`).join(",")
-			return await interaction.editReply( ERROR_OWNER(chanMeta.userOwner) )
-		}
+			let userOwner = Array.isArray(chanMeta.userOwner) ? chanMeta.userOwner : [chanMeta.userOwner];
+				userOwner = chanMeta.userOwner.map( x => `<@${x}>`).join(",")
+			throw new Error( ERROR_OWNER( userOwner ))
+		}		
 	}
 
 	let thread = null;
-
 	const threads = await ChanUtils.fetchThreads(channel);
 	const threadMax = chanMeta.threadMax ?? 0;
 	const threadCount = threads?.active?.threads?.size || 0;
+	// console.log(threads, threadMax, threadCount)
 	
-	// check if we have reached the maximum number of threads
-	if (threadCount >= threadMax) 
-	{		
-		await Utils.asyncCollectionForEach(threads.active.threads, async (value) => 
-		{
-			if (thread)	return thread
-			let message = await value.messages.fetch({ limit: 1 });
-				message = message?.first();
-			if (message?.author?.id == "912162588253642763" || message?.author?.id == "912167154906988595")
-			{
-				thread = value;
-				return thread;
-			}			
-		})
-		if (thread)
-			return await interaction.editReply(`Thread recycled: ${thread.name}\n${thread.url}`)
-		return await interaction.editReply(ERROR_MAX_THREADS)
-	}
-
-	
+	// If we have reached the maximum number of threads
 	if (threads.archive.threads.size > 0)
-	{
-		thread = threads.archive.threads.first();
-		await thread.setArchived(false);
-		await interaction.editReply(`Thread recycled: ${thread.name}\n${thread.url}`)
-	}
- 	else 
  	{
- 		// create new thread
-		const chanName = toSentenceCase(channel.name)
- 		const threadName = `${chanName} ${toRomanNumeral(threadCount + 1)}`;
- 		thread = await channel.threads.create({ name: threadName, 
-											    autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek });
-		await interaction.editReply(`Thread created: ${thread.name}\n${thread.url}`)
+		//Grab an archived thread if any exist before creating a new one
+ 		thread = threads.archive.threads.first();
+ 	}
+	else
+	{
+		//Try to recycle a thread to open if possible
+		thread = await findRecycleThread(threads)
+		//Return an error if none are available
+		if (!thread)
+		{
+			if (threadCount >= threadMax) 
+				throw new Error( ERROR_MAX_THREADS )
+
+			// create new thread
+			const chanName = Utils.toSentenceCase(channel.name)
+ 			const threadName = `${chanName} ${Utils.toRomanNumeral(threadCount + 1)}`;
+ 			thread = await channel.threads.create({ name: threadName, 
+											    	autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek });
+		}
  	}
 
-	await thread.members.add(interaction.user.id);
-	await thread.send(`@ping your parner(s) to add them to the thread. They will need to have this location visible.`)
-}
-
-
-
-async function execute(interaction)
-{
-	await interaction.deferReply({ephemeral:true})
-	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);		
-	if (!isBuilder) return await createThreadIfPossible(interaction, interaction.channel);
-
-	// return await addThreadButton(interaction)	
-	return await showBuilderMenu(interaction)
-}
-
-const data = new SlashCommandBuilder()
-	.setName(`thread${config.DEV ? "dev" : ""}`)
-	.setDescription('Open an RP thread')
-	// .setDefaultMemberPermission(false)
+	if (thread)
+	{
+		const reused = thread.totalMessageSent > 0;
+		if (!thread.setArchived) console.log(thread)			
+		await thread.setArchived(false);
+		await thread.members.add(interaction.user.id);
+		await thread.send(`@ping your parner(s) to add them to the thread. They will need to have this location visible.`)
+		await interaction.editReply({content: `Thread ${reused ? "Recycled" : "Created"}: ${thread.name} (${thread.url})`,
+									 embeds:[],components:[]})	
+	}
 	
-const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
-							PermissionsBitField.Flags.ViewChannel,						 
-							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+	return thread;
+}
 
-module.exports = 
+///
+/// Get the status of all the threads of a given channel
+///	
+function getThreadStatus(threadStatus)
 {
-	data: data,
-	whitelistRoles: whitelistRoles,
-	userPermissions: userPermissions,
-	botPermissions: userPermissions,
-	execute: execute,
-	button: handleInteraction,
-	select: handleInteraction,
+	let value = ""
+	threadStatus.forEach(thread => 
+	{
+		const {id,status,lastMsg,elapsed,author,scene} = thread;
+		value += `\n\`• ${status}\` <#${id}> - ${lastMsg} ${elapsed}`
+	});	
+	return (value || "`No threads`");
+}
 
-	build:config.DEV //||config.PRODUCTION
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function handleInteraction(interaction)
+///
+/// For button presses, pop up an ephemeral menu that shows channels that have open thread slots
+///
+async function showThreadMenu(interaction, roleIds)
 {
-	const customId = interaction.customId;
+	await interaction.deferReply({ephemeral: true})
+	let selectOptions = {};
+	let embedFields   = [];
 
-	if (customId == `${data.name}.openThread`)
+	let channels = []
+	try { channels = await ChannelMeta.find({ locations: { $in: roleIds } }); }
+	catch (error) { console.error('Error getting channels by roles:', error); }	
+		
+	//Loop over all the channels in the relevant encoded IDs
+	await Utils.asyncArrayForEach( channels, async x => 
 	{
-		await interaction.deferReply({ephemeral:true});
-		try { 
-			const channelId = interaction.values[0];
-			const channel = await interaction.guild.channels.fetch(channelId)
-			await createThreadIfPossible(interaction, channel); }
-		catch (e) { console.error(e) }
-		return		
-	}
-	else if (customId.startsWith(`${data.name}.listthreads`))
-	{
-		const roleIds = customId.split(":")[1].split(",")
-		console.log(roleIds)
-	//	await listTargetThreads()
-		return;	
-	}
+		//Skip channels with an owner (private channels) that happen to exist in the same role ID
+		if (x.userOwner?.length && !x.userOwner.includes(interaction.user.id)) 
+		{ 
+			console.log(`${x.name}: Owner = ${x.userOwner} `); 
+			return; 
+		}
+		//Skip channels that have no thread max specified
+		if (!x.threadMax){ console.log(`${x.name}: Thread Max = ${x.threadMax} `); return; }
+		
+		//Grab the channel and get the status of all threads
+		const channel = await interaction.guild.channels.resolve(x.channelId);
+		const threads = await ChanUtils.fetchThreads(channel);		
 
-	await interaction.deferUpdate();
-	const isBuilder= Utils.hasAnyRole(interaction.member, whitelistRoles);	
-	let useGuildLocations = false;
-	let roleOverride = []
-	switch (customId)
-	{		
-		case `${data.name}.guildLocations.true`:
-			useGuildLocations = true;
-		case `${data.name}.guildLocations.false`:
-			break;
-		case `${data.name}.location.guild`:
-			useGuildLocations = true;
-		case `${data.name}.location`:
-			roleOverride = interaction.values;
-			break;
-		case `${data.name}.createThreadMenu`:
-			await createThreadMenu(interaction)
-			await interaction.deleteReply();			
+		//Prep a field for this channel
+		const threadStatus = await ActivityUtils.getAllThreadsStatus(channel, threads.all);				
+		const value = getThreadStatus(threadStatus);
+		const field = {name:`__**${channel}**__`,value:value};
+		embedFields.push(field);
+
+		//Add the channel to the select box if new threads can be opened
+		const threadMax = x.threadMax ?? 0;
+		const threadCount = threads?.active?.threads?.size || 0;
+		const canRecycle = threadStatus.find( x=>x.scene ) || await findRecycleThread(threads)
+		console.log(`${channel.name}: ${threadCount} >= ${threadMax} | Recycle: ${canRecycle}`)
+		
+		if ((threadCount >= threadMax) && !canRecycle)
+		{
+			//Skip any that are already maxed out.
+			console.log(`${x.name}: Thread Max = ${x.threadMax} | Active Threads = ${threadCount}`)
 			return;
-	}
+		}
+		selectOptions[x.channelId] = {label: Utils.toSentenceCase(x.name), value:x.channelId}  
+	});
 
-	if (isBuilder) await showBuilderMenu(interaction, useGuildLocations, roleOverride)
-}
-
-async function createThreadMenu(interaction) 
-{
-	// Get the selected values from the interaction
-	const message = interaction?.message
-	const componentRow = message?.components?.[0]
-	const select = componentRow?.components?.[0]
-	const roleIds = select.data.options.filter(x=>x.default).map(x=>x.value)
-
-	let options = {};
-	try {
-    	const channels = await ChannelMeta.find({ locations: { $in: roleIds } });
-		channels.map( x => {
-			x.name = toSentenceCase(x.name)
-			const option = {label: x.name, value:x.channelId}			
-			if (x.userOwner?.length) { console.log(`${x.name}: Owner = ${x.userOwner} `); return; }
-			if (!x.threadMax){ console.log(`${x.name}: Thread Max = ${x.threadMax} `); return; }
-			options[x.channelId] = option
-		})
-	} catch (error) {
-		console.error('Error getting channels by roles:', error);
-		return
-	}
-	
-	options = Object.values(options)
-	options = options.sort((a,b) => 
+	//Sort the options
+	selectOptions = Object.values(selectOptions)	
+	if (!selectOptions.length)
+		return await interaction.followUp({content:"No threads can be open in the selected channels at this time",ephemeral:true})
+	selectOptions = selectOptions.sort((a,b) => 
 	{
 		const regex = /[^a-zA-Z0-9]/g;
 		a = a.label.replace(regex, '');
 		b = b.label.replace(regex, '');
-		if (a < b) return -1
-		if (a > b) return 1
-				   return 0
+		return (a < b) ? -1 : ((a > b) ? 1 : 0);
 	});
 
-	if (!options.length)
-		return await interaction.followUp({content:"Can't create a select menu with no options",ephemeral:true})
-	
+	//Show the embed with the select box component.
 	const embed = new EmbedBuilder()
 						.setTitle(`RP Thread Menu`)
-						.setDescription("Select the channel in which you would like to open a thread. Each channel has a limited number of threads, so some threads may be recycled, and some channels may not have threads available.")
-	const component = Prompt.createSelectRow(`${data.name}.openThread`,options,1,1,"Open thread in...");
-
-	let listbutton = [{style:ButtonStyle.Secondary, emoji:threadIcon, label:'List Threads', 
-					   custom_id:`${data.name}.listthreads:${roleIds.join(",")}`}]
-	listbutton = Prompt.createButtonRow(listbutton);
-	
-	return await interaction.channel.send({embeds:[embed],components:[component,listbutton]})
+						.setDescription(MENU_DESC)
+						.addFields(embedFields)
+	const component = Prompt.createSelectRow(`${data.name}.openThread`,selectOptions,1,1,"Open new thread in [select channel]...");
+ 	return await interaction.editReply({embeds:[embed],components:[component]})	
 }
 
-
-
-
-
-
-	
-async function showBuilderMenu(interaction, useGuildLocations = false, locationOverride = [])
+///
+/// Create the buttons for everyone to use
+///
+async function createThreadButton(interaction, roleIDs)
 {
-	const channel = interaction.channel;
-	const embed = new EmbedBuilder().setTitle("🛠️ Builder Thread Menu")
-
-	const chanMeta = await ChannelMeta.findOne({channelId:channel.id});
-	const roleIds  = chanMeta.locations;
+	roleIDs = (Array.isArray(roleIDs) ? roleIDs.join(",") : roleIDs)
 		
+	const openbutton = {style:ButtonStyle.Primary, emoji:threadIcon, label:'Join / Create RP Thread', 
+			  		    custom_id:`${data.name}.showThreadMenu:${roleIDs}`}
+	// const listbutton = {style:ButtonStyle.Secondary, label:'List Threads', 
+	// 				    custom_id:`${data.name}.listThreads:${roleIDs}`}
+	const buttonRow  = Prompt.createButtonRow([openbutton]);	//,listbutton]);
+	await interaction.channel.send({components:[buttonRow]})
+}
+
+///
+/// Parse role IDs from a button's encoding
+///
+function getRoleIDs(interaction)
+{
+	if (interaction.isStringSelectMenu()) return interaction.values;
+	
+	const message  = interaction?.message
+	const componentRow = message?.components?.[0]
+	const select   = componentRow?.components?.[0]
+	const selected = select?.data?.options?.filter(x=>x.default).map(x=>x.value) || []
+	const roleIds  = interaction.customId.split(":")[1]?.split(",") || selected
+
+	return roleIds;	
+}
+
+///
+/// Show the builder menu to create encoded buttons for everyone to use.
+///
+async function showBuilderMenu(interaction, useGuildLocations = null, locationOverride = [])
+{
+	const embed = new EmbedBuilder().setTitle("🛠️ Builder Thread Menu")
+	const channel = interaction.channel;
+ 	const chanMeta = await ChannelMeta.findOne({channelId:channel.id});
+ 	const roleIds  = chanMeta?.locations ?? locationOverride ?? [];
+	const guildLocations = roleIds.length && roleIds.every( x => ChanUtils.guildLocations.find( y => y.value == x) )
+	useGuildLocations = useGuildLocations ?? guildLocations
+
 	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
 		locations = locations.map( role => 
 		{
@@ -269,28 +269,119 @@ async function showBuilderMenu(interaction, useGuildLocations = false, locationO
 				role.default = true
 			else if (!locationOverride.length && roleIds.includes(role.value))				
 				role.default = true;		
-			// else if (channel.permissionsFor(role.value).has(PermissionsBitField.Flags.ViewChannel) && !locationOverride.length)
-			// 	role.default = true
 			return role;
 		})
-	
+
 	if (!useGuildLocations) locations.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
-	const guild = useGuildLocations ? ".guild" : ""
-	const location = Prompt.createSelectRow(`${data.name}.location${guild}`,locations,0,5,"Locations (None Selected)");
+ 	const guild = useGuildLocations ? ".guild" : ""
+ 	const location = Prompt.createSelectRow(`${data.name}.location${guild}`,locations,0,5,"Locations (None Selected)");
 	
 	const locationPub = {style:ButtonStyle.Secondary,
 						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
 						 custom_id:`${data.name}.guildLocations.${!useGuildLocations}`}	
-	const createMenu = {style:ButtonStyle.Primary,
-						 label:`Create Menu`, 
-						 custom_id:`${data.name}.createThreadMenu`}	
-	
+	const createButton = {style:ButtonStyle.Primary, label:`Create Button`, 
+						 custom_id:`${data.name}.createThreadButton`}
+	const createThread = {style:ButtonStyle.Primary, label:`Create Thread`, 
+						 custom_id:`${data.name}.openThreadInCurrentChannel`}
+
 	const components = [];
 	components.push(location);
-
-	const miscButtons = [locationPub, createMenu];
+	const miscButtons = [locationPub, createButton, createThread];
 	components.push(Prompt.createButtonRow(miscButtons));
-
 	await interaction.editReply({ embeds: [embed], components: components });
 }
 
+///
+/// Generic interaction handler
+///
+async function handleInteraction(interaction)
+{
+	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);	
+	const customId = interaction.customId;
+	const prefix = `${data.name}.`
+	if (!customId.startsWith(prefix))
+		throw new Error("Interaction routed to incorrect command")	
+	const command = customId.split(":")[0].replace(prefix,"");
+	const roleIds = getRoleIDs(interaction)
+
+	let useGuildLocations = null;
+	let roleOverride = roleIds;
+	let thread   = null;
+	
+	switch(command)
+	{
+ 		case `guildLocations.true`:
+ 		case `guildLocations.false`:
+			useGuildLocations = command.endsWith("true");
+			break;
+		case `location`:
+		case `location.guild`:
+			roleOverride = interaction.values;
+			break;
+		case `createThreadButton`:
+			await createThreadButton(interaction, roleIds);
+			break;
+		case `listThreads`:
+		case `showThreadMenu`:
+			return await showThreadMenu(interaction, roleIds);
+		case `openThreadInCurrentChannel`:
+			await interaction.deferUpdate({ephemeral:true});
+			try { thread   = await openThreadIfPossible(interaction, interaction.channel) }
+			catch (e) { await interaction.editReply(e.toString()) }			
+			return;
+		case `openThread`:
+			await interaction.deferUpdate({ephemeral:true});
+			const channels = interaction.guild.channels;
+			const channel  = channels.resolve(roleIds[0]) || await channels.fetch(roleIds[0]);
+			try { thread   = await openThreadIfPossible(interaction, channel) }
+			catch (e) { await interaction.editReply(e.toString()) }
+			return 
+	}
+	
+	if (isBuilder) 
+	{
+		console.log(useGuildLocations,roleOverride,"\n=-=-=-=-=-=-=-")
+		await interaction.deferUpdate();			
+		await showBuilderMenu(interaction, useGuildLocations, roleOverride)
+	}
+}
+
+///
+async function execute(interaction)
+{
+	await interaction.deferReply({ephemeral:true})
+	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);
+
+	if (isBuilder)
+	{
+	 	return await showBuilderMenu(interaction)
+	}
+	
+	try {
+		const thread = await openThreadIfPossible(interaction);
+	}
+	catch (e) { await interaction.editReply(e.toString()) }
+}
+
+const data = new SlashCommandBuilder()
+	.setName(`thread${config.DEV ? "dev" : ""}`)
+	.setDescription('Open an RP thread')
+	//.setDefaultMemberPermissions
+	
+const botPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.ViewChannel,						 
+							PermissionsBitField.Flags.SendMessages		];
+const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
+const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+module.exports = 
+{
+	data: data,
+	// whitelistRoles: whitelistRoles,
+	userPermissions: userPermissions,
+	botPermissions: botPermissions,
+	execute: execute,
+	button: handleInteraction,
+	select: handleInteraction,
+
+	build:config.DEV //||config.PRODUCTION
+};
