@@ -117,6 +117,9 @@ async function openThreadIfPossible(interaction, channel = null)
  			const threadName = `${chanName} ${Utils.toRomanNumeral(threadCount + 1)}`;
  			thread = await channel.threads.create({ name: threadName, 
 											    	autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek });
+
+			const message = await thread?.fetchStarterMessage();
+			await message?.delete();			
 		}
  	}
 
@@ -383,5 +386,5 @@ module.exports =
 	button: handleInteraction,
 	select: handleInteraction,
 
-	build:config.DEV //||config.PRODUCTION
+	build:config.PRODUCTION	//||config.DEV
 };
