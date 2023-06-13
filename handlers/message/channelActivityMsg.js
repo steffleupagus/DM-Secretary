@@ -12,7 +12,7 @@ async function shouldHandle(client, message)
 	let tracked = false;
 	
 	if (ChanUtils.isRoleplayChannel(message.channel) || ChanUtils.isRoleplayThread(message.channel))
-		tracked = await ChanUtils.isTrackedChannel(message.channel);
+		tracked = true;	//await ChanUtils.isTrackedChannel(message.channel);
 
 	return tracked;
 }
@@ -20,7 +20,6 @@ async function shouldHandle(client, message)
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	const record = await Activity.updateActivity(message);
-	//console.log(record)
 }
 
 module.exports = {

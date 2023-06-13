@@ -34,17 +34,6 @@
 	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},
 	"gsheet walkthrough":{"data":"rules/walkthrough_gsheet.json"},
 	
-	"940061953064329216":
-	{
-		"name":"📜│test-content",
-		"data":"rules/approvedContent.json"
-	},
-	"1105312140564373554":
-	{
-		"name":"📜│test-content-ii",
-		"data":"rules/approvedContent.json"		
-	},
-
 	"1091765016937627740":{ "data":"quest.json"	},
 	"1094791565106491392":{ "data":"questSaveFail_1.json" },
 	"1095164645901348894":{	"data":"questSaveFail_2.json" },
@@ -53,5 +42,11 @@
 	"1098385616812654603":{ "data":"questSaveFail_5.json" },
 	"1099026918721982554":{ "data":"questSaveFail_6.json" },	
 	"1099026973071786065":{ "data":"questShardTouch.json" },	
-	"1099027027429949450":{ "data":"questShardLegend.json" }
+	"1099027027429949450":{ "data":"questShardLegend.json" },
+
+	"940061953064329216":
+	{
+		"name":"📜│test-content",
+		"data":"rules/approvedContent.json"
+	}	
 }

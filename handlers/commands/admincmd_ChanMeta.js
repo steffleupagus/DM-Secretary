@@ -222,7 +222,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 
 	console.log(chanMeta)
 	
-	const useGuildLocations = (isBuilder && chanMeta.guildHall && !publicFlag)	
+	const useGuildLocations = (isBuilder && !publicFlag) //&& chanMeta.guildHall)	
 	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
 		locations = locations.map( role => {
 			if (chanMeta.locations.includes(role.value)) role.default = true
@@ -273,7 +273,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	]
 	const locationPub = {style:ButtonStyle.Secondary,
 						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
-						 custom_id:`${data.name}.publicLocation.${useGuildLocations}`}
+						 custom_id:`${data.name}.publicLocation.${!publicFlag}`}
 	const deleteMeta  = {style:ButtonStyle.Danger,emoji:"🗑️", label: "Delete", custom_id:`${data.name}.deleteRecord`}
 	const revertPerms = {style:ButtonStyle.Secondary,emoji:"⏮️", label:'Reset Perm', custom_id:`${data.name}.syncPerms`}
 	const topicButton = {style:ButtonStyle.Secondary,emoji:"🔄", label:'Refresh Topic', custom_id:`${data.name}.refreshTopic`}
@@ -286,7 +286,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	
 	const miscButtons = [];										
 	if (isBuilder) miscButtons.push(deleteMeta)								//		- Delete the database record (Builder Only)
-	if (isBuilder && chanMeta.guildHall) miscButtons.push(locationPub)		//		- Public/Guild Hall Loc Toggle (Builder Only)	
+	if (isBuilder) miscButtons.push(locationPub)							//		- Public/Guild Hall Loc Toggle (Builder Only)	
 	if (isBuilder) miscButtons.push(revertPerms)							//		- Revert permissions to current
 	//if (isBuilder) miscButtons.push(permDebug)							//		- Log the permissions to the console.
 	miscButtons.push(topicButton)											//		- Topic Button (Visible to owner)
