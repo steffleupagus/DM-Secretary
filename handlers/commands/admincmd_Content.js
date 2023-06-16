@@ -10,6 +10,10 @@ const config = require(`../../config/${mod}_config.json`);
 const index = require(`../../content/_contentIndex.json`)
 const TEST_CHAN = ["940061953064329216"];
 
+function isObject (value) {  
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
 function extractMention(embed) 
 {
 	const desc = embed.description || "";
@@ -33,6 +37,7 @@ function extractMention(embed)
 
 async function publishContent(channel, content)
 {
+	let threadQueue = [];
 	let index = [];
 	let indexInline = true;
 	await Utils.asyncObjectForEach(content, async (value, key)=>
@@ -64,6 +69,7 @@ async function publishContent(channel, content)
 				embed.title = `${prefix}${title}`.trim()				
 				//Prep the thread and cleanup
 				let thread = embed.thread || null;
+				if (thread && !isObject(thread)) thread = {name:thread, content:null}
 				delete embed.thread;
 				//Prep the index field break and cleanup
 				let fieldBreak = embed.indexBreak ?? false
@@ -80,8 +86,13 @@ async function publishContent(channel, content)
 					contents.push({"prefix":prefix,"title":title,"url":item.url});
 				else if (value.includeIndex && title)
 					index.push({"prefix":prefix,"title":title,"url":item.url,"break":fieldBreak});
-				//If we have a thread, start it				
-				if (thread) await item.startThread({name:thread})
+				//If we have a thread, start it
+				if (thread && thread.name) 
+				{
+					thread.thread = await item.startThread({name:thread.name})
+					threadQueue.push(thread);
+					console.log(threadQueue)
+				}
 								
 				lastMessage = item.id
 				//Extract any channel mentions and send them separately?
@@ -150,7 +161,26 @@ async function publishContent(channel, content)
 		await embed.send(channel);
 	}
 
+	if (threadQueue.length)
+	{
+		await Utils.asyncArrayForEach(threadQueue, async thread => {
+			thread.content = getContent(thread.thread, thread.content);
+			await publishContent(thread.thread, thread.content)
+		})
+	}
 	return true
+}
+
+function getContent(channel, override = null)
+{
+	let source = override || index[channel.id].data	
+	let content = null;
+	try {
+		content = require(`${process.cwd()}/content/${source}`)	
+		console.log(content)
+	}
+	catch(e){}
+	return content
 }
 
 async function execute(interaction)
@@ -181,8 +211,7 @@ async function execute(interaction)
 	}
 
 	//Grab the data for the new content according to what goes in this channel
-	let source = override || index[channel.id].data	
-	const content = require(`${process.cwd()}/content/${source}`)
+	const content = getContent(channel, override);
 	if (!content)
 	{
 		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
