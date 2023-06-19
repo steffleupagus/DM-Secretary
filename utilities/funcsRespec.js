@@ -80,14 +80,15 @@ async function handleRespec(client, message)
 		let level = match[1]
 		let userId = false;
 		let mention = name;
-
-		let members = message.guild.members.cache;
-		let member = members.find(m => name === `${m.user.username}#${m.user.discriminator}`)
-
+	
+		let members = message.guild.members.cache;		
+		let member = members.find(m => name === `${m.user.username}#${m.user.discriminator}` ||
+									   name === `${m.user.username}`)
 		if (!member)
 		{
 			members = await message.guild.members.fetch();
-			member = members.find(m => name === `${m.user.username}#${m.user.discriminator}`)
+			member = members.find(m => name === `${m.user.username}#${m.user.discriminator}` ||
+									   name === `${m.user.username}`)
 		}
 
 		if (member)
