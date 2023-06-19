@@ -15,13 +15,13 @@
 			{
 				"prefix":":two: ",
 				"title": "Duels are 1v1",
-				"description": "While other configurations combat can be run, the exp bot will not recognize them as valid - there are simply too many permutations to be accounted for to create a comprehensive set of rules for automatically awarding exp for PVP across a range of levels and participants. As a result, __duels will only award experience if they are 1v1__. The bot *should* account for companions, summons, and wild shape."
+				"description": "While other configurations combat can be run, the exp bot will not recognize them as valid - there are simply too many permutations to be accounted for to create a comprehensive set of rules for automatically awarding exp for PVP across a range of levels and participants. As a result, __duels will only award experience if they are 1v1__. The bot *should* automatically account for companions, summons, and wild shape, just not multiple leveled PCs."
 			},
 			{
 				"prefix":":three: ",
 				"title": "Duels are Fought to Zero HP",
 				"description": "For duels to be considered valid and a winner to be determined, one of the combatants HP must be reduced to zero. A combatant whose HP has been dropped to 0 may not be healed by an ally or outside force so as to resume and prolong the fight. A combatant's own self-restorative feature that would bring them back into consciousness (e.g. Half-Orc's Relentless Endurance) may be used.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when one party is reduced to zero HP.",
-				"fields":[{"name":"Throwing Fights","value":"Surrendering or otherwise throwing the victory to the opponent will not be permitted. This includes, but is not limited to, a player rage-quitting by manually setting their HP to zero, or a high-level character allowing a low-level character to defeat them for a greater share of exp. If the DMs catch you doing this, you may lose your ability to gain exp from duels."}]
+				"fields":[{"name":"Throwing Fights","value":"Surrendering or otherwise throwing the victory to the opponent will not be permitted. This includes, but is not limited to, a player rage-quitting by manually setting their HP to zero, or a high-level character allowing a low-level character to defeat them for a greater share of exp. If the DMs catch you doing this, you may lose your ability to gain exp from duels at all."}]
 			},
 			{
 				"prefix":":four: ",
@@ -34,29 +34,12 @@
 				"title": "Map Setup (Optional)",
 				"description": "Many requests have been made to provide map options for arena duels. Regardless, this step is **entirely optional**. Many who are new to Avrae may find it to be more trouble than it's worth, and Theater of the Mind combat often works just fine for arena duels. Before using a map, discuss it with your opponent and reach an agreement on the use of a map, as well as *which* map you wish to use. Several options are provided below.",
 				"fields":[
-					{"name":"Selecting a Map","value":"There are quite a few battle maps set up for use in the arenas. Images, along with some details, appear in the post following this one.\n`arena` - [image](https://i.imgur.com/xTFhOwl.png) - Main Colossuem [Recommended] - Has variants\n`arena_round` - [image](https://i.imgur.com/aX7ovJG.png) - Main Colossuem [Alternate]\n`sidearena1` - [image](https://i.imgur.com/QCrX0cg.jpg) - Side Arena Option\n`sidearena2` - [image](https://i.imgur.com/9ktKmsY.png) - Side Arena Option\n\n*If you find other arena battlemap images you think would be fitting inclusions, you may post them in <#694306844079947838>*"},
+					{"name":"Selecting a Map","value":"There are quite a few battle maps set up for use in the arenas. Images, along with some details, appear in the post following this one.\n`arena` - [image](https://i.imgur.com/xTFhOwl.png) - Main Colossuem [Recommended] - Has variants\n`arena_round` - [image](https://i.imgur.com/aX7ovJG.png) - Main Colossuem [Alternate]\n`sidearena1` - [image](https://i.imgur.com/QCrX0cg.jpg) - Side Arena Option\n`sidearena2` - [image](https://i.imgur.com/9ktKmsY.png) - Side Arena Option\n\nSee the attached `Map Options` thread for more!\n*If you find other arena battlemap images you think would be fitting inclusions, you may post them in <#694306844079947838>*"},
 					{"name":"Adding the Map","value":"In order for the map to track correctly, it will need to be added to initiative. (*Note that this will appear in turn order, and will need to be skipped, so pay close attention and try not to do your attack on the map's turn.*). One player should run these commands:\n\n`!map add 0 Map -p 69`\n`!map -loadmap <map_name>`\n\nReplace `<map_name>` with the name of your selection, for example:\n`!map -loadmap arena`"},
 					{"name":"Adding & Moving your Tokens","value":"Using the `!move <coordinate>` command will place your token. For example, `!move g10` will move your token to that corresponding square.\n`!move <coordinate> -t <target>` will move another target's token, as above. This can be used to move summons or familiars, for instance."},
-					{"name":"More Mapping Mayhem","value":"This covers just the barest basics of using the `!map` alias. If you want to explore it more, feel free to read and experiment with it\n(__**DO NOT**__ do so in the colosseum channels. Use <#697620228703649892>) "}
-				]
-			},
-			{
-				"description":"**Map Name**: `arena`\n**Map Size**: `42x26`\n**1v1 Start Coords**: `S13` & `Y13`\nRecommended for use as the main Colosseum.\nLarge elliptical arena, with a large variety of additional options to spice up your duels. (Optional rules for the variants is still being considered, and suggestions may be posted in <#694306844079947838>).",
-				"image":{"url":"https://i.imgur.com/xTFhOwl.png"},
-				"fields":[{"name":"Variants","value":"`arena_night` ([link](https://i.imgur.com/LdbfoPM.png)) - A night time version \n`arena_glow` ([link](https://i.imgur.com/ci5QUX7.png)) - A dark version with blue glow\n`arena_platform`  ([link](https://i.imgur.com/IuySNnV.png)) - A platform surrounded by pillars\n`arena_columns` ([link](https://i.imgur.com/TUIt1hW.png)) - Rows of columns for cover\n`arena_arcane` ([link](https://i.imgur.com/hmAh1IH.png)) - Glowing arcane sigils and wards\n`arena_hill` ([link](https://i.imgur.com/5xlLYgU.png)) - A King of the Hill variant\n`arena_air` ([link](https://i.imgur.com/W5vbPmw.png)) - Wind swirls in the center\n`arena_earth` ([link](https://i.imgur.com/OhejPaS.png)) - Stone rubble provides obstacles and cover\n`arena_fire` ([link](https://i.imgur.com/qGcEq2q.png)) - Narrow corridors surrounded by flame\n`arena_water` ([link](https://i.imgur.com/ND5XmPe.png)) - Narrow walkways over water"}],
-				"attachments":["https://i.imgur.com/LdbfoPM.png","https://i.imgur.com/ci5QUX7.png","https://i.imgur.com/IuySNnV.png","https://i.imgur.com/TUIt1hW.png","https://i.imgur.com/hmAh1IH.png","https://i.imgur.com/5xlLYgU.png","https://i.imgur.com/W5vbPmw.png","https://i.imgur.com/OhejPaS.png","https://i.imgur.com/qGcEq2q.png","https://i.imgur.com/ND5XmPe.png"]
-			},
-			{
-				"description":"**Map Name**: `arena_round`\n**Map Size**: `30x29`\n**URL**: https://i.imgur.com/aX7ovJG.png\n**1v1 Start Coords**: `L15` & `S15`\nA large no-frills circular arena.",
-				"image":{"url":"https://i.imgur.com/aX7ovJG.png"}
-			},
-			{
-				"description":"**Map Name**: `sidearena1`\n**Map Size**: `22x21`\n**URL**: https://i.imgur.com/QCrX0cg.jpg\n**1v1 Start Coords**: `H11` & `O12`\nA small circular arena",
-				"image":{"url":"https://i.imgur.com/QCrX0cg.jpg"}
-			},
-			{
-				"description":"**Map Name**: `sidearena2`\n**Map Size**: `24x15`\n**URL**: https://i.imgur.com/9ktKmsY.png\n**1v1 Start Coords**: `I8` & `P8`\nA small oval arena with pillars",
-				"image":{"url":"https://i.imgur.com/9ktKmsY.png"}
+					{"name":"More Mapping Mayhem","value":"This covers just the barest basics of using the `!map` alias. If you want to explore it more, feel free to read the `!map ?` helpfule and experiment with it\n(__**DO NOT**__ do so in the colosseum channels. Use <#697620228703649892>) "}
+				],
+				"thread":{"name":"📌Map Options","content":"rules/rules_map_options.json"}
 			},			
 			{
 				"prefix":":six: ",
@@ -74,13 +57,7 @@
 				],
 				"hiddenFields":[{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   200 │   150 │    50  ║\n║   4  │   350 │   265 │    90  ║\n║   5  │   700 │   525 │   175  ║\n║   6  │   850 │   640 │   215  ║\n║   7  │ 1,000 │   750 │   250  ║\n║   8  │ 1,200 │   900 │   300  ║\n║   9  │ 1,400 │ 1,050 │   350  ║\n║  10  │ 1,600 │ 1,200 │   400  ║\n║  11  │ 1,800 │ 1,350 │   450  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,500 │ 2,625 │   875  ║\n║  17  │ 4,000 │ 3,000 │ 1,000  ║\n║  18  │ 4,500 │ 3,375 │ 1,125  ║\n║  19  │ 5,000 │ 3,750 │ 1,250  ║\n║  20  │ 6,000 │ 4,500 │ 1,500  ║\n╚══════╧═══════╧═══════╧════════╝```"},
 					{"name":":coin: Gold Awarded","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │ Total │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   4gp │   3gp │   1gp  ║\n║   4  │   7gp │   5gp │   2gp  ║\n║   5  │  14gp │  11gp │   3gp  ║\n║   6  │  17gp │  13gp │   4gp  ║\n║   7  │  20gp │  15gp │   5gp  ║\n║   8  │  24gp │  18gp │   6gp  ║\n║   9  │  28gp │  21gp │   7gp  ║\n║  10  │  32gp │  24gp │   8gp  ║\n║  11  │  36gp │  27gp │   9gp  ║\n║  12  │  40gp │  30gp │  10gp  ║\n║  13  │  44gp │  33gp │  11gp  ║\n║  14  │  50gp │  38gp │  12gp  ║\n║  15  │  56gp │  42gp │  14gp  ║\n║  16  │  70gp │  53gp │  17gp  ║\n║  17  │  80gp │  60gp │  20gp  ║\n║  18  │  90gp │  68gp │  22gp  ║\n║  19  │ 100gp │  75gp │  25gp  ║\n║  20  │ 120gp │  90gp │  30gp  ║\n╚══════╧═══════╧═══════╧════════╝```"}]
-			}
-
-
-
-
-
-			
+			}		
 		]
 	}
 }
