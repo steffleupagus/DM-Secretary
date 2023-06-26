@@ -133,7 +133,7 @@
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Bracelet of Body Swapping",
-				"description":"`                                                                     `\nA contrasting set of paired bracelets, which two consenting individuals may activate. The bracelets transfer their consciousnesses to their partner's body. The effects last for the duration of the scene, or until dismissed by either party, at will.\n\nThe effect temporarily grants full voluntary control of the body in which their consciousness resides. It lasts only as long as both parties remain wiling, and both bracelets are worn within the same room as one another. The individuals' consciousnesses return to their own body upon the conclusion of the scene.\n\n*All of your characters may use the <@&766784018808700938>.*",
+				"description":"`                                                                     `\nA contrasting set of paired bracelets, which two consenting individuals may activate. The bracelets transfer their consciousnesses to their partner's body. The effects last for the duration of the scene, or until dismissed by either party, at will.\n\nThe effect temporarily grants full voluntary control of the body in which their consciousness resides. It lasts only as long as both parties remain wiling, and both bracelets are worn within the same room as one another. The individuals' consciousnesses return to their own body upon the conclusion of the scene.\n\n*All of your characters may use the <@&913183689297526805>.*",
 				"image": { "url": "https://i.imgur.com/VrnHcCh.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
@@ -203,10 +203,51 @@
             },
             {
                 "title":"<:d20:704040692946698361>100,000 - Lewd Tattoo",
-                "description":"`                                                                     `\nDeveloped by enterprising Adepts of the Arcanum Guild, the ink of these tattoos contains harnessed and distilled Demiplanar Essence and impart a number of lewd effects upon their recipients. The tattoos are capable of shifting according to the wishes (conscious or subconscious) of the bearer, taking on one of several configurations, each with their own effects. A tattoo can maintain up to three configurations simultaneously.\n\n*Once purchased, all of your characters have access to the <@&836453093994397696>. The various effects of each configuration can be found in the attached thread.*",
+                "description":"`                                                                     `\nDeveloped by enterprising Adepts of the Arcanum Guild, the ink of these tattoos contains harnessed and distilled Demiplanar Essence and impart a number of lewd effects upon their recipients. The tattoos are capable of shifting according to the wishes (conscious or subconscious) of the bearer, taking on one of several configurations, each with their own effects. A tattoo can maintain up to three configurations simultaneously.\n\n*Once purchased, all of your characters have access to the <@&836453093994397696>. The various effects of each configuration can be found in the attached thread:\n<#1122621263177863289>*",
                 "footer": { "text": "This is an RP only item and has no mechanical effect." },
-				"thread": { "name": "📌 Lewd Tattoos","content":"items/lewdTattoos.json"}
+				"hiddenFields": { "name": "📌 Lewd Tattoos","content":"items/lewdTattoos.json"}
             }
 		]
-	}
+	},
+	"Out of Character Items": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"<:d20:704040692946698361>10,000 - [Character Respec]",
+				"description":"`                                                                     `\nRebuild a character without retiring, allowing you to keep all earned exp, gold, & items. You are allowed one extra stat roll (and may buy a single reroll as normal)\n**READ BEFORE BUYING**: You must buy this a number of times equal to the level of the character to be respecced: `+buy <x> respec`"
+			},
+			{
+				"title":"<:d20:704040692946698361> 10,000 - 100,000: Character Slots",
+				"description":"`                                                                     `\nEach player begins with one PC, and may buy additional slots up to a total of 5 PCs.",
+				"fields":[
+					{"name":"<:d20:704040692946698361> 10,000 - [Character Slot 2]","value":"A second PC slot - <@&734957138908151898>"},
+					{"name":"<:d20:704040692946698361> 25,000 - [Character Slot 3]","value":"A third PC slot - <@&734957366373515326>"},
+					{"name":"<:d20:704040692946698361> 50,000 - [Character Slot 4]","value":"A fourth PC slot - <@&734957415727890559>"},
+					{"name":"<:d20:704040692946698361>100,000 - [Character Slot 5]","value":"A fifth PC slot - <@&734957425815453766>"}
+				]
+			},
+			{
+				"title":"<:d20:704040692946698361> 150,000 - 350,000: NPC Slots",
+				"description":"`                                                                     `\nAn RP-only character slot in addition to your PC slots! PC race restrictions don't apply, but there are some restrictions:\n • These characters are for RP ONLY\n • They can NOT join or accompany onto tables\n • They can NOT fight in the arena\n • They can NOT gain any exp at all, ever, in any way\n • Mods reserve the right to refuse an NPC profile deemed unsuitable for any reason...\n\nBonus: Once an NPC slot has been purchased, any or all of your other empty character slots can be used as NPC profiles.",
+				"fields":[
+					{"name":"<:d20:704040692946698361>150,000 - [NPC Slot]","value":"A single <@&806915819128881152>"},
+					{"name":"<:d20:704040692946698361>200,000 - [NPC Slot 2]","value":"A second NPC Slot -  <@&973044953821364224>"},
+					{"name":"<:d20:704040692946698361>250,000 - [NPC Slot 3]","value":"A third NPC Slot -  <@&973045332344733877>"},
+					{"name":"<:d20:704040692946698361>300,000 - [NPC Slot 4]","value":"A fourth NPC Slot -  <@&973045455816626176>"},
+					{"name":"<:d20:704040692946698361>350,000 - [NPC Slot 5]","value":"A fifth NPC Slot -  <@&973045799913148426>"}
+				]
+			},
+			{
+				"title":"<:d20:704040692946698361> 200,000 - 250,000: RP Channel & Upgrades",
+				"description":"`                                                                     `\nNever able to find an open channel to RP in? Want one of your very own so you always have a place to go? A House in the Residential District? A Shop in the Mercantile Quarter? A Venue in the Entertainment District? A Shrine in the City Temple? Maybe a Ship in the Dockyard? Hut in the wilderness? Look no further! Purchase your own RP channel to always have a place to RP. \n *Note*: Discord limits servers in the number of channels available, so there IS a finite quantity of these, so a user cannot buy more than one.",
+				"fields":[
+					{"name":"<:d20:704040692946698361>200,000 - Player RP Channel","value":"*Must be a <@&911102281045393429> to purchase*\nPurchase of your own property and  claiming your domain will elevate you to a <@&909638596351385652>. Choose a location in the city of Ost in Edhil and stylize and describe your channel in a manner befitting your character(s)."},
+					{"name":"<:d20:704040692946698361>225,000 - Channel Exp Upgrade","value":"*Must be a <@&909638596351385652> to purchase*\nExpanding your personal domain will elevate you to the title of <@&911101458454310952>. Your investment in the Demiplane is acknowledged by the Archfey who rules over it. Leylines are altered to flow into your domain, allowing you to tap into a wellspring and grow stronger.\n*RP done in your personal channel will be eligible to earn exp via `/scene`*"},
+					{"name":"<:d20:704040692946698361>250,000 - Channel Thread Upgrade","value":"*Must be a <@&911101458454310952> to purchase*\nYour continued investment into the Demiplane's prosperity has earned further recognition, elevating your title to that of <@&1117807884852535316>, and adding up to five minor fiefdoms to expand your holdings.\n*Your channel will be enabled with the ability to start up to five threads via DM Secretary's `/rpthread` command.*"}
+				]
+			}
+		]
+	}	
 }
