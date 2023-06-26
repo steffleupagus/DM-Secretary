@@ -42,6 +42,7 @@ async function publishContent(channel, content)
 	let indexInline = true;
 	await Utils.asyncObjectForEach(content, async (value, key)=>
 	{
+		if (value.skip) return;
 		const header = `\`\`\`md\n# --- ${key} --- #\n\`\`\``;
 		const tableOfContents = value.includeTOC || value.includeHeader ? 
 									await channel.send(header) : null;
@@ -56,7 +57,7 @@ async function publishContent(channel, content)
 		{
 			let lastMessage = null;
 			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
-			{
+			{			
 				if (embed?.description?.includes("<last_id>"))
 					embed.description = embed.description.replace("<last_id>",lastMessage)
 
@@ -75,11 +76,26 @@ async function publishContent(channel, content)
 				let fieldBreak = embed.indexBreak ?? false
 				delete embed.indexBreak
 				//Prep the attachments and cleanup
-				const attachments = embed.attachments || null;
+				let attachments = embed.attachments || null;
 				delete embed.attachments;
 				delete embed.hiddenFields;
+				//Prep for multiple images
+				let images = embed.image;
+				if (images && Array.isArray(images))
+					embed.image = images.pop();
+				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
-				let item = await channel.send({embeds:[embed]});
+				let item = await channel.send({embeds:embeds});
+
+				if (images && Array.isArray(images) && images.length > 0)
+				{
+					embeds[0].url = item.url
+					images.map( img => { embeds.push( {url:item.url,"image":img} ) })
+					await item.edit({embeds:embeds})
+					const waitTime = value.waitTime ?? 1000
+					await wait(waitTime);			
+				}
+
 				if (attachments) await channel.send({files:attachments});
 				//Push the link into the ToC or the Index
 				if (value.includeTOC && title)
@@ -100,7 +116,7 @@ async function publishContent(channel, content)
 				if (chanMentions) await channel.send(chanMentions)
 
 				//Stall so we don't hit ratelimit
-				const waitTime = value.waitTime ?? 1200				
+				const waitTime = value.waitTime ?? 1200
 				await wait(waitTime);
 			});
 		}
@@ -252,7 +268,7 @@ async function autoComplete(interaction)
 		console.log(value);
 		const response = Object.values(index)
 								.map( x => ({ name: x.data.replace(".json",""), value: x.data }) )
-								.filter( x => x.value.includes(value) )
+								.filter( x => x.value.toLowerCase().includes(value) )
 		console.log(response)
 		
 		try {

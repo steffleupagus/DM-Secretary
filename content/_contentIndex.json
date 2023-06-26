@@ -29,6 +29,11 @@
 	"698568383846940703":{"data":"rules/rules_duels.json"},
 	"1105301940717490267":{"data":"rules/rules_roleplay.json"},
 	"1105303752702959726":{"data":"rules/rules_tables.json"},
+	"rules_map_options" :{"data":"rules/rules_map_options.json"},
+
+	"709733574810533929":{ "data":"items/itemReference.json"},
+	"1122621263177863289":{ "data":"items/lewdTattoos.json"},
+	"guildItemReference" :{ "data":"items/guildItems.json"},
 	
 	"walkthroughchannel":{"data":"rules/walkthrough_base.json"},
 	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},
@@ -44,12 +49,11 @@
 	"1099026973071786065":{ "data":"quest/questShardTouch.json" },	
 	"1099027027429949450":{ "data":"quest/questShardLegend.json" },
 
-	"test":{ "data":"test.json"},
+
 	"test2":{ "data":"test2.json"},
-	
 	"940061953064329216":
 	{
 		"name":"📜│test-content",
-		"data":"rules/approvedContent.json"
-	}	
+		"data":"rules/test.json"
+	}
 }

@@ -1,0 +1,212 @@
+{
+	"Guild Items": {
+
+		"skip":true,
+		
+		"includeTOC":false,
+		"includeIndex":true,
+		"includeHeader":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Guild Items",
+				"description":"`                                                                     `\nThe Guilds of Ost in Edhil\n\n\t- True political power in the city\n\t- Five ranks in each (Guild Master, Council, Member, Initiate, Recruit), each with their own item\n\t- Items cannot be obtained except by rising through the ranks of the guild.",
+				"thread": { "name": "📌 Guild Items","content":"items/guildItems.json"}
+			}			
+		]
+	},
+	"Consumables & Potions": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"<:d20:704040692946698361>500 - Concocktion of Gender Fluidity",
+				"description":"`                                                                     `\nBased upon a limited application of the Alter Self spell, this potion allows the imbiber to alter their genetalia. For the duration of the scene, the character can change their sexual organs at will between male, futa, and female. Precise size and shape are also within their control.",
+				"image": { "url": "https://i.imgur.com/ra0KpPE.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Draught of Air",
+				"description":"`                                                                     `\nThis cloudy potion allows its imbiber to not need to breathe for a short time. All manner of lewd acts that would normally prevent breathing can now be performed without danger.",
+				"image": [
+					{ "url": "https://i.imgur.com/AmKgBE1.png" },
+					{ "url": "https://i.imgur.com/4ZhlrGV.png" }
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Elixir of Elasticity",
+				"description":"`                                                                     `\nA potion devised by the alchemists of the Silver Thorn, it makes the imbiber's body elastic and stretchy, allowing them to accommodate large and unusual insertions without pain or lasting damage.",
+				"image": { "url": "https://i.imgur.com/fozNzot.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Fragrance of Flavorful Fluids",
+				"description":"`                                                                     `\nA fragrance that flavors the individual's fluids (saliva, milk, cum, etc) for anyone who can smell it. Many varieties are available to customize the flavor of their fluids are affected. The effects last for the remainder of the scene.",
+				"image": { "url": "https://i.imgur.com/6lvaehs.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Potion of Pregnancy Permutation",
+				"description":"`                                                                     `\nA variety of alchemical concoctions capable of increasing or decreasing fertility (user's choice), effectively ensuring or preventing pregnancy. Taken while pregnant, this potion will either safely accelerate or terminate an existing pregnancy.",
+				"image": { "url": "https://i.imgur.com/gMegsAH.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Salve of Size",
+				"description":"`                                                                     `\nA salve of localized Enlarge/Reduce allows the user to apply it to specific body parts to make them larger or smaller for a short time.",
+				"image": { "url": "https://i.imgur.com/Tz7XUbr.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Thermal Lipstick",
+				"description":"`                                                                     `\nAvailable in shades of ice-blue or fire-red. When applied makes the wearer's mouth icy cold (blue) or fiery hot (red) to the touch for the remainder of the scene.",
+				"image": [
+					{ "url": "https://i.imgur.com/G5bsuHc.png" },
+					{ "url": "https://i.imgur.com/itdz8mR.png" }
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>500 - Tincture of Lactation",
+				"description":"`                                                                     `\nA small bottle of liquid that, when ingested, temporarily induces lactation in the user, regardless of gender. It may have the additional side effect of temporarily causing the breasts to increase in size.",
+				"image": { "url": "https://i.imgur.com/ws5msIt.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>1000 - Bottle of Boggle Oil",
+				"description":"`                                                                     `\nBoggles can secrete an oil that can be either extremely slippery or immobilizingly sticky. Both varieties of this oil have been bottled and made available for purchase.",
+				"image": { "url": "https://i.imgur.com/85yuiUh.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>1000 - Vial of Virility",
+				"description":"`                                                                     `\nA small vial containing a salty viscous white liquid that, when ingested, causes the individual to produce larger than normal volumes of cum for a single sexual encounter.",
+				"image": { "url": "https://i.imgur.com/0ydgp5F.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>1500 - Balm of Bestial Attribute",
+				"description":"`                                                                     `\nThis balm smells of animal musk. When used, it enhances existing animal traits and adds others. Tails, ears, fur, tusks and horns are the most common, though beast-like genitalia are naturally quite popular as well.",
+				"image": { "url": "https://i.imgur.com/kxWcUy2.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>2000 - Demiplanar Essence",
+				"description":"`                                                                     `\nGathered via complex magical practice by enterprising Arcanum alchemists, is distilled magical energy of the demiplane itself. Ingesting it causes the consumer to experience uncontrollable wild magic surges, entirely of the lewd variety. The user of this item can make use of the `!lewdsurge` alias for the duration of the scene.",
+				"image": [
+					{ "url": "https://i.imgur.com/UWrh7FS.png" },
+					{ "url": "https://i.imgur.com/bNgD62E.png" }
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>2000 - Syrup of Somnophilia",
+				"description":"`                                                                     `\nA sweet & sticky syrup that makes one drowsy. If they relent to the sensation, they fall into a deep dream-trance. If two individuals each consume a dose, they find they share a dreamscape that allows the them both to shape their shared experience.",
+				"image": [
+					{ "url": "https://i.imgur.com/Eu7OU60.png" },					
+					{ "url": "https://i.imgur.com/1yvgaFn.png" }					
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>5000 - Jar of Living Tentacles",
+				"description":"`                                                                     `\nThe jar's contents were either gifted or harvested from a fathomless eldritch entity of infinite tentacles. Breaking or otherwise opening the jar releases them to engage in all manner of sexual deviancy, before fading away at the end of the scene.\n\nThe tentacles are not (necessarily) under the user's control, and may behave according to unrecognizable eldritch whims. However, the nature of the demiplane has had a profound impact on even these otherworldly eldritch manifestations, and their behavior is entirely lewd.",
+				"image": [
+					{ "url": "https://i.imgur.com/2TKfYdH.png" }
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			}
+		]
+	},
+	"Wardrobe Items": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"<:d20:704040692946698361>10,000 - Bands of the Dullahan",
+				"description":"`                                                                     `\nThese magical bands allow a user to remove their body parts for a short time. Their limbs or neck are wreathed in mystical portals which connects the two parts, keeping the user alive, unharmed, and the removed body part able to be used as normal.\n\nThe removal causes no discomfort or disruption of the body's normal functions. Removed hands can still grip. Removed heads can still breathe, speak, suck, or swallow. Removed genitalia can still orgasm and ejaculate.\n\n*All of your characters may use the <@&766784018808700938>.*",
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1122350578358566923/oW6zMew.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Bracelet of Body Swapping",
+				"description":"`                                                                     `\nA contrasting set of paired bracelets, which two consenting individuals may activate. The bracelets transfer their consciousnesses to their partner's body. The effects last for the duration of the scene, or until dismissed by either party, at will.\n\nThe effect temporarily grants full voluntary control of the body in which their consciousness resides. It lasts only as long as both parties remain wiling, and both bracelets are worn within the same room as one another. The individuals' consciousnesses return to their own body upon the conclusion of the scene.\n\n*All of your characters may use the <@&766784018808700938>.*",
+				"image": { "url": "https://i.imgur.com/VrnHcCh.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Choker of Chastity",
+				"description":"`                                                                     `\nThis simple choker bears a gem heart with a barely visible keyhole on the face. While worn by someone willing to accept the choker's effects it restricts the wearers ability to orgasm until allowed by their partner.\n\nThe wearer must first grant permission to control the collar, which may be revoked at any time with a thought. The controller may choose to suppress orgasms, building arousal until allowed to be released in a powerful climax, may choose to allow orgasms but magically ruin them, or simply prevent physical arousal in the first place.\n\n*All of your characters may use the <@&1023034504962642081>.*",
+				"image": { "url": "https://i.imgur.com/b3VA6FJ.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Circlet of Copious Cum",
+				"description":"`                                                                     `\nThis circlet, which may be as small as a piercing, as large as a necklace, or anywhere in between, magically stimulates production of ejaculatory fluid, causing the wearer produce a much larger volume of cum with each climax.\n\n*All of your characters may use the <@&912933754555756604>.*",
+				"image": [
+					{ "url": "https://i.imgur.com/f92xZHI.png" },
+					{ "url": "https://i.imgur.com/yMDAvjj.png" },
+					{ "url": "https://i.imgur.com/c86wnwR.png" }					
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Collar of Compliance",
+				"description":"`                                                                     `\nCrafted with rune magic, the collar responds to the wearer's commands, or anyone to whom the wearer grants explicit permission to take control. It gives control over the sensitivity of the wearer, heightening their desire with every dominant act.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the collar, automatically revoking permission.\n\n*All of your characters may use the <@&912964244436295691>.*",
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1122360787663593503/UdfWzYV.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Harness of Binding",
+				"description":"`                                                                     `\nThis magical harness responds to the wearer's commands, or any to whom the wearer grants permission to take control. Straps may appear magically as long as the item is not damaged beyond repair. Comes in matte or shiny leather in assorted colors.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the harness, automatically revoking permission.\n\n*All of your characters may use the <@&870900187344818206>.*",
+				"image": { "url": "https://i.imgur.com/wduPJlk.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Lewd Armor Augmentation",
+				"description":"`                                                                     `\nThe Demiplane tends to warp and bend things towards the lustful and lewd. Given enough time and exposure, an adventurer's armor can take on a more revealing appearance, while offering just as much protection as its unaltered counterparts.\n\n*All of your characters may use the <@&1089422892296589372>.*",
+				"image": { "url": "https://i.imgur.com/I37Dl0j.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+            {
+                "title":"<:d20:704040692946698361>10,000 - Navel Ring of Natality",
+                "description":"`                                                                     `\nA jeweled belly-button piercing that grants the wearer full control over their personal fertility, rendering them completely infertile or hyper-fertile. This has no effect on the fertility of any potential partners.\n\n*All of your characters may use the <@&754897126173048873>.*",
+                "image": { "url":"https://media.discordapp.net/attachments/1099734278025265192/1122365245466349738/image.png" },
+                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+            {
+                "title":"<:d20:704040692946698361>10,000 - Nipple Rings of Lactation",
+                "description":"`                                                                     `\nThese nipple rings cause the wearer's breasts to enlarge and allow them to produce milk at will.\n\n*All of your characters may use the <@&754905851445248102>.*",
+                "image": { "url":"https://cdn.discordapp.com/attachments/1099734278025265192/1122365542272081920/guBh9Gl.png" },
+                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+            },
+            {
+                "title":"<:d20:704040692946698361>10,000 - Pocket Pleasure Portal",
+                "description":"`                                                                     `\nFor lewders on the go, paired pleasure portals! Phallic objects, fingers, tongues pass through, allowing partners to pleasure one another regardless of distance. A partner's cock becomes your personal dildo, or their pussy your personal fleshlight.\n\nThis item provides one permanent portal for your use, and unlimited temporary portals to provide to your partners. Temporary portals last for the duration of one sexual encounter, before closing harmlessly at the conclusion. Some particularly promiscuous individuals have been known to leave such temporary portals simply lying around available for anyone to pick up and use...\n\n*All of your characters may use the <@&913168657205559377>.*",
+                "image": { "url":"https://i.imgur.com/UaYWUFG.png" },
+                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+            },
+            {
+                "title":"<:d20:704040692946698361>10,000 - Prehensile Piercing",
+                "description":"`                                                                     `\nA tongue stud with mystical engravings, this magical piercing causes the wearer's tongue to grow longer and prehensile, allowing them to do all manner of lewd things with it that a normal humanoid's tongue might otherwise be unable to.\n\n*All of your characters may use the <@&754889785104924733>.*",
+                "image": { "url":"https://cdn.discordapp.com/attachments/1099734278025265192/1122366570195320832/image.png" },
+                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+            },
+            {
+                "title":"<:d20:704040692946698361>10,000 - Undergarment of Holding",
+                "description":"`                                                                     `\nThese undergarments allow the wearer to contain their assets safely within an extradimensional space. They will only hold your own body parts, and cannot be used to contain items.\n\nConceal your massive tits or cock under your clothes when in public, to keep them from interfering in combat or ruining your careful disguise! Surprise your partners in the bedroom when you finally whip it out! One size fits all\n\n*All of your characters may use the <@&1122357065743089664>.*",
+                "image": { "url":"https://i.imgur.com/mUhyOex.png" },
+                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+            },
+            {
+                "title":"<:d20:704040692946698361>100,000 - Lewd Tattoo",
+                "description":"`                                                                     `\nDeveloped by enterprising Adepts of the Arcanum Guild, the ink of these tattoos contains harnessed and distilled Demiplanar Essence and impart a number of lewd effects upon their recipients. The tattoos are capable of shifting according to the wishes (conscious or subconscious) of the bearer, taking on one of several configurations, each with their own effects. A tattoo can maintain up to three configurations simultaneously.\n\n*Once purchased, all of your characters have access to the <@&836453093994397696>. The various effects of each configuration can be found in the attached thread.*",
+                "footer": { "text": "This is an RP only item and has no mechanical effect." },
+				"thread": { "name": "📌 Lewd Tattoos","content":"items/lewdTattoos.json"}
+            }
+		]
+	}
+}
