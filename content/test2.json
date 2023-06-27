@@ -1,0 +1,23 @@
+{
+	"DM / DA Rules":
+	{
+		"embeds": [
+			{
+				"title":"▶️ Application",
+				"description": "Players active in the server for at least 1 week may submit an application to be a DA in: <#703373885009297518>"
+			},
+			{
+				"title":"Wilding",
+				"description":"The lewd tattoo grants the bearer significant control over its effects. There are times, however, when the bearer's focus slips unintentionally, or the bearer purposefully giving into the chaotic passions of the realm itself. The bearer is subjected to a random effect from the `!lewdsurge` table for the duration of the scene, though with an effort of focus they can still regain control of the tattoo's effects as normal.",
+				"image":[
+					{"url":"https://i.imgur.com/f38zfuk.png"},
+					{"url":"https://i.imgur.com/KLbwvhp.png"}
+				]
+			},
+			{
+				"title":"▶️ Acceptance",
+				"description": "Accepted DAs will be assigned a table & paired with a DM who will monitor said table, though any DM may monitor at their discretion."
+			}
+		]
+	}
+}

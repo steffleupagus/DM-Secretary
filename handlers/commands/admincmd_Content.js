@@ -10,6 +10,10 @@ const config = require(`../../config/${mod}_config.json`);
 const index = require(`../../content/_contentIndex.json`)
 const TEST_CHAN = ["940061953064329216"];
 
+function isObject (value) {  
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
 function extractMention(embed) 
 {
 	const desc = embed.description || "";
@@ -33,10 +37,12 @@ function extractMention(embed)
 
 async function publishContent(channel, content)
 {
+	let threadQueue = [];
 	let index = [];
 	let indexInline = true;
 	await Utils.asyncObjectForEach(content, async (value, key)=>
 	{
+		if (value.skip) return;
 		const header = `\`\`\`md\n# --- ${key} --- #\n\`\`\``;
 		const tableOfContents = value.includeTOC || value.includeHeader ? 
 									await channel.send(header) : null;
@@ -51,7 +57,7 @@ async function publishContent(channel, content)
 		{
 			let lastMessage = null;
 			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
-			{
+			{			
 				if (embed?.description?.includes("<last_id>"))
 					embed.description = embed.description.replace("<last_id>",lastMessage)
 
@@ -64,24 +70,45 @@ async function publishContent(channel, content)
 				embed.title = `${prefix}${title}`.trim()				
 				//Prep the thread and cleanup
 				let thread = embed.thread || null;
+				if (thread && !isObject(thread)) thread = {name:thread, content:null}
 				delete embed.thread;
 				//Prep the index field break and cleanup
 				let fieldBreak = embed.indexBreak ?? false
 				delete embed.indexBreak
 				//Prep the attachments and cleanup
-				const attachments = embed.attachments || null;
+				let attachments = embed.attachments || null;
 				delete embed.attachments;
 				delete embed.hiddenFields;
+				//Prep for multiple images
+				let images = embed.image;
+				if (images && Array.isArray(images))
+					embed.image = images.pop();
+				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
-				let item = await channel.send({embeds:[embed]});
+				let item = await channel.send({embeds:embeds});
+
+				if (images && Array.isArray(images) && images.length > 0)
+				{
+					embeds[0].url = item.url
+					images.map( img => { embeds.push( {url:item.url,"image":img} ) })
+					await item.edit({embeds:embeds})
+					const waitTime = value.waitTime ?? 1000
+					await wait(waitTime);			
+				}
+
 				if (attachments) await channel.send({files:attachments});
 				//Push the link into the ToC or the Index
 				if (value.includeTOC && title)
 					contents.push({"prefix":prefix,"title":title,"url":item.url});
 				else if (value.includeIndex && title)
 					index.push({"prefix":prefix,"title":title,"url":item.url,"break":fieldBreak});
-				//If we have a thread, start it				
-				if (thread) await item.startThread({name:thread})
+				//If we have a thread, start it
+				if (thread && thread.name) 
+				{
+					thread.thread = await item.startThread({name:thread.name})
+					threadQueue.push(thread);
+					console.log(threadQueue)
+				}
 								
 				lastMessage = item.id
 				//Extract any channel mentions and send them separately?
@@ -89,7 +116,7 @@ async function publishContent(channel, content)
 				if (chanMentions) await channel.send(chanMentions)
 
 				//Stall so we don't hit ratelimit
-				const waitTime = value.waitTime ?? 1200				
+				const waitTime = value.waitTime ?? 1200
 				await wait(waitTime);
 			});
 		}
@@ -150,7 +177,26 @@ async function publishContent(channel, content)
 		await embed.send(channel);
 	}
 
+	if (threadQueue.length)
+	{
+		await Utils.asyncArrayForEach(threadQueue, async thread => {
+			thread.content = getContent(thread.thread, thread.content);
+			await publishContent(thread.thread, thread.content)
+		})
+	}
 	return true
+}
+
+function getContent(channel, override = null)
+{
+	let source = override || index[channel.id].data	
+	let content = null;
+	try {
+		content = require(`${process.cwd()}/content/${source}`)	
+		console.log(content)
+	}
+	catch(e){}
+	return content
 }
 
 async function execute(interaction)
@@ -181,8 +227,7 @@ async function execute(interaction)
 	}
 
 	//Grab the data for the new content according to what goes in this channel
-	let source = override || index[channel.id].data	
-	const content = require(`${process.cwd()}/content/${source}`)
+	const content = getContent(channel, override);
 	if (!content)
 	{
 		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
@@ -223,7 +268,7 @@ async function autoComplete(interaction)
 		console.log(value);
 		const response = Object.values(index)
 								.map( x => ({ name: x.data.replace(".json",""), value: x.data }) )
-								.filter( x => x.value.includes(value) )
+								.filter( x => x.value.toLowerCase().includes(value) )
 		console.log(response)
 		
 		try {

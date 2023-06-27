@@ -367,7 +367,7 @@ async function execute(interaction)
 }
 
 const data = new SlashCommandBuilder()
-	.setName(`thread${config.DEV ? "dev" : ""}`)
+	.setName(`rpthread${config.DEV ? "dev" : ""}`)
 	.setDescription('Open an RP thread')
 	//.setDefaultMemberPermissions
 	

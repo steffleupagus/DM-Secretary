@@ -62,7 +62,7 @@
 			},
 			{
 				"title": "Changeling",
-				"description":"`                                                                     `",
+				"description":"`                                                                     `\n*Note: Changelings are NOT an exception to, nor a way to work around, character slot limitations. Attempting to make a changeling with multiple personas that could easily be seen as unique characters each with unique preferences and reference images will NOT be approved. Each additional 'permanent' persona must have a character slot dedicated to it. Backgrounds which grant an additional persona may include one additional one without an additional slot.",
 				"footer": { "text": "Races: Changeling" },
 				"image": { "url": "https://i.imgur.com/xoEpaez.png" },
 				"fields": [{

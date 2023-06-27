@@ -4,7 +4,11 @@
 		"embeds": [
 			{
 				"title":"▶️ Application",
-				"description": "Players active in the server for at least 1 week may submit an application to be a DA in: <#703373885009297518>"
+				"description": "Players active in the server for at least 1 week may submit an application to be a DA in: <#703373885009297518>",
+				"thread":{
+					"name":"TEST 123 THREAD",
+					"content":"test2.json"
+				}
 			},
 			{
 				"title":"▶️ Before posting a table",
