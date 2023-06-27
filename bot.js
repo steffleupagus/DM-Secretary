@@ -163,15 +163,19 @@ class Bot
 		for (const file of commandFiles) 
 		{
 			const command = require(`${process.cwd()}/handlers/commands/${file}`);
-			console.log(" - Command: ", command.data.name);
-
-			// Set a new item in the Collection; key = command name, value = exported module
-			this.client.commands.set(command.data.name, command);
-
-			// Allow commands to have aliases for non-slash execution
-			command?.aliases?.forEach(alias => {
-				this.client.commands.set(alias, command);			
-			});
+			const enabled = !command.hasOwnProperty("build") || command.build;
+			// console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
+			if (enabled)
+			{			
+				console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
+				// Set a new item in the Collection; key = command name, value = exported module
+				this.client.commands.set(command.data.name, command);
+	
+				// Allow commands to have aliases for non-slash execution
+				command?.aliases?.forEach(alias => {
+					this.client.commands.set(alias, command);			
+				});					
+			}		
 		}
 	}
 
