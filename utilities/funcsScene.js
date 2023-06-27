@@ -199,7 +199,7 @@ async function generatePlayerXPField(interaction, data, idx)
 	data.xpMod = data.level > 0 ? LevelUtils.calculateRoleplayExp(level, data.xpMod) : 0;
 
 
-	console.log(data)
+	console.log("Data: ",data)
 	
 	
 	if (data.level && data.xpMod > 0)
@@ -691,24 +691,30 @@ async function handleNPC(interaction)
 	{
 		//Extract all the records from the original data that have been applied to this character
 			dupes = Utils.findAllIndexes(xpEmbed.fields, (field) => field.name.replace(` (${editData.level})`,"") == editData.char)
+
 		let cData = xpData.filter( (x,idx) => x.char == editData.char || dupes.includes(idx) )
-						  .map(({char,level,...x}) => ({char:editData.char,level:editData.level,...x }));
-			// console.log(cData)
+//						  .map(({char,level,...x}) => ({char:editData.char,level:editData.level,...x }));
+						  .map(({char,...x}) => ({char:editData.char,...x }));		
+			console.log(cData)
 			cData = JSON.stringify(cData)
 		let before = JSON.parse(cData)
 			before = consolidateData(before);
 			before = assignExperience(before);
-			// console.log(before,"\n\n")
+			before = before.map(({xp,...x}) => ({xp:(0 == x.level ? 0 : xp),...x}));
+			// console.log("Before: ",before,"\n\n")
 		//Add the new data in and consolidate it		
 		let after  = JSON.parse(cData)
+			after = after.map(({char,level,...x}) => ({char:editData.char,level:editData.level,...x }));
 			after.push(editData);
 			after = consolidateData(after);
 			after = assignExperience(after);
-			// console.log(after,"\n\n")			
+			// console.log("After: ",after,"\n\n")			
 		editData = after[0];
 		//Only award the difference in xp
 		const diff  = Utils.precise(editData.xp - (before?.[0]?.xp || 0) + 0.001, 1)
 		editData.xpMod = Math.max(0, diff);
+
+		// console.log(editData);
 	}
 	
 	xpData[index] = {...editData, edit:response}

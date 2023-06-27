@@ -80,14 +80,26 @@ async function handleRespec(client, message)
 		let level = match[1]
 		let userId = false;
 		let mention = name;
-
-		let members = message.guild.members.cache;
-		let member = members.find(m => name === `${m.user.username}#${m.user.discriminator}`)
-
+			name = name.toLowerCase();
+		
+		let members = message.guild.members.cache;		
+		let member = members.find(m => name === `${m.user.username.toLowerCase()}#${m.user.discriminator}` ||
+									   name === `${m.user.username.toLowerCase()}`)
 		if (!member)
 		{
 			members = await message.guild.members.fetch();
-			member = members.find(m => name === `${m.user.username}#${m.user.discriminator}`)
+			members.sort((a,b) => {
+				a = a.user.username
+				b = b.user.username
+				return (a<b) ? 1 : ((a>b) ? -1 : 0);
+			})
+			member = members.find(m => name === `${m.user.username.toLowerCase()}#${m.user.discriminator}` ||
+									   name === `${m.user.username.toLowerCase()}`)
+			// let member = members.find(m => {
+			// 	//name === `${m.user.username}#${m.user.discriminator || 0}` ||
+			// 	console.log(`${name} | ${m.user.username} (${m.user.discriminator})`)
+			// 	return name === `${m.user.username}`
+			// });
 		}
 
 		if (member)
