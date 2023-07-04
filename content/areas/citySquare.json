@@ -7,19 +7,35 @@
 			{
 				"title":"City Square",
 				"description":"<#694285683249905714> <#744709462723526666>",
-				"image": { "url": "https://i.imgur.com/ue2I4b1.jpg" }
+				"image": { "url": "https://i.imgur.com/29BKTQG.png" }
 			},
 			{
-				"title":"Streets Off the Square",
-				"description":"<#748757788787736636> <#748757872627810354>\n<#748757913941573733> <#748757974356328569>",
-				"image": { "url": "https://i.imgur.com/USJzpOX.png" }
+				"title":"North Street",
+				"description":"<#748757788787736636> to the Residential Quarter",
+				"image": { "url": "https://i.imgur.com/kmx9WCG.png" }
 			},
 			{
+				"title":"East Street",
+				"description":"<#748757872627810354> to the Mercantile Quarter",
+				"image": { "url": "https://i.imgur.com/FM4F1sa.png" }
+			},
+			{
+				"title":"West Street",
+				"description":"<#748757913941573733> to the Administrative District",
+				"image": { "url": "https://i.imgur.com/QXrmvS3.png" }
+			},
+			{
+				"title":"South Street",
+				"description":"<#748757974356328569> to the Entertainment (*and Redlight*) District",
+				"image": { "url": "https://i.imgur.com/F1M6ljL.png" }
+			},
+			{
+				"content":"``` ```",
 				"title":"Travel",
-				"description": "*A sign posted in the square points the direction to the various sections of the city.*\n\n⛩️ - Leave the city by way of the Blessed Gate\n\n🏘️ - Travel to the Residential Quarter\n\n💰 - Travel to the Mercantile Quarter\n\n🏯 - Travel to the Administrative District\n\n🎭 - Enter the Entertainment District\n\n🪦 - Leave the city by way of the Cursed Gate"
+				"description": "*A sign posted in the square points the direction to the various sections of the city.*\n\n⛩️ - Leave the city by way of the Blessed Gate\n\n🏘️ - Travel to the Residential Quarter via North Street\n\n💰 - Travel to the Mercantile Quarter via East Street\n\n🏯 - Travel to the Administrative District via West Street\n\n🎭 - Enter the Entertainment District via South Street\n\n🪦 - Leave the city by way of the Cursed Gate"
 			},
 			{
-				"fields":[{"name":"*Menu Command*","value":"`/rolemenu create group:Loc:CitySquare nodm:True rr:True m:???`"}]
+				"description":"***Menu Command***\n`/rolemenu create group:Loc:CitySquare nodm:True rr:True m:<last_id>`"
 			}	
 		]
 	}

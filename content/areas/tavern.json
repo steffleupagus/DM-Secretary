@@ -6,17 +6,13 @@
 		[
 			{
 				"title":"Manticore's Dream Tavern",
-				"description":"<#696536671302320188> <#742484118146777118> <#821267837284122634>",
-				"image": { "url": "https://i.imgur.com/RGgDlfU.jpg" }
+				"description":"<#696536671302320188>\n<#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/MdCNueY.png" }
 			},
 			{
 				"title":"Tavern Loft",
 				"description":"<#697832426432626762> <#737326955191599304>",
-				"image": { "url": "https://i.imgur.com/3sur5Es.jpg" }
-			},
-			{
-				"title":"Manticore Tavern Menu",
-				"description":"**Tankard of Ale** - 50 RPP [`+buy tankard` / `+use tankard`]"
+				"image": { "url": "https://i.imgur.com/zNz6nsW.png" }
 			},
 			
 			{

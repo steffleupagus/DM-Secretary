@@ -7,22 +7,26 @@
 			{
 				"title":"Colosseum",
 				"description":"<#695712096322584607>",
-				"image": { "url": "https://i.imgur.com/SLoGaCU.png" }
+				"image": { "url": "https://i.imgur.com/fu3YZtZ.jpg" }
 			},
 			{
 				"title":"Side Arena",
-				"description":"<#699332551071760525> <#740619253635612693>",
-				"image": { "url": "https://i.imgur.com/mZPWC9k.jpg" }
+				"description":"<#699332551071760525> <#740619253635612693>\n<#1120937969952493628>",
+				"image": { "url": "https://i.imgur.com/UB9ezjH.png" }
 			},
 			{
-				"title":"Lockers",
-				"description":"<#833469470290083887> <#909641705299509268>",
-				"image": { "url": "https://i.imgur.com/HbvlsqK.png" }
+				"title":"Training Grounds",
+				"description":"<#1100616389410173039>",
+				"image": { "url": "https://i.imgur.com/TsTMHfb.jpg" }
 			},
 			{
-				"title":"Baths",
-				"description":"<#833469756903653386>",
-				"image": { "url": "https://i.imgur.com/qWu6L2n.png" }
+				"title":"Lockers & Baths",
+				"description":"<#833469470290083887> <#909641705299509268>\n<#833469756903653386>",
+				"image": [
+					{ "url": "https://i.imgur.com/KMri3vF.png" },
+					{ "url": "https://i.imgur.com/9dnezg2.jpg" },
+					{ "url": "https://i.imgur.com/0IokfUt.png" }
+				]
 			},
 		
 			

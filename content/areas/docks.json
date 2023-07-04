@@ -7,15 +7,15 @@
 			{
 				"title":"Dockyard",
 				"description":"<#713002614589227028> <#713002716590374973>",
-				"image": { "url": "https://i.imgur.com/eVqeC7y.jpg" }
+				"image": { "url": "https://i.imgur.com/PemD4NY.png" }
 			},
 			{
 				"title":"Frisky Fairy Tavern",
 				"description":"<#840447148251807784>",
-				"image": { "url": "https://i.imgur.com/xYZbHm7.jpg" }
+				"image": { "url": "https://i.imgur.com/2ZMrbBs.png" }
 			},
 			{
-				"image": { "url": "https://i.imgur.com/3d0c3CU.png" }
+				"image": { "url": "https://i.imgur.com/7wXruPA.png" }
 			},
 			{
 				"title":"Frisky Fairy Tavern Proprietor (NPC)",
@@ -24,22 +24,22 @@
 			{
 				"title":"Dockyard Wharf | Pier",
 				"description":"<#744711990500524052> <#744711929708150965>",
-				"image": { "url": "https://i.imgur.com/ru0NSit.jpg" }
+				"image": { "url": "https://i.imgur.com/C8rsGJh.png" }
 			},
 			{
 				"title":"Dockyard Warehouse",
 				"description":"<#748759431180976258>",
-				"image": { "url": "https://i.imgur.com/W40K9OU.jpg" }
+				"image": { "url": "https://i.imgur.com/7apnMHn.png" }
 			},
 			{
 				"title":"Docked Vessel",
 				"description":"<#829840323823927306>",
-				"image": { "url": "https://i.imgur.com/07jkpFg.jpg" }
+				"image": { "url": "https://i.imgur.com/UG4NZlg.png" }
 			},
 			
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n:moneybag: Follow the road to the <#695638243504553994>\n\n:house_abandoned: Slip through the narrow alley into the <#833537974166618122>\n\n:island: Charter a vessel to take you to an <#833467268863623199>"
+				"description": "`                                                                     `\n\n:moneybag: Follow the road to the Mercantile Quarter\n\n:house_abandoned: Slip through the narrow alley into the Slums\n\n:island: Charter a vessel to take you to an Island off the Coast"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Dock nodm:True rr:True m:<last_id>`"
