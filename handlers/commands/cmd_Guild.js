@@ -410,7 +410,7 @@ async function promptCharacter(interaction, member, guild, includeNPC = false, f
 
 	//Error out if the list is empty as a safety precaution
 	if (charList.length <= 0) throw ERROR_NO_VALID_CHAR_SELECT(member)
-
+	
 	// console.log(charList)
 	//Create the character selection
 	const charSelect = [ Prompt.createSelectRow(interaction.id, charList, 1, 1, 'Select Character...') ]
@@ -444,7 +444,8 @@ async function promptCharacterName(interaction, args)
 		await output.deferUpdate()
 		let result = {};
 		output.fields.fields.map(field => { result[field.customId] = field.value; })
-		return result.char;
+		
+		return result.char.trim();
 	}
 
 	//No input, throw the exception
