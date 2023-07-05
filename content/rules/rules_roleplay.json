@@ -8,7 +8,9 @@
 				"title": "Roleplay in Server Channels",
 				"description": "Roleplay involving your characters here should be carried out on the server in one of the many channels provided for that purpose, rather than in DMs. We put a lot of effort into the server, you might as well use it if you're here. RPP (and, in many cases, Experience) is awarded for scenes done in-server.",
 				"fields":[
-					{"name":"🗺 Map","value":"You can use the <#738987459651829830> channel to navigate between different RP areas throughout the city. The map will allow you to have three such areas open simultaneously."}
+					{"name":"🗺 Map","value":"You can use the <#738987459651829830> channel to navigate between different RP areas throughout the city. The map will allow you to have three such areas open simultaneously. Every area in the map is represented by an in-character location in the Demiplane, contained in a channel category."},
+					{"name":"🚪 Navigation","value":"Every roleplay location category has a channel at the top marked with a 🚪 icon. This channel includes a series of reference images to help visualize the individual locations contained within that area, as well as a react menu (similar to the map) that will allow you to navigate between connected locations."},		
+					{"name":"🧵 RP Threads","value":"Also contained in each navigation channel is a button to Join or Create  an RP thread. Each RP channel can have up to 5 threads to provide more places for people to RP. These threads are subject to the same guidelines as other channels outlined here."}
 				]
 			},
 			{
