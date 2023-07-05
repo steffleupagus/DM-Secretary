@@ -36,13 +36,17 @@ const MENU_DESC = "The following threads already exist, subject to the same guid
 ///
 /// Find an archived or closed scene thread to recycle if one is available
 ///
-async function findRecycleThread(threads)
+async function findRecycleThread(threads, threadStatus = null)
 {
 	let thread = null;
 
 	//If we have any archived threads, grab one of those first and be done with it
 	if (!thread && threads.archive.threads.size > 0)
  		thread = threads.archive.threads.first();
+
+
+	console.log(threadStatus)
+	
 	
 	//Check to see if we have any threads with an ended scene by looking at the last post
 	await Utils.asyncCollectionForEach(threads.active.threads, async (value) => 
@@ -53,6 +57,9 @@ async function findRecycleThread(threads)
 		let message = await value.messages.fetch({ limit: 1 });
 			message = message?.first();
 		if (MessageUtils.isSceneBreak(message))
+			thread = value;
+		const status = threadStatus.find(x => x.id == value.id)?.status;
+		if (status.includes("🟢"))
 			thread = value;
 	})
 	
@@ -93,7 +100,7 @@ async function openThreadIfPossible(interaction, channel = null)
 	let thread = null;
 	const threads = await ChanUtils.fetchThreads(channel);
 	const threadMax = chanMeta.threadMax ?? 0;
-	const threadCount = threads?.active?.threads?.size || 0;
+	let threadCount = threads?.active?.threads?.size || 0;
 	// console.log(threads, threadMax, threadCount)
 	
 	// If we have reached the maximum number of threads
@@ -105,7 +112,8 @@ async function openThreadIfPossible(interaction, channel = null)
 	else
 	{
 		//Try to recycle a thread to open if possible
-		thread = await findRecycleThread(threads)
+		const threadStatus = await ActivityUtils.getAllThreadsStatus(channel, threads.all);	
+		thread = await findRecycleThread(threads, threadStatus)
 		//Return an error if none are available
 		if (!thread)
 		{
@@ -132,8 +140,20 @@ async function openThreadIfPossible(interaction, channel = null)
 		await thread.send(`@ping your parner(s) to add them to the thread. They will need to have this location visible.`)
 		await interaction.editReply({content: `Thread ${reused ? "Recycled" : "Created"}: ${thread.name} (${thread.url})`,
 									 embeds:[],components:[]})	
-	}
-	
+
+		const guild = interaction.guild;
+		const debugChan = await guild?.channels?.fetch(config.debugLogChannel);
+		if (debugChan) 
+		{			
+			const embed = new EmbedBuilder().setTitle(`Thread ${reused ? "Recycled" : "Created"}`)
+											.addFields([
+											{name:"User",value:`<@${interaction.user.id}>`,inline:false},
+											{name:"Channel",value:`<#${channel.id}>\n${channel.name}`,inline:true},
+											{name:"Thread",value:`<#${thread.id}>\n${thread.name}`,inline:true}
+											])
+			await debugChan.send({embeds:[embed]});
+		}
+	}	
 	return thread;
 }
 
@@ -189,7 +209,7 @@ async function showThreadMenu(interaction, roleIds)
 		//Add the channel to the select box if new threads can be opened
 		const threadMax = x.threadMax ?? 0;
 		const threadCount = threads?.active?.threads?.size || 0;
-		const canRecycle = threadStatus.find( x=>x.scene ) || await findRecycleThread(threads)
+		const canRecycle = threadStatus.find( x=>x.scene ) || await findRecycleThread(threads, threadStatus)
 		console.log(`${channel.name}: ${threadCount} >= ${threadMax} | Recycle: ${canRecycle}`)
 		
 		if ((threadCount >= threadMax) && !canRecycle)
@@ -225,7 +245,7 @@ async function showThreadMenu(interaction, roleIds)
 ///
 /// Create the buttons for everyone to use
 ///
-async function createThreadButton(interaction, roleIDs)
+async function createThreadButton(interaction, roleIDs, attachMessage = null)
 {
 	roleIDs = (Array.isArray(roleIDs) ? roleIDs.join(",") : roleIDs)
 		
@@ -234,7 +254,13 @@ async function createThreadButton(interaction, roleIDs)
 	// const listbutton = {style:ButtonStyle.Secondary, label:'List Threads', 
 	// 				    custom_id:`${data.name}.listThreads:${roleIDs}`}
 	const buttonRow  = Prompt.createButtonRow([openbutton]);	//,listbutton]);
-	await interaction.channel.send({components:[buttonRow]})
+	if (!attachMessage)
+		await interaction.channel.send({components:[buttonRow]})
+	else
+	{
+		console.log(attachMessage)
+		await attachMessage.edit({components:[buttonRow]})
+	}
 }
 
 ///
@@ -278,18 +304,24 @@ async function showBuilderMenu(interaction, useGuildLocations = null, locationOv
 	if (!useGuildLocations) locations.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
  	const guild = useGuildLocations ? ".guild" : ""
  	const location = Prompt.createSelectRow(`${data.name}.location${guild}`,locations,0,5,"Locations (None Selected)");
+
+	const lastMessage = (await channel.messages.fetch({ limit: 1 })).first();
+	const editableMessage = lastMessage?.author?.id == interaction.client.user.id
+	console.log(editableMessage + ": " + lastMessage?.id+" - "+ interaction.client.user.id)
 	
 	const locationPub = {style:ButtonStyle.Secondary,
 						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
 						 custom_id:`${data.name}.guildLocations.${!useGuildLocations}`}	
-	const createButton = {style:ButtonStyle.Primary, label:`Create Button`, 
+	const attachButton = {style:ButtonStyle.Primary, label:`Attach Button`,
+						 custom_id:`${data.name}.attachThreadButton`, disabled: !editableMessage}
+	const createButton = {style:ButtonStyle.Primary, label:`Create Button`,
 						 custom_id:`${data.name}.createThreadButton`}
 	const createThread = {style:ButtonStyle.Primary, label:`Create Thread`, 
 						 custom_id:`${data.name}.openThreadInCurrentChannel`}
 
 	const components = [];
 	components.push(location);
-	const miscButtons = [locationPub, createButton, createThread];
+	const miscButtons = [locationPub, attachButton, createButton, createThread];
 	components.push(Prompt.createButtonRow(miscButtons));
 	await interaction.editReply({ embeds: [embed], components: components });
 }
@@ -309,7 +341,8 @@ async function handleInteraction(interaction)
 
 	let useGuildLocations = null;
 	let roleOverride = roleIds;
-	let thread   = null;
+	let attachMessage = null;
+	let thread  = null;
 	
 	switch(command)
 	{
@@ -321,8 +354,10 @@ async function handleInteraction(interaction)
 		case `location.guild`:
 			roleOverride = interaction.values;
 			break;
+		case `attachThreadButton`:
+			attachMessage = (await interaction.channel.messages.fetch({ limit: 1 })).first();
 		case `createThreadButton`:
-			await createThreadButton(interaction, roleIds);
+			await createThreadButton(interaction, roleIds, attachMessage);
 			break;
 		case `listThreads`:
 		case `showThreadMenu`:
