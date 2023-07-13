@@ -13,9 +13,11 @@ function isRoleplayChannel(channel)
 
 function isRoleplayThread(channel)
 {
-	return channel.isThread() &&
-		isRoleplayChannel(channel.parent) &&
-		!channel.name.includes("⚙");
+	if (!channel.isThread()) return false;
+	if (channel.name.includes("⚙")) return false;
+	
+	return	isRoleplayChannel(channel) ||
+			isRoleplayChannel(channel.parent);
 }
 
 ///
