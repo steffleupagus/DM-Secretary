@@ -49,6 +49,9 @@ const PING_PREFIX = Debug ? '~' : '@'
 const dmPingChannel = Debug ? "1087957720507883521" : config.dmPingChannel;
 const xpLogChannel  = Debug ? "1087958395274940446" : config.xpLogChannel;
 
+const NPC = 0;
+const SKIP = -1;
+
 const dmRoles = [
 			config.DMRole, config.ModeratorRole,
 			config._DMRole, config._ModeratorRole
@@ -191,7 +194,7 @@ async function processScene(interaction, message)
 async function generatePlayerXPField(interaction, data, idx)
 {
 	let level = data.level
-	if (level == 0) level = "NPC"
+	if (level == NPC) level = "NPC"
 	data.rp.days = data?.rp?.days || data.daily?.length || "?";
 	data.rpp = data.rpp ?? 0;
 	data.xpMod = data.xpMod ?? data.xp;
@@ -254,9 +257,9 @@ async function generatePlayerXPField(interaction, data, idx)
 	}
 
 	value += `<@${data.user}> - `;
-	if ((data.level == 0)&&(!data.rpp))
+	if ((data.level == NPC)&&(!data.rpp))
 		value += `\`NPC (Pending)\`\n`
-	else if (data.level == 0 && (data.rpp > 0 || data.rppMod))
+	else if (data.level == NPC && (data.rpp > 0 || data.rppMod))
 		value += `${config.rppemoji} \`${data.rpp}\`\n`		
 	else if (data.xp >= 0)
 	{
@@ -291,7 +294,7 @@ async function generateXPEmbed(interaction, start, rpData, comment = "", footer 
 	await Utils.asyncArrayForEach(rpData, async (data,idx) =>
 	{
 		let level = data.level
-		if (level < 0 || (data.xp <= 0 && data.rpp <= 0)) return; // level = "Skip"
+		if (level <= SKIP || (data.xp <= 0 && data.rpp <= 0)) return; // level = "Skip"
 		
 		data.rp.days = data.rp.days || data.daily?.length || "?";
 		data.rpp = reject ? 0 : (data.rpp || 0);
@@ -608,7 +611,7 @@ async function handleReject(interaction)
 
 function unassignedNPC(data)
 {
-	const isUnassignedNPC = data.level == 0 && data.xp > 0 && !data.rpp
+	const isUnassignedNPC = data.level == NPC && data.xp > 0 && !data.rpp
 	return isUnassignedNPC
 }
 
@@ -680,7 +683,7 @@ async function handleNPC(interaction)
 	}
 
 	let dupes = null;
-	if (editData.level == 0)	//They chose NPC again, award RPP instead of Exp
+	if (editData.level == NPC)	//They chose NPC again, award RPP instead of Exp
 	{		
 		editData = assignExperience([editData])[0];
 		editData.rpp = NPC_RPP_AMOUNT * editData.xp;
@@ -797,8 +800,8 @@ function generateDMEmbed(interaction, start, rpData, footer)
 	rpData.forEach( (data, idx) =>
 	{
 		let level = data.level
-		if (data.xp <= 0 || level < 0) level = "Skip"
-		else if (level == 0) level = "NPC"
+		if (data.xp <= 0 || level <= SKIP) level = "Skip"
+		else if (level == NPC) level = "NPC"
 		data.rp.days = data.rp.days || data.daily?.length || 0;
 		
 		let title  = `${data.char} (${level})`
@@ -862,8 +865,8 @@ function generatePlayerConfirmEmbed(expData)
 	embed.setFooter({text:SCENE_EMBED_FOOTER});
 
 	const data = expData.filter(x=>(x.level > 0 && x.xp > 0));
-	const npcs = expData.filter(x=>(x.level == 0 && x.xp > 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
-	const skip = expData.filter(x=>(x.level < 0 && x.xp > 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
+	const npcs = expData.filter(x=>(x.level == NPC && x.xp > 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
+	const skip = expData.filter(x=>(x.level <= SKIP && x.xp > 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
 	const norp = expData.filter(x=>(x.xp <= 0)).map(x=>`${x.char} (<@${x.user}>)`).join('\n').trim();
 
 	const inline = data.length > 5;
@@ -978,7 +981,7 @@ function assignExperience(expData)
 			expData[idx].rpp = mult * NPC_RPP_AMOUNT;
 
 		if (mult <= 0)
-			expData[idx].level = -1;
+			expData[idx].level = SKIP;
 	});
 
 	return expData;
@@ -1201,7 +1204,7 @@ async function processData(interaction, stats)
 			charRPData.name  = char;
 			charRPData.char  = null;
 			charRPData.user  = user;
-			charRPData.level = -1;
+			charRPData.level = SKIP;
 			charRPData.t     = tup;
 			charRPData.rp	 = { length: charRPData.length, posts: charRPData.posts };
 			charRPData.daily = Object.keys(charRPData.dates);
@@ -1271,9 +1274,9 @@ console.log(charRPData)
 			}
 			
 			if (charRPData.match == "npc")
-				charRPData.match = { name:charRPData.name, level:0 }
+				charRPData.match = { name:charRPData.name, level:NPC }
 			else if (!charRPData.match)
-				charRPData.match = { name:charRPData.name, level:-1 }
+				charRPData.match = { name:charRPData.name, level:SKIP }
 		}
 		
 		//Apply the matched character to the data
@@ -1291,7 +1294,7 @@ console.log(charRPData)
 	if (!charRPData.char)
 	{
 		charRPData.char = charRPData.name;
-		charRPData.level = -1;
+		charRPData.level = SKIP;
 	}
 
 	//Cleanup
