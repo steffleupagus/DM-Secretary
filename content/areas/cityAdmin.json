@@ -8,29 +8,42 @@
 			{
 				"title":"Administrative District",
 				"description":"<#695638537575596122>",
-				"image": { "url": "https://i.imgur.com/bcEZW5P.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/ip0OjyX.png" },
+					{ "url": "https://i.imgur.com/ekGK7Hs.png" }
+				]					
 			},
 			{
 				"title":"Queen's Citadel",
 				"description":"<#697169394131796008>",
-				"image": { "url": "https://i.imgur.com/V6gKTol.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/xF7iGnR.png" },
+					{ "url": "https://i.imgur.com/v4dFrWK.png" },
+					{ "url": "https://i.imgur.com/aGkdWWI.png" }
+				]
 			},
 			{
 				"title":"Throne Room",
 				"description":"<#707928290832416798>",
-				"image": { "url": "https://i.imgur.com/FCDRWfL.jpg" }
+				"image": { "url": "https://i.imgur.com/lw5raLz.jpg" }
 			},
 			{
 				"title":"Public Stockades",
 				"description":"<#833464807860207638>",
-				"image": { "url": "https://i.imgur.com/3jlB2lC.jpg" }
+				"image": [
+					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814464660181073/image.png" },
+					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814465029296138/sabudenego-621017-Bad-Ending_Yennefer_Witcher_3.png" },
+					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814465536786473/M7dCo9p.png" },
+					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814464135888916/sample_dcca06694328df47220b139df14ee0d1.png" }					
+				]
 			},
 			{
 				"title":"Dungeon Cell",
 				"description":"<#833463963047821358>",
-				"image": { "url": "https://i.imgur.com/zqnCxq4.jpg" }
+				"_image": { "url": "https://i.imgur.com/orYPcWf.png" }
 			},
 			{
+				"content":"``` ```",
 				"title":"Travel",
 				"description": "`                                                                     `\n\n⛲ Travel to the City Square\n\n🔮 Enter the Tower of the Arcanum \n\n🛕 Enter the Temple District\n\n🏟️ Enter the Colosseum"
 			},

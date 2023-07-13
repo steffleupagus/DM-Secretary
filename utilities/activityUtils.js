@@ -109,7 +109,7 @@ async function getChannelStatus(channel)
 			}
 		});
 	}
-	return getChannelStatusFromMessageData(messageData);
+	return getChannelStatusFromMessageData(channel, messageData);
 }
 
 /// 
@@ -119,7 +119,7 @@ async function getAllThreadsStatus(channel, allThreads)
 {
 	const threadStatus = {}
 	let messagesData   = await ChanActivity.find({ thread: channel.id })
-	messagesData.map(x => threadStatus[x.chan] = getChannelStatusFromMessageData(x));
+	messagesData.map(x => threadStatus[x.chan] = getChannelStatusFromMessageData(channel, x));
 
 	//Find any threads that weren't in the database
 	await Utils.asyncCollectionForEach(allThreads, async thread => 
@@ -147,8 +147,9 @@ async function getAllThreadsStatus(channel, allThreads)
 ///
 /// Get some thread status info from a given message data record
 ///
-function getChannelStatusFromMessageData(messageData)
+function getChannelStatusFromMessageData(channel, messageData)
 {
+	let openRP  = "🌐";
 	let status  = "🟢";
 	let lastMsg = "( Unused Channel )"
 	let author  = ""
@@ -161,19 +162,24 @@ function getChannelStatusFromMessageData(messageData)
 		let now = Date.now();
 		let time = Math.floor((now - created) / msps); // elapsed time in seconds
 		elapsed = `<t:${Math.round(created / msps)}:R>`
-				
-		//Author data
-		author  = messageData.user
-		lastMsg = `Last post`;
 		
 		//Figure out what status icon to apply to it.
-		if (messageData.scene)
+		if (channel.name.includes(openRP))
+		{
+			status  = openRP
+			lastMsg = `Open RP Channel`
+			elapsed = ''
+		}
+		else if (messageData.scene)
 		{
 			lastMsg = `Scene ended`
-			author  = ''
 		}
 		else
 		{
+			//Author data
+			author  = messageData.user
+			lastMsg = `Last post`;
+			
 			if (time <= (day * 3)) 		status = "⛔"; 
 			else if (time < (day * 5))	status = "❓";
 			else if (time < (day * 7))	status = "⚠️";
