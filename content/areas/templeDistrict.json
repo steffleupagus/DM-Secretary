@@ -8,92 +8,102 @@
 			{
 				"title":"Temple Courtyard",
 				"description":"<#748749699464429629>",
-				"image": { "url": "https://i.imgur.com/5q3uIEx.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/fUzhiJJ.png" },
+					{ "url": "https://i.imgur.com/XRgXPBt.jpg" }
+				]
 			},			
 			{
 				"title":"Arcana Domain Temple",
-				"image": { "url": "https://i.imgur.com/p1KgHgH.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/4GbnUNB.jpg" },
+					{ "url": "https://i.imgur.com/nh4dEqN.jpg" },
+					{ "url": "https://i.imgur.com/hLGcSKJ.png" }					
+				]
 			},
 			{
 				"title":"Death Domain Temple",
-				"image": { "url": "https://i.imgur.com/SJXTTdI.jpg" }
+				"image": { "url": "https://i.imgur.com/vg8O8U8.png" }
 			},
 			{
 				"title":"Forge Domain Temple",
-				"image": { "url": "https://i.imgur.com/lKq92G1.jpg" }
+				"image": { "url": "https://i.imgur.com/OqUQUdJ.png" }
 			},
 			{
 				"title":"Grave Domain Temple",
-				"image": { "url": "https://i.imgur.com/Z5TjgIK.jpg" }
+				"image": { "url": "https://i.imgur.com/KE5NgVl.jpg" }
 			},
 			{
 				"title":"Knowledge Domain Temple",
-				"image": { "url": "https://i.imgur.com/kxwnNe7.jpg" }
+				"image": { "url": "https://i.imgur.com/JYk7jvN.jpg" }
 			},
 			{
 				"title":"Life Domain Temple",
-				"image": { "url": "https://i.imgur.com/lRisQF9.jpg" }
+				"image": { "url": "https://i.imgur.com/u36Rrjg.jpg" }
 			},
 			{
 				"title":"Light Domain Temple",
-				"image": { "url": "https://i.imgur.com/B3M7wEz.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/piKm2cj.jpg" },
+					{ "url": "https://i.imgur.com/YqMCSbw.jpg" }
+				]
 			},
 			{
 				"title":"Nature Domain Temple",
-				"image": { "url": "https://i.imgur.com/6H133KT.jpg" }
+				"image": { "url": "https://i.imgur.com/ZfSDs4I.png" }
 			},
 			{
 				"title":"Order Domain Temple",
-				"image": { "url": "https://i.imgur.com/4dJzwWy.jpg" }
+				"image": { "url": "https://i.imgur.com/lxSCThU.png" }
 			},
 			{
 				"title":"Peace Domain Temple",
-				"image": { "url": "https://i.imgur.com/qgnG8lG.jpg" }
+				"image": { "url": "https://i.imgur.com/gXRif5C.jpg" }
 			},
 			{
 				"title":"Protection Domain Temple",
-				"image": { "url": "https://i.imgur.com/iFtZACb.jpg" }
+				"image": { "url": "https://i.imgur.com/23bAsdq.jpg" }
 			},
 			{
 				"title":"Tempest Domain Temple",
-				"image": { "url": "https://i.imgur.com/lPF6rBH.jpg" }
+				"image": { "url": "https://i.imgur.com/GvD0mpn.png" }
 			},
 			{
 				"title":"Trickery Domain Temple",
-				"image": { "url": "https://i.imgur.com/GxUcupW.jpg" }
+				"image": { "url": "https://i.imgur.com/5g4VbrM.png" }
 			},
 			{
 				"title":"Twilight Domain Temple",
-				"image": { "url": "https://i.imgur.com/VoskGUy.jpg" }
+				"image": { "url": "https://i.imgur.com/hP8DHdY.png" }
 			},
 			{
 				"title":"War Domain Temple",
-				"image": { "url": "https://i.imgur.com/0RQ9i6y.jpg" }
+				"image": { "url": "https://i.imgur.com/ly79U4v.png" }
 			},
 
 			{
-				"image": { "url": "https://i.imgur.com/9iyV5fA.png" }
+				"image": { "url": "https://i.imgur.com/ZUejdei.png" }
 			},
 
 			{
 				"title":"Sleeping Cell",
 				"description":"<#766039136535707688>",
-				"image": { "url": "https://i.imgur.com/Sd9LMZs.png" }
+				"image": { "url": "https://i.imgur.com/8fy80Tb.png" }
 			},
 			{
 				"title":"Bath Chamber",
 				"description":"<#766039658777280532>",
-				"image": { "url": "https://i.imgur.com/cEXKCYU.png" }
+				"image": { "url": "https://i.imgur.com/jIBFye3.png" }
 			},
 			{
 				"title":"Hierophant's Chamber",
 				"description":"<#766038186756538388>",
-				"image": { "url": "https://i.imgur.com/ZZ2a3CD.jpg" }
+				"_image": { "url": "https://i.imgur.com/KXi78du.jpg" }
 			},
 
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n🏯 Exit the Temples and return to the Administrative District\n\n🚪 Return to the Temple Courtyard\n\n🕯️ Pray for guidance to the temple's inner sanctuary\n(*Only members of the <@&766031516038987786> will succeed*)"
+				"description": "`                                                                     `\n\n🏯 Exit the Temples and return to the Administrative District\n\n🚪 Return to the Temple Courtyard from the inner sanctuary\n\n🕯️ Pray for guidance to the temple's inner sanctuary\n(*Only members of the <@&766031516038987786> will succeed*)"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Temple nodm:True rr:True m:<last_id>`"

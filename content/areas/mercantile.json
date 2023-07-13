@@ -7,10 +7,10 @@
 			{
 				"title":"Mercantile Plaza",
 				"description":"<#695638277914624061>",
-				"image": { "url": "https://i.imgur.com/KSAogmM.png" }
+				"image": { "url": "https://i.imgur.com/DZaKA3J.png" }
 			},
 			{
-				"image": { "url": "https://i.imgur.com/um5cKUo.jpg" }
+				"image": { "url": "https://i.imgur.com/KSAogmM.png" }
 			},
 			{
 				"title":"Market",
@@ -20,27 +20,27 @@
 			{
 				"title":"Bazaar",
 				"description":"<#694286716302786570>",
-				"image": { "url": "https://i.imgur.com/apIZlY7.png" }
+				"image": { "url": "https://i.imgur.com/BeE9Smd.png" }
 			},
 			{
 				"title":"Artisan Workshop",
 				"description":"<#902984302575362068>",
-				"image": { "url": "https://i.imgur.com/MN7Q0FZ.png" }
+				"image": { "url": "https://i.imgur.com/kT4zzX4.png" }
 			},
 			{
 				"title":"Merchant Shop",
 				"description":"<#902984322762547220>",
-				"image": { "url": "https://i.imgur.com/yyvNibI.png" }
+				"image": { "url": "https://i.imgur.com/3V4NT5o.png" }
 			},
 			{
 				"title":"Creamy Bean Café",
 				"description":"<#902984632599994418>",
-				"image": { "url": "https://i.imgur.com/uaqolZq.jpg" }
+				"image": { "url": "https://i.imgur.com/bkZ8P2x.png" }
 			},
 			
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n⛲ Return to the <#833415826778357760>\n\n🥂 Visit the <#711727898939097138>\n\n⚓ Travel to the <#713002614589227028>"
+				"description": "`                                                                     `\n\n⛲ Return to the City Square\n\n🥂 Visit the Cyu'unt Restaurant\n\n⚓ Travel to the Dockyard"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Mercantile nodm:True rr:True m:<last_id>`"

@@ -61,6 +61,8 @@ async function publishContent(channel, content)
 				if (embed?.description?.includes("<last_id>"))
 					embed.description = embed.description.replace("<last_id>",lastMessage)
 
+				const content = embed.content ?? null;
+				delete embed.content;				
 				//Prep the prefix & cleanup
 				const prefix = embed.prefix ?? "";
 				delete embed.prefix;
@@ -85,7 +87,11 @@ async function publishContent(channel, content)
 					embed.image = images.pop();
 				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
-				let item = await channel.send({embeds:embeds});
+				let item;
+				if (content)
+					item = await channel.send({content:content,embeds:embeds});
+				else
+					item = await channel.send({embeds:embeds});
 
 				if (images && Array.isArray(images) && images.length > 0)
 				{
@@ -212,8 +218,7 @@ async function execute(interaction)
 	const messageId = interaction.targetId;
 	const guilds = client.guilds.cache;
 	const guild = guilds.get(guildId);
-	const channel = await guild?.channels.fetch(channelId);
-	const target = interaction.options.getChannel('target') || channel
+	const channel = interaction.channel;
 	const clear  = interaction.options.getBoolean('clear') ?? false
 	const override = interaction.options.getString('content') ?? null
 
@@ -222,7 +227,7 @@ async function execute(interaction)
 	//Make sure this channel has content specified before continuing
 	if (!index.hasOwnProperty(channel.id))
 	{
-		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
+		await interaction.editReply(`No content found for <#${channel.id}>. Aborting`);
 		return false
 	}
 
@@ -230,20 +235,20 @@ async function execute(interaction)
 	const content = getContent(channel, override);
 	if (!content)
 	{
-		await interaction.editReply(`No content found for <#${target.id}>. Aborting`);
+		await interaction.editReply(`No content found for <#${channel.id}>. Aborting`);
 		return false;
 	}	
 
 	//Clean up the old messages in the channel
 	if (clear)
 	{
-		await interaction.editReply(`Cleaning old content from <#${target.id}>`);
+		await interaction.editReply(`Cleaning old content from <#${channel.id}>`);
 		await MsgUtils.channelCleanup(channel);
 	}
 	
 	//Write the content to the channel
-	await interaction.editReply(`Writing contents to <#${target.id}>`);
-	const result = await publishContent(target, content);
+	await interaction.editReply(`Writing contents to <#${channel.id}>`);
+	const result = await publishContent(channel, content);
 	if (result)
 		await interaction.followUp({ content: 'Write success!', ephemeral: true });
 	else
@@ -284,7 +289,6 @@ const data = new SlashCommandBuilder()
 	.setName('content')
 	.setDescription('Update the contents of a static channel')
 	.setDefaultPermission(false)	
-	.addChannelOption(option => option.setName('target').setRequired(false).setDescription('Specify a target channel'))
 	.addBooleanOption(option => option.setName('clear').setRequired(false).setDescription('Clear old messages or not'))
 	.addStringOption(option => option
 			.setName('content')

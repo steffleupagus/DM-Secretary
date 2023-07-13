@@ -7,49 +7,53 @@
 			{
 				"title":"Silver Thorn (Exterior)",
 				"description":"<#697166960592683008>",
-				"image": { "url": "https://i.imgur.com/hcxrQIe.jpg" }
+				"image": {"url": "https://i.imgur.com/cGdhvp5.png"}
 			},
+			{
+				"image": { "url": "https://i.imgur.com/jsokTwt.png" }
+			},			
 			{
 				"title":"Silver Thorn Stage",
 				"description":"<#707295536247603291>",
-				"image": { "url": "https://i.imgur.com/Rnbe7oX.jpg" }
+				"image": { "url": "https://i.imgur.com/nTUrEpE.png" }
 			},
 			{
 				"title":"Silver Thorn Bar",
 				"description":"<#699588221268525076>",
-				"image": { "url": "https://i.imgur.com/VKhGani.jpg" }
+				"image": { "url": "https://i.imgur.com/tjrfkzi.png" }
 			},
 			{
 				"title":"Silver Thorn Dining",
 				"description":"<#739938077580984350>",
-				"image": { "url": "https://i.imgur.com/OhrM9JD.png" }
+				"image": { "url": "https://i.imgur.com/PBZgf8P.png" }
 			},
 			{
 				"title":"Silver Thorn Lounge",
 				"description":"<#697167012425760828>",
-				"image": { "url": "https://i.imgur.com/dpKmdHH.png" }
+				"image": { "url": "https://i.imgur.com/v2t5zpr.png" }
+			},
+			{
+				"image": { "url": "https://i.imgur.com/aZW3gtJ.png" }
 			},
 			{
 				"title":"VIP Lounge",
 				"description":"<#739938050293104710>",
-				"image": { "url": "https://i.imgur.com/Cj5c6Wd.jpg" }
-			},
-			{
-				"image": { "url": "https://i.imgur.com/vJ5QNBa.png" }
+				"image": { "url": "https://i.imgur.com/WAveYq2.png" }
 			},
 			{
 				"title":"Silver Thorn Nectar",
 				"description":"*Complimentary to Silver Thorn patrons*\n[`+buy nectar` / `+use nectar`]\nA sweet beverage with a honeyed flavor and a subtle kick of cinnamon, served chilled.\nThe nectar's mild aphrodisiac effect lowers the inhibitions of those who partake of it.",
-				"image": { "url": "https://i.imgur.com/TuAExB8.png" }
+				"image": { "url": "https://i.imgur.com/JFnhTRy.png" }
 			},
 			{
 				"title":"Rose Rates",
-				"description":"<:silverrose:699470814356963418>__**Silver Thorn Brothel Rose Rates** *__<:silverrose:699470814356963418>\n\n*1 Gold*: Massage with happy ending (may include additional body play, i.e. titjobs)\n*2 Gold*: Oral (includes hands and body play as above)\n*5 Gold*: 30-Minute full-service session (includes any of the above plus intercourse)\n*7 Gold*: Hour long full-service session\n *Special Services or Extreme Kinks*:\nCase-by-case negotiation with the Rose providing the service\n\n*Rates subject to change*\n(OOC: Game time, not RL time. It is intended to avoid locking up people or rooms for marathon sessions)"
+				"description":"<:silverrose:699470814356963418>__**Silver Thorn Brothel Rose Rates** *__<:silverrose:699470814356963418>\n\n*1 Gold*: Massage with happy ending (may include additional body play, i.e. titjobs)\n*2 Gold*: Oral (includes hands and body play as above)\n*5 Gold*: 30-Minute full-service session (includes any of the above plus intercourse)\n*7 Gold*: Hour long full-service session\n *Special Services or Extreme Kinks*:\nCase-by-case negotiation with the Rose providing the service\n\n*Rates subject to change*",
+				"footer":{"text":"Prices are for RP purposes. Times mentioned are IC time, not RL time."}
 			},
 			
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n🎭 Exit the Brothel and return to the <#695638653950492673>\n\n<:silverrose:699470814356963418> Move back to the <#699589168304488559>"
+				"description": "`                                                                     `\n\n🎭 Exit the Brothel and return to the Entertainment District\n\n<:silverrose:699470814356963418> Go further, to the brothel's Private Suites"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Brothel nodm:True rr:True m:<last_id>`"

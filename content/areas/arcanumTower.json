@@ -6,7 +6,12 @@
 		"embeds": 
 		[
 			{
-				"image": { "url": "https://i.imgur.com/3u3ckhu.jpg" }				
+				"title":"Arcanum Tower",
+				"description":"<#699226459025309736>",
+				"image": [
+					{ "url": "https://i.imgur.com/SvMcehG.png" },
+					{ "url": "https://i.imgur.com/Z7B06V8.jpg" }
+				]
 			},
 			{
 				"title":"Tower Entrance",
@@ -16,45 +21,56 @@
 			{
 				"title":"Archive",
 				"description":"<#699226033240539186>",
-				"image": { "url": "https://i.imgur.com/LQEv2R7.jpg" }
+				"image": { "url": "https://i.imgur.com/1cgJGxX.png" }
 			},
 			{
 				"title":"Alchemy Lab",
 				"description":"<#699226177801420820>",
-				"image": { "url": "https://i.imgur.com/dlgt1mK.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/cqBpxnw.jpg" },
+					{ "url": "https://i.imgur.com/T3WYMCM.jpg" },
+					{ "url": "https://i.imgur.com/QmgjkvF.jpg" },
+					{ "url": "https://i.imgur.com/RAvqQcQ.jpg" }
+				]
 			},
 			{
 				"title":"Artificer's Workshop",
 				"description":"<#700502195384221786>",
-				"image": { "url": "https://i.imgur.com/RsYLqU0.jpg" }
+				"image": { "url": "https://i.imgur.com/TG5d9DM.jpg" }
 			},
 			{
-				"image": { "url": "https://i.imgur.com/dlfCWrx.png" }				
+				"image": { "url": "https://i.imgur.com/FdGSr1D.png" }
 			},			
 			{
 				"title":"Resident Parlour",
 				"description":"<#699233051598782595>",
-				"image": { "url": "https://i.imgur.com/heiMGuX.png" }
+				"image": [
+					{ "url": "https://i.imgur.com/T02FenY.png" },
+					{ "url": "https://i.imgur.com/MSejY2O.png" }
+				]
 			},
 			{
 				"title":"Resident Bedroom",
 				"description":"<#699233162231939102>",
-				"image": { "url": "https://i.imgur.com/wUVVeW5.png" }
+				"image": { "url": "https://i.imgur.com/5XFqrPh.png" }
 			},
 			{
 				"title":"Bath Chamber",
 				"description":"<#699233311884836985>",
-				"image": { "url": "https://i.imgur.com/f2rRW2G.png" }
+				"image": [
+					{ "url": "https://i.imgur.com/WAG6fHw.jpg" },
+					{ "url": "https://i.imgur.com/Wn2XNXl.jpg" }
+				]
 			},
 			{
 				"title":"Tower Balcony",
 				"description":"<#699235759009431653>",
-				"image": { "url": "https://i.imgur.com/wny03bX.jpg" }
+				"image": { "url": "https://i.imgur.com/lf08Chj.png" }
 			},
 			{
 				"title":"High Magus Chamber",
 				"description":"<#699241091777560596>",
-				"image": { "url": "https://i.imgur.com/3jzuQi5.jpg" }
+				"image": { "url": "https://i.imgur.com/E4bjZqJ.jpg" }
 			},
 
 			{

@@ -8,7 +8,9 @@
 				"title": "Roleplay in Server Channels",
 				"description": "Roleplay involving your characters here should be carried out on the server in one of the many channels provided for that purpose, rather than in DMs. We put a lot of effort into the server, you might as well use it if you're here. RPP (and, in many cases, Experience) is awarded for scenes done in-server.",
 				"fields":[
-					{"name":"🗺 Map","value":"You can use the <#738987459651829830> channel to navigate between different RP areas throughout the city. The map will allow you to have three such areas open simultaneously."}
+					{"name":"🗺 Map","value":"You can use the <#738987459651829830> channel to navigate between different RP areas throughout the city. The map will allow you to have three such areas open simultaneously. Every area in the map is represented by an in-character location in the Demiplane, contained in a channel category."},
+					{"name":"🚪 Navigation","value":"Every roleplay location category has a channel at the top marked with a 🚪 icon. This channel includes a series of reference images to help visualize the individual locations contained within that area, as well as a react menu (similar to the map) that will allow you to navigate between connected locations."},		
+					{"name":"🧵 RP Threads","value":"Also contained in each navigation channel is a button to Join or Create  an RP thread. Each RP channel can have up to 5 threads to provide more places for people to RP. These threads are subject to the same guidelines as other channels outlined here."}
 				]
 			},
 			{
@@ -16,7 +18,7 @@
 				"title": "Don't Interrupt Scenes",
 				"description": "Be polite and respect your fellow players by not joining other people's RP without their explicit consent, and do not close someone else's scene without their permission (with the exception of Dead Scenes - see below).",
 				"fields":[
-					{"name":"🌐 Open RP Areas","value":"There are a few `Open RP` rooms scattered throughout the city, which may be joined by any character at any time, even if others are already roleplaying there. They can be identified in the list by channel names including the 🌐 icon."},
+					{"name":"🌐 Open RP Areas","value":"There are a few `Open RP` rooms scattered throughout the city, which may be joined by any character at any time, even if others are already roleplaying there. They can be identified in the list by channel names including the 🌐 icon.\n__*Please note*__ that the intent behind open RP channels is for people to be able to **join** ongoing scenes, and **not** to start additional scenes in the same channel. If you do not want others to join your scene, __do not use an Open RP channel__."},
 					{"name":"Activity Tracker","value":"You can use the <#1099439209284116531> channel to see the current status of all RP channels, organized by area."},
 					{"name":"🔐 Private Channels","value":"Certain channels are marked with a 🔐 icon. These are private channels, purchased via RPP, and are meant for exclusive use by the owner(s) and may not be used without the owners' express permission.\nThose few channels marked with the 🌐 Open RP icon are exceptions to this, and may be treated as an Open RP Area."}
 				]
