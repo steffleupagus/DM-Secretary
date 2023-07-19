@@ -46,6 +46,7 @@
 	"activityChannel":"1116248513349689344",
 	"profileChannel":"936091762030678086",
 	"debugLogChannel": "1046251287919988837",
+	"buildSpamChannel":"699027082012786778",
 	
 	"duelChannels":[
 		{"NAME":"Colosseum","RP":"695712096322584607","MECHANICS":"695809071655157770"},
