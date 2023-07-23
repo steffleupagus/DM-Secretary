@@ -81,7 +81,7 @@ module.exports =
 	button: button,
 	select: select,
 	autoClose: autoClose,
-	build:config.PRODUCTION//||config.DEV
+	build:config.PRODUCTION||config.DEV
 };
 
 const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 

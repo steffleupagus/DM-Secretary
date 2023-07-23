@@ -1,6 +1,6 @@
-/*---------------------------------------------------*\
-| Detect Roleplay messages and log them in a database |
-\*---------------------------------------------------*/
+/*-----------------------------------------------------*\
+| Detect channel pings and decipher the No Access links |
+\*-----------------------------------------------------*/
 
 const { ChannelType, EmbedBuilder, PermissionsBitField, time } = require('discord.js')
 const MsgUtils = require(`../../utilities/messageUtils.js`);
@@ -21,7 +21,8 @@ async function shouldHandle(client, message)
 	if (message?.mentions?.channels?.size > 0)
 		handle = true;
 
-	if (message.author.id != config.OWNERID)
+	if ((message.author.id != config.OWNERID)||
+		(message.channel.id != config.buildSpamChannel))
 		return false;
 	
 	return handle;
@@ -35,12 +36,20 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 		.filter(channel => {
 			const perms = channel.permissionsFor(citizen);
 			const viewChan = perms.has(PermissionsBitField.Flags.ViewChannel);
+//			console.log(`${viewChan} - ${channel.name} <#${channel.id}>`)
 			return !viewChan
-		})
-		.map(channel => channel.name).join("\n")	
+		});
+	const channelNames = channels.map(channel => channel.name).join("\n")
+	if (channelNames.length == 0) return;
+	
 	const embed = new EmbedBuilder()	
-	embed.setFooter({text:`Above channel mentions:\n${channels}`})
-	message.channel.send({embeds:[embed]})
+	embed.setFooter({text:`Above channel mentions:\n${channelNames}`})
+
+	//Handle the travel attachment	
+	const travel = client.commands.get(`travel${config.DEV ? "dev" : ""}`)
+	const button = await travel?.attach?.chanMention?.(channels)
+	const row    = button ? [button] : []
+	message.channel.send({embeds:[embed],components:row})
 }
 
 module.exports = {

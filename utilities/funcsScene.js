@@ -34,6 +34,7 @@ const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
 
 const SCENE_EMBED_TITLE  = `${config.xpemoji} Scene Complete`;
 const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Closed`;
+const SCENE_EMBED_DESC   = `***Please wait** for the DM staff to confirm this scene before you add your exp.\nAwards will be posted in <#${config.xpLogChannel}> once verified.*`
 const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
 const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your level looks wrong__: \n• React with 👎 to cancel`
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.xpLogChannel}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
@@ -46,8 +47,8 @@ const SCENEURL = "https://discord.com/channels/";
 const Debug = config.DEV;
 
 const PING_PREFIX = Debug ? '~' : '@'
-const dmPingChannel = Debug ? "1087957720507883521" : config.dmPingChannel;
-const xpLogChannel  = Debug ? "1087958395274940446" : config.xpLogChannel;
+const dmPingChannel = Debug ? config.debugPingChannel : config.dmPingChannel;
+const xpLogChannel  = Debug ? config.debugPingChannel : config.xpLogChannel;
 
 const NPC = 0;
 const SKIP = -1;
@@ -389,8 +390,10 @@ async function handleUndo(interaction)
 	
 	if (chan && msg && msg.author.id == process.env.clientid)
 		await msg.delete()
-	const row = getApprovalButtonRow();	
-	await interaction.update({embeds:[update], components:[row]})	
+
+	const oldComponents = interaction.message.components[0];
+	oldComponents.components.map( x => { x.data.disabled = false; return x });	
+	await interaction.update({embeds:[update], components:[oldComponents]})	
 
 	return Mutex.unlock(mutexId);
 }
@@ -464,8 +467,14 @@ async function handleApprove(interaction)
 
 	const update = EmbedBuilder.from(embed)
 							   .spliceFields(-1, 1, newField)
-	const undo = [Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"scene.undo"}])]
-	await interaction.editReply({content:"", embeds:[update], components:undo})
+	
+	const oldComponents = interaction.message.components[0];
+	const disabledComp = oldComponents.components.map( x => {
+		x.data.disabled = true 
+		return x
+	});	
+	const undo = Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"scene.undo"}])	
+	await interaction.editReply({content:"", embeds:[update], components:[oldComponents,undo]})
 
 	return Mutex.unlock(mutexId);
 }
@@ -572,19 +581,21 @@ async function handleReject(interaction)
 		return null
 	}
 	const callbacks = { "explain": {func:promptModal, args:null}};	
+
+	const oldComponents = interaction.message.components[0];
+	oldComponents.components.map( x => { x.data.disabled = true; return x });	
 	
 	const selectId = interaction.id + interaction.customId
 	const select = Prompt.createSelectRow(selectId, options, 1, 1, 'Reason for Rejection');	
-	await interaction.editReply({components:[select]})
-	const prompt = await interaction.editReply({components:[select]});
+	const prompt = await interaction.editReply({components:[oldComponents,select]});
 	let response = await Prompt.collectAllInteractions(prompt, callbacks, null, Prompt.Time.Long)	
 								.catch(async error => console.error(error))
 		response = (Array.isArray(response)) ? response[0] : response;
 	
 	if (!response || "cancel" == response)
 	{
-		const row = getApprovalButtonRow();	
-		await interaction.editReply({components:[row]})
+		oldComponents.components.map( x => { x.data.disabled = false; return x });	
+		await interaction.editReply({components:[oldComponents]})
 		return Mutex.unlock(mutexId);
 	}
 
@@ -601,8 +612,9 @@ async function handleReject(interaction)
 
 	const update = EmbedBuilder.from(embed)
 							   .spliceFields(-1, 1, newField)
-	const undo = Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"scene.undo"}])
-	await interaction.editReply({embeds:[update], components:[undo]})
+
+	const undo = Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"scene.undo"}])	
+	await interaction.editReply({content:"", embeds:[update], components:[oldComponents,undo]})
 
 	return Mutex.unlock(mutexId);
 }
@@ -841,18 +853,26 @@ function generateDMEmbed(interaction, start, rpData, footer)
 async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 {	
 	const embed = generateDMEmbed(interaction, start, rpData, footer)
-	var dmPingChan = await interaction.guild.channels.resolve(dmPingChannel);
+	const dmPingChan = await interaction.guild.channels.resolve(dmPingChannel);
+	const buttonRow = getApprovalButtonRow(interaction)
+
+	//Handle the travel attachment	
+	let travel = interaction.client.commands.get(`travel${config.DEV ? "dev" : ""}`)
+		travel = await travel?.attach?.dmPing?.(interaction.channel)
+		travel = travel.components[0]
+	buttonRow.addComponents(travel)
+	
 	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.DMOnDutyRole}>`, //attachButtons);
-					 (message) => message.edit({ components:[getApprovalButtonRow()] }))
+					 (message) => message.edit({ components:[buttonRow] }))
 }
 
-function getApprovalButtonRow()
+function getApprovalButtonRow(interaction)
 {
 	const row = Prompt.createButtonRow([
 		{style:ButtonStyle.Success, emoji:"✅", label:"Approve", custom_id:"scene.approve"},
 		{style:ButtonStyle.Danger, emoji:"❌", label:"Reject", custom_id:"scene.decline"},	
 		{style:ButtonStyle.Secondary, emoji:"📝", label:"Edit", custom_id:"scene.edit"}
-	])	
+	])
 	return row;
 }
 
@@ -862,6 +882,7 @@ function generatePlayerConfirmEmbed(expData)
 {
 	let embed = new Embed();
 	embed.setTitle(SCENE_EMBED_TITLE);
+	embed.setDescription(SCENE_EMBED_DESC);
 	embed.setFooter({text:SCENE_EMBED_FOOTER});
 
 	const data = expData.filter(x=>(x.level > 0 && x.xp > 0));
@@ -914,6 +935,7 @@ async function awaitConfirmation(interaction, expData)
 	const confirm = await Prompt.confirmDialog(embed,players);	
 	embed.delete();
 
+	
 	if (!confirm)
 	{
 		embed = new EmbedBuilder();
