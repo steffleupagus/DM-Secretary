@@ -1,4 +1,5 @@
 {
+	"738987459651829830":{"data":"areas/_map.json"},
 	"833415826778357760":{"data":"areas/citySquare.json"},
 	"695638496143999007":{"data":"areas/cityAdmin.json"},
 	"699226459025309736":{"data":"areas/arcanumTower.json"},
@@ -31,7 +32,7 @@
 	"1105303752702959726":{"data":"rules/rules_tables.json"},
 	"1122642616324984924":{"data":"rules/rules_map_options.json"},
 
-	"709733574810533929":{ "data":"items/itemReference.json"},
+	"709733574810533929" :{ "data":"items/itemReference.json"},
 	"1122621263177863289":{ "data":"items/lewdTattoos.json"},
 	"guildItemReference" :{ "data":"items/guildItems.json"},
 	
@@ -50,10 +51,14 @@
 	"1099027027429949450":{ "data":"quest/questShardLegend.json" },
 
 
-	"test2":{ "data":"test2.json"},
 	"940061953064329216":
 	{
 		"name":"📜│test-content",
 		"data":"rules/test.json"
-	}
+	},
+	"1132477827095212032":
+	{
+		"name":"📜│test-content-ii",
+		"data":"rules/test2.json"
+	}	
 }
