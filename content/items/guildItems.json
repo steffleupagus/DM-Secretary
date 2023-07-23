@@ -1,0 +1,292 @@
+{
+	"Arcanum": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title": "Arcanum High Magus",
+				"description":"`                                                                     `\n\n<@&699245661295738891>\n\nAppointed by the Queen herself, the High Magus of the Arcanum Guild is the unquestioned authority in matters of the Arcane within the city. Bearing the staff which serves as the symbol of the position, the High Magus is viewed with awe, respect, and even fear by the townspeople of Ost.",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/sUcB7Hh.png" },
+				"footer": { "text": "Arcanum: High Magus" }
+			},
+			{
+				"title": "Arcanum Sage Council",
+				"description":"`                                                                     `\n\n<@&833505842178293790>\n\nFew ever attain this position within the Arcanum. Only those hand-chosen by the High Magus, or the Queen herself, will don the fine set of robes which mark them as a member of the Sage Council. Though seldom seen outside of the tower in these robes, they are widely known and respected by the people of Ost.",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/PQ7GNKf.png" },
+				"footer": { "text": "Arcanum: Sage Council" }
+			},
+			{
+				"title": "Arcanum Adept",
+				"description":"`                                                                     `\n\n<@&1002797852868739133>\n\nAdvancement in the guild is rewarded with a pendant, which mark the status of a full-fledged member of the Arcanum guild. Save for a select few trusted sages chosen to council and advise the High Magus, this is the highest rank most members can easily attain. None the less, those wearing the pendant proudly and prominently command a certain respect from the citizens of Ost in Edhil, and the wearer is assumed (even if not always the case) to be a skilled spellcaster.",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": [
+					{ "url": "https://i.imgur.com/ViUvTyC.png" },
+					{ "url": "https://i.imgur.com/AJJNtvH.png" }
+				],
+				"footer": { "text": "Arcanum: Adept" }
+			},
+			{
+				"title": "Arcanum Initiate",
+				"description":"`                                                                     `\n\n<@&717312140821790752>\n\nFollowing the completion of their apprenticeship and their initiation into the guild proper, the new Initiate is given a ring as a symbol of their accomplishment. The rings are each set with small blue gems which do not match any known stone on the Material plane, and whose origins are unknown to all but the upper ranks of the guild. Not merely ornamental, these rings grant passage into the upper floors of the Arcanum Tower.",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": [
+					{ "url": "https://i.imgur.com/ZJafvBG.png" },
+					{ "url": "https://i.imgur.com/wAjGeVH.png" },
+					{ "url": "https://i.imgur.com/FSkZzj9.png" }
+				],
+				"footer": { "text": "Arcanum: Initiate" }
+			},
+			{
+				"title": "Arcanum Apprentice",
+				"description":"`                                                                     `\n\n<@&1002797861211218051>\n\nUpon joining the Arcanum Guild as an Apprentice, the recruit is provided with a set of simple robes which serve as their uniform during the early days of their training. It is something of a ritual among the guild to burn their apprentice robes upon completing their initiation, though some choose to hold onto them for sentimental reasons.",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/r1rZMXq.png" },
+				"footer": { "text": "Arcanum: Apprentice" }
+			}
+		]
+	},
+	"Black Hand": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title": "Black Hand Mastermind",
+				"description":"`                                                                     `\n\n<@&701985965882867712>\n\nThe identity and whereabouts of the Black Hand Mastermind are perhaps the closest-guarded secret in a guild whose stock in trade is closely guarded secrets. None, save *perhaps* the Queen herself, know the answer to such questions, and she doesn't even acknowledge that the guild even exists...\n\nIf the Mastermind existed (which is *obviously* only rumor) the ring they bear represents the myriad threads that form the web of intrigue, of which they sit at the center.",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/uOIdxxX.png" },
+				"footer": { "text": "Black Hand: Mastermind" }
+			},
+			{
+				"title": "Black Hand Unseen Council",
+				"description":"`                                                                     `\n\n<@&833508689624563783>\n\nNo less mysterious than the Mastermind are the Hidden Council which serve as advisors and the instruments of the Guild's will. They oversee the myriad plots and schemes of the Guild, keeping an eye on the rank and file of the guild. The ring that serves as their mark of station reflects their role as unseen watchers.",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/YFyt9MN.png" },
+				"footer": { "text": "Black Hand: Unseen Council" }
+			},
+			{
+				"title": "Black Hand Phantom",
+				"description":"`                                                                     `\n\n<@&1002797883914985473>\n\nWhile perhaps not as privy to the entire bredth and scope of the Guild's plans as the Council or Mastermind, those who have advanced far enough into the shadows to be considered Phantoms are none the less afforded a greater degree of trust than Initiates, and certainly moreso than the Recruits. Upon attaining this rank, they are entrusted with... a decoder ring. Despite any outward similarities to that provided by the previous rank, this ring entrusts the member with access to a different (and far more secure) code, which will allow them to decode messages and access carefully guarded missions from the Guild's leadership.",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/bns61yJ.png" },
+				"footer": { "text": "Black Hand: Phantom" }
+			},
+			{
+				"title": "Black Hand Shade",
+				"description":"`                                                                     `\n\n<@&717312839827587072>\n\nUnlike other guilds, the Black Hand's initiation is a subdued affair, bereft of pomp or celebration. The passage from Recruit to Initiate is handled with as much care and secrecy as the rest of the Black Hand's affairs. Cloak and dagger, dead drops, and coded messages. Upon attanining this rank, the Initiate is entrusted with a simple decoder ring, allowing the Shades to receive and decode communications from the higher-ups within the guild.",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/8L4CCNq.png" },
+				"footer": { "text": "Black Hand: Shade" }
+			},
+			{
+				"title": "Black Hand Dim",
+				"description":"`                                                                     `\n\n<@&1002797861211218051>\n\nRecruitment into the Black Hand is far from simple. Shrouded in secrecy as the guild is, even learning of its existence is no small accomplisment. When the guild learns of their interest, and begins evaluating them for initiation, the recruit takes their first steps into the shadows. They are not a badge of office nor a symbol of their membership in the guild, but a tool that they will need to pursue the dangerous tasks ahead of them.",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/Sg57l0g.png" },
+				"footer": { "text": "Black Hand: Dim" }
+			}
+		]
+	},
+	"Faith Council": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title": "Faith Council Hierophant",
+				"description":"`                                                                     `\n\n<@&766024439749148672>\n\nAs the spiritual leader of Ost in Edhil, ...",
+				"image": { "url": "https://i.imgur.com/PzsXpx4.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Hierophant" }
+			},
+			{
+				"title": "Faith Council Exarch",
+				"description":"`                                                                     `\n\n<@&782123983797616700>\n\n...",
+				"image": { "url": "https://i.imgur.com/GoW1Kes.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Exarch" }
+			},
+			{
+				"title": "Faith Council Disciple",
+				"description":"`                                                                     `\n\n<@&1002797865401327616>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/Gu97IFR.png" },
+					{ "url": "https://i.imgur.com/jlyBG0R.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Disciple" }
+			},
+			{
+				"title": "Faith Council Faithful",
+				"description":"`                                                                     `\n\n<@&766026787997351947>\n\n...",
+				"image": { "url": "https://i.imgur.com/LvTsTKZ.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Faithful" }
+			},
+			{
+				"title": "Faith Council Acolyte",
+				"description":"`                                                                     `\n\n<@&1002797897777164328>\n\n...",
+				"image": [
+					{ "url":"https://i.imgur.com/ZVjjLUD.png" },
+					{ "url":"https://i.imgur.com/Ay8NP53.png" },
+					{ "url":"https://i.imgur.com/sd1BwDe.png" },
+					{ "url":"https://i.imgur.com/8rdOhDt.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Acolyte" }
+			}
+		]
+	},
+	"Guardians": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title": "Guardian Guild Champion",
+				"description":"`                                                                     `\n\n<@&699575897853788302>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/SyTSgTr.png" },
+					{ "url": "https://i.imgur.com/Eh4Dg7f.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/Ya7EEDt.png" },
+				"footer": { "text": "Guardian Guild: Champion" }
+			},
+			{
+				"title": "Guardian Officer Council",
+				"description":"`                                                                     `\n\n<@&833505914619166721>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/4ezRcyA.png" },
+					{ "url": "https://i.imgur.com/XqWq2jJ.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/94RCxop.png" },
+				"footer": { "text": "Guardian Guild: Officer Council" }
+			},
+			{
+				"title": "Guardian Guild Soldier",
+				"description":"`                                                                     `\n\n<@&1002797857239224371>\n\n...",
+				"image": { "url": "https://i.imgur.com/LXCjiDo.png" },
+				"thumbnail": { "url":"https://i.imgur.com/kV7U4gS.png" },
+				"footer": { "text": "Guardian Guild: Soldier" }
+			},
+			{
+				"title": "Guardian City Watch",
+				"description":"`                                                                     `\n\n<@&717311930171129916>\n\n...",
+				"image": { "url": "https://i.imgur.com/7X5R1h0.png" },
+				"thumbnail": { "url":"https://i.imgur.com/xe1TdHx.png" },
+				"footer": { "text": "Guardian Guild: City Watch" }
+			},
+			{
+				"title": "Guardian Recruit",
+				"description":"`                                                                     `\n\n<@&1002797888537116794>\n\n...",
+				"image": { "url": "https://i.imgur.com/ZoulucY.png" },
+				"thumbnail": { "url":"https://i.imgur.com/Tr2eZPl.png" },
+				"footer": { "text": "Guardian Guild: Recruit" }
+			}
+		]
+	},
+	"Outriders Lodge": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title": "Outriders Warden",
+				"description":"`                                                                     `\n\n<@&853348541287890994>\n\n...",
+				"image": { "url": "https://i.imgur.com/byJiJNl.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Warden" }
+			},
+			{
+				"title": "Outriders Elder Council",
+				"description":"`                                                                     `\n\n<@&853349316139024414>\n\n...",
+				"image": { "url": "https://i.imgur.com/64URWkR.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Elder Council" }
+			},
+			{
+				"title": "Outriders Tracker",
+				"description":"`                                                                     `\n\n<@&1002797871218839663>\n\n...",
+				"image": { "url": "https://i.imgur.com/cuMeqQl.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Tracker" }
+			},
+			{
+				"title": "Outriders Scout",
+				"description":"`                                                                     `\n\n<@&853349315866525716>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/8CD4i5A.png" },
+					{ "url": "https://i.imgur.com/ZJCktdX.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Scout" }
+			},
+			{
+				"title": "Outriders Seed",
+				"description":"`                                                                     `\n\n<@&1002797894388174939>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/obDJrUw.png" },
+					{ "url": "https://i.imgur.com/vK2X5Fw.png" },
+					{ "url": "https://i.imgur.com/0VOYf87.png" },
+					{ "url": "https://i.imgur.com/uXyWltF.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Seed" }
+			}
+		]
+	},
+	"Silver Thorn": {
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title": "Silver Thorn Mistress",
+				"description":"`                                                                     `\n\n<@&699439189447671889>\n\n...",
+				"image": [
+					{ "url":"https://i.imgur.com/EVsH0rO.png" },
+					{ "url":"https://i.imgur.com/ElSqg4x.png" }					
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Mistress" }
+			},
+			{
+				"title": "Silver Thorn (S)Inner Circle",
+				"description":"`                                                                     `\n\n<@&833509439277367338>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/QrJThRk.png" },
+					{ "url": "https://i.imgur.com/tG300a7.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: (S)Inner Circle" }
+			},
+			{
+				"title": "Silver Thorn Courtesan",
+				"description":"`                                                                     `\n\n<@&1002797900591550474>\n\n...",
+				"image": [
+					{ "url": "https://i.imgur.com/MhTrNTj.png" },
+					{ "url": "https://i.imgur.com/lxbwxmC.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Courtesan" }
+			},
+			{
+				"title": "Silver Thorn Rose",
+				"description":"`                                                                     `\n\n<@&717313035387142215>\n\n...",
+				"image": { "url": "https://i.imgur.com/tViAP9p.png" },
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Rose" }
+			},
+			{
+				"title": "Silver Thorn Budding Rose",
+				"description":"`                                                                     `\n\n<@&1002797903640805466>\n\n...",
+				"image": { "url": "https://i.imgur.com/eYFIn8C.png" },
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Budding Rose" }
+			}
+		]
+	}
+}

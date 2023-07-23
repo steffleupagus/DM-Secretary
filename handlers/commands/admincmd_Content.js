@@ -8,7 +8,7 @@ const wait = require('util').promisify(setTimeout);
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 const index = require(`../../content/_contentIndex.json`)
-const TEST_CHAN = ["940061953064329216"];
+const TEST_CHAN = ["940061953064329216","1132477827095212032"];
 
 function isObject (value) {  
   return Object.prototype.toString.call(value) === '[object Object]'
