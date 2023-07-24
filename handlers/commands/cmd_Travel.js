@@ -91,7 +91,7 @@ async function chanMentionButton(channels)
 
 	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex)
 	{
-		console.log(`${previousValue} | ${currentValue}`)
+		// console.log(`${previousValue} | ${currentValue}`)
 		if (previousValue.length + 1 + currentValue.length < 100)
 			return previousValue + (currentIndex == 0 ? ":" : ",") + currentValue
 		return previousValue
@@ -112,6 +112,26 @@ async function dmPingButton(channel)
 	const custom_id = `${data.name}.dmtoggle:${channel}`
 	const options = [{style:ButtonStyle.Secondary,emoji:"🗺️",label:"Travel",custom_id:custom_id}]
 	return Prompt.createButtonRow(options)
+}
+
+async function getDepartButton(interaction, roles)
+{
+	await RefreshLocationData(interaction.guild);
+	if (roles.length == 0) return null;
+	roles = [...new Set(roles)]
+
+	let custom_id = `${data.name}.depart`
+	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex)
+	{
+		if (previousValue.length + 1 + currentValue.length < 100)
+			return previousValue + (currentIndex == 0 ? ":" : ",") + currentValue
+		return previousValue
+	}, custom_id)
+
+	console.log(custom_id)
+	
+	const options = [{style:ButtonStyle.Secondary,emoji:"❌",label:"Depart",custom_id:custom_id}]
+	return Prompt.createButtonRow(options)	
 }
 
 async function getLocationSelectRow(interaction, selectRoles = [], roles = null)
@@ -182,6 +202,8 @@ async function UpdateLocationRoles(interaction, selectedLocations)
 		return keep;
 	})
 
+	console.log(removed.map(x=>`<@&${x}>`).join('\n'))
+	
 	// Add required roles to the user
 	let added = [];
 	selectedLocations.forEach( role => 
@@ -254,6 +276,18 @@ async function handleInteraction(interaction)
 	switch(command)
 	{
 		//Button components
+		case `depart`:
+			console.log(roleIds.map(x=>`<@&${x}>`).join('\n'))
+			const remainingRoles = userLocRoles.filter(x => !roleIds.includes(x));			
+			result = await UpdateLocationRoles(interaction, remainingRoles)
+			if (result) 
+			{
+				embed.addFields(result)
+				embed.setDescription(`<@${interaction.member.id}>`)
+				await logChan.send({embeds:[embed]})
+			}
+			else embed.setFooter({text:"You are no longer in this location"})
+			break;
 		case `mention`:
 			const message  = interaction.message || null;
 			const footer   = (message?.embeds?.[0]?.footer?.text || "\n");
@@ -264,26 +298,29 @@ async function handleInteraction(interaction)
 		case `toggle`:
 		case `dmtoggle`:
 		case `activity`:
-			const combinedRoles = [...new Set(userLocRoles.concat(roleIds))].filter(x=> {
-				if (!x) return false;
-				if (!requires.includes(x)) return true;
-				const requiredRole = ROLE_REQUIREMENTS[x];
-				if (userLocRoles.includes(requiredRole)) return true;
-				defaultMsg = "You lack a required guild role to enter this location."
-				return false;
+			const combinedRoles = [...new Set(userLocRoles.concat(roleIds))].filter(x=>x).filter(x => {
+				const requirementsMet = filterRequired(x, allUserRoles);
+				if (!requirementsMet)
+					defaultMsg = "You lack a required guild role to enter this location."	
+				return requirementsMet;
 			})
 
+			let showDepart = false;
 			if (roleIds.length > 0 && combinedRoles.length <= MAX)
 			{			
 				//console.log(combinedRoles)
 				result = await UpdateLocationRoles(interaction, combinedRoles)			
 				if (result) 
 				{
+					showDepart = true;
 					embed.addFields(result)
 					embed.setDescription(`<@${interaction.member.id}>`)
 					await logChan.send({embeds:[embed]})
 				}
-				else embed.setFooter({text:defaultMsg})						
+				else embed.setFooter({text:defaultMsg})
+				const depart = await getDepartButton(interaction, roleIds);
+				if (showDepart)
+					components.push(depart)
 			}
 			else
 			{
@@ -298,15 +335,20 @@ async function handleInteraction(interaction)
 		case `locations`:
 			let selectedLocations = interaction.values
 				
-			selectedLocations = selectedLocations.filter(x=> 
-			{
-				if (!x) return false;
-				if (!requires.includes(x)) return true;
-				const requiredRole = ROLE_REQUIREMENTS[x];			
-				if (allUserRoles.includes(requiredRole)) return true;
-				defaultMsg = "You lack a required guild role to enter this location."
-				return false;
+			selectedLocations = selectedLocations.filter(x=>x).filter(x => {
+				const requirementsMet = filterRequired(x, allUserRoles);
+				if (!requirementsMet)
+					defaultMsg = "You lack a required guild role to enter this location."	
+				return requirementsMet;
 			})
+			// {
+			// 	if (!requires.includes(x)) return true;
+			// 	const requiredRole = ROLE_REQUIREMENTS[x];			
+			// 	console.log(`<@&${x}> requires role <@&${requiredRole}>`)
+			// 	if (allUserRoles.includes(requiredRole)) return true;
+			// 	defaultMsg = "You lack a required guild role to enter this location."
+			// 	return false;
+			// })
 
 			result = await UpdateLocationRoles(interaction, selectedLocations)
 			if (result) 
@@ -322,6 +364,16 @@ async function handleInteraction(interaction)
 	}
 	
 	await interaction.editReply({embeds:[embed],components:components})
+}
+
+function filterRequired(role, allUserRoles)
+{
+	const requires = Object.keys(ROLE_REQUIREMENTS);	
+	if (!requires.includes(role)) return true;
+
+	const requiredRole = ROLE_REQUIREMENTS[role];
+	console.log(`<@&${role}> requires role <@&${requiredRole}>`)
+	return allUserRoles.includes(requiredRole)
 }
 
 async function execute(interaction)
@@ -353,15 +405,12 @@ async function execute(interaction)
 		const requires = Object.keys(ROLE_REQUIREMENTS);
 		const allUserRoles = Array.from(interaction.member.roles.cache.keys())
 		const userLocRoles = allUserRoles.filter(x => LOCATION_ROLES.includes(x));
-		const combinedRoles = [...new Set(userLocRoles.concat(selectedLocation))].filter(x=> 
-		{
-			if (!x) return false;
-			if (!requires.includes(x)) return true;
-			const requiredRole = ROLE_REQUIREMENTS[x];			
-			if (allUserRoles.includes(requiredRole)) return true;
-			defaultMsg = "You lack a required guild role to enter this location."
-			return false;
-		})
+		const combinedRoles = [...new Set(userLocRoles.concat(selectedLocation))].filter(x=>x).filter(x => {
+				const requirementsMet = filterRequired(x, allUserRoles);
+				if (!requirementsMet)
+					defaultMsg = "You lack a required guild role to enter this location."	
+				return requirementsMet;
+			})
 		
 		if (combinedRoles.length <= MAX)
 		{				
