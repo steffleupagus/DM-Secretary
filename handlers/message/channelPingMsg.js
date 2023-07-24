@@ -20,10 +20,6 @@ async function shouldHandle(client, message)
 	let handle = false;	
 	if (message?.mentions?.channels?.size > 0)
 		handle = true;
-
-	if ((message.author.id != config.OWNERID)||
-		(message.channel.id != config.buildSpamChannel))
-		return false;
 	
 	return handle;
 }
@@ -45,6 +41,10 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const embed = new EmbedBuilder()	
 	embed.setFooter({text:`Above channel mentions:\n${channelNames}`})
 
+	// if ((message.author.id != config.OWNERID)||
+	// 	(message.channel.id != config.buildSpamChannel))
+	// 	return message.channel.send({embeds:[embed],components:row})
+	
 	//Handle the travel attachment	
 	const travel = client.commands.get(`travel${config.DEV ? "dev" : ""}`)
 	const button = await travel?.attach?.chanMention?.(channels)
@@ -59,5 +59,5 @@ module.exports = {
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 
-	build: config.PRODUCTION || config.DEV
+	build: config.PRODUCTION //|| config.DEV
 };

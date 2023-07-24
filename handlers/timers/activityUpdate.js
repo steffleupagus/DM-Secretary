@@ -40,7 +40,7 @@ async function startTimer(client)
 	timerInterval = setInterval(async () => 
 	{
 		console.log(`Timer Fired: ${timerData.name} at index ${index}`)
-		index = await runUpdate(guild, channel, index);
+		index = await runUpdate(client, guild, channel, index);
 	}, 5 * msps * spm);	//Update one channel group every 3 minutes
 }
 
@@ -63,7 +63,7 @@ async function triggerTimer(client)
 		console.log("No activity status messages. Generating stubs.")	
 		await createStubMessages(guild, channel);
 	}
-	await runUpdate(guild, channel, -1);
+	await runUpdate(client, guild, channel, -1);
 }
 	
 //Create embed stubs
@@ -130,7 +130,7 @@ async function generateEmbedStub(guild, area, channels)
 }
 
 //Organize by location role
-async function runUpdate(guild, activityChannel, index=0)
+async function runUpdate(client, guild, activityChannel, index=0)
 {
 	if (!activityChannel) return console.log("Log channel missing?")
 	
@@ -166,7 +166,15 @@ async function runUpdate(guild, activityChannel, index=0)
 				if (!channels.includes(channel))
 					channels.push(channel)
 			})			
-		})	
+		})
+		
+		//Handle the travel attachment	
+		const travelCmd = client.commands.get(`travel${config.DEV ? "dev" : ""}`)
+		const button = await travelCmd?.attach?.activity?.(guild, area.roleId)
+		const travel = button ? [button] : []
+		console.log(`${area.name} Role IDs: ${area.roleId.join(',')}`)
+		console.log(button)
+				
 		const embed = await generateEmbed(guild, area, channels);	
 		const targetEmbed = embeds.find( (value, key, collection) => {
 			return embed.data.title == value?.embeds?.[0]?.title 
@@ -174,9 +182,9 @@ async function runUpdate(guild, activityChannel, index=0)
 
 		try{
 			if (targetEmbed)
-				await targetEmbed.edit({embeds:[embed]})
+				await targetEmbed.edit({embeds:[embed],components:travel})
 			else	
-				await activityChannel.send({embeds:[embed]})
+				await activityChannel.send({embeds:[embed],components:travel})
 		}
 		catch (e) { console.error(e, embed.toJSON())}
 

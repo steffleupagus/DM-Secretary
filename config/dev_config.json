@@ -18,6 +18,8 @@
 	"unbelievaboatId":"356950275044671499",
 	"yagpdbId":"204255221017214977",
 
+		"dmPingChannel":"1087957720507883521",
+		"debugPingChannel":"1087957720507883521",
 	"tupperLogChannel": "788607055367634964",
 	"_tupperLogChannel": "936091466718142494",
 	"guildLogchannel":"1009672179492868156",	
@@ -34,14 +36,12 @@
 	"_xpSpamChannel": "936091630421831740",
 	"_dmSpamChannel": "936091653972848691",
 	"dragonspeakerChan":"936091672838799371",
-	"dmPingChannel":"936091690106773534",
 	"levelOutputChan":"825183131355185212",
 	"_levelOutputChan":"936091721752805436",
 	"activityChannel":"1116248513349689344",
 		"profileChannel":"694861975896719450",
 	"debugLogChannel": "1046251287919988837",
 	"buildSpamChannel":"699027082012786778",
-	"debugPingChannel":"1087957720507883521",
 	
 	"duelChannels":[
 		{"NAME":"Colosseum","RP":"695712096322584607","MECHANICS":"695809071655157770"},
