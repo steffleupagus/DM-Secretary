@@ -24,8 +24,8 @@ async function shouldHandle(client, message)
 	if (mentions.size > 0)
 		handle = true;
 	
-	if (message.author.id != config.OWNERID)
-		return false;
+	// if (message.author.id != config.OWNERID)
+	// 	return false;
 	
 	return handle;
 }
@@ -34,7 +34,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	const guild = message.guild
 	const msgChan = message.channel
-	const channel = await guild.channels.fetch(config.debugPingChannel)
+	const channel = await guild.channels.fetch(config.dmPingChannel)
 	if (!channel) return;
 	const mentions = message.mentions.roles.filter( x => roleIDs.includes(x.id) )
 	if (mentions.size == 0) return;
@@ -66,11 +66,10 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 module.exports = {
 	name: 'rolePingLogMsg',
-	// bot: true,
 	user: true, 
 	menu: false,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 
-	build: config.PRODUCTION || config.DEV
+	build: config.PRODUCTION //|| config.DEV
 };
