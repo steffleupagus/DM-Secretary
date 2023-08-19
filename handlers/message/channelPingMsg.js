@@ -26,7 +26,7 @@ async function shouldHandle(client, message)
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
-	const citizen = '841415224216780800';	
+	const citizen = config.CitizenRole;	
 	const channelMentions = message?.mentions?.channels
 	const channels = channelMentions
 		.filter(channel => {
