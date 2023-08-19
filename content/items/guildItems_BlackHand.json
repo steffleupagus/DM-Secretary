@@ -1,0 +1,42 @@
+{
+	"Black Hand": {
+		"waitTime":3000,		
+		"embeds": [		
+			{
+				"title": "Black Hand Mastermind",
+				"description":"`                                                                     `\n\n<@&701985965882867712>",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/uOIdxxX.png" },
+				"footer": { "text": "Black Hand: Mastermind" }
+			},
+			{
+				"title": "Black Hand Unseen Council",
+				"description":"`                                                                     `\n\n<@&833508689624563783>",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/YFyt9MN.png" },
+				"footer": { "text": "Black Hand: Unseen Council" }
+			},
+			{
+				"title": "Black Hand Phantom",
+				"description":"`                                                                     `\n\n<@&1002797883914985473>",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/bns61yJ.png" },
+				"footer": { "text": "Black Hand: Phantom" }
+			},
+			{
+				"title": "Black Hand Shade",
+				"description":"`                                                                     `\n\n<@&717312839827587072>",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/8L4CCNq.png" },
+				"footer": { "text": "Black Hand: Shade" }
+			},
+			{
+				"title": "Black Hand Dim",
+				"description":"`                                                                     `\n\n<@&1002797891682832435>",
+				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
+				"image": { "url": "https://i.imgur.com/Sg57l0g.png" },
+				"footer": { "text": "Black Hand: Dim" }
+			}
+		]
+	}
+}

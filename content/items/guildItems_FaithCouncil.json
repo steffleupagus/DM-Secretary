@@ -1,0 +1,50 @@
+{
+	"Faith Council": {
+		"waitTime":3000,		
+		"embeds": [		
+			{
+				"title": "Faith Council Hierophant",
+				"description":"`                                                                     `\n\n<@&766024439749148672>",
+				"image": { "url": "https://i.imgur.com/PzsXpx4.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Hierophant" }
+			},
+			{
+				"title": "Faith Council Exarch",
+				"description":"`                                                                     `\n\n<@&782123983797616700>",
+				"image": { "url": "https://i.imgur.com/GoW1Kes.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Exarch" }
+			},
+			{
+				"title": "Faith Council Disciple",
+				"description":"`                                                                     `\n\n<@&1002797865401327616>",
+				"image": [
+					{ "url": "https://i.imgur.com/Gu97IFR.png" },
+					{ "url": "https://i.imgur.com/jlyBG0R.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Disciple" }
+			},
+			{
+				"title": "Faith Council Faithful",
+				"description":"`                                                                     `\n\n<@&766026787997351947>",
+				"image": { "url": "https://i.imgur.com/LvTsTKZ.png" },
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Faithful" }
+			},
+			{
+				"title": "Faith Council Acolyte",
+				"description":"`                                                                     `\n\n<@&1002797897777164328>",
+				"image": [
+					{ "url":"https://i.imgur.com/ZVjjLUD.png" },
+					{ "url":"https://i.imgur.com/Ay8NP53.png" },
+					{ "url":"https://i.imgur.com/sd1BwDe.png" },
+					{ "url":"https://i.imgur.com/8rdOhDt.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
+				"footer": { "text": "Faith Council: Acolyte" }
+			}
+		]
+	}
+}
