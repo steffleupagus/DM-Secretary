@@ -1,0 +1,50 @@
+{
+	"Outriders Lodge": {
+		"waitTime":3000,		
+		"embeds": [		
+			{
+				"title": "Outriders Warden",
+				"description":"`                                                                     `\n\n<@&853348541287890994>",
+				"image": { "url": "https://i.imgur.com/byJiJNl.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Warden" }
+			},
+			{
+				"title": "Outriders Elder Council",
+				"description":"`                                                                     `\n\n<@&853349316139024414>",
+				"image": { "url": "https://i.imgur.com/64URWkR.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Elder Council" }
+			},
+			{
+				"title": "Outriders Tracker",
+				"description":"`                                                                     `\n\n<@&1002797871218839663>",
+				"image": { "url": "https://i.imgur.com/cuMeqQl.png" },
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Tracker" }
+			},
+			{
+				"title": "Outriders Scout",
+				"description":"`                                                                     `\n\n<@&853349315866525716>",
+				"image": [
+					{ "url": "https://i.imgur.com/8CD4i5A.png" },
+					{ "url": "https://i.imgur.com/ZJCktdX.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Scout" }
+			},
+			{
+				"title": "Outriders Seed",
+				"description":"`                                                                     `\n\n<@&1002797894388174939>",
+				"image": [
+					{ "url": "https://i.imgur.com/obDJrUw.png" },
+					{ "url": "https://i.imgur.com/vK2X5Fw.png" },
+					{ "url": "https://i.imgur.com/0VOYf87.png" },
+					{ "url": "https://i.imgur.com/uXyWltF.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/ntPPiOT.png" },
+				"footer": { "text": "Outriders: Seed" }
+			}
+		]
+	}
+}

@@ -34,7 +34,16 @@
 
 	"709733574810533929" :{ "data":"items/itemReference.json"},
 	"1122621263177863289":{ "data":"items/lewdTattoos.json"},
+
+	
 	"guildItemReference" :{ "data":"items/guildItems.json"},
+	"985935929149624370" :{ "data":"items/guildItems_Arcanum.json"},
+	"1106404237451219065":{ "data":"items/guildItems_BlackHand.json"},
+	"1106407973351338176":{ "data":"items/guildItems_FaithCouncil.json"},
+	"1106408804381368431":{ "data":"items/guildItems_Guardian.json"},
+	"1106410690203369562":{ "data":"items/guildItems_Outrider.json"},
+	"1106412116367396935":{ "data":"items/guildItems_SilverThorn.json"},
+	
 	
 	"walkthroughchannel":{"data":"rules/walkthrough_base.json"},
 	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},

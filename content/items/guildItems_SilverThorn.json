@@ -1,0 +1,51 @@
+{
+	"Silver Thorn": {
+		"waitTime":3333,		
+		"embeds": [		
+			{
+				"title": "Silver Thorn Mistress",
+				"description":"`                                                                     `\n\n<@&699439189447671889>",
+				"image": [
+					{ "url":"https://i.imgur.com/EVsH0rO.png" },
+					{ "url":"https://i.imgur.com/ElSqg4x.png" }					
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Mistress" }
+			},
+			{
+				"title": "Silver Thorn (S)Inner Circle",
+				"description":"`                                                                     `\n\n<@&833509439277367338>",
+				"image": [
+					{ "url": "https://i.imgur.com/QrJThRk.png" },
+					{ "url": "https://i.imgur.com/tG300a7.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: (S)Inner Circle" }
+			},
+			{
+				"title": "Silver Thorn Courtesan",
+				"description":"`                                                                     `\n\n<@&1002797900591550474>",
+				"image": [
+					{ "url": "https://i.imgur.com/MhTrNTj.png" },
+					{ "url": "https://i.imgur.com/lxbwxmC.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Courtesan" }
+			},
+			{
+				"title": "Silver Thorn Rose",
+				"description":"`                                                                     `\n\n<@&717313035387142215>",
+				"image": { "url": "https://i.imgur.com/tViAP9p.png" },
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Rose" }
+			},
+			{
+				"title": "Silver Thorn Budding Rose",
+				"description":"`                                                                     `\n\n<@&1002797903640805466>",
+				"image": { "url": "https://i.imgur.com/eYFIn8C.png" },
+				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
+				"footer": { "text": "Silver Thorn: Budding Rose" }
+			}
+		]
+	}
+}
