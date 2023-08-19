@@ -23,6 +23,7 @@ const INTERACT_TIME = 30000;
 const MODAL_INPUT_TIME = 30000;
 
 const Time = {
+	Extended: 15*60*1000,
 	Long: 60000,
 	Std: 30000,
 	Short: 10000,

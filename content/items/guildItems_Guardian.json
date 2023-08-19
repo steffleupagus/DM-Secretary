@@ -1,0 +1,48 @@
+{
+	"Guardians": {
+		"waitTime":3000,		
+		"embeds": [		
+			{
+				"title": "Guardian Guild Champion",
+				"description":"`                                                                     `\n\n<@&699575897853788302>",
+				"image": [
+					{ "url": "https://i.imgur.com/SyTSgTr.png" },
+					{ "url": "https://i.imgur.com/Eh4Dg7f.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/Ya7EEDt.png" },
+				"footer": { "text": "Guardian Guild: Champion" }
+			},
+			{
+				"title": "Guardian Officer Council",
+				"description":"`                                                                     `\n\n<@&833505914619166721>",
+				"image": [
+					{ "url": "https://i.imgur.com/4ezRcyA.png" },
+					{ "url": "https://i.imgur.com/XqWq2jJ.png" }
+				],
+				"thumbnail": { "url":"https://i.imgur.com/94RCxop.png" },
+				"footer": { "text": "Guardian Guild: Officer Council" }
+			},
+			{
+				"title": "Guardian Guild Soldier",
+				"description":"`                                                                     `\n\n<@&1002797857239224371>",
+				"image": { "url": "https://i.imgur.com/LXCjiDo.png" },
+				"thumbnail": { "url":"https://i.imgur.com/kV7U4gS.png" },
+				"footer": { "text": "Guardian Guild: Soldier" }
+			},
+			{
+				"title": "Guardian City Watch",
+				"description":"`                                                                     `\n\n<@&717311930171129916>",
+				"image": { "url": "https://i.imgur.com/7X5R1h0.png" },
+				"thumbnail": { "url":"https://i.imgur.com/xe1TdHx.png" },
+				"footer": { "text": "Guardian Guild: City Watch" }
+			},
+			{
+				"title": "Guardian Recruit",
+				"description":"`                                                                     `\n\n<@&1002797888537116794>",
+				"image": { "url": "https://i.imgur.com/ZoulucY.png" },
+				"thumbnail": { "url":"https://i.imgur.com/Tr2eZPl.png" },
+				"footer": { "text": "Guardian Guild: Recruit" }
+			}
+		]
+	}
+}

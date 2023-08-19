@@ -1,0 +1,49 @@
+{
+	"Arcanum": {
+		"waitTime":3333,		
+		"embeds": [
+			{
+				"title": "Arcanum High Magus",
+				"description":"`                                                                     `\n\n<@&699245661295738891>",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/sUcB7Hh.png" },
+				"footer": { "text": "Arcanum: High Magus" }
+			},
+			{
+				"title": "Arcanum Sage Council",
+				"description":"`                                                                     `\n\n<@&833505842178293790>",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/PQ7GNKf.png" },
+				"footer": { "text": "Arcanum: Sage Council" }
+			},
+			{
+				"title": "Arcanum Adept",
+				"description":"`                                                                     `\n\n<@&1002797852868739133>",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": [
+					{ "url": "https://i.imgur.com/ViUvTyC.png" },
+					{ "url": "https://i.imgur.com/AJJNtvH.png" }
+				],
+				"footer": { "text": "Arcanum: Adept" }
+			},
+			{
+				"title": "Arcanum Initiate",
+				"description":"`                                                                     `\n\n<@&717312140821790752>",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": [
+					{ "url": "https://i.imgur.com/ZJafvBG.png" },
+					{ "url": "https://i.imgur.com/wAjGeVH.png" },
+					{ "url": "https://i.imgur.com/FSkZzj9.png" }
+				],
+				"footer": { "text": "Arcanum: Initiate" }
+			},
+			{
+				"title": "Arcanum Apprentice",
+				"description":"`                                                                     `\n\n<@&1002797861211218051>",
+				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
+				"image": { "url": "https://i.imgur.com/r1rZMXq.png" },
+				"footer": { "text": "Arcanum: Apprentice" }
+			}
+		]
+	}
+}
