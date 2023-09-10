@@ -31,5 +31,7 @@ module.exports = {
 	bot: true,
 	menu: true,	
 	shouldHandle: shouldHandle,
-	handleCreate: handleCreate
+	handleCreate: handleCreate,
+
+	build: config.PRODUCTION //|| config.DEV
 };
