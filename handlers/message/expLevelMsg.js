@@ -16,7 +16,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const updated = await LevelData.logLevelMessage(client, message, interaction, sendResult)
 	await CharUtils.RefreshCache()
 
-	if (updated)
+	if (updated && config.DEV)
 	{
 		const channel = await message.guild.channels.resolve(config.levelOutputChan)
 		console.log(channel.id)
@@ -31,6 +31,7 @@ module.exports = {
 	bot: true,
 	menu: true,	
 	shouldHandle: shouldHandle,
-	handleCreate: handleCreate
-//	build: config.PRODUCTION
+	handleCreate: handleCreate,
+
+	build: config.PRODUCTION //|| config.DEV
 };
