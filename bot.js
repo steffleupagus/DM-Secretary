@@ -45,7 +45,7 @@ class Bot
 	loadConfig()
 	{
 		const mod = process.env.mod || "";
-		this.client.config = require(`${process.cwd()}/config/${mod}_config.json`);
+		this.client.config = require(`./config/${mod}_config.json`);
 		this.client.config.token = process.env.token;
 		
 		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)
@@ -75,7 +75,7 @@ class Bot
 		this.client.eventHandlers = new Collection();
 
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));	
-		const eventFiles = await globPromise(`${process.cwd()}/handlers/events/*.js`);    
+		const eventFiles = await globPromise(`./handlers/events/*.js`);    
 		eventFiles.map((file) => 
 		{
 			//const event = require(`./events/${file}`);
@@ -99,13 +99,13 @@ class Bot
 	async loadMessageHandlers()
 	{
 		console.log("Loading message handlers...");
-		const messageHandlers = fs.readdirSync(`${process.cwd()}/handlers/message`)
+		const messageHandlers = fs.readdirSync(`./handlers/message`)
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.messageHandlers = [];
 		for (const file of messageHandlers) 
 		{
-			const handler = require(`${process.cwd()}/handlers/message/${file}`);
+			const handler = require(`./handlers/message/${file}`);
 			console.log(" - Handler: ", handler.name);
 			if (!handler.hasOwnProperty("build") || handler.build)
 			{
@@ -117,13 +117,13 @@ class Bot
 	loadReactHandlers()
 	{
 		console.log("Loading reaction handlers...");
-		const messageHandlers = fs.readdirSync(`${process.cwd()}/handlers/reations`)
+		const messageHandlers = fs.readdirSync(`./handlers/reations`)
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.reactHandlers = [];
 		for (const file of messageHandlers) 
 		{
-			const handler = require(`${process.cwd()}/handlers/reations/${file}`);
+			const handler = require(`./handlers/reations/${file}`);
 			console.log(" - Handler: ", handler.name);
 			if (!handler.hasOwnProperty("build") || handler.build)
 			{
@@ -135,13 +135,13 @@ class Bot
 	loadTimers()
 	{
 		console.log("Loading timers...");
-		const timers = fs.readdirSync(`${process.cwd()}/handlers/timers`)
+		const timers = fs.readdirSync(`./handlers/timers`)
 						 .filter(file => file.endsWith('.js'));
 
 		this.client.timers = new Collection();
 		for (const file of timers) 
 		{
-			const timer = require(`${process.cwd()}/handlers/timers/${file}`);
+			const timer = require(`./handlers/timers/${file}`);
 			console.log(" - Timer: ", timer.name, (timer.build ?? true) ? "(Enabled)" : "(Disabled)" );
 			if (!timer.hasOwnProperty("build") || timer.build)
 			{
@@ -157,12 +157,12 @@ class Bot
 		console.log("Loading commands...");
 
 		this.client.commands = new Collection();
-		const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/commands`).filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(`./handlers/commands`).filter(file => file.endsWith('.js'));
 		if (!commandFiles.length)
 			console.log(" - No commands found");
 		for (const file of commandFiles) 
 		{
-			const command = require(`${process.cwd()}/handlers/commands/${file}`);
+			const command = require(`./handlers/commands/${file}`);
 			const enabled = !command.hasOwnProperty("build") || command.build;
 			// console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
 			if (enabled)

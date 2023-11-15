@@ -24,8 +24,8 @@ module.exports =
 	build:config.DEV||config.PRODUCTION
 };
 
-const requiredRoles = [ config.BuilderRole, config._BuilderRole, 
-					    config.DMRole, config._DMRole	]
+const requiredRoles = [ config.BuilderRole, 
+					    config.DMRole	]
 
 //if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles

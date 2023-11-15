@@ -22,7 +22,7 @@ const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,
-	whitelistRoles: [ config.BuilderRole, config._BuilderRole ],
+	whitelistRoles: [ config.BuilderRole ],
 	userPermissions: userPermissions,
 	execute: execute,
 	build:config.PRODUCTION //|| config.DEV

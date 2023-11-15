@@ -7,7 +7,7 @@ const ChanUtils = require(`../../utilities/channelUtils.js`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 const defaultChanMeta = { awardsExp: false, trackActivity: false, threadMax: 0, userOwner: [], guildHall: "", locations: [] }
 const threadIcon = "🧵";
@@ -520,7 +520,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+const whitelistRoles  = [	config.BuilderRole	];
 
 module.exports = 
 {

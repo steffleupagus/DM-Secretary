@@ -62,7 +62,7 @@
 			},
 			{
 				"title": "Changeling",
-				"description":"`                                                                     `\n*Note: Changelings are NOT an exception to, nor a way to work around, character slot limitations. Attempting to make a changeling with multiple personas that could easily be seen as unique characters each with unique preferences and reference images will NOT be approved. Each additional 'permanent' persona must have a character slot dedicated to it. Backgrounds which grant an additional persona may include one additional one without an additional slot.",
+				"description":"`                                                                     `\n*Note: Changelings are NOT an exception to, nor a way to work around, character slot limitations. Attempting to make a Changeling profile with multiple references/personas that should be unique characters will NOT be approved. When submitting a Changeling, your profile is allowed a MAXIMUM of the base unchanged form, and ONE changed form to be represented in the profile (multiple references for the form IS allowed). For forms beyond that (physical appearance, personality, or both), you will be required to dedicate an additional character slot per additional form you add to the profile. Backgrounds which grant an additional persona as their feature may include one additional one without an additional slot.*",
 				"footer": { "text": "Races: Changeling" },
 				"image": { "url": "https://i.imgur.com/xoEpaez.png" },
 				"fields": [{
@@ -548,7 +548,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Ancestral Guardian](https://5e.tools/classes.html#barbarian_phb,state:sub-ancestral-guardian-xge=b1)\n✅ [Battle Rager](https://5e.tools/classes.html#barbarian_phb,state:sub-battlerager-scag=b1)\n✅ [Beast](https://5e.tools/classes.html#barbarian_phb,state:sub-beast-tce=b1)\n✅ [Berserker](https://www.dndbeyond.com/classes/barbarian#PathoftheBerserker)\n✅ [Storm Herald](https://5e.tools/classes.html#barbarian_phb,state:sub-storm-herald-xge=b1)\n✅ [Totem Warrior](https://5e.tools/classes.html#barbarian_phb,state:sub-totem-warrior-phb=b1)\n✅ [Wild Magic](https://5e.tools/classes.html#barbarian_phb,state:sub-wild-magic-tce=b1)\n✅ [Zealot](https://5e.tools/classes.html#barbarian_phb,state:sub-zealot-xge=b1)\n🚫 Giant (UA) - *Disallowed*"
+					"value": "✅ [Ancestral Guardian](https://5e.tools/classes.html#barbarian_phb,state:sub-ancestral-guardian-xge=b1)\n✅ [Battle Rager](https://5e.tools/classes.html#barbarian_phb,state:sub-battlerager-scag=b1)\n✅ [Beast](https://5e.tools/classes.html#barbarian_phb,state:sub-beast-tce=b1)\n✅ [Berserker](https://www.dndbeyond.com/classes/barbarian#PathoftheBerserker)\n✅ [Giant](https://5e.tools/classes.html#barbarian_phb,state:sub-giant-bgg=b1)\n✅ [Storm Herald](https://5e.tools/classes.html#barbarian_phb,state:sub-storm-herald-xge=b1)\n✅ [Totem Warrior](https://5e.tools/classes.html#barbarian_phb,state:sub-totem-warrior-phb=b1)\n✅ [Wild Magic](https://5e.tools/classes.html#barbarian_phb,state:sub-wild-magic-tce=b1)\n✅ [Zealot](https://5e.tools/classes.html#barbarian_phb,state:sub-zealot-xge=b1)\n🚫 Juggernaut (TDCSR) - *Disallowed*"
 				}]
 			},
 			{
@@ -561,7 +561,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Creation](https://5e.tools/classes.html#bard_phb,state:sub-creation-tce=b1)\n✅ [Eloquence](https://5e.tools/classes.html#bard_phb,state:sub-eloquence-mot=b1)\n✅ [Glamour](https://5e.tools/classes.html#bard_phb,state:sub-glamour-xge=b1)\n✅ [Lore](https://www.dndbeyond.com/classes/bard#CollegeofLore)\n✅ [Satire (UA)](https://5e.tools/classes.html#bard_phb,state:sub-satire-ua-uakoo=b1)\n✅ [Spirits](https://5e.tools/classes.html#bard_phb,state:sub-spirits-vrgr=b1)\n✅ [Swords](https://5e.tools/classes.html#bard_phb,state:sub-swords-xge=b1)\n✅ [Valor](https://5e.tools/classes.html#bard_phb,state:sub-valor-phb=b1)\n✅ [Whispers](https://5e.tools/classes.html#bard_phb,state:sub-whispers-xge=b1)"
+					"value": "✅ [Creation](https://5e.tools/classes.html#bard_phb,state:sub-creation-tce=b1)\n✅ [Eloquence](https://5e.tools/classes.html#bard_phb,state:sub-eloquence-mot=b1)\n✅ [Glamour](https://5e.tools/classes.html#bard_phb,state:sub-glamour-xge=b1)\n✅ [Lore](https://www.dndbeyond.com/classes/bard#CollegeofLore)\n✅ [Satire (UA)](https://5e.tools/classes.html#bard_phb,state:sub-satire-ua-uakoo=b1)\n✅ [Spirits](https://5e.tools/classes.html#bard_phb,state:sub-spirits-vrgr=b1)\n✅ [Swords](https://5e.tools/classes.html#bard_phb,state:sub-swords-xge=b1)\n✅ [Valor](https://5e.tools/classes.html#bard_phb,state:sub-valor-phb=b1)\n✅ [Whispers](https://5e.tools/classes.html#bard_phb,state:sub-whispers-xge=b1)\n🚫 Tragedy (TDCSR) - *Disallowed*"
 				}]
 			},
 			{
@@ -592,7 +592,7 @@
 				{
 					"inline": true,
 					"name": "** **",
-					"value": "✅ [Twilight](https://5e.tools/classes.html#cleric_phb,state:sub-twilight-tce=b1)\n✅ [War](https://5e.tools/classes.html#cleric_phb,state:sub-war-phb=b1)\n🚫 Love / Unity (UA) - *See Peace Domain*\n🚫 Fate (UA) - *Disallowed*"
+					"value": "✅ [Twilight](https://5e.tools/classes.html#cleric_phb,state:sub-twilight-tce=b1)\n✅ [War](https://5e.tools/classes.html#cleric_phb,state:sub-war-phb=b1)\n🚫 Ambition (PSA) - *Disallowed*\n🚫 Blood (TDCSR) - *Disallowed*\n🚫 City (UA) - *Disallowed*\n🚫 Fate (UA) - *Disallowed*\n🚫 Love / Unity (UA) - *Peace Domain*\n🚫 Moon (TDCSR) - *Disallowed*\n🚫 Solidarity (PSA) - *Disallowed*\n🚫 Strength (PSA) - *Disallowed*\n🚫 Zeal (PSA) - *Disallowed*"
 				}]
 			},
 			{
@@ -605,7 +605,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Dreams](https://5e.tools/classes.html#druid_phb,state:sub-dreams-xge=b1)\n✅ [Land](https://www.dndbeyond.com/classes/druid#CircleoftheLand)\n✅ [Moon](https://5e.tools/classes.html#druid_phb,state:sub-moon-phb=b1)\n✅ [Shepherd](https://5e.tools/classes.html#druid_phb,state:sub-shepherd-xge=b1)\n✅ [Spores](https://5e.tools/classes.html#druid_phb,state:sub-spores-ggr=b1)\n✅ [Stars](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1)\n✅ [Twilight (UA)](https://5e.tools/classes.html#druid_phb,state:sub-twilight-ua-uad=b1)\n✅ [Wildfire️️](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1~sub-wildfire-tce=b1)⚠️\n🚫 Primeval (UA) - *Disallowed*"
+					"value": "✅ [Dreams](https://5e.tools/classes.html#druid_phb,state:sub-dreams-xge=b1)\n✅ [Land](https://www.dndbeyond.com/classes/druid#CircleoftheLand)\n✅ [Moon](https://5e.tools/classes.html#druid_phb,state:sub-moon-phb=b1)\n✅ [Shepherd](https://5e.tools/classes.html#druid_phb,state:sub-shepherd-xge=b1)\n✅ [Spores](https://5e.tools/classes.html#druid_phb,state:sub-spores-ggr=b1)\n✅ [Stars](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1)\n✅ [Twilight (UA)](https://5e.tools/classes.html#druid_phb,state:sub-twilight-ua-uad=b1)\n✅ [Wildfire️️](https://5e.tools/classes.html#druid_phb,state:sub-stars-tce=b1~sub-wildfire-tce=b1)⚠️\n🚫 Blighted (TDCSR) - *Disallowed*\n🚫 Primeval (UA) - *Disallowed*"
 				}]
 			},
 			{
@@ -649,7 +649,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Ancients](https://5e.tools/classes.html#paladin_phb,state:sub-ancients-phb=b1)\n✅ [Conquest](https://5e.tools/classes.html#paladin_phb,state:sub-conquest-xge=b1)\n✅ [Crown](https://5e.tools/classes.html#paladin_phb,state:sub-crown-scag=b1)\n✅ [Devotion](https://www.dndbeyond.com/classes/paladin#OathofDevotion)\n✅ [Glory](https://5e.tools/classes.html#paladin_phb,state:sub-glory-mot=b1)\n✅ [Oathbreaker](https://5e.tools/classes.html#paladin_phb,state:sub-oathbreaker-dmg=b1)\n✅ [Redemption](https://5e.tools/classes.html#paladin_phb,state:sub-redemption-xge=b1)\n✅ [Treachery (UA)](https://5e.tools/classes.html#paladin_phb,state:sub-treachery-ua-uap=b1)\n✅ [Vengeance](https://5e.tools/classes.html#paladin_phb,state:sub-vengeance-phb=b1)\n✅ [Watchers](https://5e.tools/classes.html#paladin_phb,state:sub-watchers-tce=b1)\n🚫 Heroism (UA) - *See Oath of Glory*\n🚫 Open Sea - *Disallowed*"
+					"value": "✅ [Ancients](https://5e.tools/classes.html#paladin_phb,state:sub-ancients-phb=b1)\n✅ [Conquest](https://5e.tools/classes.html#paladin_phb,state:sub-conquest-xge=b1)\n✅ [Crown](https://5e.tools/classes.html#paladin_phb,state:sub-crown-scag=b1)\n✅ [Devotion](https://www.dndbeyond.com/classes/paladin#OathofDevotion)\n✅ [Glory](https://5e.tools/classes.html#paladin_phb,state:sub-glory-mot=b1)\n✅ [Oathbreaker](https://5e.tools/classes.html#paladin_phb,state:sub-oathbreaker-dmg=b1)\n✅ [Redemption](https://5e.tools/classes.html#paladin_phb,state:sub-redemption-xge=b1)\n✅ [Treachery (UA)](https://5e.tools/classes.html#paladin_phb,state:sub-treachery-ua-uap=b1)\n✅ [Vengeance](https://5e.tools/classes.html#paladin_phb,state:sub-vengeance-phb=b1)\n✅ [Watchers](https://5e.tools/classes.html#paladin_phb,state:sub-watchers-tce=b1)\n🚫 Heroism (UA) - *Oath of Glory*\n🚫 Open Sea - *Disallowed*"
 				}]
 			},
 			{
@@ -662,7 +662,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Beast Master](https://5e.tools/classes.html#ranger_phb,state:sub-beast-master-phb=b1)⚠️\n✅ [Drakewarden](https://5e.tools/classes.html#ranger_phb,state:sub-drakewarden-ftd=b1)⚠️\n✅ [Fey Wanderer](https://5e.tools/classes.html#ranger_phb,state:sub-fey-wanderer-tce=b1)\n✅ [Gloom Stalker](https://5e.tools/classes.html#ranger_phb,state:sub-gloom-stalker-xge=b1)\n✅ [Horizon Walker](https://5e.tools/classes.html#ranger_phb,state:sub-horizon-walker-xge=b1)\n✅ [Hunter](https://www.dndbeyond.com/classes/ranger#Hunter)\n✅ [Monster Slayer](https://5e.tools/classes.html#ranger_phb,state:sub-monster-slayer-xge=b1)\n✅ [Swarmkeeper](https://5e.tools/classes.html#ranger_phb,state:sub-swarmkeeper-tce=b1)\n🚫 Deep Stalker (UA) - *See Gloom Stalker*\n🚫 Primeval Guardian (UA) - *Disallowed*"
+					"value": "✅ [Beast Master](https://5e.tools/classes.html#ranger_phb,state:sub-beast-master-phb=b1)⚠️\n✅ [Drakewarden](https://5e.tools/classes.html#ranger_phb,state:sub-drakewarden-ftd=b1)⚠️\n✅ [Fey Wanderer](https://5e.tools/classes.html#ranger_phb,state:sub-fey-wanderer-tce=b1)\n✅ [Gloom Stalker](https://5e.tools/classes.html#ranger_phb,state:sub-gloom-stalker-xge=b1)\n✅ [Horizon Walker](https://5e.tools/classes.html#ranger_phb,state:sub-horizon-walker-xge=b1)\n✅ [Hunter](https://www.dndbeyond.com/classes/ranger#Hunter)\n✅ [Monster Slayer](https://5e.tools/classes.html#ranger_phb,state:sub-monster-slayer-xge=b1)\n✅ [Swarmkeeper](https://5e.tools/classes.html#ranger_phb,state:sub-swarmkeeper-tce=b1)\n🚫 Deep Stalker (UA) - *Gloom Stalker*\n🚫 Primeval Guardian (UA) - *Disallowed*"
 				}]
 			},
 			{
@@ -675,7 +675,7 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Arcane Trickster](https://5e.tools/classes.html#rogue_phb,state:sub-arcane-trickster-phb=b1)\n✅ [Assassin](https://5e.tools/classes.html#rogue_phb,state:sub-assassin-phb=b1)\n✅ [Inquisitive](https://5e.tools/classes.html#rogue_phb,state:sub-inquisitive-xge=b1)\n✅ [Mastermind](https://5e.tools/classes.html#rogue_phb,state:sub-mastermind-xge=b1)\n✅ [Phantom](https://5e.tools/classes.html#rogue_phb,state:sub-phantom-tce=b1)\n✅ [Scout](https://5e.tools/classes.html#rogue_phb,state:sub-scout-xge=b1)\n✅ [Soulknife](https://5e.tools/classes.html#rogue_phb,state:sub-soulknife-tce=b1)\n✅ [Swashbuckler](https://5e.tools/classes.html#rogue_phb,state:sub-swashbuckler-xge=b1)\n✅ [Thief](https://5e.tools/classes.html#rogue_phb,state:sub-thief-phb=b1)\n🚫 Revived (UA) - *See Phantom*"
+					"value": "✅ [Arcane Trickster](https://5e.tools/classes.html#rogue_phb,state:sub-arcane-trickster-phb=b1)\n✅ [Assassin](https://5e.tools/classes.html#rogue_phb,state:sub-assassin-phb=b1)\n✅ [Inquisitive](https://5e.tools/classes.html#rogue_phb,state:sub-inquisitive-xge=b1)\n✅ [Mastermind](https://5e.tools/classes.html#rogue_phb,state:sub-mastermind-xge=b1)\n✅ [Phantom](https://5e.tools/classes.html#rogue_phb,state:sub-phantom-tce=b1)\n✅ [Scout](https://5e.tools/classes.html#rogue_phb,state:sub-scout-xge=b1)\n✅ [Soulknife](https://5e.tools/classes.html#rogue_phb,state:sub-soulknife-tce=b1)\n✅ [Swashbuckler](https://5e.tools/classes.html#rogue_phb,state:sub-swashbuckler-xge=b1)\n✅ [Thief](https://5e.tools/classes.html#rogue_phb,state:sub-thief-phb=b1)\n🚫 Revived (UA) - *Phantom*"
 				}]
 			},
 			{
@@ -688,12 +688,12 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Aberrant Mind](https://5e.tools/classes.html#sorcerer_phb,state:sub-aberrant-mind-tce=b1)\n✅ [Clockwork Soul](https://5e.tools/classes.html#sorcerer_phb,state:sub-clockwork-soul-tce=b1)\n✅ [Divine Soul](https://5e.tools/classes.html#sorcerer_phb,state:sub-divine-soul-xge=b1)\n✅ [Draconic Bloodline](https://www.dndbeyond.com/classes/sorcerer#DraconicBloodline)\n✅ [Giant Soul (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-giant-soul-ua-uagss=b1)\n✅ [Lunar Sorcery](https://5e.tools/classes.html#sorcerer_phb,state:sub-lunar-dsotdq=b1) - (*Pending*)\n✅ [Phoenix (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-phoenix-ua-uas=b1)\n✅ [Shadow Magic](https://5e.tools/classes.html#sorcerer_phb,state:sub-shadow-xge=b1)\n✅ [Stone Sorcery (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-stone-ua-uas=b1)\n✅ [Storm Sorcery](https://5e.tools/classes.html#sorcerer_phb,state:sub-storm-xge=b1)\n🚫 Sea Sorcery (UA)"
+					"value": "✅ [Aberrant Mind](https://5e.tools/classes.html#sorcerer_phb,state:sub-aberrant-mind-tce=b1)\n✅ [Clockwork Soul](https://5e.tools/classes.html#sorcerer_phb,state:sub-clockwork-soul-tce=b1)\n✅ [Divine Soul](https://5e.tools/classes.html#sorcerer_phb,state:sub-divine-soul-xge=b1)\n✅ [Draconic Bloodline](https://www.dndbeyond.com/classes/sorcerer#DraconicBloodline)\n✅ [Giant Soul (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-giant-soul-ua-uagss=b1)\n✅ [Lunar Sorcery](https://5e.tools/classes.html#sorcerer_phb,state:sub-lunar-dsotdq=b1)\n✅ [Phoenix (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-phoenix-ua-uas=b1)\n✅ [Shadow Magic](https://5e.tools/classes.html#sorcerer_phb,state:sub-shadow-xge=b1)\n✅ [Stone Sorcery (UA)](https://5e.tools/classes.html#sorcerer_phb,state:sub-stone-ua-uas=b1)\n✅ [Storm Sorcery](https://5e.tools/classes.html#sorcerer_phb,state:sub-storm-xge=b1)\n✅ [Wild Magic](https://5e.tools/classes.html#sorcerer_phb,state:sub-wild-phb=b1)"
 				},
 				{
 					"inline": true,
 					"name": "** **",
-					"value": "✅ [Wild Magic](https://5e.tools/classes.html#sorcerer_phb,state:sub-wild-phb=b1)\n🚫 Favored Soul (UA) - *See Divine Soul*\n🚫 Psionic Soul (UA) - *See Aberrant Mind*"
+					"value": "🚫 Favored Soul (UA) - *Divine Soul*\n🚫 Psionic Soul (UA) - *Aberrant Mind*\n🚫 Pyromancer (PSK) - *Disallowed*\n🚫 Runechild (TDCSR) - *Disallowed*\n🚫 Sea Sorcery (UA) - *Disallowed*"
 				}]
 			},
 			{
@@ -706,7 +706,12 @@
 				"fields": [{
 					"inline": true,
 					"name": "Subclasses",
-					"value": "✅ [Archfey](https://5e.tools/classes.html#warlock_phb,state:sub-archfey-phb=b1)\n✅ [Celestial](https://5e.tools/classes.html#warlock_phb,state:sub-celestial-xge=b1)\n✅ [Fathomless](https://5e.tools/classes.html#warlock_phb,state:sub-fathomless-tce=b1)\n✅ [Fiend](https://5e.tools/classes.html#warlock_phb,state:sub-fiend-phb=b1)\n✅ [Genie](https://5e.tools/classes.html#warlock_phb,state:sub-genie-tce=b1)\n✅ [Great Old One](https://5e.tools/classes.html#warlock_phb,state:sub-great-old-one-phb=b1)\n✅ [Hexblade](https://5e.tools/classes.html#warlock_phb,state:sub-hexblade-xge=b1)\n✅ [Raven Queen (UA)](https://5e.tools/classes.html#warlock_phb,state:sub-raven-queen-ua-uawaw=b1)\n✅ [Seeker (UA)](https://5e.tools/classes.html#warlock_phb,state:sub-seeker-ua-uatf=b1)\n✅ [Undead](https://5e.tools/classes.html#warlock_phb,state:sub-undead-vrgr=b1)\n✅ [Undying](https://5e.tools/classes.html#warlock_phb,state:sub-undying-scag=b1)\n🚫 Lurker in the Deep (UA) - *See Fathomless*\n🚫 Undying Light (UA) - *See Celestial*"
+					"value": "✅ [Archfey](https://5e.tools/classes.html#warlock_phb,state:sub-archfey-phb=b1)\n✅ [Celestial](https://5e.tools/classes.html#warlock_phb,state:sub-celestial-xge=b1)\n✅ [Fathomless](https://5e.tools/classes.html#warlock_phb,state:sub-fathomless-tce=b1)\n✅ [Fiend](https://5e.tools/classes.html#warlock_phb,state:sub-fiend-phb=b1)\n✅ [Genie](https://5e.tools/classes.html#warlock_phb,state:sub-genie-tce=b1)\n✅ [Great Old One](https://5e.tools/classes.html#warlock_phb,state:sub-great-old-one-phb=b1)\n✅ [Hexblade](https://5e.tools/classes.html#warlock_phb,state:sub-hexblade-xge=b1)\n✅ [Raven Queen (UA)](https://5e.tools/classes.html#warlock_phb,state:sub-raven-queen-ua-uawaw=b1)\n✅ [Seeker (UA)](https://5e.tools/classes.html#warlock_phb,state:sub-seeker-ua-uatf=b1)\n✅ [Undead](https://5e.tools/classes.html#warlock_phb,state:sub-undead-vrgr=b1)\n✅ [Undying](https://5e.tools/classes.html#warlock_phb,state:sub-undying-scag=b1)"				
+				},
+				{
+					"inline": true,
+					"name": "** **",
+					"value": "🚫 Ghost in the Machine (UA) - *Disallowed*\n🚫 Lurker in the Deep (UA) - *Fathomless*\n🚫 Undying Light (UA) - *Celestial*"
 				}]
 			},
 			{
@@ -724,7 +729,7 @@
 				{
 					"inline": true,
 					"name": "** **",
-					"value": "✅ [Transmutation](https://5e.tools/classes.html#wizard_phb,state:sub-transmutation-phb=b1)\n✅ [War Magic](https://5e.tools/classes.html#wizard_phb,state:sub-war-xge=b1)\n🚫 Artificer (UA) - *See Artificer Class*\n🚫 Invention (UA) - *See Artificer Class*\n🚫 Lore Mastery (UA) - *Disallowed*\n🚫 Psionics (UA) - *Disallowed*\n🚫 Runecrafter (UA) - *Disallowed*\n🚫 Theurgy (UA) - *Disallowed*"
+					"value": "✅ [Transmutation](https://5e.tools/classes.html#wizard_phb,state:sub-transmutation-phb=b1)\n✅ [War Magic](https://5e.tools/classes.html#wizard_phb,state:sub-war-xge=b1)\n🚫 Artificer (UA) - *Artificer Class*\n🚫 Blood Magic (TDCSR) - *Disallowed*\n🚫 Invention (UA) - *Artificer Class*\n🚫 Lore Mastery (UA) - *Disallowed*\n🚫 Psionics (UA) - *Disallowed*\n🚫 Runecrafter (UA) - *Disallowed*\n🚫 Technomancy (UA) - *Disallowed*\n🚫 Theurgy (UA) - *Disallowed*"
 				}]
 			},
 			{
@@ -747,15 +752,15 @@
 		"embeds": [
 			{
 				"title": "Backgrounds",
-				"description":"`                                                                     `\n*The following Backgrounds are ✅ Approved / 🚫 Not Approved for use.*\nCustom backgrounds are acceptable, following the mechanics in the Player's Handbook.\n*Note: Ravnica backgrounds (marked with ®) do NOT include the additional Guild spell list*",
-				"footer": { "text": "Backgrounds" },
-				"fields": [{
-					"value": "✅ [Acolyte](https://5e.tools/backgrounds.html#acolyte_phb)\n✅ [Anthropologist](https://5e.tools/backgrounds.html#anthropologist_toa)\n✅ [Archaeologist](https://5e.tools/backgrounds.html#archaeologist_toa)\n✅ [Athlete](https://5e.tools/backgrounds.html#athlete_mot)\n✅ [Azorius Functionary ®](https://5e.tools/backgrounds.html#azorius%20functionary_ggr)\n✅ [Boros Legionnaire ®](https://5e.tools/backgrounds.html#boros%20legionnaire_ggr)\n✅ [Celeb. Adventurer Scion](https://5e.tools/backgrounds.html#celebrity%20adventurer's%20scion_ai)\n✅ [Charlatan](https://5e.tools/backgrounds.html#charlatan_phb)\n✅ [City Watch](https://5e.tools/backgrounds.html#city%20watch_scag)\n✅ [City Watch (Investigator)](https://5e.tools/backgrounds.html#variant%20city%20watch%20(investigator)_scag)\n✅ [Clan Crafter](https://5e.tools/backgrounds.html#clan%20crafter_scag)\n✅ [Cloistered Scholar](https://5e.tools/backgrounds.html#cloistered%20scholar_scag)\n✅ [Courtier](https://5e.tools/backgrounds.html#courtier_scag)",
+				"description":"`                                                                     `\n*The following Backgrounds are ✅ Approved / 🚫 Not Approved for use.*\n✅ Custom backgrounds, following the mechanics in the Player's Handbook.\nNote: Ravnica backgrounds (marked ®) are approved, but **DO NOT** include the additional Guild spell list.\n🚫 Backgrounds which grant Feats are NOT approved\n⚠️ Retainers from backgrounds (Noble, Knight) can NOT be played as NPCs unless NPC slots are purchased for them.",
+				"fields": [
+				{
+					"value": "✅ [Acolyte](https://5e.tools/backgrounds.html#acolyte_phb)\n✅ [Anthropologist](https://5e.tools/backgrounds.html#anthropologist_toa)\n✅ [Archaeologist](https://5e.tools/backgrounds.html#archaeologist_toa)\n✅ [Athlete](https://5e.tools/backgrounds.html#athlete_mot)\n✅ [Azorius Functionary ®](https://5e.tools/backgrounds.html#azorius%20functionary_ggr)\n✅ [Boros Legionnaire ®](https://5e.tools/backgrounds.html#boros%20legionnaire_ggr)\n✅ [Celeb. Adventure Scion](https://5e.tools/backgrounds.html#celebrity%20adventurer's%20scion_ai)\n✅ [Charlatan](https://5e.tools/backgrounds.html#charlatan_phb)\n✅ [City Watch](https://5e.tools/backgrounds.html#city%20watch_scag) / [Investigator](https://5e.tools/backgrounds.html#variant%20city%20watch%20(investigator)_scag)\n✅ [Clan Crafter](https://5e.tools/backgrounds.html#clan%20crafter_scag)\n✅ [Cloistered Scholar](https://5e.tools/backgrounds.html#cloistered%20scholar_scag)\n✅ [Courtier](https://5e.tools/backgrounds.html#courtier_scag)",
 					"name": "** **",
 					"inline": true
 				},					
 				{
-					"value": "✅ [Criminal](https://5e.tools/backgrounds.html#criminal_phb)\n✅ [Criminal (Spy)](https://5e.tools/backgrounds.html#variant%20criminal%20(spy)_phb)\n✅ [Dimir Operative ®](https://5e.tools/backgrounds.html#dimir%20operative_ggr)\n✅ [Entertainer](https://5e.tools/backgrounds.html#entertainer_phb)\n✅ [Entertainer (Gladiator)](https://5e.tools/backgrounds.html#variant%20entertainer%20(gladiator)_phb)\n✅ [Faceless](https://5e.tools/backgrounds.html#faceless_bgdia)\n✅ [Faction Agent](https://5e.tools/backgrounds.html#faction%20agent_scag)\n✅ [Failed Merchant](https://5e.tools/backgrounds.html#failed%20merchant_ai)\n✅ [Far Traveler](https://5e.tools/backgrounds.html#far%20traveler_scag)\n✅ [Feylost](https://5e.tools/backgrounds.html#feylost_wbtw)\n✅ [Fisher](https://5e.tools/backgrounds.html#fisher_gos)\n✅ [Folk Hero](https://5e.tools/backgrounds.html#folk%20hero_phb)\n✅ [Gambler](https://5e.tools/backgrounds.html#gambler_ai)\n✅ [Golgari Agent ®](https://5e.tools/backgrounds.html#golgari%20agent_ggr)",
+					"value": "✅ [Criminal](https://5e.tools/backgrounds.html#criminal_phb) / [Spy](https://5e.tools/backgrounds.html#variant%20criminal%20(spy)_phb)\n✅ [Custom Background](https://5e.tools/backgrounds.html#custom%20background_phb)\n✅ [Dimir Operative ®](https://5e.tools/backgrounds.html#dimir%20operative_ggr)\n✅ [Entertainer](https://5e.tools/backgrounds.html#entertainer_phb)\n✅ [Faceless](https://5e.tools/backgrounds.html#faceless_bgdia)\n✅ [Faction Agent](https://5e.tools/backgrounds.html#faction%20agent_scag)\n✅ [Failed Merchant](https://5e.tools/backgrounds.html#failed%20merchant_ai)\n✅ [Far Traveler](https://5e.tools/backgrounds.html#far%20traveler_scag)\n✅ [Feylost](https://5e.tools/backgrounds.html#feylost_wbtw)\n✅ [Fisher](https://5e.tools/backgrounds.html#fisher_gos)\n✅ [Folk Hero](https://5e.tools/backgrounds.html#folk%20hero_phb)\n✅ [Gambler](https://5e.tools/backgrounds.html#gambler_ai)\n✅ [Gladiator](https://5e.tools/backgrounds.html#variant%20entertainer%20(gladiator)_phb)",
 					"name": "** **",
 					"inline": true
 				},
@@ -765,13 +770,29 @@
 					"inline": true
 				},
 				{
-					"value": "✅ [Noble (Knight)](https://5e.tools/backgrounds.html#variant%20noble%20(knight)_phb)\n✅ [Orzhov Representative ®](https://5e.tools/backgrounds.html#orzhov%20representative_ggr)\n✅ [Outlander](https://5e.tools/backgrounds.html#outlander_phb)\n✅ [Plaintiff](https://5e.tools/backgrounds.html#plaintiff_ai)\n✅ [Rakdos Cultist ®](https://5e.tools/backgrounds.html#rakdos%20cultist_ggr)\n✅ [Rival Intern](https://5e.tools/backgrounds.html#rival%20intern_ai)\n✅ [Sage](https://5e.tools/backgrounds.html#sage_phb)\n✅ [Sailor](https://5e.tools/backgrounds.html#sailor_phb)\n✅ [Sailor (Pirate)](https://5e.tools/backgrounds.html#variant%20sailor%20(pirate)_phb)\n✅ [Selesnya Initiate ®](https://5e.tools/backgrounds.html#selesnya%20initiate_ggr)\n✅ [Shipwright](https://5e.tools/backgrounds.html#shipwright_gos)\n✅ [Simic Scientist ®](https://5e.tools/backgrounds.html#simic%20scientist_ggr)\n✅ [Smuggler](https://5e.tools/backgrounds.html#smuggler_gos)\n✅ [Soldier](https://5e.tools/backgrounds.html#soldier_phb)",
+					"value": "✅ [Golgari Agent ®](https://5e.tools/backgrounds.html#golgari%20agent_ggr)\n✅ [Grinner](https://5e.tools/backgrounds.html#grinner_egw)\n✅ [Gruul Anarch ®](https://5e.tools/backgrounds.html#gruul%20anarch_ggr)\n✅ [Guild Artisan](https://5e.tools/backgrounds.html#guild%20artisan_phb)\n✅ [Guild Merchant](https://5e.tools/backgrounds.html#variant%20guild%20artisan%20(guild%20merchant)_phb)\n✅ [Haunted One](https://5e.tools/backgrounds.html#haunted%20one_vrgr)\n✅ [Hermit](https://5e.tools/backgrounds.html#hermit_phb)\n✅ [House Agent](https://5e.tools/backgrounds.html#house%20agent_erlw)\n✅ [Inheritor](https://5e.tools/backgrounds.html#inheritor_scag)\n✅ [Investigator](https://5e.tools/backgrounds.html#investigator_vrgr)\n✅ [Izzet Engineer ®](https://5e.tools/backgrounds.html#izzet%20engineer_ggr)\n✅ [Knight](https://5e.tools/backgrounds.html#variant%20noble%20(knight)_phb) ⚠️\n✅ [Knight of the Order](https://5e.tools/backgrounds.html#knight%20of%20the%20order_scag)",
 					"name": "** **",
 					"inline": true
 				},
 				{
-					"value": "✅ [Urban Bounty Hunter](https://5e.tools/backgrounds.html#urban%20bounty%20hunter_scag)\n✅ [Urchin](https://5e.tools/backgrounds.html#urchin_phb)\n✅ [Uthgardt Tribe Member](https://5e.tools/backgrounds.html#uthgardt%20tribe%20member_scag)\n✅ [Volstrucker Agent](https://5e.tools/backgrounds.html#volstrucker%20agent_egw)\n✅ [Waterdhavian Noble](https://5e.tools/backgrounds.html#waterdhavian%20noble_scag)\n✅ [Witchlight Hand](https://5e.tools/backgrounds.html#witchlight%20hand_wbtw)\n🚫 Astral Drifter\n🚫 Knight of Solamnia\n🚫 Lorehold Student\n🚫 Mage of High Sorcery\n🚫 Prismari Student\n🚫 Quandrix Student\n🚫 Silverquill Student\n🚫 Wildspacer\n🚫 Witherbloom Student",
+					"value": "✅ [Marine](https://5e.tools/backgrounds.html#marine_gos)\n✅ [Mercenary Veteran](https://5e.tools/backgrounds.html#mercenary%20veteran_scag)\n✅ [Noble](https://5e.tools/backgrounds.html#noble_phb) / [Variant](https://5e.tools/backgrounds.html#variant%20noble%20(retainers)_phb) ⚠️\n✅ [Orzhov Rep. ®](https://5e.tools/backgrounds.html#orzhov%20representative_ggr)\n✅ [Outlander](https://5e.tools/backgrounds.html#outlander_phb)\n✅ [Plaintiff](https://5e.tools/backgrounds.html#plaintiff_ai)\n✅ [Rakdos Cultist ®](https://5e.tools/backgrounds.html#rakdos%20cultist_ggr)\n✅ [Rival Intern](https://5e.tools/backgrounds.html#rival%20intern_ai)\n✅ [Sage](https://5e.tools/backgrounds.html#sage_phb)\n✅ [Sailor](https://5e.tools/backgrounds.html#sailor_phb) / [Pirate](https://5e.tools/backgrounds.html#variant%20sailor%20(pirate)_phb)\n✅ [Selesnya Initiate ®](https://5e.tools/backgrounds.html#selesnya%20initiate_ggr)\n✅ [Shipwright](https://5e.tools/backgrounds.html#shipwright_gos)",
 					"name": "** **",
+					"inline": true
+				},
+				{
+					"value": "✅ [Simic Scientist ®](https://5e.tools/backgrounds.html#simic%20scientist_ggr)\n✅ [Smuggler](https://5e.tools/backgrounds.html#smuggler_gos)\n✅ [Soldier](https://5e.tools/backgrounds.html#soldier_phb)\n✅ [Urban Bounty Hunter](https://5e.tools/backgrounds.html#urban%20bounty%20hunter_scag)\n✅ [Urchin](https://5e.tools/backgrounds.html#urchin_phb)\n✅ [Uthgardt Tribe Member](https://5e.tools/backgrounds.html#uthgardt%20tribe%20member_scag)\n✅ [Waterdhavian Noble](https://5e.tools/backgrounds.html#waterdhavian%20noble_scag)\n✅ [Witchlight Hand](https://5e.tools/backgrounds.html#witchlight%20hand_wbtw)",
+					"name": "** **",
+					"inline": true
+				}
+				]
+			},
+			{ 
+				"description":"`                                                                     `",
+				"footer": { "text": "Backgrounds" },
+				"fields": [
+				{
+					"value": "🚫 Ashari\n🚫 Astral Drifter\n🚫 Clasp Member\n🚫 Gate Warden\n🚫 Giant Foundling\n🚫 Knight of Solamnia\n🚫 Lorehold Student\n🚫 Lyceum Scholar\n🚫 Mage of High Sorcery\n🚫 Planar Philosopher\n🚫 Prismari Student\n🚫 Quandrix Student\n🚫 Reformed Cultist\n🚫 Rewarded\n🚫 Ruined\n🚫 Rune Carver\n🚫 Silverquill Student\n🚫 Volstrucker Agent\n🚫 Whitestone Rifle Corps\n🚫 Wildspacer\n🚫 Witherbloom Student",
+					"name": "Disallowed Backgrounds",
 					"inline": true
 				}]
 			}
@@ -785,63 +806,77 @@
 		"embeds": [
 			{
 				"title": "Feats",
-				"description":"`                                                                     `\n*The following Feats are ✅ Approved / 🚫 Not Approved for use.*",
+				"description":"`                                                                     `\n*The following Feats are ✅ Approved / 🚫 Not Approved for use.*\n*★ denotes UA feats*",
 				"fields": [
 					{
-						"value": "✅ [Aberrant Dragonmark](https://5e.tools/feats.html#aberrant%20dragonmark_erlw)\n✅ [Acrobat (UA)](https://5e.tools/feats.html#acrobat_uafeatsforskills)\n✅ [Actor](https://5e.tools/feats.html#actor_phb)\n✅ [Adept of Black Robes](https://5e.tools/feats.html#adept%20of%20the%20black%20robes_dsotdq)\n✅ [Adept of Red Robes](https://5e.tools/feats.html#adept%20of%20the%20red%20robes_dsotdq)\n✅ [Adept of White Robes](https://5e.tools/feats.html#adept%20of%20the%20white%20robes_dsotdq)\n✅ [Alchemist (UA)](https://5e.tools/feats.html#alchemist_uafeats)\n✅ [Alert](https://5e.tools/feats.html#alert_phb)\n✅ [Animal Handler (UA)](https://5e.tools/feats.html#animal%20handler_uafeatsforskills)\n✅ [Arcanist (UA)](https://5e.tools/feats.html#arcanist_uafeatsforskills)\n✅ [Artificer Initiate](https://5e.tools/feats.html#artificer%20initiate_tce)\n✅ [Athlete](https://5e.tools/feats.html#athlete_phb)\n✅ [Barbed Hide (UA)](https://5e.tools/feats.html#barbed%20hide_uafeatsforraces)",
+						"value": "✅ [Aberrant Dragonmark](https://5e.tools/feats.html#aberrant%20dragonmark_erlw)\n✅ [Acrobat★](https://5e.tools/feats.html#acrobat_uafeatsforskills)\n✅ [Actor](https://5e.tools/feats.html#actor_phb)\n✅ [Adept: Black Robes](https://5e.tools/feats.html#adept%20of%20the%20black%20robes_dsotdq)\n✅ [Adept: Red Robes](https://5e.tools/feats.html#adept%20of%20the%20red%20robes_dsotdq)\n✅ [Adept: White Robes](https://5e.tools/feats.html#adept%20of%20the%20white%20robes_dsotdq)\n✅ [Agent of Order](https://5e.tools/feats.html#agent%20of%20order_sato)\n✅ [Alchemist★](https://5e.tools/feats.html#alchemist_uafeats)\n✅ [Alert](https://5e.tools/feats.html#alert_phb)\n✅ [Animal Handler★](https://5e.tools/feats.html#animal%20handler_uafeatsforskills)\n✅ [Arcanist★](https://5e.tools/feats.html#arcanist_uafeatsforskills)\n✅ [Artificer Initiate](https://5e.tools/feats.html#artificer%20initiate_tce)\n✅ [Athlete](https://5e.tools/feats.html#athlete_phb)\n✅ [Baleful Scion](https://5e.tools/feats.html#baleful%20scion_sato)",
 						"name": "** **",
 						"inline": true
 					},
 					{
-						"value": "✅ [Blade Mastery (UA)](https://5e.tools/feats.html#blade%20mastery_uafeats)\n✅ [Bountiful Luck](https://5e.tools/feats.html#bountiful%20luck_xge)\n✅ [Brawny (UA)](https://5e.tools/feats.html#brawny_uafeatsforskills)\n✅ [Burglar (UA)](https://5e.tools/feats.html#burglar_uafeats)\n✅ [Charger](https://5e.tools/feats.html#charger_phb)\n✅ [Chef](https://5e.tools/feats.html#chef_tce)\n✅ [Critter Friend (UA)](https://5e.tools/feats.html#critter%20friend_uafeatsforraces)\n✅ [Crossbow Expert](https://5e.tools/feats.html#crossbow%20expert_phb)\n✅ [Crusher](https://5e.tools/feats.html#crusher_tce)\n✅ [Defensive Duelist](https://5e.tools/feats.html#defensive%20duelist_phb)\n✅ [Diplomat (UA)](https://5e.tools/feats.html#diplomat_uafeatsforskills)\n✅ [Divinely Favored](https://5e.tools/feats.html#divinely%20favored_dsotdq)\n✅ [Dragon Fear](https://5e.tools/feats.html#dragon%20fear_xge)\n✅ [Dragon Hide](https://5e.tools/feats.html#dragon%20hide_xge)\n✅ [Dragon Wings (UA)](https://5e.tools/feats.html#dragon%20wings_uafeatsforraces)",
+						"value": "✅ [Barbed Hide★](https://5e.tools/feats.html#barbed%20hide_uafeatsforraces)\n✅ [Blade Mastery★](https://5e.tools/feats.html#blade%20mastery_uafeats)\n✅ [Bountiful Luck](https://5e.tools/feats.html#bountiful%20luck_xge)\n✅ [Brawny★](https://5e.tools/feats.html#brawny_uafeatsforskills)\n✅ [Burglar★](https://5e.tools/feats.html#burglar_uafeats)\n✅ [Charger](https://5e.tools/feats.html#charger_phb)\n✅ [Chef](https://5e.tools/feats.html#chef_tce)\n✅ [Cohort of Chaos](https://5e.tools/feats.html#cohort%20of%20chaos_sato)\n✅ [Critter Friend★](https://5e.tools/feats.html#critter%20friend_uafeatsforraces)\n✅ [Crossbow Expert](https://5e.tools/feats.html#crossbow%20expert_phb)\n✅ [Crusher](https://5e.tools/feats.html#crusher_tce)\n✅ [Defensive Duelist](https://5e.tools/feats.html#defensive%20duelist_phb)\n✅ [Diplomat★](https://5e.tools/feats.html#diplomat_uafeatsforskills)\n✅ [Divinely Favored](https://5e.tools/feats.html#divinely%20favored_dsotdq)\n✅ [Dragon Fear](https://5e.tools/feats.html#dragon%20fear_xge)",
 						"name": "** **",
 						"inline": true
 					},
 					{
-			        	"value": "✅ [Drow High Magic](https://5e.tools/feats.html#drow%20high%20magic_xge)\n✅ [Dual Wielder](https://5e.tools/feats.html#dual%20wielder_phb)\n✅ [Dungeon Delver](https://5e.tools/feats.html#dungeon%20delver_phb)\n✅ [Durable](https://5e.tools/feats.html#durable_phb)\n✅ [Dwarven Fortitude](https://5e.tools/feats.html#dwarven%20fortitude_xge)\n✅ [Eldritch Adept](https://5e.tools/feats.html#eldritch%20adept_tce)\n✅ [Elemental Adept](https://5e.tools/feats.html#elemental%20adept_phb)\n✅ [Elven Accuracy](https://5e.tools/feats.html#elven%20accuracy_xge)\n✅ [Empathic (UA)](https://5e.tools/feats.html#empathic_uafeatsforskills)\n✅ [Everybody's Friend (UA)](https://5e.tools/feats.html#everybody's%20friend_uafeatsforraces)\n✅ [Fade Away](https://5e.tools/feats.html#fade%20away_xge)\n✅ [Fell Handed (UA)](https://5e.tools/feats.html#fell%20handed_uafeats)\n✅ [Fey Teleportation](https://5e.tools/feats.html#fey%20teleportation_xge)\n✅ [Fey Touched](https://5e.tools/feats.html#fey%20touched_tce)",
+			        	"value": "✅ [Dragon Hide](https://5e.tools/feats.html#dragon%20hide_xge)\n✅ [Dragon Wings★](https://5e.tools/feats.html#dragon%20wings_uafeatsforraces)\n✅ [Drow High Magic](https://5e.tools/feats.html#drow%20high%20magic_xge)\n✅ [Dual Wielder](https://5e.tools/feats.html#dual%20wielder_phb)\n✅ [Dungeon Delver](https://5e.tools/feats.html#dungeon%20delver_phb)\n✅ [Durable](https://5e.tools/feats.html#durable_phb)\n✅ [Dwarven Fortitude](https://5e.tools/feats.html#dwarven%20fortitude_xge)\n✅ [Eldritch Adept](https://5e.tools/feats.html#eldritch%20adept_tce)\n✅ [Elemental Adept](https://5e.tools/feats.html#elemental%20adept_phb)\n✅ [Elven Accuracy](https://5e.tools/feats.html#elven%20accuracy_xge)\n✅ [Ember of Fire Giant](https://5e.tools/feats.html#ember%20of%20the%20fire%20giant_bgg)\n✅ [Empathic★](https://5e.tools/feats.html#empathic_uafeatsforskills)\n✅ [Everybody's Friend★](https://5e.tools/feats.html#everybody's%20friend_uafeatsforraces)\n✅ [Fade Away](https://5e.tools/feats.html#fade%20away_xge)",
 						"name": "** **",
 						"inline": true
 					},
 					{
-						"value": "✅ [Fighting Initiate](https://5e.tools/feats.html#fighting%20initiate_tce)\n✅ [Flail Mastery (UA)](https://5e.tools/feats.html#flail%20mastery_uafeats)\n✅ [Flames of Phlegethos](https://5e.tools/feats.html#flames%20of%20phlegethos_xge)\n✅ [Gift of Chromatic Dragon](https://5e.tools/feats.html#gift%20of%20the%20chromatic%20dragon_ftd)\n✅ [Gift of the Gem Dragon](https://5e.tools/feats.html#gift%20of%20the%20gem%20dragon_ftd)\n✅ [Gift of the Metallic Dragon](https://5e.tools/feats.html#gift%20of%20the%20metallic%20dragon_ftd)\n✅ [Gourmand (UA)](https://5e.tools/feats.html#gourmand_uafeats)\n✅ [Grappler](https://5e.tools/feats.html#grappler_phb)\n✅ [Great Weapon Master](https://5e.tools/feats.html#great%20weapon%20master_phb)\n✅ [Healer](https://5e.tools/feats.html#healer_phb)\n✅ [Heavily Armored](https://5e.tools/feats.html#heavily%20armored_phb)\n✅ [Heavy Armor Master](https://5e.tools/feats.html#heavy%20armor%20master_phb)\n✅ [Historian (UA)](https://5e.tools/feats.html#historian_uafeatsforskills)",
+						"value": "✅ [Fell Handed★](https://5e.tools/feats.html#fell%20handed_uafeats)\n✅ [Fey Teleportation](https://5e.tools/feats.html#fey%20teleportation_xge)\n✅ [Fey Touched](https://5e.tools/feats.html#fey%20touched_tce)\n✅ [Fighting Initiate](https://5e.tools/feats.html#fighting%20initiate_tce)\n✅ [Flail Mastery★](https://5e.tools/feats.html#flail%20mastery_uafeats)\n✅ [Flames of Phlegethos](https://5e.tools/feats.html#flames%20of%20phlegethos_xge)\n✅ [Fury of Frost Giant](https://5e.tools/feats.html#fury%20of%20the%20frost%20giant_bgg)\n✅ [Gift of Chromatic Dragon](https://5e.tools/feats.html#gift%20of%20the%20chromatic%20dragon_ftd)\n✅ [Gift of Gem Dragon](https://5e.tools/feats.html#gift%20of%20the%20gem%20dragon_ftd)\n✅ [Gift of Metallic Dragon](https://5e.tools/feats.html#gift%20of%20the%20metallic%20dragon_ftd)\n✅ [Gourmand★](https://5e.tools/feats.html#gourmand_uafeats)\n✅ [Grappler](https://5e.tools/feats.html#grappler_phb)\n✅ [Great Weapon Master](https://5e.tools/feats.html#great%20weapon%20master_phb)",
 						"name": "** **",
 						"inline": true
 					},
 					{
-						"value": "✅ [Human Determination (UA)](https://5e.tools/feats.html#human%20determination_uafeatsforraces)\n✅ [Infernal Constitution](https://5e.tools/feats.html#infernal%20constitution_xge)\n✅ [Initiate of High Sorcery](https://5e.tools/feats.html#initiate%20of%20high%20sorcery_dsotdq)\n✅ [Inspiring Leader](https://5e.tools/feats.html#inspiring%20leader_phb)\n✅ [Investigator (UA)](https://5e.tools/feats.html#investigator_uafeatsforskills)\n✅ [Keen Mind](https://5e.tools/feats.html#keen%20mind_phb)\n✅ [Knight of the Crown](https://5e.tools/feats.html#knight%20of%20the%20crown_dsotdq)\n✅ [Knight of the Rose](https://5e.tools/feats.html#knight%20of%20the%20rose_dsotdq)\n✅ [Knight of the Sword](https://5e.tools/feats.html#knight%20of%20the%20sword_dsotdq)\n✅ [Lightly Armored](https://5e.tools/feats.html#lightly%20armored_phb)\n✅ [Linguist](https://5e.tools/feats.html#linguist_phb)\n✅ [Lucky](https://5e.tools/feats.html#lucky_phb)\n✅ [Mage Slayer](https://5e.tools/feats.html#mage%20slayer_phb)",
+						"value": "✅ [Guile of Cloud Giant](https://5e.tools/feats.html#guile%20of%20the%20cloud%20giant_bgg)\n✅ [Healer](https://5e.tools/feats.html#healer_phb)\n✅ [Heavily Armored](https://5e.tools/feats.html#heavily%20armored_phb)\n✅ [Heavy Armor Master](https://5e.tools/feats.html#heavy%20armor%20master_phb)\n✅ [Historian★](https://5e.tools/feats.html#historian_uafeatsforskills)\n✅ [Human Determination★](https://5e.tools/feats.html#human%20determination_uafeatsforraces)\n✅ [Infernal Constitution](https://5e.tools/feats.html#infernal%20constitution_xge)\n✅ [Initiate of High Sorcery](https://5e.tools/feats.html#initiate%20of%20high%20sorcery_dsotdq)\n✅ [Inspiring Leader](https://5e.tools/feats.html#inspiring%20leader_phb)\n✅ [Investigator★](https://5e.tools/feats.html#investigator_uafeatsforskills)\n✅ [Keen Mind](https://5e.tools/feats.html#keen%20mind_phb)\n✅ [Keenness of Stone Giant](https://5e.tools/feats.html#keenness%20of%20the%20stone%20giant_bgg)",
 						"name": "** **",
 						"inline": true
 					}
 				]
 			},
+			{
+				"description":"`                                                                     `",			
+				"fields": [{ 
+						"value": "✅ [Knight of Crown](https://5e.tools/feats.html#knight%20of%20the%20crown_dsotdq)\n✅ [Knight of Rose](https://5e.tools/feats.html#knight%20of%20the%20rose_dsotdq)\n✅ [Knight of Sword](https://5e.tools/feats.html#knight%20of%20the%20sword_dsotdq)\n✅ [Lightly Armored](https://5e.tools/feats.html#lightly%20armored_phb)\n✅ [Linguist](https://5e.tools/feats.html#linguist_phb)\n✅ [Lucky](https://5e.tools/feats.html#lucky_phb)\n✅ [Mage Slayer](https://5e.tools/feats.html#mage%20slayer_phb)\n✅ [Magic Initiate](https://5e.tools/feats.html#magic%20initiate_phb)\n✅ [Martial Adept](https://5e.tools/feats.html#martial%20adept_phb)\n✅ [Master of Disguise★](https://5e.tools/feats.html#master%20of%20disguise_uafeats)\n✅ [Medic★](https://5e.tools/feats.html#medic_uafeatsforskills)\n✅ [Medium Armor Master](https://5e.tools/feats.html#medium%20armor%20master_phb)\n✅ [Menacing★](https://5e.tools/feats.html#menacing_uafeatsforskills)\n✅ [Metamagic Adept](https://5e.tools/feats.html#metamagic%20adept_tce)", 
+						"name": "** **", 
+						"inline": true 
+					}, 
+					{ 
+						"value": "✅ [Mobile](https://5e.tools/feats.html#mobile_phb)\n✅ [Moderately Armored](https://5e.tools/feats.html#moderately%20armored_phb)\n✅ [Mounted Combatant](https://5e.tools/feats.html#mounted%20combatant_phb)\n✅ [Naturalist★](https://5e.tools/feats.html#naturalist_uafeatsforskills)\n✅ [Observant](https://5e.tools/feats.html#observant_phb)\n✅ [Orcish Fury](https://5e.tools/feats.html#orcish%20fury_xge)\n✅ [Outlands Envoy](https://5e.tools/feats.html#outlands%20envoy_sato)\n✅ [Perceptive★](https://5e.tools/feats.html#perceptive_uafeatsforskills)\n✅ [Performer★](https://5e.tools/feats.html#performer_uafeatsforskills)\n✅ [Piercer](https://5e.tools/feats.html#piercer_tce)\n✅ [Planar Wanderer](https://5e.tools/feats.html#planar%20wanderer_sato)\n✅ [Poisoner](https://5e.tools/feats.html#poisoner_tce)\n✅ [Polearm Master](https://5e.tools/feats.html#polearm%20master_phb)\n✅ [Prodigy](https://5e.tools/feats.html#prodigy_xge)\n✅ [Quick-Fingered★](https://5e.tools/feats.html#quick-fingered_uafeatsforskills)", 
+						"name": "** **", 
+						"inline": true 
+					}, 
+					{ 
+						"value": "✅ [Resilient](https://5e.tools/feats.html#resilient_phb)\n✅ [Revenant Blade](https://5e.tools/feats.html#revenant%20blade_erlw)\n✅ [Righteous Heritor](https://5e.tools/feats.html#righteous%20heritor_sato)\n✅ [Ritual Caster](https://5e.tools/feats.html#ritual%20caster_phb)\n✅ [Rune Shaper](https://5e.tools/feats.html#rune%20shaper_bgg)\n✅ [Savage Attacker](https://5e.tools/feats.html#savage%20attacker_phb)\n✅ [Scion of Outer Planes](https://5e.tools/feats.html#scion%20of%20the%20outer%20planes_sato)\n✅ [Second Chance](https://5e.tools/feats.html#second%20chance_xge)\n✅ [Sentinel](https://5e.tools/feats.html#sentinel_phb)\n✅ [Shadow Touched](https://5e.tools/feats.html#shadow%20touched_tce)\n✅ [Sharpshooter](https://5e.tools/feats.html#sharpshooter_phb)\n✅ [Shield Master](https://5e.tools/feats.html#shield%20master_phb)\n✅ [Shield Training★](https://5e.tools/feats.html#shield%20training_ua2020feats)\n✅ [Silver-Tongued★](https://5e.tools/feats.html#silver-tongued_uafeatsforskills)", 
+						"name": "** **", 
+						"inline": true 
+					}, 
+					{ 
+						"value": "✅ [Skill Expert](https://5e.tools/feats.html#skill%20expert_tce)\n✅ [Skilled](https://5e.tools/feats.html#skilled_phb)\n✅ [Skulker](https://5e.tools/feats.html#skulker_phb)\n✅ [Slasher](https://5e.tools/feats.html#slasher_tce)\n✅ [Soul of Storm Giant](https://5e.tools/feats.html#soul%20of%20the%20storm%20giant_bgg)\n✅ [Spear Mastery★](https://5e.tools/feats.html#spear%20mastery_uafeats)\n✅ [Spell Sniper](https://5e.tools/feats.html#spell%20sniper_phb)\n✅ [Squat Nimbleness](https://5e.tools/feats.html#squat%20nimbleness_xge)\n✅ [Squire of Solamnia](https://5e.tools/feats.html#squire%20of%20solamnia_dsotdq)\n✅ [Stealthy★](https://5e.tools/feats.html#stealthy_uafeatsforskills)\n✅ [Strike of Giants](https://5e.tools/feats.html#strike%20of%20the%20giants_bgg)\n✅ [Strixhaven Initiate](https://5e.tools/feats.html#strixhaven%20initiate_scc)\n✅ [Strixhaven Mascot](https://5e.tools/feats.html#strixhaven%20mascot_scc)\n✅ [Survivalist★](https://5e.tools/feats.html#survivalist_uafeatsforskills)", 
+						"name": "** **", 
+						"inline": true 
+					}, 
+					{ 
+						"value": "✅ [Svirfneblin Magic](https://5e.tools/feats.html#svirfneblin%20magic_mtf)\n✅ [Tandem Tactician★](https://5e.tools/feats.html#tandem%20tactician_ua2020feats)\n✅ [Tavern Brawler](https://5e.tools/feats.html#tavern%20brawler_phb)\n✅ [Telekinetic](https://5e.tools/feats.html#telekinetic_tce)\n✅ [Telepathic](https://5e.tools/feats.html#telepathic_tce)\n✅ [Theologian★](https://5e.tools/feats.html#theologian_uafeatsforskills)\n✅ [Tough](https://5e.tools/feats.html#tough_phb)\n✅ [Tracker★](https://5e.tools/feats.html#tracker_ua2020feats)\n✅ [Vigor of Hill Giant](https://5e.tools/feats.html#vigor%20of%20the%20hill%20giant_bgg)\n✅ [War Caster](https://5e.tools/feats.html#war%20caster_phb)\n✅ [Weapon Master](https://5e.tools/feats.html#weapon%20master_phb)\n✅ [Wonder Maker★](https://5e.tools/feats.html#wonder%20maker_uafeatsforraces)\n✅ [Wood Elf Magic](https://5e.tools/feats.html#wood%20elf%20magic_xge)", 
+						"name": "** **", 
+						"inline": true 
+					} 
+				] 
+			},
 			{ 
 				"description":"`                                                                     `",
 				"footer": { "text": "Feats" }, 
 				"fields": [{ 
-						"value": "✅ [Magic Initiate](https://5e.tools/feats.html#magic%20initiate_phb)\n✅ [Martial Adept](https://5e.tools/feats.html#martial%20adept_phb)\n✅ [Master of Disguise (UA)](https://5e.tools/feats.html#master%20of%20disguise_uafeats)\n✅ [Medic (UA)](https://5e.tools/feats.html#medic_uafeatsforskills)\n✅ [Medium Armor Master](https://5e.tools/feats.html#medium%20armor%20master_phb)\n✅ [Menacing](https://5e.tools/feats.html#menacing_uafeatsforskills)\n✅ [Metamagic Adept](https://5e.tools/feats.html#metamagic%20adept_tce)\n✅ [Mobile](https://5e.tools/feats.html#mobile_phb)\n✅ [Moderately Armored](https://5e.tools/feats.html#moderately%20armored_phb)\n✅ [Mounted Combatant](https://5e.tools/feats.html#mounted%20combatant_phb)\n✅ [Naturalist (UA)](https://5e.tools/feats.html#naturalist_uafeatsforskills)\n✅ [Observant](https://5e.tools/feats.html#observant_phb)\n✅ [Orcish Fury](https://5e.tools/feats.html#orcish%20fury_xge)\n✅ [Perceptive (UA)](https://5e.tools/feats.html#perceptive_uafeatsforskills)", 
-						"name": "** **", 
+						"name": "Disallowed Feats",
+						"value": "🚫 Cartomancer (UA)\n🚫 Cruel (TDCSR)\n🚫 Divine Communications (UA)\n🚫 Dragonmark of Detection (UA)\n🚫 Dragonmark of Finding (UA)\n🚫 Dragonmark of Handling (UA)\n🚫 Dragonmark of Healing (UA)\n🚫 Dragonmark of Hospitality (UA)\n🚫 Dragonmark of Making (UA)\n🚫 Dragonmark of Passage (UA)\n🚫 Dragonmark of Scribing (UA)\n🚫 Dragonmark of Sentinel (UA)\n🚫 Dragonmark of Shadow (UA)\n🚫 Dragonmark of Storm (UA)\n🚫 Dragonmark of Warding (UA)\n🚫 Elemental Touched (UA)\n🚫 Flash Recall (TDCSR)\n🚫 Grudge-Bearer (UA)\n🚫 Gunner (No Firearms)\n🚫 Metabolic Control (UA)", 
 						"inline": true 
-					}, 
-					{ 
-						"value": "✅ [Performer (UA)](https://5e.tools/feats.html#performer_uafeatsforskills)\n✅ [Piercer](https://5e.tools/feats.html#piercer_tce)\n✅ [Poisoner](https://5e.tools/feats.html#poisoner_tce)\n✅ [Polearm Master](https://5e.tools/feats.html#polearm%20master_phb)\n✅ [Prodigy](https://5e.tools/feats.html#prodigy_xge)\n✅ [Quick-Fingered (UA)](https://5e.tools/feats.html#quick-fingered_uafeatsforskills)\n✅ [Resilient](https://5e.tools/feats.html#resilient_phb)\n✅ [Revenant Blade](https://5e.tools/feats.html#revenant%20blade_erlw)\n✅ [Ritual Caster](https://5e.tools/feats.html#ritual%20caster_phb)\n✅ [Savage Attacker](https://5e.tools/feats.html#savage%20attacker_phb)\n✅ [Second Chance](https://5e.tools/feats.html#second%20chance_xge)\n✅ [Sentinel](https://5e.tools/feats.html#sentinel_phb)\n✅ [Shadow Touched](https://5e.tools/feats.html#shadow%20touched_tce)\n✅ [Sharpshooter](https://5e.tools/feats.html#sharpshooter_phb)\n✅ [Shield Master](https://5e.tools/feats.html#shield%20master_phb)", 
-						"name": "** **", 
-						"inline": true 
-					}, 
-					{ 
-						"value": "✅ [Shield Training (UA)](https://5e.tools/feats.html#shield%20training_ua2020feats)\n✅ [Silver-Tongued (UA)](https://5e.tools/feats.html#silver-tongued_uafeatsforskills)\n✅ [Skill Expert](https://5e.tools/feats.html#skill%20expert_tce)\n✅ [Skilled](https://5e.tools/feats.html#skilled_phb)\n✅ [Skulker](https://5e.tools/feats.html#skulker_phb)\n✅ [Slasher](https://5e.tools/feats.html#slasher_tce)\n✅ [Spear Mastery (UA)](https://5e.tools/feats.html#spear%20mastery_uafeats)\n✅ [Spell Sniper](https://5e.tools/feats.html#spell%20sniper_phb)\n✅ [Squat Nimbleness](https://5e.tools/feats.html#squat%20nimbleness_xge)\n✅ [Squire of Solamnia](https://5e.tools/feats.html#squire%20of%20solamnia_dsotdq)\n✅ [Stealthy (UA)](https://5e.tools/feats.html#stealthy_uafeatsforskills)\n✅ [Strixhaven Initiate](https://5e.tools/feats.html#strixhaven%20initiate_scc)\n✅ [Strixhaven Mascot](https://5e.tools/feats.html#strixhaven%20mascot_scc)\n✅ [Survivalist (UA)](https://5e.tools/feats.html#survivalist_uafeatsforskills)", 
-						"name": "** **", 
-						"inline": true 
-					}, 
-					{ 
-						"value": "✅ [Svirfneblin Magic](https://5e.tools/feats.html#svirfneblin%20magic_mtf)\n✅ [Tandem Tactician (UA)](https://5e.tools/feats.html#tandem%20tactician_ua2020feats)\n✅ [Tavern Brawler](https://5e.tools/feats.html#tavern%20brawler_phb)\n✅ [Telekinetic](https://5e.tools/feats.html#telekinetic_tce)\n✅ [Telepathic](https://5e.tools/feats.html#telepathic_tce)\n✅ [Theologian (UA)](https://5e.tools/feats.html#theologian_uafeatsforskills)\n✅ [Tough](https://5e.tools/feats.html#tough_phb)\n✅ [Tracker (UA)](https://5e.tools/feats.html#tracker_ua2020feats)\n✅ [War Caster](https://5e.tools/feats.html#war%20caster_phb)\n✅ [Weapon Master](https://5e.tools/feats.html#weapon%20master_phb)\n✅ [Wonder Maker (UA)](https://5e.tools/feats.html#wonder%20maker_uafeatsforraces)\n✅ [Wood Elf Magic](https://5e.tools/feats.html#wood%20elf%20magic_xge)\n🚫 Agent Of Order (UA)\n🚫 Baleful Scion (UA)\n🚫 Cartomancer (UA)\n🚫 Cohort Of Chaos (UA)\n🚫 Element Touched (UA)\n🚫 Ember of Fire Giant (UA)\n🚫 Fury of Frost Giant (UA)\n🚫 Guile of Cloud Giant (UA)", 
-						"name": "** **", 
-						"inline": true 
-					}, 
-					{ 
-						"value": "🚫 Keenness of Stone Giant (UA)\n🚫 Metabolic Cont. (UA)\n🚫 Orc Aggression (UA)\n🚫 Outlands Envoy (UA)\n🚫 Outsized Might (UA)\n🚫 Planar Wanderer (UA)\n🚫 Practiced Expert (UA)\n🚫 Quicksmithing (PS)\n🚫 Righteous Heritor (UA)\n🚫 Rune Carver Adept (UA)\n🚫 Rune Carver Apprent. (UA)\n🚫 Scion of Elem. Air (UA)\n🚫 Scion of Elem. Earth (UA)\n🚫 Scion of Elem. Fire (UA)\n🚫 Scion of Elem. Water (UA)\n🚫 Scion of Outer Plane (UA)\n🚫 Servo Crafting (PS)\n🚫 Soul of Storm Giant (UA)\n🚫 Strike of Giants (UA)\n🚫 Tower of Iron Will (UA)\n🚫 Vampiric Exultation (PS)\n🚫 Vigor of Hill Giant (UA)\n🚫 Warhammer Master (UA)\n🚫 Wild Talent (UA)\n🚫 Divine Communications (UA)", 
-						"name": "** **", 
-						"inline": true 
-					} 
+					},
+					{
+						"name": "** **",
+						"inline": true,
+						"value":"\n🚫 Mystic Conflux (TDCSR)\n🚫 Orcish Aggression (UA)\n🚫 Outsized Might (UA)\n🚫 Practiced Expert (UA)\n🚫 Quicksmithing (PSK)\n🚫 Remarkable Recovery (TDCSR)\n🚫 Rune Carver Adept (UA)\n🚫 Rune Carver Apprentice (UA)\n🚫 Scion Of Elemental Air (UA)\n🚫 Scion Of Elemental Earth (UA)\n🚫 Scion Of Elemental Fire (UA)\n🚫 Scion Of Elemental Water (UA)\n🚫 Servo Crafting (PSK)\n🚫 Spelldriver (TDCSR)\n🚫 Thrown Arms Master (TDCSR)\n🚫 Tower of Iron Will (UA)\n🚫 Vampiric Exultation (PSX)\n🚫 Vital Sacrifice (TDCSR)\n🚫 Warhammer Master (UA)\n🚫 Wild Talent (UA)"
+					}
 				] 
 			}			
 		]
@@ -853,7 +888,7 @@
 		"embeds": [
 			{
 				"title": "Optional Class Features",
-				"description":"`                                                                     `\nTasha's Cauldron of Everything introduced optional class features, which are approved for use.",
+				"description":"`                                                                     `\nTasha's Cauldron of Everything introduced optional class features,\nwhich are approved for use.",
 				"footer": { "text": "Character Options: Optional Class Features" },
 				"fields": [{
 					"inline": true,
@@ -903,12 +938,12 @@
 				{
 					"inline": true,
 					"name": "Sorcerer",
-					"value": "• Additional Sorcerer Spells\n• [Metamagic Options](https://5e.tools/classes.html#sorcerer_phb,state:feature=s2-1)\n• [Sorcerous Versatility](https://5e.tools/classes.html#sorcerer_phb,state:feature=s3-1)\n• [Magical Guidance](https://5e.tools/classes.html#sorcerer_phb,state:feature=s4-0)"
+					"value": "• Additional Sorc. Spells\n• [Metamagic Options](https://5e.tools/classes.html#sorcerer_phb,state:feature=s2-1)\n• [Sorcerous Versatility](https://5e.tools/classes.html#sorcerer_phb,state:feature=s3-1)\n• [Magical Guidance](https://5e.tools/classes.html#sorcerer_phb,state:feature=s4-0)"
 				},
 				{
 					"inline": true,
 					"name": "Warlock",
-					"value": "• Additional Warlock Spells\n• [Pact of the Talisman](https://5e.tools/classes.html#warlock_phb,state:feature=s2-0)\n• [Eldritch Versatility](https://5e.tools/classes.html#warlock_phb,state:feature=s3-1)\n• Eldritch Invocation Options"
+					"value": "• Additional Warlock Spells\n• [Pact of the Talisman](https://5e.tools/classes.html#warlock_phb,state:feature=s2-0)\n• [Eldritch Versatility](https://5e.tools/classes.html#warlock_phb,state:feature=s3-1)\n• Eldritch Invoc. Options"
 				},
 				{
 					"inline": true,

@@ -2,7 +2,7 @@ const { Events } = require('discord.js');
 const GuildUtils = require(`../../utilities/guildUtils.js`);
 const LevelUtils = require(`../../utilities/levelUtils.js`);
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 async function execute(client, member)
 {

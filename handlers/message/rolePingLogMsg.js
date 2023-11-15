@@ -5,7 +5,7 @@
 const { ChannelType, EmbedBuilder, PermissionsBitField, time } = require('discord.js')
 const MsgUtils = require(`../../utilities/messageUtils.js`);
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 const logRoles = {
 	[config.BuilderRole]:"Builder Attention Needed",

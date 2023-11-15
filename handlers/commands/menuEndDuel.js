@@ -1,10 +1,9 @@
-const { ApplicationCommandType } = require(`${process.cwd()}/utilities/enums.js`)
+const { ApplicationCommandType } = require(`../../utilities/enums.js`)
 const { ContextMenuCommandBuilder } = require('discord.js')
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`)
+const config = require(`../../config/${mod}_config.json`)
 
-const requiredRoles = [ config.ModeratorRole, config.DMRole,
-					  	config._ModeratorRole, config._BuilderRole];
+const requiredRoles = [ config.ModeratorRole, config.DMRole, config.BuilderRole];
 
 async function execute(interaction)
 {

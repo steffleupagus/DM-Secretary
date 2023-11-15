@@ -1,5 +1,6 @@
 const { EmbedBuilder, ButtonStyle, MessageMentions, TextInputStyle } = require('discord.js')
 const { SortOrder } = require(`../utilities/enums.js`)
+const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const LevelUtils = require(`../utilities/levelUtils.js`) 
 const ChanUtils = require(`../utilities/channelUtils.js`)
 const CharUtils = require(`../utilities/charUtils.js`)
@@ -13,7 +14,7 @@ const unbapi = require("unb-api")
 const unbClient = new unbapi.Client(process.env.UBTOKEN)
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../config/${mod}_config.json`);
 
 const MATCH_THRESHOLD = 0.9
 const MIN_THRESHOLD = 0.15
@@ -54,18 +55,24 @@ const NPC = 0;
 const SKIP = -1;
 
 const dmRoles = [
-			config.DMRole, config.ModeratorRole,
-			config._DMRole, config._ModeratorRole
+			config.DMRole, config.ModeratorRole
 		];
 
 const interactionTimer = {};
 
 async function autoCloseScene(message)
 {
+	const channel = message.channel;
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;	
+	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
+	if (chanMeta?.userOwner && chanMeta?.userOwner?.length > 0)
+	{
+		console.log("Auto Close Skipped")
+		return;
+	}
+	
 //	if (!Debug) return
 	let startTime = performance.now()
-
-	const channel = message.channel;
 	var data
 	data = await MsgUtils.getRoleplayData(channel, null);
 	const start = data.start
@@ -818,6 +825,12 @@ function generateDMEmbed(interaction, start, rpData, footer)
 		
 		let title  = `${data.char} (${level})`
 		let encode = encodeURIComponent(JSON.stringify(data));
+		 	encode = ` | [Data](${JSONURL}${encode})`
+		//Hack to make sure the data won't overflow the max size of the embed value
+		data.daily = data.daily.slice(0,3);
+		let shortEncode = encodeURIComponent(JSON.stringify(data));
+			shortEncode = ` | [Data](${JSONURL}${shortEncode})`
+	
 		let value  = ""
 		if (data.name != data.char)
 		{
@@ -830,8 +843,19 @@ function generateDMEmbed(interaction, start, rpData, footer)
 			value += `<@${data.user}>: \`${data.xp}x\` Cap\n`
 			
 			value += `**Days:** \`${data.rp.days}\` | **Posts:** \`${data.rp.posts}\` | **Length:** \`${data.rp.length}\``
-			value += ` | [Data](${JSONURL}${encode})`
 
+		let fieldLength = (value.length + encode.length)
+		if (fieldLength >= embed.MAX.FIELD)
+		{
+			console.log("Full encode too long. Using short encode")
+			value += shortEncode
+		}
+		else
+		{
+			console.log("Full encode fits field. Using full encode")
+			value += encode
+		}
+		
 		const totalLen = embed.length() + (2 * reservedLength) + embed.calcFieldLength(title,value)
 		if (totalLen >= embed.MAX.EMBED)
 		{
@@ -859,8 +883,9 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 	//Handle the travel attachment	
 	let travel = interaction.client.commands.get(`travel${config.DEV ? "dev" : ""}`)
 		travel = await travel?.attach?.dmPing?.(interaction.channel)
-		travel = travel.components[0]
-	buttonRow.addComponents(travel)
+		travel = travel?.components[0]
+	if (travel)
+		buttonRow.addComponents(travel)
 	
 	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.DMOnDutyRole}>`, //attachButtons);
 					 (message) => message.edit({ components:[buttonRow] }))
@@ -1364,6 +1389,7 @@ async function LogDebugResult(message, data, url = null, channel = null, footer 
 		});
 	}
 	const guild = message.guild;
-	const debugChan = await guild?.channels?.fetch(config.debugLogChannel);
+	const debugChanId = config.debugChannels.scene
+	const debugChan = await guild?.channels?.fetch(debugChanId);
 	if (debugChan) await embed.send(debugChan, `<@${config.OWNERID}>`);
 }

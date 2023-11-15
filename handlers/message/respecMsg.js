@@ -3,7 +3,7 @@
 \*------------------------------------------------------------*/
 const respec = require(`../../utilities/funcsRespec.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`)
+const config = require(`../../config/${mod}_config.json`)
 
 module.exports = {
 	name: 'respecPurchase',

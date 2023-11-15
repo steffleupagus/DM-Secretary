@@ -105,7 +105,7 @@ async function deleteTupperProxyMessage(client, message)
 
 async function getTupperLogLegacy(search)
 {
-	const legacyLog = require(`${process.cwd()}/config/tupperMap.json`);
+	const legacyLog = require(`../config/tupperMap.json`);
 	const result = legacyLog[search.mId];
 	result.aId = result.uid;	
 	return result;
