@@ -9,7 +9,7 @@ const MsgUtils = require(`../../utilities/messageUtils.js`)
 const Utils   = require(`../../utilities/utilFuncs.js`)
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 const spm=60      //seconds per Minute
 const sph=60*spm  //Seconds per Hour
@@ -24,7 +24,7 @@ async function startTimer(client)
 	console.log(`        • Starting timer: ${timerData.name}`)
 
 	//Get the guild from the ID in the config
-	const guildId   = config._GUILDID || config.GUILDID
+	const guildId   = config.GUILDID
 	const guild     = client.guilds.resolve(guildId)
 	const channelId = config.activityChannel;
 	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);
@@ -52,7 +52,7 @@ function stopTimer()
 async function triggerTimer(client)
 {
 	//Get the guild from the ID in the config
-	const guildId   = config._GUILDID || config.GUILDID
+	const guildId   = config.GUILDID
 	const guild     = client.guilds.resolve(guildId)
 	const channelId = config.activityChannel;
 	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);

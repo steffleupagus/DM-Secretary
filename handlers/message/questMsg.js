@@ -2,7 +2,7 @@
 | Detect Avrae combat messages, filtered for Quests, and log them in a database |
 \*-----------------------------------------------------------------------------*/
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`)
+const config = require(`../../config/${mod}_config.json`)
 const quest = require(`../../database/questSchema.js`)
 
 //!cast eldritch -rr 3 quest silver

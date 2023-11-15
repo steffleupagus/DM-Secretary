@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
+const Utils = require(`./utilFuncs.js`)
 
 const EMBED_MAX = 6000
 const EMBED_FIELD_MAX = 1024

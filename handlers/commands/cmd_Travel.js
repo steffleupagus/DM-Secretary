@@ -250,7 +250,8 @@ async function handleInteraction(interaction)
 	if (!interaction.customId.startsWith(prefix))
 		throw new Error("Interaction routed to incorrect command")	
 
-	const logChan = await interaction.guild.channels.fetch(config.debugLogChannel)
+	const logChanId = config.debugChannels.travel
+	const logChan = await interaction.guild.channels.fetch(logChanId)
 	const isUnlimited = Utils.hasAnyRole(interaction.member, whitelistRoles);	
 	const customId = interaction.customId.split(":");
 	const command = customId[0]?.replace(prefix,"");

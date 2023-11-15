@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
-const DuelUtils = require(`${process.cwd()}/utilities/funcsDuel.js`)
+const DuelUtils = require(`../../utilities/funcsDuel.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 async function execute(interaction, message=null)
 {
@@ -101,7 +101,6 @@ module.exports =
 	build:config.PRODUCTION || config.DEV
 };
 
-const requiredRoles = [ config.ModeratorRole, config.DMRole,
-					  	config._ModeratorRole, config._BuilderRole];
+const requiredRoles = [ config.ModeratorRole, config.DMRole, config.BuilderRole];
 if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles

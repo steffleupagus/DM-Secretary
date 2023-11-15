@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const SceneUtils = require(`../../utilities/funcsScene.js`)
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 async function execute(interaction, message=null)
 {
@@ -84,8 +84,8 @@ module.exports =
 	build:config.PRODUCTION||config.DEV
 };
 
-const requiredRoles = [ //config.BuilderRole, config._BuilderRole, 
-					    config.DMRole, config._DMRole	]
+const requiredRoles = [ //config.BuilderRole, 
+					    config.DMRole	]
 if (config.DEV)
 {
 	module.exports.aliases = ["scene"]

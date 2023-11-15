@@ -2,7 +2,7 @@
 | Detect Roleplay messages and log them in a database |
 \*---------------------------------------------------*/
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`)
+const config = require(`../../config/${mod}_config.json`)
 
 const MsgUtils = require(`../../utilities/messageUtils.js`);
 const ChanUtils = require(`../../utilities/channelUtils.js`);

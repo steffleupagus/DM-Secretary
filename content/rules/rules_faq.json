@@ -1,0 +1,300 @@
+{
+	"Getting Started": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"includeSectionBreak":true,
+		"embeds": [		
+			{
+				"title":"🇶 How old is the server?",
+				"description":"🅰️ The Demiplane of Lust was created about <t:1585602000:R> on <t:1585602000:D>"
+			},
+			{
+				"title":"🇶 What is the Demiplane of Lust?",
+				"description":"🅰️ The Demiplane of Lust is a Domain of Delight within the Feywild, surrounded by a strange mist that has a peculiar effect on the libido of its inhabitants.\n\nThe largest population center in the Demiplane is the elven city of Ost in Edhil, the domain of Queen Sel'ani Sumatril the Fair. In theory, the Queen and her council hold all the authority in the city, but in truth much of the day-to-day power is in the hands of the city's Guilds. There is an undercurrent of tension between the ruling elite and the guilds, but neither is entirely willing to act openly against the other.\nAdditional lore can be explored in the <#780154517710700574> channel."
+			},
+			{
+				"title":"🇶 How do I get started here?",
+				"description":"🅰️ The first step is to make an RP Profile and (optional) a Character Sheet. Head over to <#731989424635642057> to get set up with various preference roles. While this step is optional, it is recommended.",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> RP Profile",
+						"value":"You'll need an RP Profile approved in <#694861975896719450> before you can start roleplaying. Follow the pinned format, and be sure to include a kink/limit list, and a character reference."
+					},
+					{
+						"name":"<:d20:704040692946698361> Character Sheet",
+						"value":"A Character sheet is not required to RP, but is required if you intend to do anything with DnD mechanics, such as going on adventures, dueling, gaining exp, leveling, and so on. Our <#775866621994205285> can help guide you through the process."
+					}
+				]
+			},
+			{
+				"title":"🇶 What DnD content am I allowed to use?",
+				"description":"🅰️ Any published content that WoTC has released (*with a few minor exceptions*) is allowed. ⁠<#911129455345405992> has the complete list of available races and classes.",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> Tasha's Cauldron of Everything",
+						"value":"Optional Class Features, Custom Lineage, and Custom Origins are approved for use. Sidekicks are not approved for use."
+					},
+					{
+						"name":"<:d20:704040692946698361> Unearthed Arcana (UA)",
+						"value":"Playtest material requires approval from the DMs. ⁠<#911129455345405992> contains a list of approved and denied UA content. Any UA that is NOT listed there may still be considered. If you have a SPECIFIC request, you may ask, but know that it will require discussion so you will not get an immediate answer."
+					},
+					{
+						"name":"What about my super cool Homebrew?",
+						"value":"We **DO NOT** allow homebrew content at this time."
+					}
+				]
+			},
+			{
+				"title":"🇶 Can I reflavor my race?",
+				"description":"🅰️ We are aware that flavoring races is a frequent topic of debate, and one that not everyone will agree on. Unfortunately, due to recurring issues with the scope of what people have tried to pass off as a 'reflavor', the server staff has had to take a hard stance on this topic. To standardize and define the boundaries of what constitutes a 'minor change':\n🔸 If you're attempting to flavor one race to fit what's already written as the description of another, it's not going to be allowed. You'll need to use the race that most closely resembles the reference you're trying to use.\n🔸 If you're attempting to use a reference that doesn't fit any playable race (such as a monster from the monster manual) it will only be allowed in an NPC slot.\n🔸 If you're adding something that is specifically granted through a class feature and not granted by the race, you must have that feature in order to have it on your character.\n🔸 Extra Appendages, even 'non functional' ones, that do not fit within your racial description or given through a class feature to which you have access, are not allowed to be added to your character.\n🔸 Racial traits of playable races may be mixed and matched if one chooses a Custom Lineage. However, due to the mechanical limitations of that option, these traits may be *cosmetic only*.",
+				"fields":
+				[
+					{
+						"name":"Recurring instances:",
+						"value":"The following specific examples have come up time and again:\n🔸 Kemonomimi character references may be used with the Shifter race or a Custom Lineage. Tabaxi and Harengon are fully anthropomorphic and unsuitable for kemonomimi.\n🔸 Minotaurs must look like minotaurs, i.e. bovine. For horned characters more closely resembling humans than bulls, Shifter, Tiefling, or Custom Lineage are your options.\n🔸 Aaracokra, Fairies, Owlin, and Winged-Variant Tieflings are the only playable races with permanent wings. Plan accordingly.\n🔸 Pureblood Yuan-Ti are humanoid and have legs, not snake tails. Triton are humanoid and have legs, not Merfolk fish tails.\n🔸 Centaur's lower halves are horses and may not be flavored as spiders. That's a Drider, and requires an NPC slot."
+					},
+					{
+						"name":"A note on Custom Lineage",
+						"value":"Many of the above reflavors mention the use of Custom Lineage. While we will be somewhat more lenient with the flavoring restrictions for such characters, Custom Lineage is __***NOT***__ free reign to create homebrew races. They must still be humanoid and within the limits set forth above, and the DM staff reserves the right to refuse a character that extends beyond those limits at their discretion."
+					}
+				]
+			}
+		]
+	},
+	"Roleplaying": {
+		"includeHeader":true,
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"indexBreak":"Roleplaying",
+				"title":"🇶 How do I get started roleplaying?",
+				"description":"🅰️ Once your profile is created and approved, you'll be good to go.\nA good place to start is to post an ad in the <#779540190321967124> and ping the <@&745434819684466728> role, or respond to an ad in <#698207586037661806>.\nAdditional roleplaying guidance can be found in <#1105301940717490267>."
+			},
+			{
+				"title":"🇶 Where are all the RP channels?",
+				"description":"🅰️ The Demiplane of Lust has over 200 RP channels and numerous threads in which to RP, and it can quickly get overwhelming if we gave them all to you all at once. So the server uses a unique navigation system, allowing your character to travel to different locations throughout the city and the demiplane. A <#738987459651829830> has been added to guide you to most of the zones on the server, and the `/travel` command will allow you to quick-travel from place to place.\n\n🔸Rooms labeled with 📷🚪 icons are used for navigation, check the emoji list for movement and select from one of them to jog your character around.\n🔸Rooms labeled with an 🗣️ icon are considered in-character for Roleplaying.\n🔸The Fast Travel map will allow you to have up to three locations open at once.\n🔸The <#1099439209284116531> will allow you to find open channels for your RP, and travel to them."
+			},
+			{
+				"title":"🇶 Can my character be in more than one RP at a time?",
+				"description":"🅰️ You should not consider yourself RP locked. If you wish to move onto another RP either until your first partner is available, or to end a scene for any reason you should feel comfortable in doing so. We don't explicitly cap the number of simultaneous scenes you can be in, but RP locations ARE limited, so try not to take up too many channels or lock them for too long without replies."
+			},
+			{
+				"title":"🇶 How can my character join a Guild?",
+				"description":"🅰️ There are six in-character guilds. You can read more about each of them (and join one or more) by going to <#1020914190581518356>."
+			}
+		]
+	},
+	"Character Creation & Advancement": {
+		"includeHeader":true,
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"indexBreak":"Character Creation & Advancement",
+				"title":"🇶 How do I make a character sheet?",
+				"description":"🅰️ We use the official <@261302296103747584> bot for all things mechanics-related, so your sheet will need to be integrated with that. Avrae supports DnD Beyond, GSheet, and DiceCloud. We have a <#775866621994205285> available. The following applies, regardless of the sheet format you use:\n🔸**Stats**: We allow rolling or point buy. To roll, head to <#697021317727387718>, ping <@&694285067723210843>, wait for a response, and then use the pinned command (`!statroll`). Your first character gets one free Reroll. You may use Point Buy if you dislike your roll.\n🔸**Starting Exp/Gold**: All characters start at Level 3 (900xp). All characters start with 150 gp, regardless of chosen background.",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> DnD Beyond",
+						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall.\nFor more information, see <#781931745061896232>."
+					},
+					{
+						"name":"<:d20:704040692946698361> GSheet",
+						"value":"GSheet is one of the more common ones used. It less user-friendly than Beyond, but we have a guide for it: ⁠<#775178179941892096>.\n**Important**: If GSheet warns you not to change something, __DON'T__ or you will break things and have to start over."
+					},
+					{
+						"name":"<:d20:704040692946698361> DiceCloud",
+						"value":"Dicecloud is somewhat un-intuitive and has presented some difficulty for new players. The DM staff may not be able to help you.\nIf you choose to use DiceCloud, do so knowing that you may be on your own with the information in ⁠<#781931783897481296>."
+					}
+				]
+			},
+			{
+				"title":"🇶 How do I gain gold & exp to level?",
+				"description":"🅰️ Experience may be gained via the following methods:\n",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> Colosseum Duels",
+						"value":"The Colosseum provides exp by fighting others in non-lethal duels. The amount you can earn per day is capped by your level\nAt the conclusion of your duel, use the `/duel` command to log it with the DMs. Toggle on the <@&777235240921202740> role in <#731989424635642057> to receive pings when someone posts a Looking for Duel ad. For more information on arena duels, see <#698568383846940703>."
+					},
+					{
+						"name":"<:d20:704040692946698361> Roleplaying",
+						"value":"RP provides experience based on the duration and length of the scene, also capped by your level\n At the conclusion of your rp, use the `/scene` command to log it with the DMs. Toggle on the <@&745434819684466728> role in <#731989424635642057> to receive pings when someone posts a Looking for RP ad. For more information on roleplaying, see <#1105301940717490267>."
+					},
+					{
+						"name":"<:d20:704040692946698361> Tables",
+						"value":"Tables are a catch-all term for one-shot quests, adventures, campaigns, or other events run by one of our DMs, posted from time to time in <#695306420148633750>. Toggle on the <@&725749463791960186> role in <#731989424635642057> to receive pings when DMs post new table. For more information on tables, see <#1105303752702959726>"
+					},
+					{
+						"name":"** **",
+						"value":"🔸Don't add any exp until it is approved & posted in <#775545148192587796>.\n🔸Duel and Roleplay Exp are both capped by level, but are separate caps - you can earn both in a day."
+					},
+					{
+						"name":"Gold",
+						"value":"Gold is largely only gained through Table rewards at this time. The DMs are working on additional options, which will be announced as they become available."
+					}
+				]
+			},
+			{
+				"title":"🇶 How do I buy and sell equipment?",
+				"description":"🅰️ Basic gear can be managed via the `!bag` alias in <#704307298407022622>. See the `!bag ?` command to check out the help file. `!bag buy` automates the purchasing process. Basic gear can be sold for 50% of its normal value per the player handbook, but this is, sadly, not automated at this time.",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> Buying Basic Equipment",
+						"value":"🔸 Do `!item \"item name\"` to make sure you have the item right so Avrae will recognize it.\n🔸 Do `!bag buy # \"item name\"` where # is how many you want to buy.\n🔸 If it says you bought it for 0gp, something went wrong. You'll need to remove the incorrect item and try again. Ask for help if you're not sure."
+					},
+					{
+						"name":"<:d20:704040692946698361> Selling Basic Equipment",
+						"value":"🔸 Announce what you're wanting to sell\n🔸 Do `!item \"item name\"` to get the buy price.\n🔸 Divide that in half and add that amount using the `!coins` alias\n🔸 Remove the item from your bag with `!bag - # \"item name\"`\n\n"
+					}
+				]
+			},
+			{
+				"title":"🇶 What about magic items?",
+				"description":"🅰️ Magic Items cannot be bought or sold at this time, and can only be awarded for participating in tables and other DM-run events (note that not all tables reward magic items). Additional methods to obtain magic items are being considered.\n\nThe question has come up a few times of what people can do with magic items that aren't really useful for the characters to whom they were awarded. One character's trash may be another character's treasure - PCs are allowed to trade magic items with one another, *even two characters from the same player.* Magic items __may not__ be given away or sold, only traded (a magic item must be received in return). Furthermore, magic items may only be traded for other other magic items of like rarity (i.e. uncommon for uncommon, rare for rare, etc.), and consumables (potions, scrolls, etc) may only be traded for other consumables of like rarity. You may not trade a consumable for a permanent magic item, or vice-versa.",
+				"fields":
+				[
+					{
+						"name":"To trade magic items:",
+						"value":"🔸 ALL players involved post in <#704307298407022622> to log the trade.\n🔸 All parties in the trade should be pinged, along with the <@&820071601813979176> role for tracking purposes.\n🔸 It should list the characters involved in the trade, what item they're trading, and what item they're receiving in exchange.\n🔸 A DM on Duty will verify the rarity of the items and approve or deny the exchange accordingly.\n\nEach character participating in a given trade may make no more than one trade per week. This is to keep the number of trades that need to be checked and approved by DMs to a manageable level."
+					}
+				]
+			},
+			{
+				"title":"🇶 Can I change my character after its created?",
+				"description":"🅰️ This has come up quite a bit, so we have a few options in place",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> Grace Period",
+						"value":"While a character is level 3, you may change any decision made during creation, including their race and class selections, or even completely recreating the character. The only caveat is that you cannot reroll their ability scores.\nPast level 3, there is a grace period of one level. At each level, you are allowed to reverse a class or feat choice *made at that level only*. For instance, if at level 4 you choose a Feat, but later decide you would rather Multiclass, you have until level 5 to change it. Once you advance another level, however, any decisions made at the previous level are locked-in unless you retire or respec."
+					},
+					{
+						"name":"<:d20:704040692946698361> Spell Versatility",
+						"value":"If all you want to change are your spells, this may be an option: Whenever you finish a long rest, you can replace one spell you learned from your Spellcasting feature with another spell from the your class' spell list. The new spell must be the same level as the spell you replace. (This applies to Bard, Ranger, Sorcerer, and Warlock.)"
+					},
+					{
+						"name":"<:d20:704040692946698361> Subclass Change",
+						"value":"Per Tasha's Cauldron of Everything, you may change your subclass when you would normally gain a new subclass feature. If you decide to make this change, choose another subclass that belongs to your class and replace all old subclass features. Inform a <@&694285067723210843> before making this change."
+					},
+					{
+						"name":"<:d20:704040692946698361> Retirement",
+						"value":"You may `!retire` your character (see below) to create a new one (or re-create the same one). You may reroll stats **only** if your character is level 4 or higher (otherwise you must use the same roll, or point buy). This will roll over half of your earned exp, but you will lose all of your accumulated gold and items."
+					},
+					{
+						"name":"<:d20:704040692946698361> Respec",
+						"value":"You may purchase a respec for RPP. It will cost 10,000 RPP **per level** of the character you are respeccing (via `/item buy` X respec where X is the level of the character in question). This will allow you to keep ALL of your exp, items, and give you an opportunity to reroll your stats, choosing from their old or new rolls."
+					}
+				]
+			},
+			{
+				"title":"🇶 Can I make another character?",
+				"description":"🅰️",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> Creating an Additional Character",
+						"value":"You are allowed more than one character, but each additional character requires that you first purchase a new slot from the `/item store` with roleplay points (RPP - see below). No one may have more than five player characters, but there are additional slots for up to 5 RP-only NPCs"
+					},
+					{
+						"name":"<:d20:704040692946698361> Replacing an Existing Character",
+						"value":"If you want to replace your current character, you can rollover a certain percentage of their earned exp by using the `!retire` command in the <#794251515991818271> channel. If they are still Level 3, you are still in the grace period for making changes to your current character (see above). You may still retire them if you wish but, to reduce people retiring characters just to try for better rolls, you may not reroll their ability scores unless you are retiring a character of level 4 or higher.\nWhen removing characters, please delete the profile for old characters to reduce confusion."
+					}
+				]				
+			}
+		]
+	},
+	"Server Features & Admin": {
+		"includeHeader":true,
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"indexBreak":"Server Features",
+				"title":"🇶 What are RPP? How do I get and use them?",
+				"description":"🅰️ RPP stands for Role Play Points, a server currency gained through server activity. Just chatting in the server will earn a small amount automatically, but there are more ways to earn them:",
+				"fields":[
+					{
+						"name":"<:d20:704040692946698361> `/work`",
+						"value":"You can perform the `/work` command in <#697620228703649892> every 24 hours to earn between 500 and 3000 RPP"
+					},
+					{
+						"name":"<:d20:704040692946698361> `/collect`",
+						"value":"You can perform the `/collect` command in <#697620228703649892> periodically, earning an amount depending on certain role-based milestones within the server. The cooldown and amount earned varies from role to role. Server boosters get an additional amount each week."
+					},
+					{
+						"name":"<:d20:704040692946698361> Roleplaying",
+						"value":"Engaging in roleplay on the server will earn you an amount of RPP each week (usually on Sundays) based on the amount of RP you engaged in during the previous week. Extremely dedicated roleplayers can earn up to 20,000 RPP"
+					},
+					{
+						"name":"Other RPP Commands",
+						"value":"You can check your RPP balance with the `/balance` command. The `/item store` and `/item buy` commands can be used to purchase various roleplay items (fun things for use in RP, but have no DnD mechanics), additional PC and NPC slots, and an RP channel and upgrades. A list of items available for purchase with RPP is available in <#709733574810533929>. Additional uses of RPP will be added from time to time. If you have additional ideas for things to use RPP on, you may suggest them in <#694306844079947838>"
+					}
+				]
+			},
+			{
+				"title":"🇶 How do I use the Glory Hole bot?",
+				"description":"🅰️ The Silver Thorn Brothel has a pair of Glory Hole channels separated between the private suites (servicing) and the front of the house (being serviced). Anything typed in one channel is sent anonymously (via the bot) to it's companion channel, and vice-versa. Part of the fun of the Glory Hole is the anonymity, so including your name or identifiable characteristics (while not strictly prohibited) is best avoided.\nThe bot can also send an RP request on your behalf to anonymously invite someone to the glory hole. To do this, type `~request <your RP request message>` in the glory hole, and the bot will post in the <#698207586037661806> channel.\n\nFor RP purposes, one needn't concern themselves with the size/shape/location of the hole, and it can accommodate any size or positioning of those participating, including allowing to legs and a waist to sit on the other side and the upper body is still hidden away from view."
+			},
+			{
+				"indexBreak":"Server Administration",
+				"title":"🇶 Can I become a DM?",
+				"description":"🅰️ Becoming a DM first requires you to be a DA (Dungeon Apprentice). Read through the <#729038636074401842>, and then put in your application in <#703373885009297518>. Be sure to include relevant details, such as what kind of experience you have with running games, DnD, Avrae, and so on. The existing DM team will review your application and get back to you.\n\nPlease note that it may take some time. As the DMs are the defacto staff of the server, there is more to being selected than merely being willing to run quests for people. It is of the utmost importance to the existing server staff that new additions to the team make positive contributions to the server community as a whole."
+			},
+			{
+				"title":"🇶 Can I partner my server with yours?",
+				"description":"🅰️ We are not actively seeking partnerships at this time, and are very discerning with our community. You may contact an <@&699354157060063243> and make your pitch, but do not be offended if we decline your offer. We want to ensure that our respective communities are a good match before we begin exchanging members."
+			}
+		]
+	},
+	"House Rules": {
+		"includeHeader":true,
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"includeSectionBreak":true,
+		"embeds": [
+
+			{
+				"indexBreak":"⚖️ House Rules",
+				"title":"⚖️ Copying spells",
+				"description":"Players may not share spells among one another. However, if you find a spell scroll or spellbook awarded during your adventures, you may copy those spells into your spellbook or book of shadows. In the future, the Arcanum Guild may be another source of spells to copy, but at this time that is not yet implemented.\n> For each level of the spell, the process takes 2 hours and costs 50 gp. The cost represents material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it.\nWhen copying from Spell Scrolls:\n> A wizard spell on a spell scroll can be copied just as spells in spellbooks can be copied. When a spell is copied from a spell scroll, the copier must succeed on an Intelligence (Arcana) check with a DC equal to 10 + the spell's level. If the check succeeds, the spell is successfully copied. Whether the check succeeds or fails, the spell scroll is destroyed.",
+				"fields":
+				[
+					{
+						"name":"To Copy a Spell from a Scroll or Spellbook",
+						"value":"Ping <@&694285067723210843> in <#704307298407022622> and include the following information:\n🔸 The spell you're copying (and its level)\n🔸 The SOURCE of the spell (Provide a link to the table reward post that gave you access to the spell scroll / book)\n🔸 Once the DM on Duty acknowledges you:\n🔸 Do the `!sb` command to show your spellbook without the spell\n🔸 Subtract the required amount of gold with the `!coins -X` command\n🔸 If copying from a *scroll,* you will need to succeed at an Arcana check `!c arcana`.  The DC of the check is 10 + the spell's level.\n🔸 If you succeed, you can update your sheet and `!update` it in Avrae\n🔸 Show your spellbook (`!sb` command again) with your new spell"
+					}
+				]
+			},
+			{
+				"title":"⚖️ Banishment vs. other PCs",
+				"description":"🇶 Can I cast Banish another PC?\n🅰️ **Short answer**: No. Don't be a dick.\n**Longer answer**: No permanent loss of a character may occur via RP or the Arena without consent of the player(s) involved.\n**Lore answer**: The Demiplane has claimed its inhabitants as its own, so as far as Banishment is concerned, a PC's home plane IS the demiplane."
+			},			
+			{
+				"title":"⚖️ Lineage Ancestral Legacy Feature",
+				"description":"🇶 Can I make a dhampir with flying speed?\n🅰️ To eliminate future confusion: Players creating Dhampir, Hexblood, or Reborn characters will only be able to gain proficiency in two skills from their Ancestral Legacy feature. This feature will not provide climbing/flying/swimming speed at creation. Yes, PCs start above level 1, but it's still counts as character creation. Per the feature itself:\n> __**Ancestral Legacy**__\n> If you replace a race with this lineage, you can keep the following elements of that race: any skill proficiencies you gained from it and any climbing, flying, or swimming speed you gained from it.\n> If you don’t keep any of those elements __*or you choose this lineage at character creation*__, you gain proficiency in two skills of your choice.\n"
+			},
+			{
+				"title":"⚖️ Booming Blade / Green Flame Blade",
+				"description":"🇶 Can I use Booming Blade or Green Flame Blade with Pact Weapons?\n🅰️ The DM's have decided that the addition of the material component cost to these two cantrips (rendering them non-functional with Shadow Blade, and maybe-or-maybe-not Pact Weapons) is dumb and unnecessary. Going forward, we will be ignoring that requirement.\nThe server __will allow__ allowing those cantrips to be used in the aforementioned cases."
+			},
+			{
+				"title":"⚖️ Paladins and Unarmed Combat",
+				"description":"🇶 Can a Paladin smite on an unarmed strike?\n🅰️ Jeremy Crawford's tweets and Sage Advice say no, but also contradict themselves. In their own Sage Advice column they state:\n> If a DM decides to override this rule, no imbalance is created. Tying Divine Smite to weapons was a thematic choice on our part—paladins being traditionally associated with weapons. It was not a game balance choice.\nIn their efforts to conform to their desired themes and rules as intended, they bent the logic of their rules as written into an incoherent mess.\nMore build options is better than fewer, and since it doesn't create a game balance issue there's no logical reason to deny it.\nThe server __will allow__ unarmed Divine Smites.",
+				"fields":
+				[
+					{
+						"name":"Unarmed Fighting Style",
+						"value":"During UA playtest, the Unarmed fighting style was available to Paladins, which was omitted when the it was published. Presumably it was due to the aforementioned \"paladins being traditionally associated with weapons\" logic. Since we're rejecting that logic in its entirety, the Unarmed Fighting style is available to Paladins. As with all published UA content, the published version is used, and NOT the UA version."
+					}
+				]
+			}			
+		]
+	}
+}

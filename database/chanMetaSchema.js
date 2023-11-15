@@ -1,5 +1,5 @@
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../config/${mod}_config.json`);
 
 const mongoose = require('mongoose')
 const schemaName = `channelmeta${config.DEV ? "dev" : ""}`

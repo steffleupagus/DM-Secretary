@@ -1,5 +1,5 @@
 const { ActivityType } = require('discord.js');
-const client = require(`${process.cwd()}/bot`)
+const client = require(`../../bot`)
 
 function execute(client)
 {
