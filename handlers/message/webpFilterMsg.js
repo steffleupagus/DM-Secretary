@@ -8,7 +8,7 @@ const ChanUtils = require(`../../utilities/channelUtils.js`);
 const RPP = require(`../../database/rppTrackerSchema.js`)
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 function shouldHandle(client, message) 
 {
@@ -18,6 +18,8 @@ function shouldHandle(client, message)
 	// Check if the message content contains URLs with query strings ending with .webp
 	const content = message.content.toLowerCase(); // Convert to lowercase for case-insensitive check
 	const contentMatches = content.match(urlWithQueryStringRegex);
+
+//	console.log(contentMatches,content)
 	
 	// Check if the message has attachments that have a .webp extension
 	const hasAttachments = message.attachments.size > 0;
@@ -43,5 +45,5 @@ module.exports = {
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 
-	build: config.PRODUCTION
+	build: false	//config.PRODUCTION
 };

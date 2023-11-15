@@ -7,13 +7,13 @@ let mod = process.env.mod || "";
 if (process.argv.length > 2) 
 	mod = (process.argv[2].includes("dev") ? "dev" : "")
 
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`./config/${mod}_config.json`);
 const token = process.env.token;
 const clientId = process.env.clientid;
 const guildId = config.GUILDID;
 
 const commands = [];
-const commandFiles = fs.readdirSync(`${process.cwd()}/handlers/commands`)
+const commandFiles = fs.readdirSync(`./handlers/commands`)
 					   .filter(file => file.endsWith('.js'));
 
 console.log(`Deploying commands to ${mod}\n`,
@@ -22,7 +22,7 @@ console.log(`Deploying commands to ${mod}\n`,
 
 for (const file of commandFiles) 
 {
-	const command = require(`${process.cwd()}/handlers/commands/${file}`);
+	const command = require(`./handlers/commands/${file}`);
 	if (command.type == "MESSAGE" || command.type == "USER")
 		delete command.description;
 

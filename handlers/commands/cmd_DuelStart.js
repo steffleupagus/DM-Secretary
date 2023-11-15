@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js');
-const ChanUtils = require(`${process.cwd()}/utilities/channelUtils.js`)
-const DuelUtils = require(`${process.cwd()}/utilities/funcsDuel.js`)
-const Utils = require(`${process.cwd()}/utilities/utilFuncs.js`)
-const MsgUtils = require(`${process.cwd()}/utilities/messageUtils.js`)
+const ChanUtils = require(`../../utilities/channelUtils.js`)
+const DuelUtils = require(`../../utilities/funcsDuel.js`)
+const Utils = require(`../../utilities/utilFuncs.js`)
+const MsgUtils = require(`../../utilities/messageUtils.js`)
 
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 async function execute(interaction)
 {
@@ -78,7 +78,7 @@ async function run(client, message, command, args)
 {
 }
 
-const builderRoles  = [	config.BuilderRole, config._BuilderRole	];
+const builderRoles  = [	config.BuilderRole	];
 const data = new SlashCommandBuilder()
 	.setName('startduel')
 	.setDescription('Start a thread for a duel')

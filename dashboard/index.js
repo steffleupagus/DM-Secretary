@@ -4,11 +4,11 @@ const express = require('express');
 const mongoose = require('mongoose')
 
 const app = express();
-const port = 3000;	//process.env.PORT
+const port = process.env.PORT
 
 const listener = app.listen(port, () => {
-	const url = `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co/`
-	setInterval(() => { http.get(url); }, 280000);	
+ 	const url = `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co/`
+ 	setInterval(() => { http.get(url); }, 280000);
 
 	console.log(url);
 	console.log(`localhost:${port}`)
@@ -18,8 +18,6 @@ const listener = app.listen(port, () => {
 // Example of API from your client (discord.js)
 module.exports = client => 
 {
-	
-	
 	app.get('/', (req, res) => 
 	{	
 		const readyStates = ["Disconnected","Connected","Connecting","Disconnecting"]		
