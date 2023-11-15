@@ -9,7 +9,7 @@ const Prompt = require(`../../utilities/promptUtils.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const util = require('util')
 const mod = process.env.mod || "";
-const config = require(`${process.cwd()}/config/${mod}_config.json`);
+const config = require(`../../config/${mod}_config.json`);
 
 const threadIcon = "🧵";
 
@@ -142,7 +142,8 @@ async function openThreadIfPossible(interaction, channel = null)
 									 embeds:[],components:[]})	
 
 		const guild = interaction.guild;
-		const debugChan = await guild?.channels?.fetch(config.debugLogChannel);
+		const logChanId = config.debugChannels.thread
+		const debugChan = await guild?.channels?.fetch(logChanId);
 		if (debugChan) 
 		{			
 			const embed = new EmbedBuilder().setTitle(`Thread ${reused ? "Recycled" : "Created"}`)
@@ -410,7 +411,7 @@ const botPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
 const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+const whitelistRoles  = [	config.BuilderRole		];
 module.exports = 
 {
 	data: data,
