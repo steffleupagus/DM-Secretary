@@ -171,14 +171,18 @@ async function publishContent(channel, content)
 		index.forEach( (item)=>
 		{
 			if (!item.title) return;
+			let fieldHeader = "** **";
+			
 			if (item.break)
 			{
+				if (typeof item.break == "string")
+					fieldHeader = item.break;
 				embed.closeField();
-				embed.addField("** **",'', indexInline)
+				embed.addField(fieldHeader,'', indexInline)
 			}
 			
 			const field = `${item.prefix || ""}[${item.title}](${item.url})`			
-			embed.extendField(field, "** **", indexInline);
+			embed.extendField(field, fieldHeader, indexInline);
 		});
 		await embed.send(channel);
 	}
@@ -198,7 +202,7 @@ function getContent(channel, override = null)
 	let source = override || index[channel.id].data	
 	let content = null;
 	try {
-		content = require(`${process.cwd()}/content/${source}`)	
+		content = require(`../../content/${source}`)	
 		console.log(content)
 	}
 	catch(e){}

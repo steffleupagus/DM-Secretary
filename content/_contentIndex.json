@@ -44,7 +44,7 @@
 	"1106410690203369562":{ "data":"items/guildItems_Outrider.json"},
 	"1106412116367396935":{ "data":"items/guildItems_SilverThorn.json"},
 	
-	
+	"699930213093474315":{"data":"rules/rules_faq.json"},
 	"walkthroughchannel":{"data":"rules/walkthrough_base.json"},
 	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},
 	"gsheet walkthrough":{"data":"rules/walkthrough_gsheet.json"},
@@ -68,6 +68,6 @@
 	"1132477827095212032":
 	{
 		"name":"📜│test-content-ii",
-		"data":"rules/approvedContent.json"
+		"data":""
 	}	
 }
