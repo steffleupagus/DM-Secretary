@@ -539,10 +539,10 @@ function parseRetireMessage(title)
 function parseAuthor(guild, author)
 {
 	var data = {}
-	var displayName = author.name;
+	var displayName = author.name.toLowerCase();
 	let serverMembers = guild.members
 	
-	let matchedMember = serverMembers.cache.find(m => m.displayName === displayName);
+	let matchedMember = serverMembers.cache.find(m => m.displayName.toLowerCase() === displayName);
 	if (matchedMember)
 	{
 		data.user = matchedMember.user.id;
