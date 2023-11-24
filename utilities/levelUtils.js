@@ -542,7 +542,8 @@ function parseAuthor(guild, author)
 	var displayName = author.name.toLowerCase();
 	let serverMembers = guild.members
 	
-	let matchedMember = serverMembers.cache.find(m => m.displayName.toLowerCase() === displayName);
+	let matchedMember = serverMembers.cache.find(m => ((m.displayName.toLowerCase() === displayName) || 
+													   (m.user.username.toLowerCase() === displayName)));
 	if (matchedMember)
 	{
 		data.user = matchedMember.user.id;
