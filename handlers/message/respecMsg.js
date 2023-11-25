@@ -11,5 +11,7 @@ module.exports = {
 	menu: true,	
 	menuRoles: [ config.ModeratorRole ],
 	shouldHandle: respec.shouldHandle,
-	handleCreate: respec.handleCreate
+	handleCreate: respec.handleCreate,
+
+	build: config.PRODUCTION //|| config.DEV
 };
