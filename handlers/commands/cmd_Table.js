@@ -14,49 +14,80 @@ const Utils = require(`../../utilities/utilFuncs.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
+const GOALS = `Goals:
+- Enables anyone who wants to to run a quest or one-shot
+- Gives people a chance to practice DMing
+- Gives people chances to play without being limited by DM availability
+- Gives DM staff a chance to see how potential DA's run
+ - Make it part of the DA application process
+- No Exp / Loot can be awarded to players
+- No permanent effects / character changes / death
+- RP exp *can* be gained (\`/scene\` command or similar)
+`
+const REQUIREMENTS = `Requirements: 
+- Discord bot functionality to create threads. 
+- Interface to consist of an embed and two buttons: Create Table / Delete Table
+ - Create Table button:
+   - Verify Table can be created
+     - Verify the user is authorized to create a table. 
+     - Verify the person creating the table doesn't already have one open
+     - Verify a table can be created (hasn't hit the max number of tables)
+   - If table creation permitted
+     - Create three threads: 
+       - OOC/Mechanics thread
+       - RP thread
+       - Private DM screen thread
+     - Set up a DB record for the table 
+     - Update embed to display the newly opened table 
+	   - Include DM & links to public threads
+ - Close Table button: 
+   - Verify user is table DM or Mod staff
+   - Archive threads
+   - Remove from Embed
+   - Update thread to mark table Archived
+   - Mod staff has option to delete table threads & DB record once verified 
+Tables should auto-close when Discord archives the threads.`
+const LOGISTICS = `Logistics:
+"Free Table" channel with an embed and two buttons
+- Embed lists existing tables & the DM
+ - Limit of 25 max tables to display in a single embed
+- Button to generate a temp table
+ - A person can only create one table open at a time
+ - Prompts for a name & creates 3 threads in the Free Table channel
+   - 🗣 RP thread for IC interaction (RP awards exp)
+   - :game_die: OOC/Roll thread for OOC and rolling
+   - ⚙ DM screen private thread only visible to the DM who created the table
+ - Creates record in the DB with the user ID and thread IDs 
+ - Set auto-archive duration of all threads to a week
+   - On archive, auto-close the table as with the second button
+- Button to close a table
+ - Only works for DM of the table, or DMs/Mods
+ - Awards RP exp from the RP thread
+ - Archive all threads (for future review, if necessary, to avoid abuse) 
+ - Option for Mods to delete closed tables`
+
+
+const TABLE_MENU_CHAN = "1123074833857646702";
 const TABLE_MENU_TITLE = `Free-Use Tables`
 const TABLE_MENU_DESC = `
 **Free-||~~use~~||Play Tables**
-Goals:
-Enables anyone who wants to to run a quest, one-shot, even a campaign.
-Gives people a chance to practice DMing
-Gives people chances to play without necessarily being limited by DM availability.
-Gives us (as DM staff) a chance to see how potential DA's run - make it part of the DA application process
-Obvious caveat: No Exp / Loot can be awarded to players, no permanent effects / character changes / death
-However, RP exp via the \`/scene\` command *can* be gained
-
-Requirements: 
-Discord bot functionality to create threads for running a DnD session. Main interface will consist of an embed and two buttons, one to create a table and one to delete a table. 
-Anyone can click the Create button, but it'll need to verify that a table can be created (hasn't hit the max number of tables), that the person creating the table doesn't already have one open, and make sure they are authorized. If they can create a table, it will create three threads: an OOC/Mechanics thread, an RP thread, and a private thread visible only to the DM who created the table. Once created, it should set up a database record for the table and update the embed to display the newly opened table, a mention of the DM and a link to the public threads. 
-The Close Table button should only work for the DM who made the table, or the Mod staff. Tables should auto-close when Discord archives the threads. When closed, the threads should archive, remove them from the list of active tables in the embed, and the database record should update to reflect it. Mod staff should have an additional option to delete the table threads and the database record.
-
-Logistics:
-◘ One "Free Table" channel with an embed and two buttons
---○ Embed lists out all existing tables created with this and the DM who created it
---○ Button to generate a temp table
-----• Prompts for a name & creates 3 threads in the Free Table channel
-------- 🗣 RP thread for IC interaction (scene command will award exp)
-------- :game_die: OOC/Roll thread for OOC and rolling
-------- ⚙ DM screen private thread only visible to the DM who created the table
-----• Creates a record in the database with the user ID and all 3 thread IDs
-----• A person can only create one table open at a time
-----• Set auto-archive duration of all threads to a week
-----• On archive, auto-close the table as with the second button
---○ Button to close a table
-----• only works for DM of the table, or DMs/Mods
-----• Auto-closes the scene in the RP thread for RP exp
-----• Archive all threads (for future review, if necessary, to avoid abuse) 
-----• Option for Mods to delete closed tables
-◘ Limit of 25 max tables (75 threads) to display in a single embed
---○ Could possibly up limit to 50 max tables (150 threads)
-`
+${GOALS}
+${REQUIREMENTS}
+${LOGISTICS}
+\`\`\` \`\`\``
 
 const DM_MSG = `This channel represents your private behind-the-DM-screen area`
-const OOC_MSG = `@ping your players in this channel to get started!`
+const OOC_MSG = `*@ping your players in this channel to get started!*`
 const TABLE_CREATE_DESC = `
-Ping your players in your \`OOC\` and \`RP\` threads. 
-DM Screen is for your use for monster lookup & hidden rolling.
-`
+	Ping your players in your \`OOC\` and \`RP\` threads. 
+	DM Screen is for your use for monster lookup & hidden rolling.`
+const TABLE_ARCHIVE_DESC = `TODO: Table Archive Description`
+const TABLE_DELETE_DESC = `TODO: Table Delete Description`
+
+
+
+
+
 
 ///
 /// Run the slash command
@@ -67,12 +98,76 @@ async function execute(interaction)
 	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);
 	if (isBuilder)
 	{
-	 	await showInteractionMenu(interaction);
+		//Show menu to close table or show table menu
+		const options = [
+			{style:ButtonStyle.Secondary, emoji:"📜", label:"Show Table Menu", custom_id:`showMenu`},
+			{style:ButtonStyle.Danger, emoji:"✖️", label:"Close Table", custom_id:`${data.name}.closeTable`}
+		]
+		const buttons = Prompt.promptUserButton()
+		await interaction.channel.send({embeds:[embed], components: [buttons]})
+
+
+
+		await showInteractionMenu(interaction);
 		await interaction.editReply("Done.");
 		return;
 	}
-	return await interaction.editReply("Please use the buttons in <#1123074833857646702>.");
+	return await interaction.editReply(`Please use the buttons in <#${TABLE_MENU_CHAN}>.`);
 }
+
+
+
+
+
+
+
+async function updateTableRecord(table, archive=false)
+{
+	const query = { user: table.user, archived: archive };
+	const update = table;
+	const options = { new: true, upsert: true }	
+	record = await Tables.findOneAndUpdate(query, update, options);
+	return record;
+}
+
+async function deleteTableRecord(table)
+{
+	table = await Tables.findOneAndDelete(table).catch(console.error);	
+	console.log(table)
+	return table
+}
+
+async function getTableByUser(user)
+{	
+	const table = await Tables.findOne({user:user.id})
+	return table;
+}
+
+async function getAllTables(active = true)
+{	
+	const tables = await Tables.find({archived:!active})
+	return tables;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///
 /// Show the list of tables and the buttons
@@ -81,10 +176,11 @@ async function showInteractionMenu(interaction)
 {
 	const embed = await getTableListEmbed()
 	const options = [
-		{style:ButtonStyle.Primary, emoji:"🗺️", label:"Create Table", custom_id:`${data.name}.startTable`},
+		{style:ButtonStyle.Success, emoji:"🗺️", label:"Create Table", custom_id:`${data.name}.createTable`},
+		{style:ButtonStyle.Primary, emoji:"🔄", label:"Refresh Tables", custom_id:`${data.name}.refreshList`},
 		{style:ButtonStyle.Danger, emoji:"✖️", label:"Close Table", custom_id:`${data.name}.closeTable`}
 	]
-	const buttons = Prompt.createButtonRow(options)
+	const buttons = Prompt.createButtonRow(options)	
 	await interaction.channel.send({embeds:[embed], components: [buttons]})
 }
 
@@ -97,17 +193,18 @@ async function getTableListEmbed()
 		.setTitle(TABLE_MENU_TITLE)
 		.setDescription(TABLE_MENU_DESC);
 
+	//Find all the tables we have a reference of in the database
 	const tables = await getAllTables();
 	console.log(tables);
-	
-	// const fields = [];
-	// tables.forEach(table => {
-	// 	const value = `**DM**: <@${table.user}>\n<#${table.oocThread}> <#${table.rpThread}>`
-	// 	fields.push({name:table.name||"Table XXX", value:value})
-	// });
-	// if (fields.length)
-	// 	embed.addFields(fields);
-	
+
+	const fields = [];
+	tables.forEach(table => {
+		const value = `**DM**: <@${table.user}>\n<#${table.oocThread}> <#${table.rpThread}>`
+		fields.push({name:table.name||"Table XXX", value:value})
+	});
+	if (fields.length)
+		embed.addFields(fields);
+
 	return embed;	
 }
 
@@ -116,32 +213,29 @@ async function getTableListEmbed()
 ///
 async function handleInteraction(interaction)
 {
-	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);	
 	const customId = interaction.customId;
 	const prefix = `${data.name}.`
 	if (!customId.startsWith(prefix))
 		throw new Error("Interaction routed to incorrect command")	
-
 	const command = customId.replace(prefix,"");
+	
 	switch(command)
 	{
-		case `startTable`:
+		case `refreshList`:
+			await interaction.deferUpdate({ephemeral:true});
+			const embed = await getTableListEmbed()
+			interaction.editReply({embeds:[embed]})
+			return;			
+		case `createTable`:
 			await createTable(interaction)
-			break;
+			return;
 		case `closeTable`:
-			const table = await getTableByUser(interaction.user);
-			if (table)
-			{
-				deleteTable(interaction, table);
-			}
-			break;
+			await archiveTable(interaction)
+			return;
 	}
 	if (!interaction.deferred && !interaction.replied)
 		await interaction.reply({content:`Handling: ${interaction.customId}`, ephemeral: true})
 }
-
-
-
 
 ///
 /// Attempt to create a table
@@ -202,7 +296,7 @@ async function createTableThreads(interaction)
 	{
 		const startMsg = thread.startMsg
 		delete thread.startMsg
-		thread.autoAcrhiveDuration =  ThreadAutoArchiveDuration.OneWeek;
+		thread.autoAcrhiveDuration = ThreadAutoArchiveDuration.OneWeek;
 		thread = await channel.threads.create(thread)
 
 		if (thread.type == ChannelType.PublicThread)
@@ -210,64 +304,86 @@ async function createTableThreads(interaction)
 			const message = await thread?.fetchStarterMessage();
 			await message?.delete();
 		}
-		
+
 		await thread.members.add(interaction.user.id);
 		await thread.send(startMsg)
 		table[key] = thread.id
 	})
 
 	table.archived = false;
+	return table;
+}
 
-//	console.log(interaction)
+///
+/// Attempt to archive a table
+///
+async function archiveTable(interaction)
+{
+	//Table can only be archived by a table DM or Mod staff
+	const isBuildMod = Utils.hasAnyRole(interaction.member, whitelistRoles);
+	const table = await getTableByUser(interaction.user);
 	
-	return table;
+	//If mod staff, provide a list of tables to archive or archived tables to delete
+	if (isBuildMod)
+	{
+		console.log("TODO: Show menu of open tables to archive / archived tables to delete")
+		console.log("TODO: Get table DB record from menu selection")
+	}
+
+	const reply = new EmbedBuilder()
+	
+	//If we have a table defined
+	if (table)
+	{
+		//Prepare to update the embed
+		await interaction.deferUpdate({ephemeral:true});
+		
+		const channel = interaction.channel;
+		const threads = channel.threads;
+		
+		if (isBuildMod && table.archived)
+		{
+			console.log("TODO: Table archived. Delete it")
+			console.log("TODO: Update DB to delete table record")	
+			console.log("TODO: Remove from Embed")
+			threads.fetch(table.dmThread).then(thread => thread.delete()).catch(console.error);
+			threads.fetch(table.rpThread).then(thread => thread.delete()).catch(console.error);
+			threads.fetch(table.oocThread).then(thread => thread.delete()).catch(console.error);			
+			await deleteTableRecord(table);			
+
+			reply.setTitle("Table Deleted")
+		}
+		else
+		{
+			console.log("TODO: Table active. Archive it")
+			console.log("TODO: Award Exp from the RP thread")
+			console.log("TODO: Update DB to mark table Archived")	
+			console.log("TODO: Remove from Embed")
+			//Archive all threads (for future review, if necessary, to avoid abuse) 
+			threads.fetch(table.dmThread).then(thread => thread.setArchived()).catch(console.error);
+			threads.fetch(table.rpThread).then(thread => thread.setArchived()).catch(console.error);
+			threads.fetch(table.oocThread).then(thread => thread.setArchived()).catch(console.error);
+			await updateTableRecord(table, true);
+
+			reply.setTitle("Table Archived")
+		}
+
+		//Prepare the output - first update the permanent embed
+		const embed = await getTableListEmbed();
+		await interaction.editReply({embeds:[embed]})
+	}
+
+	//Prepare & reply to the user who clicked the button
+	// const fields = [
+	// 	{name:"OOC Thread", value:`<#${table.oocThread}>`, inline:true},
+	// 	{name:"RP Thread", value:`<#${table.rpThread}>`, inline:true},
+	// 	{name:"DM Screen", value:`<#${table.dmThread}>`, inline:true},
+	// ]				
+	// 
+	// 								.setDescription(TABLE_CREATE_DESC)
+	// 								.addFields(fields);
+	// await interaction.followUp({embeds:[reply],ephemeral:true})
 }
-
-async function updateTableRecord(table)
-{
-	const query = { user: table.user, archived: false };
-	const update = table;
-	const options = { new: true, upsert: true }	
-	record = await Tables.findOneAndUpdate(query, update, options);
-	return record;
-}
-
-async function deleteTable(interaction, table)
-{
-	const channel = interaction.channel;
-	const threads = channel.threads;
-
-	threads.fetch(table.dmThread).then(thread => thread.delete()).catch(console.error);
-	threads.fetch(table.rpThread).then(thread => thread.delete()).catch(console.error);
-	threads.fetch(table.oocThread).then(thread => thread.delete()).catch(console.error);	
-	table = await Tables.findOneAndDelete(table).catch(console.error);	
-	console.log(table)
-}
-
-async function getTableByUser(user)
-{	
-	const table = await Tables.findOne({user:user.id})
-	return table;
-}
-
-async function getAllTables()
-{
-	const tables = await Tables.find()
-	return tables;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -278,7 +394,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+const whitelistRoles  = [	config.BuilderRole, config.ModeratorRole	];
 
 module.exports = 
 {
