@@ -1,0 +1,157 @@
+{
+	"Character Walkthrough": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"inlineIndex":false,
+		"embeds": [
+			{
+				"title":"1️ Choose Race",
+				"description":"Every character belongs to a race, one of the many intelligent species in the D&D world. The race you choose contributes to your character’s identity in an important way, by establishing a general appearance and the natural talents gained from culture and ancestry. Your character’s race grants particular racial traits, such as special senses, proficiency with certain weapons or tools, proficiency in one or more skills, or the ability to use minor spells. These traits sometimes dovetail with the capabilities of certain classes (see step :two:). Races also allow one or more ability score increases, which you apply in step :three:.",
+				"fields":
+				[
+					{
+						"name":"** **",
+						"value":"The ⁠<#911129455345405992> channel provides a list of approved races and subraces, and links to more information about each."
+					},
+					{
+						"name":"** **",
+						"value":"If you are planning to join tables/quests, fight in the Arena, gain experience, roll dice, or otherwise participate in the full DnD experience, continue on to step :two:. However, if you are only interested in roleplaying you may skip creating a character sheet and jump to step :eight: to create your RP Profile."
+					}
+				]
+			},
+			{
+				"title":"2️ Choose Class",
+				"description":"Every adventurer is a member of a class. Class broadly describes a character’s vocation, what special talents he or she possesses, and the tactics he or she is most likely to employ when exploring a dungeon, fighting monsters, or engaging in a tense negotiation.\n\nYour character receives a number of benefits from your choice of class. Many of these benefits are class features — capabilities that set your character apart from members of other classes. You also gain a number of proficiencies: armor, weapons, skills, saving throws, and sometimes tools. Your proficiencies define many of the things your character can do particularly well, from using certain weapons to telling a convincing lie.",
+				"fields":
+				[
+					{
+						"name":"** **",
+						"value":"The <#911129455345405992> channel provides a list of available classes and subclasses, and links to more information about each."
+					}
+				]
+			},
+			{
+				"title":"3️ Determine Ability Scores",
+				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion\n\nWe allow two methods of determining your ability scores: Rolling or Point Buy.",
+				"fields":
+				[
+					{
+						"name":"Rolling for Abilities",
+						"value":"To roll for your ability scores, head to <#697021317727387718>. You must ping <@&694285067723210843> to observe your rolls. If you fail to ping or roll before someone responds, your roll may be invalidated. Once you receive the go ahead, use the pinned command (`!statroll`) to get your abilities.\n\n**Rerolls**: We allow one re-roll, which may be purchased for 10,000 RPP (earned by being active and roleplaying on the server. You can read more about RPP in the <#699930213093474315>). If it is your first character, the cost is waived for you and you get one free reroll.\n"
+					},
+					{
+						"name":"Point Buy",
+						"value":"If you dislike your roll, or simply choose not to roll, you may use the Point Buy method of determining your ability scores. http://chicken-dinner.com/5e/5e-point-buy.html has a convenient tool. Fill out your point buy, paying attention to the value total in the lower right corner. For example:"
+					}
+				]
+			},
+			{
+				"image":{"url":"https://i.imgur.com/jxQyh3W.png"}
+			},
+			{
+				"title":"4️ Choose Background",
+				"description":"Once you know the basic game aspects of your character, it’s time to flesh them out as a person. Your character needs a name. Spend a few minutes thinking about what he or she looks like and how he or she behaves in general terms. Flesh out your character’s physical appearance and personality traits. Choose your character’s alignment (the moral compass that guides his or her decisions) and ideals.\n\nYou also choose your background at this stage. Your character’s background describes where he or she came from, his or her original occupation, and the character’s place in the D&D world. A background gives your character a background feature (a general benefit) and proficiency in two skills, and it might also give you additional languages or proficiency with certain kinds of tools.",
+				"fields":
+				[
+					{
+						"name":"** **",
+						"value":"The <#911129455345405992> channel provides a list of approved backgrounds, and links to more information about each."
+					}
+				]
+			},
+			{
+				"title":"5️ Create Sheet",
+				"description":"Once you've made all your choices, it's time to put your character together and register it with the bot. The bot supports sheets from Beyond, DiceCloud, and GSheet. We have a separate walkthrough for each of them.\nRegardless of sheet:\n🔸Characters start at level 3 (which may be multiclassed, provided all multiclass requirements are met)\n🔸Take the default/average Hit Points, not rolled or manual.",
+				
+				"fields":
+				[
+					{
+						"name":"<:d20:704040692946698361> DnD Beyond",
+						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall. If you already have a Beyond account with options unlocked, you probably already know how to use it. But, just in case you don't, check out our <#walkthrough>."
+					},
+					{
+						"name":"<:d20:704040692946698361> GSheet",
+						"value":"GSheet is one of the most common ones used here. It doesn't automate as much as Beyond and requires a bit more effort to customize, but is flexible and allows for options without having to pay to unlock them in Beyond. Our server has a custom GSheet available, linked in our <#walkthrough>."
+					},
+					{
+						"name":"<:d20:704040692946698361> Dicecloud",
+						"value":"DiceCloud is powerful, and has some nice features, but some have found it un-intuitive and has presented some difficulty for new players. The DM staff may not be able to help you fix problems with it. If you choose to use DiceCloud, do so knowing that you may be on your own. We do, however, have a <#walkthrough>."
+					}
+				]
+			},
+			{
+				"title":"6️ Required Setup & Approval",
+				"description":"Once you have completed one of the above sheet walkthroughs, and your sheet has been properly imported into the bot, there are several things that our server relies on which might not be properly set in Avrae. To ensure they are set, please run the following steps in <#697620228703649892>:",
+				"fields":
+				[
+					{
+						"name":"🇦 __**Race**__: `!setrace`",
+						"value":"- *In some cases, only the `!setrace` command is required. If it doesn't work, you may need to specify your race with `!setrace \"<race name>\"` (using quotes is recommended)*"
+					},
+					{
+						"name":"🇧 __**Class**__: `!level`",
+						"value":"- Enter the command: `!level` to import your classes and levels.\n- If you have a subclass, enter `!level <class> <subclass>`\n- If you have multiclassed, repeat these commands for every class you have."
+					},
+					{
+						"name":"🇨 __**Sheet Validation**__: `!validate`",
+						"value":"- In <#694275490306981947>, run the `!validate` command, which will run a set of automated checks to identify common errors.\n- Fix as many of the issues as you can (if any), and then ping <@&694285067723210843> to review your sheet.\n- The tool is not perfect and may show false positives. If it flags potential issues incorrectly, please provide an explanation for the DM"
+					},
+					{
+						"name":"🇩 __**Setup (Exp & Gold)**__: `!setup`",
+						"value":"- Once approved, run the `!setup` command in <#704307298407022622>\nThis will automatically set your exp to level 3 (`900xp`) and your Gold to `150gp` and set up a few other server-specific things"
+					}					
+				]
+			},
+			{
+				"title":"7️ Optional Setup",
+				"description":"There are several things on your sheet that are not automatically imported into Avrae. If you choose to do these steps, please run the commands in <#697620228703649892>:",
+				"fields":
+				[
+					{
+						"name":"**Portrait**",
+						"value":"- Find a URL to your image, and enter `!portrait update <url>`"
+					},
+					{
+						"name":"**Tools**",
+						"value":"- `!tool pro \"<tool name>\"` to add a tool proficiency\n- `!tool exp \"<tool name>\"` to add expertise in a tool"
+					},
+					{
+						"name":"**Languages**",
+						"value":"- `!manage lang` will show you a list of languages you know \n- `!manage lang learn \"<language>\"` to add a language"
+					},
+					{
+						"name":"**Feats**",
+						"value":"- `!manage feat` will show your list of feats (empty by default)\n- `!manage feat add \"<feat name>\"` will add a feat\n*Note that most such feats do not have automated mechanics in Avrae*"
+					},
+					{
+						"name":"**Background Feature**",
+						"value":"Your background itself should already be imported, but having your Feature available for view can be helpful. Find your background in the <#911129455345405992>, follow the link to copy the Feature text, and paste it into this command (be sure to use quotes):\n- `!manage back set \"<background feature text>\"`"
+					},
+					{
+						"name":"**Inventory**",
+						"value":"Add your starting gear using the `!bag` alias. View the helpfile with `!bag ?` - there is a lot there. You can purchase new basic items (not magical items) using `!bag buy <qty> \"Item Name\"` We recommend using the command `!item \"Item Name\"` command first to verify the spelling"
+					},
+					{
+						"name":"**Prepared Spells**",
+						"value":"*(only relevant for Artificers, Druids, Clerics, Wizards or Paladins)*\n`!prep always <X>` where X is the number of spells your class has always prepared (do not include cantrips)\n`!prep add <spell>` for each of your prepared spells."
+					}					
+				]
+			},
+			{
+				"title":"8️ Create an RP Profile",
+				"description":"While a character sheet is optional, a character RP profile is **mandatory**. The following information will be checked by the DMs before your profile will be approved.\n\n```\n**Name**: (Required)\n**Age**: (Optional, MUST be over 18 (100 for Elves))\n**Gender**: (Optional but highly recommended)\n**Race**: (MUST be one of the approved playable races)\n**Class**: (Optional)\n**Alignment**: (Optional)\n**Physical Description**: (Optional but recommended)\n**Backstory**: (Optional. Not required to be extensive. External link to a Google Doc is allowed)\n\n**Sexual Orientation/Role**: (Heavily recommended)\n**Kinks**: (Required. See below)\n**Off-limits**: (Required. See below)\n\n\n(A reference image is HIGHLY recommended)```",
+				"fields":
+				[
+					{
+						"name":"Kinks & Limits",
+						"value":"You *must* enter something for your kinks and limits, and we heavily encourage you to actually give this some thought and put something in besides \"Kinks: Everything / Limits: None\". More often than not people find out the hard way that they aren't actually into *everything*. Even if you are actually limitless, this vagueness is *extremely* unhelpful for people who might want to roleplay with you. Give them some idea of what kind of thing they might be getting into when they play with you.\nIf your list is truly extensive, fill out your biggest ones.\nYou can also use a [kink list generator](https://steffleupagus.github.io/kinklist/) to help you out.\nIf you're not sure what you're into, that's fine too. A [kink test](https://www.kinktest.org/test) may help you.\n\nIt's not uncommon for a person's sexuality to constantly evolve. Feel free to edit your kinks and limits as you discover new things that you enjoy (or not)!"
+					}
+				]
+			},
+			{
+				"title":"9️ Have Fun!",
+				"description":"That's it! You're done. Once your <#694861975896719450> is approved, you can start roleplaying. A good place to start looking for roleplay partners is <#779540190321967124>. If you want to find a place to roleplay, check the <#738987459651829830>, and you can use the <#833758148212424764> to find a place that's free."
+			}
+		]
+	}
+}

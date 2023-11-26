@@ -87,7 +87,7 @@ async function getChannelStatus(channel)
 	let messageData = await ChanActivity.findOne({ chan: channel.id });
 	if (messageData)
 	{
-		console.log(`Database Record: <#${messageData.chan}> - ${messageData.user}`);		
+		console.log(`Activity: <#${messageData.chan}> - ${messageData.user}`);		
 
 		const updated = messageData.update || 0;
 		const timePassed = (now - updated) / 1000;
