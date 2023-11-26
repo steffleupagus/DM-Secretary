@@ -76,7 +76,14 @@
 			},
 			{
 				"title":"🇶 Where are all the RP channels?",
-				"description":"🅰️ The Demiplane of Lust has over 200 RP channels and numerous threads in which to RP, and it can quickly get overwhelming if we gave them all to you all at once. So the server uses a unique navigation system, allowing your character to travel to different locations throughout the city and the demiplane. A <#738987459651829830> has been added to guide you to most of the zones on the server, and the `/travel` command will allow you to quick-travel from place to place.\n\n🔸Rooms labeled with 📷🚪 icons are used for navigation, check the emoji list for movement and select from one of them to jog your character around.\n🔸Rooms labeled with an 🗣️ icon are considered in-character for Roleplaying.\n🔸The Fast Travel map will allow you to have up to three locations open at once.\n🔸The <#1099439209284116531> will allow you to find open channels for your RP, and travel to them."
+				"description":"🅰️ The Demiplane of Lust has over 200 RP channels and numerous threads in which to RP, and it can quickly get overwhelming if we gave them all to you all at once. So the server uses a unique navigation system, allowing your character to travel to different locations throughout the city and the demiplane. A <#738987459651829830> has been added to guide you to most of the zones on the server, and the `/travel` command will allow you to quick-travel from place to place.\n\n🔸Rooms labeled with 📷🚪 icons are used for navigation, check the emoji list for movement and select from one of them to jog your character around.\n🔸Rooms labeled with an 🗣️ icon are considered in-character for Roleplaying.\n🔸The Fast Travel map will allow you to have up to three locations open at once.\n🔸The <#1099439209284116531> will allow you to find open channels for your RP, and travel to them.",
+				"fields":
+				[
+					{
+						"name":"🧵 RP Threads",
+						"value":"Every roleplay location category has a navigation channel marked with a 🚪 icon. In addition to moving from location to location, this channel also includes a button to Join or Create  an RP thread. Each RP channel can have up to 5 threads."
+					}	
+				]
 			},
 			{
 				"title":"🇶 Can my character be in more than one RP at a time?",
