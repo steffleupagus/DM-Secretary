@@ -22,11 +22,11 @@ const INTERACT_TIME = 30000;
 const MODAL_INPUT_TIME = 30000;
 
 const Time = {
-	Extended: 15*60*1000,
-	Long: 60000,
-	Std: 30000,
-	Short: 10000,
-	Debug: 1
+	Extended: 15*59*1000,	//14.75 minutes
+	Long: 5*60*1000,		//5 minutes
+	Std: 30000,				//30s
+	Short: 10000,			//10s
+	Debug: 1				//1ms
 }
 
 ////// Prompt the user for message input that match a numeric filter
