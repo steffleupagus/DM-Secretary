@@ -1,6 +1,7 @@
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const ChannelMeta = require(`../database/chanMetaSchema.js`)
+const TableMeta = require(`../database/tableSchema.js`)
 const AreaMeta = require(`../database/chanMetaSchema.js`)
 
 ///
@@ -49,6 +50,24 @@ async function isRPExpEligible(channel)
 	if (channel.isThread())
 		return await isRPExpThread(channel)
 	return await isRPExpChannel(channel)
+}
+
+///
+/// Check if this channel is a table thread
+///
+async function isTableRPThread(channel)
+{
+	const result = await TableMeta.findOne({ rpThread: channel.id })
+	return result;
+}
+
+///
+/// Check if this channel is a table thread
+///
+async function isTableMechanicsThread(channel)
+{
+	const result = await TableMeta.findOne({ oocThread: channel.id })
+	return result;
 }
 
 ///
@@ -144,6 +163,8 @@ module.exports =
 	isRPExpChannel,
 	isRPExpThread,
 	isRPExpEligible,
+	isTableRPThread,
+	isTableMechanicsThread,
 	isTrackedChannel,
 	isDuelRPChannel,
 	getDuelChannelPair,

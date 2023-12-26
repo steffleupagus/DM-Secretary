@@ -19,9 +19,9 @@
 	"unbelievaboatId":"356950275044671499",
 	"yagpdbId":"204255221017214977",
 
+		"activityChannel":"1099439209284116531",
 		"dmPingChannel":"772338010641006632",
-	"debugPingChannel":"1087957720507883521",
-
+		
 	"faqChannel":"699930213093474315",
 	"bumpChannel":"695630306564112504",
 	"rollChannel":"697021317727387718",
@@ -36,6 +36,7 @@
 	"dragonspeakerChan":"717772298459021423",
 	"tupperLogChannel": "788607055367634964",
 	"buildSpamChannel":"699027082012786778",
+<<<<<<< HEAD
 	"levelOutputChan":"825183131355185212",
 	"activityChannel":"1099439209284116531",
 	
@@ -47,6 +48,11 @@
 		"charArchive":"1174534048337629224",
 		"modArchive":"1174542565433946112"
 	},
+=======
+	"levelOutputChan":"825183131355185212",	
+	"profileChannel":"694861975896719450",
+	"npcProfileChannel":"806934695245119508",
+>>>>>>> af16834 (Table command and support functionality. Closing & awarding tables still ToDo)
 	
 	"debugLogParent":"1009672179492868156",
 	"debugChannels":
@@ -54,7 +60,9 @@
 		"guild":"1173469676853018706",
 		"scene":"1173470606914748497",
 		"thread":"1173468612502233128",
-		"travel":"1173467534280900619"
+		"travel":"1173467534280900619",
+		"table":"1183213618196652102",
+		"dmPing":"1185418374440824893"
 	},
 	
 	"duelChannels":[

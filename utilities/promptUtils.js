@@ -22,11 +22,11 @@ const INTERACT_TIME = 30000;
 const MODAL_INPUT_TIME = 30000;
 
 const Time = {
-	Extended: 15*60*1000,
-	Long: 60000,
-	Std: 30000,
-	Short: 10000,
-	Debug: 1
+	Extended: 15*59*1000,	//14.75 minutes
+	Long: 5*60*1000,		//5 minutes
+	Std: 30000,				//30s
+	Short: 10000,			//10s
+	Debug: 1				//1ms
 }
 
 ////// Prompt the user for message input that match a numeric filter
@@ -488,54 +488,79 @@ async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, t
 ///
 ///
 ///
-async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=null, time=PROMPT_TIME)
+async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=null, time=PROMPT_TIME, max=null)
 {
 	return new Promise((resolve, reject) => 
 	{
 		const selectCollector = prompt.createMessageComponentCollector({ 
-			componentType: ComponentType.SelectMenu, time: time, errors:['time'] });
+			componentType: ComponentType.StringSelect, time: time, errors:['time'] });
 		const buttonCollector = prompt.createMessageComponentCollector({ 
 			componentType: ComponentType.Button, time: time, errors:['time'] });
 		const collectors = [selectCollector, buttonCollector];
 		let resolved = false;
-		
+		const stopCollecting = () =>
+		{
+			resolved = true;
+			collectors.forEach(collector => collector.stop());
+		}
 		const collect = async(i) => 
 		{
 			let value = i.isButton() ? i.customId : i.values[0]
-			console.log(value)
-
+			console.log("Collected:", value)
+						
 			let callback = callbackMap?.[value] || callbackMap?.['*'] || null;
 			if (callback)
-			{
+			{				
 				try {
-					value = await callback.func(i, callback.args || null);
+					value = await callback.func(i, callback.args || null, value);
 				} catch (error) {
 					console.error("Callback Error: " + error);
+					stopCollecting();
 					reject(error);
 				}
 
 				if (!i.deferred && !i.replied )
 					i.deferUpdate()
-				if (!resolved)				
+				if (!resolved)
+				{
+					stopCollecting();
 					resolve(value);
+				}
 			}
 			else
 			{
 				i.deferUpdate()
 				if (!resolved)
+				{
+					stopCollecting();
 					resolve( i.isButton() ? value : i.values);
+				}
 			}
-
-			resolved = true;
-			collectors.forEach(collector => collector.stop());
 		}
 		
 		collectors.forEach(collector => collector.on('collect', collect));
-		collectors.forEach(collector => collector.on('end', collected => 
+		collectors.forEach(collector => collector.on('end', async(collected) => 
 		{
+			console.log("Reason: ", collector.endReason)
 			if (!resolved)
-				resolve(defaultOption)
-			resolved = true;
+			{
+				resolved = true;
+				let value = defaultOption
+				if (collector.endReason == 'time')
+				{
+					let callback = callbackMap.timeout || null;
+					if (callback)
+					{
+						try {
+							value = await callback.func(collected, callback.args || null, defaultOption)
+						} catch (error) {
+							console.error("Callback Error: " + error);
+							reject(error)
+						}
+					}
+				}
+				resolve(value)
+			}
 		}));
 	});	
 }

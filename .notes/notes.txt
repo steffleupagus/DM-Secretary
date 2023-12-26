@@ -14,3 +14,4 @@ https://up.coding398.dev/others
 
 
 https://replit.com/talk/ask/How-to-kill-a-running-process/14683
+> pidof node | awk 'BEGIN { RS = " " } { print $1}' | while read line ; do kill $line ; done
