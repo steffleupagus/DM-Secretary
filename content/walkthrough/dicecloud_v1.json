@@ -1,0 +1,228 @@
+{
+	"Character Walkthrough": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"fieldsIndex":false,
+		"includeSectionBreak":false,
+		"embeds": [
+			{
+				"title":"Introduction",
+				"description":"Dicecloud is a completely free solution to creating and managing character sheets. It utilizes a container method of creating features, while using a programmatic lite approach to calculate the values that make up a character sheet. Because of this more do-it-yourself style of creating a sheet, Dicecloud is **NOT** recommended for beginners or those who dislike technically manual work. Dicecloud is ideal for individuals who don't mind putting in a little extra work, do not have or do not wish to spend the money on D&D Beyond, or wish to use UA and Homebrew material (note: This server does not permit the use of homebrew).\n\nSo without further ado, let's get to it!",
+				"fields":
+				[
+					{
+						"name":"Note",
+						"value":"This walkthrough is focused on DiceCloud v1. If you would prefer to use the updated DiceCloud, see our <#walkthrough>."
+					},
+					{
+						"name":"Special Thanks & Resources",
+						"value":"A huge thanks to <@658201358247264257> for writing the first version of this guide for the server! This revision was written from that walkthrough and the [official guide](https://v1.dicecloud.com/guide)"
+					}
+				]
+			},
+			{
+				"image":{"url":"https://i.imgur.com/VduoO3R.png"}
+			},
+			{
+				"title":"Creating a Character",
+				"description":"To get started:\n- Head to https://v1.dicecloud.com/ and sign in (or create your account)\n- Select the `Characters` menu option\n- Select the `(+)` button in the lower-right corner\n- Select `New Character` from the pop-up menu.\n- Give your character a Name, Gender, and Race\n\nFor demonstration purposes, we'll pick a Plasmoid",
+				"fields":
+				[
+					{
+						"name":"Stats",
+						"value":"The `Stats` tab shows you your current HP, core Ability scores, skill proficiencies, saving throws, armor class, etc."
+					},
+					{
+						"name":"Features",
+						"value":"The `Features` tab is where you'll enter your race and class features, your armor, tool, and weapon proficiencies, along with your attacks."
+					},
+					{
+						"name":"Inventory",
+						"value":"The `Inventory` tab shows all of your equipment, handling which items are equipped and magic items attuned. Note, however, that the Avrae bot will not import your inventory, so we track it in-server using the `!bag` command."						
+					},
+					{
+						"name":"Spells",
+						"value":"The `Spells` tab (once properly set-up) will contain the list of spells your character knows and can prepare. For purely martial characters, this tab can be disabled in the character settings."
+					},
+					{
+						"name":"Persona",
+						"value":"The `Persona` tab contains your character's Background and Language Proficiencies, as well as other character details such as personality and physical description."
+					},
+					{
+						"name":"Journal",
+						"value":"The `Journal` tab manages your race, class and level. You can use it to track your experience (though we use the `!xp` alias in-server for that). You can also add notes to this tab."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/PKTHQyJ.png" }
+			},
+			{
+				"title":"1️⃣ Racial Details",
+				"description":"When creating the character, you are prompted to enter a Race for them, but DiceCloud doesn't automatically populate the racial details - you will have to do that manually.\n- Click the Journal tab (in the top row menu, on the far right)\n- Click the race you entered to open the racial dialog box. (In our example, `Plasmoid`)\n- Click the pencil icon in the top corner of the dialog to edit\n\nYou can change your race's name and add effects and proficiencies your race gives you.",
+				"fields":
+				[
+					{
+						"name":"Speed",
+						"value":"- Click the `Add Effect` button; the Effect window will open.\n- In the left menu, scroll down to `Stats` and choose `Speed`.\n- Choose `Base Value`, in the right menu.\n- Input the value for your race's base speed (usually 30, but it might vary)\n- Click the return arrow in the upper left to finalize it."
+					},
+					{
+						"name":"Ability Score Increases",
+						"value":"- Click the `Add Effect` button\n- In the left menu, select `Ability Scores`, followed by the ability to apply your racial bonus.\n- Choose `Add`, in the right column (this should be the default).\n- Input the value for your first ASI\n- Click the return arrow in the upper left to finalize it.\n- Repeat the steps for any further ASIs (where applicable)."
+					},
+					{
+						"name":"Other Racial Effects",
+						"value":"Repeat the process for other racial features. Such features may include:\n- Speed (as a Base Value)\n- Racial Ability Score Bonuses (As an Add)\n- Resistances (As a Resistance)\n- Armor Proficiencies (See Below for Quick Example on Profs)\n- Language Proficiencies (See Below for Quick Example on Profs)\n- Skill Proficiencies (See Below for Quick Example on Profs)\n- Tools Proficiencies (See Below for Quick Example on Profs)\n- Weapon Proficiencies (See Below for Quick Example on Profs)"
+					}					
+				],
+				"image": 
+				[
+					{ "url": "https://i.imgur.com/HPbqcYq.png" }
+				]
+			},
+
+
+			
+
+			{
+				"title":"2️⃣ Input your Class",
+				"description":"Still in the Journal tab, click the plus button in the card above your race. It will read `Level 0` before you've added any. Enter the name of your base class (subclasses will be added later), and the level. Now we'll need to enter the class details:",
+				"fields":
+				[
+					{
+						"name":"`Saving Throw`",
+						"value":"- Click the Add Proficiency button\n- Click the dropdown box that currently has `Skill` selected, and choose `Saving Throw` instead\n- In the `Proficiency` dropdown, choose the first saving throw your class gives you\n- Leave the third dropdown as `Proficient`\n- Repeat these steps for your the second Saving Throw proficiency provided by your class"
+					},
+					{
+						"name":"`Stats`->`Hit Points`",
+						"value":"Do not type in your total hp here. Instead, set it as a Base Value and use a formula. Dicecloud calculates equations dynamically in any field that has a light bulb icon in it. The variable used to find the level of a class is always {classname}Level. Avrae will pick this up too for aliasing! So always name your class properly.\n- Click the Add Effect button\n- Select `Stats` in the left column, and choose `Hit Points`\n- Choose `Base Value`\n - **Fighter**: `(FighterLevel * 6) + 4\n- **Note**: Dicecloud dynamically adds your constitution modifier to your hit point total, so do not include it in the formula."
+					},
+					{
+						"name":"`Hit Dice`",
+						"value":"- Click the Add Effect button\n- Select `Hit Dice` in the left column, and choose the appropriate Hit Die size for your class\n- Choose `Base Value`\n- Enter `{classname}Level"
+					},					
+					{
+						"name":"Multiclassing",
+						"value":"If you choose to multiclass, you will need to create a Class card for each class. Remember to only add the Saving Throw proficiencies from the first. Be sure to double check what your second class provides when multiclassing."
+					}
+				],				
+				"image": { "url": "https://i.imgur.com/dDahKLR.png" }
+			},
+
+				
+		
+			{
+				"title":"3️⃣ Set Ability Scores",
+				"description":"Your character's ability scores are all set to 10 by default, so you'll need to update them with the values that you rolled in <#697021317727387718>, or that came from your Point Buy. Enter exactly the base values, without your racial bonuses (since those were applied in the previous step).\n- Navigate to the Features tab\n- Select the Base Ability Scores feature\n- Click the pencil icon in the top right corner\n- Click the pencil icon to the right of your character's Strength\n- Make sure `Base Value` is selected.\n- Input your character's base strength (without any racial ASI)\n- Repeat for the rest of your ability scores",
+				"image": [
+					{ "url": "https://i.imgur.com/dxEHdn9.png" },
+					{ "url": "https://i.imgur.com/R1qA5CQ.png" }
+				]
+			},
+
+
+			
+			{
+				"title":"4️⃣ Select your Background",
+				"description":"Select your Background from the dropdown, or type it manually to see matching options. You can see the backgrounds available, with links to more details, in <#911129455345405992>. When you've selected your background, make a note of the starting equipment it provides - it will need to be added manually.\n\nThe details in each background (Personality Traits, Ideals, Bonds, and Flaws) are optional - they do nothing to your character mechanically, but can be very helpful in fleshing them out to be more than a collection of attributes.\n\nFor our demonstration, we'll make our Half-Elf a member of the City Watch.",				
+				"image": { "url": "https://i.imgur.com/SxiVLZ2.png" }
+			},
+			{
+				"fields":[
+					{
+						"name":"Custom Background",
+						"value":"The Player Handbook has options for customizing your background. You can select the feature of any background, but customize it to allow any two Skill proficiencies, and two proficiencies in either Languages or Tools.\n- Go to the **`Backgrounds`** tab and find the background you want to customize\n- Add the word `Custom` in front of the name to differentiate it from the original\n- Change the two skills to any two of your choice\n- Change the `Languages` and `Tools` columns to include the number of proficiencies for that category.\nYou can assign a *total* of two points between them.\n- The sheet will highlight if you attempt to assign more than two skills,\nor more than two proficiencies.\n- Once done, you can find it in the list of backgrounds on the main sheet page."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/s3mk8lR.png" },
+				"footer": {"text":"Custom Background Setup"}
+			},
+			{
+				"title":"5️⃣ Select Proficiencies & Languages",
+				"description":"",
+				"fields":[
+					{
+						"name":"Skill Proficiencies",
+						"value":"Most often, you will get two skills from your class, and two skills from your background. Some races, classes, and feats *may* offer additional skills, or Expertise in a given skill. Make sure to read your race/class/background when choosing, as some options will allow you to pick *any* skill, and those options may not be highlighted.\nSelect skills by selecting the bubble and entering an `x` in the cell with the bubble. For features which grant expertise, put an `e` in the bubble instead."
+					},
+					{
+						"name":"Languages",
+						"value":"Some Races and Backgrounds provide you with Language options. You can select these via the dropdown. The sheet will tell you how many you have left to choose. Certain languages (Druidic & Thieves' Cant) are class-specific and cannot be taken without being a member of those classes. They will be automatically added where applicable."
+					},
+					{
+						"name":"Tool Proficiencies",
+						"value":"Your race, class, or background may specify specific tools or options to choose from, so please check the relevant pages before entering them. The sheet doesn't automatically populate any tool proficiencies. It just counts how many you should have, so you will have to fill this in manually.\nNote that Avrae will not automatically import these proficiencies, and you will need to add them manually with the `!tool` alias. More on this in <#775866621994205285>)."
+					}
+				],
+				"image":[
+					{ "url": "https://i.imgur.com/RmW3vt8.png"},
+					{ "url": "https://i.imgur.com/JHZ2bpi.png"},
+					{ "url": "https://i.imgur.com/7uzC9Dn.png"},
+					{ "url": "https://i.imgur.com/YGAdci6.png"}
+				]
+			},
+			{				
+				"title":"6️⃣ Enter Starting Equipment",
+				"description":"Characters begin with their starting equipment and 150 gold. You can see what equipment you start with by visiting the page for your class (linked in <#911129455345405992>) and find your starting equipment on [5e.tools](https://5e.tools/classes.html). The bot **does not** sync your equipment from Beyond, so you will need to do that by hand, but it **will** use any weapons and armor to automatically calculate your attacks and Armor Class, respectively. You do not need to set your gold amount, as our `!setup` command will handle it for you once your sheet is approved.\nNote that, even if you multiclass, you only receive the starting gear from your first class.",
+				"fields":
+				[
+					{
+						"name":"Attacks",
+						"value":"Select attacks based on your starting equipment. All basic gear should be available and automatically fill in the attack details for you. This is necessary so when you register your sheet with Avrae it will automatically generate your attack rolls.\nFor the demo, we'll enter a Rapier (a Martial weapon)x and a Light Crossbow"
+					},
+					{
+						"name":"Armor",
+						"value":"Selecting your armor (if any is included in your starting equipment) from the drop downs will automatically update your Armor Class.\nFor the demo, we'll select Chain Mail and a Shield"
+					}
+				],
+				"image":
+				[
+					{ "url": "https://i.imgur.com/fne16th.png" },
+					{ "url": "https://i.imgur.com/asjGqN8.png" },
+					{ "url": "https://i.imgur.com/IyI9h7M.png" }
+				]
+			},
+			{
+				"title":"7️⃣ Enter Features & Traits",
+				"description":"Some class features, feats, and character options entered in this section are automatically applied to your character sheet. This can also be used for your own notes on how some things on your sheet work by right-clicking and selecting `Add Note` from the popup menu.\n\nMost race and class features have supported automation, most Fighting Styles are supported, most Feats are supported. You can enter these in the following way:\n`Feat: [feat name]` or `Fighting Style: [name]`\n\nSome abilities let you choose things, like saving throw proficiencies. Include those things in parentheses, e.g. `Iron Mind (Wisdom)` If you take the Skilled feat, put your chosen skills in parentheses, e.g. `Skilled (Acrobatics, Athletics, Performance)`",
+				"fields":
+				[
+					{
+						"name":"Avrae Automation",
+						"value":"A list of Avrae's [currently automated Actions](https://docs.google.com/spreadsheets/d/1w66DFqD83hkwXqP7rTYx26QAcy1FJmhATpVIgfLmslM/edit#gid=658150111) for use on GSheet and Dicecloud. Note that not all will be accessible, but that is something we will be working to rectify in the future."
+					}
+				],
+				"image": {"url":"https://i.imgur.com/SsJ7Jci.png"}
+			},
+			{
+				"title":"8️⃣ Select Spells",
+				"description":"If your class has the ability to cast spells (not every class is a spellcaster) you will need to enter the spells you know to populate your sheet in Avrae.",
+				"fields":
+				[
+					{
+						"name":"Select Spellcasting Class",
+						"value":"Select your spellcasting class from the dropdown. Note that if you multiclass into two spellcasting classes with different primary abilities (such as Wizard, which is an intelligence-based caster and a Warlock, which is a charisma-based caster) GSheet will figure out spellslots properly, but can't handle setting up separate DCs and Spell Attack Bonuses for classes with different Spellcasting Abilities."
+					},
+					{
+						"name":"Select Spells",
+						"value":"The exact number and levels of spells, and the spell lists available to you will depend on your class. Check the rules for your class for how many spells you can learn, and what spells are available to you. Some classes, specifically Clerics and Druids, know all the spells in their spell list, but can only prepare a certain number of them at a time. If you run out of room, you can go to the `Additional` tab to enter more spells known.\nFor our Demo Character, a Wizard, we begin with three Cantrips from the Wizard spell list, and eight level 1 spells (6 known from level 1, plus 2 for being second level in that class)."
+					},
+					{
+						"name":"Prepare Spells",
+						"value":"Finally, select the spells you have prepared. Not all casters need to prepare their spells, and can cast all the spells they know. Artificers, Clerics, Druids, Paladins, and Wizards can prepare a number of spells based on their ability modifier and class level - this is detailed in your Spellcasting feature of your class. Cantrips are considered always prepared, and do not count towards this total. Some subclasses also have spells which are always prepared.\nSimilar to selecting Skill Proficiencies, clicking the bubble and entering an `x` in the field will select it, and entering a `0` in the field will deselect it."
+					}
+				],
+				"image": {"url":"https://i.imgur.com/2BCTajB.png"}
+			},
+			{
+				"title":"9️⃣ Register Your Sheet with Avrae",
+				"description":"The final necessary step is to share your sheet so our DMs and Avrae can read it.\n- Click the `Share` button\n- Click the `Change to anyone with the link` option followed by the `Copy Link` button\n- In <#694275490306981947>, enter the command `!import <url>` where <url> is the copied link to your sheet",
+				"image": 
+				[
+					{"url":"https://i.imgur.com/CN3XPwy.png"},
+					{"url":"https://i.imgur.com/wRRwIue.png"},
+					{"url":"https://i.imgur.com/w6zYqxP.png"}
+				]
+			}
+			
+		]
+	}
+}

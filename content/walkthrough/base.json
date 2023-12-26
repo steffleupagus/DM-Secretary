@@ -5,48 +5,48 @@
 		"inlineIndex":false,
 		"embeds": [
 			{
+				"title":"▶️ Getting Started",
+				"description":"These character walkthroughs are intended to be useful both to D&D newbies, and experienced players who just need to know how we do things in the server. The main description block of each step is aimed towards explaining the facets of a character sheet to newbies to D&D. Server-specific instructions and information have been separated so experienced players can find them easily."
+			},
+			{
 				"title":"1️ Choose Race",
 				"description":"Every character belongs to a race, one of the many intelligent species in the D&D world. The race you choose contributes to your character’s identity in an important way, by establishing a general appearance and the natural talents gained from culture and ancestry. Your character’s race grants particular racial traits, such as special senses, proficiency with certain weapons or tools, proficiency in one or more skills, or the ability to use minor spells. These traits sometimes dovetail with the capabilities of certain classes (see step :two:). Races also allow one or more ability score increases, which you apply in step :three:.",
 				"fields":
 				[
 					{
-						"name":"** **",
-						"value":"The ⁠<#911129455345405992> channel provides a list of approved races and subraces, and links to more information about each."
+						"name":"Approved Races",
+						"value":"The ⁠<#911129455345405992> channel provides a list of approved races and links to more information about each."
 					},
 					{
-						"name":"** **",
+						"name":"Next Step",
 						"value":"If you are planning to join tables/quests, fight in the Arena, gain experience, roll dice, or otherwise participate in the full DnD experience, continue on to step :two:. However, if you are only interested in roleplaying you may skip creating a character sheet and jump to step :eight: to create your RP Profile."
 					}
 				]
 			},
 			{
 				"title":"2️ Choose Class",
-				"description":"Every adventurer is a member of a class. Class broadly describes a character’s vocation, what special talents he or she possesses, and the tactics he or she is most likely to employ when exploring a dungeon, fighting monsters, or engaging in a tense negotiation.\n\nYour character receives a number of benefits from your choice of class. Many of these benefits are class features — capabilities that set your character apart from members of other classes. You also gain a number of proficiencies: armor, weapons, skills, saving throws, and sometimes tools. Your proficiencies define many of the things your character can do particularly well, from using certain weapons to telling a convincing lie.",
+				"description":"Every adventurer is a member of a class. Class broadly describes a character’s vocation, what special talents he or she possesses, and the tactics he or she is most likely to employ when exploring a dungeon, fighting monsters, or engaging in a tense negotiation.\n\nYour character receives a number of benefits from your choice of class. Many of these benefits are **class features** — capabilities that set your character apart from members of other classes. You also gain a number of **proficiencies**: armor, weapons, skills, saving throws, and sometimes tools. Your proficiencies define many of the things your character can do particularly well, from using certain weapons to telling a convincing lie.",
 				"fields":
 				[
 					{
-						"name":"** **",
+						"name":"Approved Classes",
 						"value":"The <#911129455345405992> channel provides a list of available classes and subclasses, and links to more information about each."
 					}
 				]
 			},
 			{
 				"title":"3️ Determine Ability Scores",
-				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion\n\nWe allow two methods of determining your ability scores: Rolling or Point Buy.",
+				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion.",
 				"fields":
 				[
 					{
-						"name":"Rolling for Abilities",
-						"value":"To roll for your ability scores, head to <#697021317727387718>. You must ping <@&694285067723210843> to observe your rolls. If you fail to ping or roll before someone responds, your roll may be invalidated. Once you receive the go ahead, use the pinned command (`!statroll`) to get your abilities.\n\n**Rerolls**: We allow one re-roll, which may be purchased for 10,000 RPP (earned by being active and roleplaying on the server. You can read more about RPP in the <#699930213093474315>). If it is your first character, the cost is waived for you and you get one free reroll.\n"
-					},
-					{
-						"name":"Point Buy",
-						"value":"If you dislike your roll, or simply choose not to roll, you may use the Point Buy method of determining your ability scores. http://chicken-dinner.com/5e/5e-point-buy.html has a convenient tool. Fill out your point buy, paying attention to the value total in the lower right corner. For example:"
+						"name":"How to determine ability scores",
+						"value":"We allow two methods of determining ability scores: Rolling or Point Buy.\n\n<:d20:704040692946698361> **Rolling for Abilities**: To roll your ability scores, head to <#697021317727387718> and ping <@&694285067723210843> to observe your rolls. If you fail to ping, or roll before someone responds, your roll may be invalidated. Once a DM responds, use the pinned command (`!statroll`).\n**Rerolls**: We allow one re-roll, which may be purchased for 10,000 RPP (you can read more about RPP in the <#699930213093474315>). If it is your first character, the cost is waived for you and you get one free reroll.\n\n<:d20:704040692946698361> **Point Buy**: If you dislike your roll, or simply choose not to roll, you may use the Point Buy method of determining your ability scores.\n http://chicken-dinner.com/5e/5e-point-buy.html has a convenient tool. Fill out your point buy, paying attention to the value total in the lower right corner. For example:"
 					}
 				]
 			},
 			{
-				"image":{"url":"https://i.imgur.com/jxQyh3W.png"}
+				"image":{"url":"https://i.imgur.com/enqFGs9.png"}
 			},
 			{
 				"title":"4️ Choose Background",
@@ -54,7 +54,7 @@
 				"fields":
 				[
 					{
-						"name":"** **",
+						"name":"Approved Backgrounds",
 						"value":"The <#911129455345405992> channel provides a list of approved backgrounds, and links to more information about each."
 					}
 				]

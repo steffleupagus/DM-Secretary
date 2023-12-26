@@ -22,7 +22,7 @@ async function execute(client, oldThread, newThread)
 			}
 		}
 
-		if (ChanUtils.isRoleplayThread(newThread))
+		if (ChanUtils.isRoleplayThread(newThread) && newThread.archived)
 		{		
 			const isExpChannel = await ChanUtils.isRPExpThread(newThread)
 			if (isExpChannel)

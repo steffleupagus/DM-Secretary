@@ -6,27 +6,26 @@ const { EmbedBuilder } = require("discord.js");
 const regex = /You have bought ([0-9]+) \[Character Respec\]/
 
 const steps = `
-0️⃣ Run \`+use <x> respec\`, where <x> is the amount purchased
+Run all commands in this channel
+0️⃣ Run \`/item use\`, to use all purchased respecs
 1️⃣ Run \`!char <name>\` to select the character you want to respec
-🟦 • Run \`!xp\` in this channel to confirm your level
-🟦 • Run \`!bag\` in this channel
+🟦 • Run \`!xp\` to confirm your level
+🟦 • Run \`!bag\`
 🟦 • Run \`!viewroll\` *If you have unused rolls, __**STOP**__*
 2️⃣ Run \`!respec\`
 3️⃣ [*Optional*] Run \`!statroll\`
 🟦 • Respec grants you one new roll
-🟦 • If you wish a second roll, you must purchase it as normal
+🟦 • You may purchase a second roll as normal
 🟦 • **Important**: Do __not__ roll before running \`!respec\`
 4️⃣ Update or recreate your sheet
-5️⃣ Re-import or \`!update\` your sheet
-6️⃣ Inform the DMs of your sheet choices (Class options / Feats / etc)
-7️⃣ Run \`!vsheet\` and **Wait for DM approval**
-8️⃣ Call \`!setup\` as normal
-🟦 • Run \`!bag\` in this channel to confirm data transferred correctly
-
+5️⃣ Re-import your sheet or \`!update\`
+6️⃣ Inform DMs of your sheet choices (Class options / Feats / etc)
+7️⃣ Run \`!vsheet\` & \`!validate\`, and **Wait for review**
+8️⃣ Call \`!setup\` in <#704307298407022622>
+🟦 • Run \`!bag\` to confirm data transferred correctly
 <@&694285067723210843> - Don't approve until after the last step
 
-**Note**: A maximum of 10 rolls will be tracked on a character, after which you will be unable to roll additional stats for them if you choose to continually respec
-`;
+**Note**: A maximum of 10 rolls will be tracked on a character, after which you will be unable to roll additional stats`;
 
 async function shouldHandle(client, message)
 {
