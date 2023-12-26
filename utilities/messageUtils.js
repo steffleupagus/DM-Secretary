@@ -257,59 +257,29 @@ async function getAllRoleplayData(rpChan)
 	return rpData;
 }
 
-///
-/// Scrape the entire guild for new messages
-///
-async function scrapeAll(guild, startMsg, stats = null)
-{
-	return await scrapeGuildChannels(guild, startMsg, stats);
-}
+// ///
+// /// Scrape all the messages in a given channel and update the stats with the data
+// ///
+// async function scrapeChannelMessages(channel, startMsg, endMsg, limit, stats)
+// {
+// 	limit = limit || 5000;
+// 	endMsg = endMsg || null;
 
-async function scrapeGuild(guild, startMsg, stats = null)
-{
-	return await scrapeGuildChannels(guild, startMsg, stats);
-}
+// 	//Skip channels with no messages
+// 	if (channel.messages === undefined || channel.messages === null)
+// 	{
+// 		console.log("Skipping channel " + channel.name + " because it has no messages.");
+// 		return false;
+// 	}
 
-async function scrapeGuildChannels(guild, startMsg, stats = null)
-{
-	//Loop over all channels
-	await Utils.asyncArrayForEach(guild.channels.cache.values(), async (channel) =>
-	{
-		//If it is an RP channel (includes talking head) process it.
-		if (chanUtils.isRoleplayChannel(channel) ||
-		    chanUtils.isRoleplayThread(channel))
-		{
-			var out = await scrapeChannelMessages(channel, startMsg, null, null, stats);
-			stats = out || stats;
-			await Utils.slowdown(100);
-		}
-	});
-	return stats;
-}
-
-///
-/// Scrape all the messages in a given channel and update the stats with the data
-///
-async function scrapeChannelMessages(channel, startMsg, endMsg, limit, stats)
-{
-	limit = limit || 5000;
-	endMsg = endMsg || null;
-
-	//Skip channels with no messages
-	if (channel.messages === undefined || channel.messages === null)
-	{
-		console.log("Skipping channel " + channel.name + " because it has no messages.");
-		return false;
-	}
-
-	//Get all the messages
-	await getMessageRange(channel, startMsg, endMsg, limit).then(async allMsgs =>
-	{
-		await scrapeMessages(allMsgs, stats)
-	})
-		.catch(err => { throw err; })
-	return stats;
-}
+// 	//Get all the messages
+// 	await getMessageRange(channel, startMsg, endMsg, limit).then(async allMsgs =>
+// 	{
+// 		await scrapeMessages(allMsgs, stats)
+// 	})
+// 		.catch(err => { throw err; })
+// 	return stats;
+// }
 
 ///
 /// Given a list of messages, scrape them for metadata
@@ -510,45 +480,45 @@ function incrementStats(data, id, name, message, tupperData)
 
 
 
-// //Defualt Stats
-function createAuthorData(name)
-{
-	var authorData =
-	{
-		name: name,
-		posts: 0,
-		length: 0,
-		avg: 0,
-		charStats: {},
-		chanStats: {}
-	};
-	return authorData;
-}
+// // //Defualt Stats
+// function createAuthorData(name)
+// {
+// 	var authorData =
+// 	{
+// 		name: name,
+// 		posts: 0,
+// 		length: 0,
+// 		avg: 0,
+// 		charStats: {},
+// 		chanStats: {}
+// 	};
+// 	return authorData;
+// }
 
-function createCharData(charName)
-{
-	var charData =
-	{
-		name: charName,
-		posts: 0,
-		length: 0,
-		avg: 0,
-		isTupper: false
-	};
-	return charData;
-}
+// function createCharData(charName)
+// {
+// 	var charData =
+// 	{
+// 		name: charName,
+// 		posts: 0,
+// 		length: 0,
+// 		avg: 0,
+// 		isTupper: false
+// 	};
+// 	return charData;
+// }
 
-function createChanData(chanName)
-{
-	var chanData =
-	{
-		name: chanName,
-		posts: 0,
-		length: 0,
-		avg: 0
-	};
-	return chanData;
-}
+// function createChanData(chanName)
+// {
+// 	var chanData =
+// 	{
+// 		name: chanName,
+// 		posts: 0,
+// 		length: 0,
+// 		avg: 0
+// 	};
+// 	return chanData;
+// }
 
 
 
