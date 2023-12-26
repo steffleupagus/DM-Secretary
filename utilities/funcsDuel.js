@@ -929,22 +929,6 @@ async function undoApproval(logMessage, client)
 	const rows = getApprovalButtons()
 	logMessage.edit({embeds:[embed], components:rows});
 }
-	
-// 	clearDailyExp(message)
-// 	{
-// 		this.dailyExp.clearItems();
-// 		this.dailyExp.save();
-
-// 		var veriDate  = this.bot.getDate();
-// 		var shortDate = this.bot.formatDate(veriDate, "DD MMM YYYY");
-// 			veriDate  = this.bot.formatDate(veriDate, "DD MMMM YYYY [ hh:mmpm ]")
-
-// 		message.channel.send("🕛 - Daily Exp Reset - " + veriDate);
-
-// 		var pingChan = message.guild.channels.resolve(this.bot.config.xpLogChannel);
-// 		pingChan.send("```\n" + shortDate + "\n```");
-// 	}
-
 
 ///
 /// Using the parsed event data, generate a transcript
