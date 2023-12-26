@@ -16,7 +16,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const updated = await LevelData.logLevelMessage(client, message, interaction, sendResult)
 	await CharUtils.RefreshCache()
 
-	if (updated && config.DEV)
+	if (updated && !config.DEV)
 	{
 		const channel = await message.guild.channels.resolve(config.levelOutputChan)
 		console.log(channel.id)
