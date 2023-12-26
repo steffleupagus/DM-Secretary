@@ -227,18 +227,33 @@ async function getRoleplayData(rpChan, message = null)
 		? await findFenceposts(rpChan, message)
 		: await findLastBreak(rpChan);
 
-
 	let users = [];
 	roleplay.messages.map( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
 	const guildMembers = rpChan?.guild?.members;
 	try { await guildMembers.fetch({user:users}) }
 	catch (err) { console.error(err) }
 
-	
 	const rpData = await scrapeMessages(roleplay.messages);
 	
 	if (rpData)
 		rpData.start = roleplay.messages[0].url;
+	return rpData;
+}
+
+async function getAllRoleplayData(rpChan)
+{
+	const roleplay = await getMessageRange(rpChan);
+	let users = [];
+	
+	roleplay.forEach( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
+	const guildMembers = rpChan?.guild?.members;
+	try { await guildMembers.fetch({user:users}) }
+	catch (err) { console.error(err) }
+
+	const rpData = await scrapeMessages(roleplay);
+
+	if (rpData)
+		rpData.start = roleplay[0].url;
 	return rpData;
 }
 
@@ -550,5 +565,6 @@ module.exports =
 	scrapeMessages,
 	scrapeMessageMetadata,	
 	getRoleplayData,
+	getAllRoleplayData,
 	isSceneBreak
 }	

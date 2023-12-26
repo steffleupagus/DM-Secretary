@@ -8,12 +8,16 @@ const schemaName = `tablemeta${config.DEV ? "dev" : ""}`
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	user:		reqString,
+	title:		reqString,
 	name:		reqString,
+	desc:		String,
 	dmThread:	reqString,
 	oocThread:	reqString,
 	rpThread:	reqString,
+	created: 	Number,
 	updated: 	Number,
-	archived:	Boolean
+	archived:	Number,
+	players:	{}
 })
-	
+
 module.exports = mongoose.model(schemaName, schema, schemaName)

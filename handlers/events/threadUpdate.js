@@ -10,7 +10,7 @@ async function execute(client, oldThread, newThread)
 		const user = await client?.users?.fetch(config.OWNERID)		
 		const name = newThread.name;
 		const archived = newThread.archived;
-		if (archived && name.includes("📌"))
+		if (archived && name.includes("📌") && config.PRODUCTION)
 		{
 			newThread.setArchived(false, "Unarchiving pinned thread.");
 			if (user)
@@ -24,31 +24,43 @@ async function execute(client, oldThread, newThread)
 
 		if (ChanUtils.isRoleplayThread(newThread) && newThread.archived)
 		{		
-			const isExpChannel = await ChanUtils.isRPExpThread(newThread)
-			if (isExpChannel)
+			const isExpChannel = await ChanUtils.isRPExpThread(newThread)			
+			const isTableThread = await ChanUtils.isTableRPThread(newThread)
+			const log = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}\nTable Thread: ${isTableThread}`
+			if (isExpChannel && config.PRODUCTION)
 			{
 				const messages = await newThread.messages.fetch({limit:1});
 				const message  = messages?.first()				
 				if ( message && (!message.author.bot || Tupper.isTupperProxyMessage(message)) )
-				{				
+				{
 					const commandName = `scene${config.DEV ? "dev" : ""}`
 					const command = client.commands.get(commandName);
 					if (command)
 					{
 						await command.autoClose(message)
 						await newThread.setArchived(true)
-						
-						const dm = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}`
-						await user.send(dm)
 					}
 				}
 			}
-			else if (user)
+			else if (isTableThread)
 			{
-				const dm = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}`
-				await user.send(dm)
+				const messages = await newThread.messages.fetch({limit:1});
+				const message  = messages?.first()				
+				if ( message && (!message.author.bot || Tupper.isTupperProxyMessage(message)) )
+				{
+					const commandName = `table${config.DEV ? "dev" : ""}`
+					const command = client.commands.get(commandName);
+					if (command && command.autoClose)
+					{
+						await command.autoClose(newThread, isTableThread)
+					}
+				}
 			}
-
+						
+			if (user && log)
+			{
+				await user.send(log)
+			}
 		}
 	}
 }
@@ -56,5 +68,5 @@ async function execute(client, oldThread, newThread)
 module.exports = {
 	name: 'threadUpdate',
 	execute: execute,
-	build:config.PRODUCTION //|| config.DEV
+	build:config.PRODUCTION || config.DEV
 };
