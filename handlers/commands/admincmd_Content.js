@@ -40,6 +40,7 @@ async function publishContent(channel, content)
 	let threadQueue = [];
 	let index = [];
 	let indexInline = true;
+	let indexFields = true;
 	await Utils.asyncObjectForEach(content, async (value, key)=>
 	{
 		if (value.skip) return;
@@ -48,6 +49,7 @@ async function publishContent(channel, content)
 									await channel.send(header) : null;
 		let contents = [];
 		indexInline = indexInline && (value.inlineIndex ?? true);
+		indexFields = indexFields && (value.fieldsIndex ?? true);
 		
 		if (typeof value === 'string')
 		{
@@ -165,26 +167,10 @@ async function publishContent(channel, content)
 
 	if (index.length)
 	{
-		let embed = new Embed()
-			embed.addField("**Index**", '', indexInline);
-			embed.setFooter({text:"Index"})
-		index.forEach( (item)=>
-		{
-			if (!item.title) return;
-			let fieldHeader = "** **";
-			
-			if (item.break)
-			{
-				if (typeof item.break == "string")
-					fieldHeader = item.break;
-				embed.closeField();
-				embed.addField(fieldHeader,'', indexInline)
-			}
-			
-			const field = `${item.prefix || ""}[${item.title}](${item.url})`			
-			embed.extendField(field, fieldHeader, indexInline);
-		});
-		await embed.send(channel);
+		if (indexFields)
+			await publishIndexFields(channel, index, indexInline);
+		else
+			await publishIndexDesc(channel, index);
 	}
 
 	if (threadQueue.length)
@@ -197,12 +183,64 @@ async function publishContent(channel, content)
 	return true
 }
 
+async function publishIndexDesc(channel, index)
+{
+	let desc = ""
+	index.forEach( (item)=>
+	{
+		if (!item.title) return;
+		desc += `${item.prefix || ""}[${item.title}](${item.url})\n`
+	});	
+	let embed = new Embed()
+		embed.setDescription(desc)
+		embed.setFooter({text:"Index"})	
+	await embed.send(channel);
+}
+
+async function publishIndexFields(channel, index, indexInline)
+{
+	let embed = new Embed()
+		embed.addField("**Index**", '', indexInline);
+		embed.setFooter({text:"Index"})
+	index.forEach( (item)=>
+	{
+		if (!item.title) return;
+		let fieldHeader = "** **";
+
+		if (item.break)
+		{
+			if (typeof item.break == "string")
+				fieldHeader = item.break;
+			embed.closeField();
+			embed.addField(fieldHeader,'', indexInline)
+		}
+
+		const field = `${item.prefix || ""}[${item.title}](${item.url})`			
+		embed.extendField(field, fieldHeader, indexInline);
+	});
+	await embed.send(channel);
+}
+				
+function requireUncached(module) 
+{
+	delete require.cache[require.resolve(module)];
+	try
+	{
+		return require(module);
+	}
+	catch (e)
+	{
+		return null;
+	}
+}
+
 function getContent(channel, override = null)
 {
 	let source = override || index[channel.id].data	
 	let content = null;
 	try {
-		content = require(`../../content/${source}`)	
+		content = `../../content/${source}`
+		content = requireUncached(content)
 		console.log(content)
 	}
 	catch(e){}
