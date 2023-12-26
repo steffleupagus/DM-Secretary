@@ -6,7 +6,7 @@ const { ChannelType, EmbedBuilder, PermissionsBitField, time } = require('discor
 const MsgUtils = require(`../../utilities/messageUtils.js`);
 const ChanUtils = require(`../../utilities/channelUtils.js`);
 const RPP = require(`../../database/rppTrackerSchema.js`)
-
+const Utils = require(`../../utilities/utilFuncs.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
@@ -15,10 +15,17 @@ const ignoreChannels =
 //	"",	//	
 ];
 
+const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
+
 async function shouldHandle(client, message)
 {
 	let handle = false;	
 	if (message?.mentions?.channels?.size > 0)
+		handle = true;
+
+	// Make sure the content will always be a discord link.
+	const links = [...message.content.matchAll(discordLinkReg)];
+	if (links.length)
 		handle = true;
 	
 	return handle;
@@ -26,8 +33,18 @@ async function shouldHandle(client, message)
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
+	const guild = message.guild;
 	const citizen = config.CitizenRole;	
 	const channelMentions = message?.mentions?.channels
+	const links = [...message.content.matchAll(discordLinkReg)];
+	await Utils.asyncArrayForEach(links, async link => 
+	{
+		const channelId = link[2];
+		const channel = await guild.channels.fetch(channelId);
+		if (channel)
+			channelMentions.set(channel.id,channel)
+	})
+	
 	const channels = channelMentions
 		.filter(channel => {
 			const perms = channel.permissionsFor(citizen);
