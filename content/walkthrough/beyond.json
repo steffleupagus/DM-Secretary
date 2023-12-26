@@ -1,0 +1,108 @@
+{
+	"Character Walkthrough": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"includeSectionBreak":false,
+		"embeds": [
+			{
+				"title":"Getting Started",
+				"description":"D&D Beyond is the most beginner-friendly tools available for sheet creation, but only a small subset of basic races and classes (called the System Reference Document, or SRD) are free for use. A majority of the races and classes require purchasing one or more books for use with their system. For demonstration purposes, this walkthrough will create a character using only the free-to-use SRD.\n\nBeyond itself has additional resources available to help walk you through creating a character.\nhttps://www.dndbeyond.com/posts/1059-how-to-create-your-first-dungeons-dragons.\n\nTo get started, go to https://www.dndbeyond.com/ and log in. If you don't already have an account, you will be prompted to register. Once logged in, go to `Collections`->`My Characters`, and then click `Create a Character`\nSelect your Character Creation method. We will choose `Standard`.\nIf you are new to DnD, click the checkbox for `Show Help Text`",
+				"fields":[
+					{
+						"name":"Character Preferences",
+						"value":"Choose your name. (You can also randomize it for one to be chosen for you)\n\nSelect the various options for your character and then click `Next`. You can use the image below to guide you, but there may be items shown here that you have not purchased.\n\nIf you've purchased __Tasha's Cauldron of Everything__, you'll have the optional features as shown below. If not, these options will not be available via Beyond, and you will need to use GSheet (<#walkthrough>) or DiceCloud (<#walkthrough>)."
+					}
+				],
+				"image": [
+					{ "url": "https://i.imgur.com/wEOXNT0.png" },
+					{ "url": "https://i.imgur.com/suPQlrh.png" }				
+				]
+			},
+			{
+				"title":"1️⃣ Select your Race",
+				"description":"buying any books through DnD Beyond, your options for Races are limited to the content of the free sources shown below. As you purchase content, further options will become unlocked. **If you wish to use other approved content without purchasing it, but you will have to use GSheet ( <#walkthrough> ) or DiceCloud ( <#walkthrough> ) instead.**\n\nFor demonstration purposes, we'll choose a High Elf, one of the sub-races of Elf. Clicking \"Elf,\" then \"High Elf,\" and finally `Choose Race` to confirm our choice.",
+				"fields":
+				[
+					{
+						"name":"Racial Traits",
+						"value":"Each race has a variety of options and choices for customization. These will be visible in the `Racial Traits` section and appear with a blue exclamation point.\nFor our elf, it is the choice of a Cantrip."
+					}
+				],
+				"image": 
+				[
+					{ "url": "https://i.imgur.com/PTVwHBk.png" },
+					{ "url": "https://i.imgur.com/tH1Ugi1.png" },
+					{ "url": "https://i.imgur.com/fyz0Yte.png" }
+				]
+			},
+			{
+				"title":"2️⃣ Select your Class",
+				"description":"Almost all base classes are available in Beyond without any purchase, but only a small subset of subclasses are available. To play other options you'll either need to purchase content through DnD Beyond, or use GSheer or Dicecloud.\n\nFor our example, we'll pick a Wizard (so we can walk you through adding spells later).",
+				"fields":
+				[
+					{
+						"name":"Set your Level",
+						"value":"All characters here start at level 3, so we will set that now via the level dropdown. It will give you a confirmation screen, and automatically set your XP to your correct starting value of 900.\n*Multiclassing*You can select the `+Add Another Class` option beneath your class. You must meet the ability score requirements for multiclassing, and your total class levels cannot exceed 3 for a new character."
+					},
+					{
+						"name":"Choose Class Options",
+						"value":"Every class has options to choose from. One of the most important of which is your Subclass, so choose carefully. For more information about your options, take a look at the <#911129455345405992>. The SRD is limited in its options, so if you haven't purchased any content through Beyond, your desired option might not be available. If that is the case, you will need to use GSheet or Dicecloud."
+					}
+				],
+				"image": 
+				[
+					{ "url": "https://i.imgur.com/SFXbxiF.png" },
+					{ "url": "https://i.imgur.com/hR0zIPT.png" },
+					{ "url": "https://i.imgur.com/JAG07NV.png" },
+					{ "url": "https://i.imgur.com/iqipM6D.png" }
+				]
+			},
+			{ 
+				"fields":[
+					{
+						"name":"Select Spells (Class Dependent)",
+						"value":"Some classes and subclasses allow you to cast spells. Check your class listing for the exact number of spells you know. Some classes, such as Cleric and Druid, know their entire spell list, but can only prepare a set number per day, while others, such as Sorcerer, Warlock, and Wizard, must select a set number of spells. As preparing spells happens after character creation, this guide does not cover that.\n\nClick on the `Spells` tab, and choose our spells. For Preparation casters, the button will read `Prepare`, Known-spell casters will have a `Learn` button next to the spells.\n\nMore spell options are unlocked by purchasing content in Beyond. If there are spells that aren't unlocked, you may have to use GSheet or Dicecloud instead."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/kA7SpPW.png" }
+			},
+			{
+				"title":"3️⃣ Set Ability Scores",
+				"description":"Select your method from the provided options: Manual (which you will use if you rolled for attributes in <#697021317727387718>), Point Buy, or Standard Array (which is just a specific permutation of Point Buy)\n\nFor our example Elf, we'll use Point Buy.",
+				"fields": [
+					{
+						"name":"Ability Score Increases",
+						"value":"All Races in D&D give an increase to one or more Ability Scores, which will be shown on this same screen. In many cases, you will have some options to select which ability score it applies to, allowing you greater customization."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/3qJpILV.png" }				
+			},
+			{
+				"title":"4️⃣ Select your Background",
+				"description":"On the next screen, you can select your additional Language, and your Background. Once your background is selected from the dropdown, other Proficiency or Language options may appear. The options shown below Background are entirely optional. There are also Suggested Characteristics which you can choose randomly, or pick ones that you want. These have no bearing on mechanics, but can help you flesh out your character.",
+				"fields":[
+					{
+						"name":"Custom Background",
+						"value":"The Player Handbook has options for customizing your background. You can select the feature of any background, but customize it to allow any two Skill proficiencies, and two proficiencies in either Languages or Tools.\n\nSelect your Background, and the proficiencies from the choices provided."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/NXFn93O.png" }
+			},
+			{
+				"title":"5️⃣ Starting Equipment and Gold",
+				"description":"Characters begin with their starting equipment and 150 gold. You can see what equipment you start with by clicking the `Equipment` tab and selecting the `Equipment` option. The bot **does not** sync your equipment from Beyond, so you will need to do that by hand, but it **will** use any weapons and armor to automatically calculate your attacks and Armor Class, respectively. You do not need to set your gold amount, as our `!setup` command will handle it for you once your sheet is approved.",
+				"image": { "url": "https://i.imgur.com/BatK5Hh.png" }
+			},
+			{
+				"title":"6️⃣ Equip your weapons and armor",
+				"description":"In order for Avrae to automatically create your attacks and to update your Armor Class, you should equip your weapons and armor. Click the `Equipment` tab, and select the checkboxes for the gear you want to wear.",
+				"image": {"url":"https://i.imgur.com/HEK0rgy.png"}
+			},
+			{
+				"title":"7️⃣ Register Your Sheet with Avrae",
+				"description":"- Click the `Share` button, and copy the link provided.\n- Go to <#694275490306981947> and enter the command `!import <url>` where <url> is the share link.",
+				"image": {"url":"https://i.imgur.com/qv2Nov1.png"}
+			}
+		]
+	}
+}

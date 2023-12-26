@@ -1,0 +1,182 @@
+{
+	"Character Walkthrough": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"fieldsIndex":false,
+		"includeSectionBreak":false,
+		"embeds": [
+			{
+				"title":"Getting Started",
+				"description":"Google Sheets (GSheet) is one of the more popular alternatives to D&D Beyond. While not as beginner-friendly as Beyond, it does have the advantage of flexibility and freedom to use any race or class without buying the content.\n\nTo begin, you'll need to make a copy of the GSheet. Even if you have used GSheet with Avrae before, we **strongly encourage** you to use our version of the sheet at the link provided below. It includes all approved races, classes, and backgrounds, along with several customizations and updates for the server.\n\nTo make a copy of the sheet:\n- Go to https://bit.ly/dol-gsheet\n- In the menu, select **`File`** > **`Make a Copy`**",
+				"image": { "url": "https://i.imgur.com/OkBmdN0.png" }
+			},
+			{
+				"fields":
+				[
+					{
+						"name":"⚠️ Warning",
+						"value": "The GSheet can be messed up pretty easily if you aren't careful. It tries to protect you from messing it up with a `Heads up!` message (shown below). If you see this message, click CANCEL. It means you are editing something you should not be!"
+					}
+				],
+				"image": { "url": "https://i.imgur.com/YXLWN6L.png" },
+				"footer":{ "text": "If you see this, stop what you're doing.\nYou're editing something you shouldn't."}
+			},
+			{
+				"image": { "url": "https://i.imgur.com/rfHwO3M.png" },
+				"footer":{ "text": "Don't forget to enter your character's name!"}
+			},
+			{
+				"title":"1️⃣ Select your Race",
+				"description":"Select your Race from the dropdown, or type it manually to see matching options. You can see the races available, with links to more details, in <#911129455345405992>.\n\nFor our demonstration purposes, we'll pick a basic Half-Elf",
+				"fields":
+				[
+					{
+						"name":"Ability Score Increases",
+						"value":"All Races in D&D give an increase to one or more Ability Scores. If you are using our server's custom GSheet, the ability score increases provided by that race will appear beneath the race selection field. Our server's custom GSheet already accounts for the Custom Origin optional rule, allowing you to customize your character by assigning their racial ASIs to different abilities."
+					}
+				],
+				"image": 
+				[
+					{ "url": "https://i.imgur.com/HPbqcYq.png" }
+				]
+			},
+			{
+				"title":"2️⃣ Select your Class",
+				"description":"Enter your chosen class. Subclasses (if any) should precede the class, and the level should follow.\nFor example: `Evocation Wizard 3`.\n\nImportant: Do not neglect to set your Subclass if applicable. Under some circumstances, leaving off a subclass can end up with the sheet applying the wrong one.",
+				"fields":
+				[
+					{
+						"name":"Starting XP & Level",
+						"value":"If you used the server's custom GSheet, you should already have your starting exp (900) entered here. If not, enter it. Your **Level** and exp to **Next Level** will automatically populate."
+					},
+					{
+						"name":"Multiclassing",
+						"value":"If you choose to multiclass, the first class entered will be used to determine your 1st level hit die and saving throw proficiencies, simply enter your secondary class after the first,\nExample: `Fighter 1 / War Wizard 2`\nThe levels following your class(es) must match your total level (3 for a new character)."
+					}
+				],				
+				"image": { "url": "https://i.imgur.com/dDahKLR.png" }
+			},
+			{
+				"title":"3️⃣ Set Ability Scores",
+				"description":"Fill in your ability scores that you rolled in <#697021317727387718>, or that came from your Point Buy. Enter your **base** ability score, __before any modifiers__, in the cell under each Ability Score block that contains `00`.\n\nFor our example character, we'll use Point Buy.",
+				"fields":
+				[
+					{
+						"name":"Ability Score Increase (ASI)",
+						"value":"All Races in D&D give an increase to one or more Ability Scores. In many cases, you will have some options to select which ability score it applies to, allowing you greater customization. The left column, (marked `00`) is for your base roll or point buy total, and the right column is for your ASI."
+					},
+					{
+						"name":"Point Buy Validator",
+						"value":"Our custom GSheet has a built-in point-buy validator. Beneath the list of Ability Scores, there is a select dropdown that will allow you to toggle between Manual (for Rolled scores) or Point Buy. Enter your point buy selections in the same `00` box, and it will show you a total number of points spent. If you go over the allotted number of points, it will highlight in red."
+					}
+				],
+				"image": [
+					{ "url": "https://i.imgur.com/dxEHdn9.png" },
+					{ "url": "https://i.imgur.com/R1qA5CQ.png" }
+				]
+			},
+			{
+				"title":"4️⃣ Select your Background",
+				"description":"Select your Background from the dropdown, or type it manually to see matching options. You can see the backgrounds available, with links to more details, in <#911129455345405992>. When you've selected your background, make a note of the starting equipment it provides - it will need to be added manually.\n\nThe details in each background (Personality Traits, Ideals, Bonds, and Flaws) are optional - they do nothing to your character mechanically, but can be very helpful in fleshing them out to be more than a collection of attributes.\n\nFor our demonstration, we'll make our Half-Elf a member of the City Watch.",				
+				"image": { "url": "https://i.imgur.com/SxiVLZ2.png" }
+			},
+			{
+				"fields":[
+					{
+						"name":"Custom Background",
+						"value":"The Player Handbook has options for customizing your background. You can select the feature of any background, but customize it to allow any two Skill proficiencies, and two proficiencies in either Languages or Tools.\n- Go to the **`Backgrounds`** tab and find the background you want to customize\n- Add the word `Custom` in front of the name to differentiate it from the original\n- Change the two skills to any two of your choice\n- Change the `Languages` and `Tools` columns to include the number of proficiencies for that category.\nYou can assign a *total* of two points between them.\n- The sheet will highlight if you attempt to assign more than two skills,\nor more than two proficiencies.\n- Once done, you can find it in the list of backgrounds on the main sheet page."
+					}
+				],
+				"image": { "url": "https://i.imgur.com/s3mk8lR.png" },
+				"footer": {"text":"Custom Background Setup"}
+			},
+			{
+				"title":"5️⃣ Select Proficiencies & Languages",
+				"description":"",
+				"fields":[
+					{
+						"name":"Skill Proficiencies",
+						"value":"Most often, you will get two skills from your class, and two skills from your background. Some races, classes, and feats *may* offer additional skills, or Expertise in a given skill. Make sure to read your race/class/background when choosing, as some options will allow you to pick *any* skill, and those options may not be highlighted.\nSelect skills by selecting the bubble and entering an `x` in the cell with the bubble. For features which grant expertise, put an `e` in the bubble instead."
+					},
+					{
+						"name":"Languages",
+						"value":"Some Races and Backgrounds provide you with Language options. You can select these via the dropdown. The sheet will tell you how many you have left to choose. Certain languages (Druidic & Thieves' Cant) are class-specific and cannot be taken without being a member of those classes. They will be automatically added where applicable."
+					},
+					{
+						"name":"Tool Proficiencies",
+						"value":"Your race, class, or background may specify specific tools or options to choose from, so please check the relevant pages before entering them. The sheet doesn't automatically populate any tool proficiencies. It just counts how many you should have, so you will have to fill this in manually.\nNote that Avrae will not automatically import these proficiencies, and you will need to add them manually with the `!tool` alias. More on this in <#775866621994205285>)."
+					}
+				],
+				"image":[
+					{ "url": "https://i.imgur.com/RmW3vt8.png"},
+					{ "url": "https://i.imgur.com/JHZ2bpi.png"},
+					{ "url": "https://i.imgur.com/7uzC9Dn.png"},
+					{ "url": "https://i.imgur.com/YGAdci6.png"}
+				]
+			},
+			{				
+				"title":"6️⃣ Enter Starting Equipment",
+				"description":"Characters begin with their starting equipment and 150 gold. You can see what equipment you start with by visiting the page for your class (linked in <#911129455345405992>) and find your starting equipment on [5e.tools](https://5e.tools/classes.html). The bot **does not** sync your equipment from Beyond, so you will need to do that by hand, but it **will** use any weapons and armor to automatically calculate your attacks and Armor Class, respectively. You do not need to set your gold amount, as our `!setup` command will handle it for you once your sheet is approved.\nNote that, even if you multiclass, you only receive the starting gear from your first class.",
+				"fields":
+				[
+					{
+						"name":"Attacks",
+						"value":"Select attacks based on your starting equipment. All basic gear should be available and automatically fill in the attack details for you. This is necessary so when you register your sheet with Avrae it will automatically generate your attack rolls.\nFor the demo, we'll enter a Rapier (a Martial weapon)x and a Light Crossbow"
+					},
+					{
+						"name":"Armor",
+						"value":"Selecting your armor (if any is included in your starting equipment) from the drop downs will automatically update your Armor Class.\nFor the demo, we'll select Chain Mail and a Shield"
+					}
+				],
+				"image":
+				[
+					{ "url": "https://i.imgur.com/fne16th.png" },
+					{ "url": "https://i.imgur.com/asjGqN8.png" },
+					{ "url": "https://i.imgur.com/IyI9h7M.png" }
+				]
+			},
+			{
+				"title":"7️⃣ Enter Features & Traits",
+				"description":"Some class features, feats, and character options entered in this section are automatically applied to your character sheet. This can also be used for your own notes on how some things on your sheet work by right-clicking and selecting `Add Note` from the popup menu.\n\nMost race and class features have supported automation, most Fighting Styles are supported, most Feats are supported. You can enter these in the following way:\n`Feat: [feat name]` or `Fighting Style: [name]`\n\nSome abilities let you choose things, like saving throw proficiencies. Include those things in parentheses, e.g. `Iron Mind (Wisdom)` If you take the Skilled feat, put your chosen skills in parentheses, e.g. `Skilled (Acrobatics, Athletics, Performance)`",
+				"fields":
+				[
+					{
+						"name":"Avrae Automation",
+						"value":"A list of Avrae's [currently automated Actions](https://docs.google.com/spreadsheets/d/1w66DFqD83hkwXqP7rTYx26QAcy1FJmhATpVIgfLmslM/edit#gid=658150111) for use on GSheet and Dicecloud. Note that not all will be accessible, but that is something we will be working to rectify in the future."
+					}
+				],
+				"image": {"url":"https://i.imgur.com/SsJ7Jci.png"}
+			},
+			{
+				"title":"8️⃣ Select Spells",
+				"description":"If your class has the ability to cast spells (not every class is a spellcaster) you will need to enter the spells you know to populate your sheet in Avrae.",
+				"fields":
+				[
+					{
+						"name":"Select Spellcasting Class",
+						"value":"Select your spellcasting class from the dropdown. Note that if you multiclass into two spellcasting classes with different primary abilities (such as Wizard, which is an intelligence-based caster and a Warlock, which is a charisma-based caster) GSheet will figure out spellslots properly, but can't handle setting up separate DCs and Spell Attack Bonuses for classes with different Spellcasting Abilities."
+					},
+					{
+						"name":"Select Spells",
+						"value":"The exact number and levels of spells, and the spell lists available to you will depend on your class. Check the rules for your class for how many spells you can learn, and what spells are available to you. Some classes, specifically Clerics and Druids, know all the spells in their spell list, but can only prepare a certain number of them at a time. If you run out of room, you can go to the `Additional` tab to enter more spells known.\nFor our Demo Character, a Wizard, we begin with three Cantrips from the Wizard spell list, and eight level 1 spells (6 known from level 1, plus 2 for being second level in that class)."
+					},
+					{
+						"name":"Prepare Spells",
+						"value":"Finally, select the spells you have prepared. Not all casters need to prepare their spells, and can cast all the spells they know. Artificers, Clerics, Druids, Paladins, and Wizards can prepare a number of spells based on their ability modifier and class level - this is detailed in your Spellcasting feature of your class. Cantrips are considered always prepared, and do not count towards this total. Some subclasses also have spells which are always prepared.\nSimilar to selecting Skill Proficiencies, clicking the bubble and entering an `x` in the field will select it, and entering a `0` in the field will deselect it."
+					}
+				],
+				"image": {"url":"https://i.imgur.com/2BCTajB.png"}
+			},
+			{
+				"title":"9️⃣ Register Your Sheet with Avrae",
+				"description":"The final necessary step is to share your sheet so our DMs and Avrae can read it.\n- Click the `Share` button\n- Click the `Change to anyone with the link` option followed by the `Copy Link` button\n- In <#694275490306981947>, enter the command `!import <url>` where <url> is the copied link to your sheet",
+				"image": 
+				[
+					{"url":"https://i.imgur.com/CN3XPwy.png"},
+					{"url":"https://i.imgur.com/wRRwIue.png"},
+					{"url":"https://i.imgur.com/w6zYqxP.png"}
+				]
+			}
+		]
+	}
+}

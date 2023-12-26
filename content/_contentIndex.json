@@ -45,9 +45,11 @@
 	"1106412116367396935":{ "data":"items/guildItems_SilverThorn.json"},
 	
 	"699930213093474315":{"data":"rules/rules_faq.json"},
-	"walkthroughchannel":{"data":"rules/walkthrough_base.json"},
-	"beyond walkthrough":{"data":"rules/walkthrough_beyond.json"},
-	"gsheet walkthrough":{"data":"rules/walkthrough_gsheet.json"},
+	"walkthroughchannel":{"data":"walkthrough/base.json"},
+	"beyond walkthrough":{"data":"walkthrough/beyond.json"},
+	"gsheet walkthrough":{"data":"walkthrough/gsheet.json"},
+	"dicecloud v1 walkthrough":{"data":"walkthrough/dicecloud_v1.json"},
+	"dicecloud v2 walkthrough":{"data":"walkthrough/dicecloud_v2.json"},
 	
 	"1091765016937627740":{ "data":"quest/quest.json"	},
 	"1094791565106491392":{ "data":"quest/questSaveFail_1.json" },
