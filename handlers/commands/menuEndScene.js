@@ -25,7 +25,7 @@ module.exports =
 };
 
 const requiredRoles = [ config.BuilderRole, 
-					    config.DMRole	]
+						config.DMRole	]
 
 //if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles

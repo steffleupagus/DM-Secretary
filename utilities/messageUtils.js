@@ -233,10 +233,8 @@ async function getRoleplayData(rpChan, message = null)
 	try { await guildMembers.fetch({user:users}) }
 	catch (err) { console.error(err) }
 
-	const rpData = await scrapeMessages(roleplay.messages);
-	
-	if (rpData)
-		rpData.start = roleplay.messages[0].url;
+	const rpData = await scrapeMessages(roleplay.messages);	
+	if (rpData) rpData.start = roleplay.messages[0].url;
 	return rpData;
 }
 
