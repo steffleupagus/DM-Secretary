@@ -15,7 +15,7 @@ const ignoreChannels =
 //	"",	//	
 ];
 
-const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d+)\/(\d+)/g;
+const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d+)\/(\d+)\/?(\d+)?/g;
 
 async function shouldHandle(client, message)
 {
