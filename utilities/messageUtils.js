@@ -295,6 +295,24 @@ async function scrapeMessages(messages, stats = null)
 }
 
 
+function checkForBullshit(message)
+{
+	if (!chanUtils.isRoleplayChannel(message.channel))
+		return
+	const content = message.content
+	const stripped = content.replaceAll(/[^\x00-\x7F]/g,'')
+	if (content.length - stripped.length > (content.length / 2))
+	{
+		const guild = message.guild
+		const debug = guild.channels.fetch(config.debugLogParent).then( chan => 
+		{
+			chan.send(`<@659069077872181248> [Message](${message.url}) warrants a closer look: ${message}`)
+		})
+	}
+	else
+		console.log('.')
+}
+
 function cleanMessageContent(message)
 {
 	const mention = new RegExp(MessageMentions.UsersPattern,"gi")
@@ -306,7 +324,10 @@ function cleanMessageContent(message)
 		content = content.replace(TupperPing,"")
 	}
 	content = content.replaceAll(mention,"")
-	content = content.replaceAll(spaces," ")	
+	content = content.replaceAll(spaces," ")
+
+	checkForBullshit(message)
+	
 	return content.trim()
 }
 
