@@ -3,8 +3,7 @@
 \*----------------------------------------*/
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
 const unbapi = require("unb-api")
-	
-const commandHistory = require(`../../database/cmdHistSchema.js`)
+
 const RPP = require(`../../database/rppTrackerSchema.js`)
 const mod = process.env.mod || ""
 const config = require(`../../config/${mod}_config.json`)
