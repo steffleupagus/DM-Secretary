@@ -1,2 +1,5 @@
 .breakpoints
+.config/
+.local/
+.upm/
 node_modules/
