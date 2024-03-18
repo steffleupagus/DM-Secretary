@@ -162,10 +162,12 @@ class Bot
 			console.log(" - No commands found");
 		for (const file of commandFiles) 
 		{
-			const command = require(`./handlers/commands/${file}`);
-			const enabled = !command.hasOwnProperty("build") || command.build;
+			let command = null;
+			try { command = require(`./handlers/commands/${file}`); }
+			catch(e) { console.log(e.stack) }
+			const enabled = !command?.hasOwnProperty("build") || command?.build;
 			// console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
-			if (enabled)
+			if (command && enabled)
 			{			
 				console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
 				// Set a new item in the Collection; key = command name, value = exported module

@@ -10,19 +10,19 @@ const errorCodes =
 	ALREADY_LOCKED
 }
 
-//function MutexException(channel, value, message)
 class MutexException
 {
-	constructor(channel, value, message)
+	constructor(channel, value, error)
 	{
-		this.channel = channel.id	
+		this.channel = channel?.id ?? channel
 		this.value   = value
-		this.message = message
+		this.message = error
+		this.stack   = error?.stack ?? Error().stack
 	}
 	
 	toString()
 	{
-    	return this.message;
+    	return this.error;
 	}		
 }
 
@@ -40,11 +40,11 @@ class MutexManager
 			console.log(this.mutex);
 	}
 
-	test(channel){return this.Test(channel)}	
+	test(channel){return this.Test(channel)}
 	Test(channel)	
 	{
 		this._Debug();
-		return this.mutex[channel.id] === true;
+		return this.mutex[channel?.id ?? channel] === true;
 	}
 
 	lock(channel, except = false){return this.Lock(channel,except)}
@@ -52,23 +52,23 @@ class MutexManager
 	{
 		if (except && this.Test(channel))
 			throw new MutexException(channel, ALREADY_LOCKED, except);
-		this.mutex[channel.id] = true;
+		this.mutex[channel?.id ?? channel] = true;
 	}
 
-	unlock(channel, except = false){return this.Unlock(channel,except)}	
-	Unlock(channel, except = false)
+	unlock(channel, except = false, retVal = true){return this.Unlock(channel,except,retVal)}	
+	Unlock(channel, except = false, retVal = true)
 	{
-		this.mutex[channel.id] = false;
+		this.mutex[channel?.id ?? channel] = false;
 		if (except)
 			throw new MutexException(channel, ALREADY_UNLOCKED, except);
-		return true;
+		return retVal;
 	}
 
 	get(channel=null){return this.Get(channel)}
 	Get(channel=null)
 	{
 		if (channel)
-			return this.mutex[channel.id]
+			return this.mutex[channel?.id ?? channel]
 		return this.mutex
 	}
 }
