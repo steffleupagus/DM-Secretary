@@ -92,6 +92,10 @@
 			{
 				"title":"🇶 How can my character join a Guild?",
 				"description":"🅰️ There are six in-character guilds. You can read more about each of them (and join one or more) by going to <#1020914190581518356>."
+			},
+			{
+				"title":"🇶 Can I make another character? / How many can I have?",
+				"description":"🅰️ You are allowed more than one character, but each additional character requires that you first purchase a new slot from the `/item store` with roleplay points (RPP - see below). No one may have more than five player characters, but there are additional slots for up to 5 RP-only NPCs"
 			}
 		]
 	},
@@ -104,6 +108,10 @@
 		"embeds": [
 			{
 				"indexBreak":"Character Creation & Advancement",
+				"title":"🇶 Do I need a character sheet?",
+				"description":"🅰️ If you only care about roleplaying, a mechanical sheet is not required, just a profile posted in <#694861975896719450>. However, if you are planning to join tables/quests, fight in the Arena, roll dice, gain experience, or otherwise participate in the full DnD experience, you will need to create a character sheet. We have a <#775866621994205285> available to help guide you.\n\n*Please note*: Even if you are only creating an RP profile, it must adhere to one of the playable races as shown in <#911129455345405992>."
+			},
+			{
 				"title":"🇶 How do I make a character sheet?",
 				"description":"🅰️ We use the official <@261302296103747584> bot for all things mechanics-related, so your sheet will need to be integrated with that. Avrae supports DnD Beyond, GSheet, and DiceCloud. We have a <#775866621994205285> available. The following applies, regardless of the sheet format you use:\n🔸**Stats**: We allow rolling or point buy. To roll, head to <#697021317727387718>, ping <@&694285067723210843>, wait for a response, and then use the pinned command (`!statroll`). Your first character gets one free Reroll. You may use Point Buy if you dislike your roll.\n🔸**Starting Exp/Gold**: All characters start at Level 3 (900xp). All characters start with 150 gp, regardless of chosen background.",
 				"fields":[
@@ -120,6 +128,10 @@
 						"value":"Dicecloud is somewhat un-intuitive and has presented some difficulty for new players. The DM staff may not be able to help you.\nIf you choose to use DiceCloud, do so knowing that you may be on your own with the information in ⁠<#781931783897481296>."
 					}
 				]
+			},
+			{
+				"title":"🇶 What is the starting level for characters",
+				"description":"🅰️ All new characters start at level 3 (900xp), unless retiring or respeccing a character who has earned additional exp."
 			},
 			{
 				"title":"🇶 How do I gain gold & exp to level?",
@@ -197,20 +209,6 @@
 						"value":"You may purchase a respec for RPP. It will cost 10,000 RPP **per level** of the character you are respeccing (via `/item buy` X respec where X is the level of the character in question). This will allow you to keep ALL of your exp, items, and give you an opportunity to reroll your stats, choosing from their old or new rolls."
 					}
 				]
-			},
-			{
-				"title":"🇶 Can I make another character?",
-				"description":"🅰️",
-				"fields":[
-					{
-						"name":"<:d20:704040692946698361> Creating an Additional Character",
-						"value":"You are allowed more than one character, but each additional character requires that you first purchase a new slot from the `/item store` with roleplay points (RPP - see below). No one may have more than five player characters, but there are additional slots for up to 5 RP-only NPCs"
-					},
-					{
-						"name":"<:d20:704040692946698361> Replacing an Existing Character",
-						"value":"If you want to replace your current character, you can rollover a certain percentage of their earned exp by using the `!retire` command in the <#794251515991818271> channel. If they are still Level 3, you are still in the grace period for making changes to your current character (see above). You may still retire them if you wish but, to reduce people retiring characters just to try for better rolls, you may not reroll their ability scores unless you are retiring a character of level 4 or higher.\nWhen removing characters, please delete the profile for old characters to reduce confusion."
-					}
-				]				
 			}
 		]
 	},
