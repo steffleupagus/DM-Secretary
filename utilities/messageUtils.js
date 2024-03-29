@@ -227,44 +227,35 @@ async function getRoleplayData(rpChan, message = null)
 		? await findFenceposts(rpChan, message)
 		: await findLastBreak(rpChan);
 
-
 	let users = [];
 	roleplay.messages.map( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
 	const guildMembers = rpChan?.guild?.members;
 	try { await guildMembers.fetch({user:users}) }
 	catch (err) { console.error(err) }
 
-	
 	const rpData = await scrapeMessages(roleplay.messages);
-	
-	if (rpData)
-		rpData.start = roleplay.messages[0].url;
+	if (rpData) rpData.start = roleplay.messages[0].url;
 	return rpData;
 }
 
-// ///
-// /// Scrape all the messages in a given channel and update the stats with the data
-// ///
-// async function scrapeChannelMessages(channel, startMsg, endMsg, limit, stats)
-// {
-// 	limit = limit || 5000;
-// 	endMsg = endMsg || null;
+async function getAllRoleplayData(rpChan)
+{
+	const roleplay = await getMessageRange(rpChan);
+	let users = [];
 
-// 	//Skip channels with no messages
-// 	if (channel.messages === undefined || channel.messages === null)
-// 	{
-// 		console.log("Skipping channel " + channel.name + " because it has no messages.");
-// 		return false;
-// 	}
+	roleplay.forEach( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
+	const guildMembers = rpChan?.guild?.members;
+	try { await guildMembers.fetch({user:users}) }
+	catch (err) { console.error(err) }
 
-// 	//Get all the messages
-// 	await getMessageRange(channel, startMsg, endMsg, limit).then(async allMsgs =>
-// 	{
-// 		await scrapeMessages(allMsgs, stats)
-// 	})
-// 		.catch(err => { throw err; })
-// 	return stats;
-// }
+	const rpData = await scrapeMessages(roleplay);
+
+	if (rpData)
+		rpData.start = roleplay[0].url;
+	return rpData;
+}
+
+
 
 ///
 /// Given a list of messages, scrape them for metadata
@@ -486,49 +477,6 @@ function incrementStats(data, id, name, message, tupperData)
 
 
 
-// // //Defualt Stats
-// function createAuthorData(name)
-// {
-// 	var authorData =
-// 	{
-// 		name: name,
-// 		posts: 0,
-// 		length: 0,
-// 		avg: 0,
-// 		charStats: {},
-// 		chanStats: {}
-// 	};
-// 	return authorData;
-// }
-
-// function createCharData(charName)
-// {
-// 	var charData =
-// 	{
-// 		name: charName,
-// 		posts: 0,
-// 		length: 0,
-// 		avg: 0,
-// 		isTupper: false
-// 	};
-// 	return charData;
-// }
-
-// function createChanData(chanName)
-// {
-// 	var chanData =
-// 	{
-// 		name: chanName,
-// 		posts: 0,
-// 		length: 0,
-// 		avg: 0
-// 	};
-// 	return chanData;
-// }
-
-
-
-
 module.exports =
 {
 	channelCleanup,
@@ -541,5 +489,6 @@ module.exports =
 	scrapeMessages,
 	scrapeMessageMetadata,	
 	getRoleplayData,
+	getAllRoleplayData,
 	isSceneBreak
 }	
