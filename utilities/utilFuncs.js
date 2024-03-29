@@ -176,12 +176,12 @@ module.exports =
 		return perm;
 	},
 
-	precise(x, prec=2) 
+	precise(value, precision=2) 
 	{
-		prec = Math.pow(10,prec)
-		return Math.floor(x*prec)/prec;
+		const multiplier = Math.pow(10, precision);
+		return Math.floor(value * multiplier) / multiplier;
 	},
-
+	
 	roundMod(number, mod)
 	{
 		mod || (mod = 1.0);
