@@ -78,9 +78,9 @@ async function run(client, message, command, args)
 {
 }
 
-const builderRoles  = [	config.BuilderRole	];
+const builderRoles = [	config.BuilderRole	];
 const data = new SlashCommandBuilder()
-	.setName('startduel')
+	.setName(`startduel${config.DEV ? "dev" : ""}`)
 	.setDescription('Start a thread for a duel')
 	.addUserOption(option => option.setName('opponent')
 			.setDescription('The opponent to invite to the thread')
@@ -93,6 +93,8 @@ module.exports =
 	data: data,
 	execute: execute,
 	message: run,
-	
-	build:config.PRODUCTION// || config.DEV
+
+	build:config.PRODUCTION || config.DEV
 };
+
+if (config.DEV) module.exports.whitelistRoles = builderRoles
