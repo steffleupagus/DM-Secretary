@@ -11,6 +11,6 @@ module.exports = {
 	menu: true,	
 	shouldHandle: verify.shouldHandle,
 	handleCreate: verify.handleCreate,
-	
-	build: config.PRODUCTION //|| config.DEV	
+
+	build: config.PRODUCTION //|| config.DEV
 };

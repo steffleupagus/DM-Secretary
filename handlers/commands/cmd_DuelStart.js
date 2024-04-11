@@ -93,7 +93,6 @@ module.exports =
 	data: data,
 	execute: execute,
 	message: run,
-	
 	build:config.PRODUCTION || config.DEV
 };
 
