@@ -5,7 +5,6 @@ const config = require(`../../config/${mod}_config.json`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const MsgUtils = require(`../../utilities/messageUtils.js`)
 
-
 const requiredRoles = [ config.ModeratorRole,
 					    config.BuilderRole];
 
@@ -18,27 +17,26 @@ async function execute(interaction)
 	const message = await channel?.messages.fetch(messageId);
 	let responses = [];
 
-	if (!message)
-		return interaction.reply({ 	content: 'No message found', ephemeral: true });
+	if (!message) return interaction.reply({ 	content: 'No message found', ephemeral: true });
 
+	if (message.content) message.content = message.content.replace('\`','\\`')
 	await interaction.reply({ 	content: "```\n" + message.content.substr(0,1989) + "...\n```",
 								ephemeral: true });
-	responses.push(`Before: ${message.content.length} chars`)
-	
+	await interaction.followUp({ content: `Before: ${message.content.length} chars`, ephemeral: true });
 	let stats = await MsgUtils.scrapeMessageMetadata(null, message)
-
 	let content = MsgUtils.cleanMessageContent(message);
-	responses.push( "```\n" + content + "\n```" )
-	responses.push(`After: ${content.length} chars`)
-	
-	// responses.push( "```\n" + JSON.stringify(stats, null, 2) + "\n```");
-	
+	await interaction.followUp({ content: "```\n" + content + "\n```", ephemeral: true });
+	await interaction.followUp({ content: `After: ${content.length} chars`, ephemeral: true });
+
+	responses = []
+	message.embeds.forEach(embed => {
+		responses.push( "```\n" + JSON.stringify(embed.toJSON(),null,"\t") + "```")
+	})	
 	Utils.asyncArrayForEach(responses, async (response) => 
 	{
 		await interaction.followUp({ content: response, ephemeral: true });
-//		await user.send({ content: response })
+		await user.send({ content: response })
 	});
-
 }
 
 module.exports = 

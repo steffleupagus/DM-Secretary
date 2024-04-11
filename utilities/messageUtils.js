@@ -242,7 +242,6 @@ async function getAllRoleplayData(rpChan)
 {
 	const roleplay = await getMessageRange(rpChan);
 	let users = [];
-
 	roleplay.forEach( msg => { if (!users.includes(msg.author.id)) users.push(msg.author.id)} );
 	const guildMembers = rpChan?.guild?.members;
 	try { await guildMembers.fetch({user:users}) }
@@ -474,8 +473,6 @@ function incrementStats(data, id, name, message, tupperData)
 
 	return data;
 }
-
-
 
 module.exports =
 {

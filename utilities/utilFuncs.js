@@ -202,7 +202,7 @@ module.exports =
 		let ms = seconds * 1000;
 		return ms;
 	},
-
+	
 	getDate(timeStamp = null)
 	{
 		// Get time zone offset for NY, USA

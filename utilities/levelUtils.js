@@ -222,6 +222,17 @@ function getRPExpCap(level)
 	return cap[level];
 }
 
+/*╔════════════════════════════╗*\
+│ ║ Get exp cap based on level ║ │
+\*╚════════════════════════════╝*/
+function getTableExpCap(level)
+{
+	var cap = [	0,		0,		0,		500,	500,			//3-4
+				1000,	1000,	1000,	1000,	1000,	1000,	//5-10
+				1500,	1500,	1500,	1500,	1500,	1500,	//11-16
+				2000,	2000,	2000,	2000	];				//17-20
+	return cap[level];
+}
 
 /*╔══════════════════════════════════════════════════════════╗*\
 │ ║ Update the daily exp log, and cap the exp from this data ║ │
