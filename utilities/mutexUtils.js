@@ -22,6 +22,9 @@ class MutexException
 	
 	toString()
 	{
+		console.log("OOPS THIS DOESN'T EXIST!")
+		console.log(this.error)
+		console.log(this.message, this.stack)
     	return this.error;
 	}		
 }
