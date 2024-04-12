@@ -31,7 +31,7 @@ async function execute(interaction)
 				if (faqData[title] && faqData[title].embed)
 					faqData[title].embed.url = x.url					
 			})
-
+      
 			// const faqMessage = faqMessages.find(x => x?.embeds[0]?.data?.title == topic)		
 			// console.log(faqMessage);
 			// faqData[topic].embed.url = embed.url = faqMessage.url

@@ -181,7 +181,7 @@ module.exports =
 		const multiplier = Math.pow(10, precision);
 		return Math.floor(value * multiplier) / multiplier;
 	},
-
+	
 	roundMod(number, mod)
 	{
 		mod || (mod = 1.0);
