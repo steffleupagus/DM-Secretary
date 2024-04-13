@@ -3,7 +3,7 @@ const { ContextMenuCommandBuilder, EmbedBuilder } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 
-const requiredRoles = [ config.ModeratorRole, config.DMRole ];
+const requiredRoles = [ config.role.Moderator, config.role.DM ];
 
 function getLogEmbed(author, archivist, msgChan)
 {
@@ -26,8 +26,8 @@ async function execute(interaction)
 		return interaction.reply({ 	content: 'No message found', ephemeral: true });
 	const author = message.author
 
-	const isChar = (channel.id == config.profileChannel || channel.id == config.npcProfileChannel);	
-	const archiveChanId =  isChar ? config.archiveThreads.charArchive : config.archiveThreads.modArchive
+	const isChar = (channel.id == config.chan.pcProfile || channel.id == config.chan.npcProfile);	
+	const archiveChanId =  isChar ? config.chan.charArchive : config.chan.modArchive
 	const archiveChannel = await interaction.guild.channels.fetch(archiveChanId)
 	const attachments = message.attachments.map( x => x )
 

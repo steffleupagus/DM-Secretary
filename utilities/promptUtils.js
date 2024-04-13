@@ -14,7 +14,7 @@ const config = require(`../config/${mod}_config.json`);
 const Utils = require(`./utilFuncs.js`)
 		
 const dmRoles = [
-					config.DMRole, config.ModeratorRole
+					config.role.DM, config.role.Moderator
 				];
 const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;

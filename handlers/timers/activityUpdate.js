@@ -26,7 +26,7 @@ async function startTimer(client)
 	//Get the guild from the ID in the config
 	const guildId   = config.GUILDID
 	const guild     = client.guilds.resolve(guildId)
-	const channelId = config.activityChannel;
+	const channelId = config.chan.activity;
 	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);
 
 	const messages  = await channel.messages.fetch()
@@ -54,7 +54,7 @@ async function triggerTimer(client)
 	//Get the guild from the ID in the config
 	const guildId   = config.GUILDID
 	const guild     = client.guilds.resolve(guildId)
-	const channelId = config.activityChannel;
+	const channelId = config.chan.activity;
 	const channel   = guild.channels.resolve(channelId) || await guild.channels.fetch(channelId);
 	
 	const messages  = await channel.messages.fetch()
@@ -117,7 +117,7 @@ async function generateEmbedStub(guild, area, channels)
 		channel = channelManager.resolve(channel.channelId)
 		if (!channel) return console.log(`Could not resolve ${channelId}`)
 	})
-	areaexp = areaexp ? config.xpemoji : ""
+	areaexp = areaexp ? config.emoji.xp : ""
 	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
 
 	//Add the last updated to the embed
@@ -213,7 +213,7 @@ async function generateEmbed(guild, area, channels)
 	{
 		//If the channel is set not to track, skip it
 		if (!channel.trackActivity) return
-		const xpEmoji = channel.awardsExp ? config.xpemoji : ""
+		const xpEmoji = channel.awardsExp ? config.emoji.xp : ""
 			  areaexp = areaexp && channel.awardsExp
 		const hasThreads = channel.threadMax
 		if (!hasThreads)
@@ -246,7 +246,7 @@ async function generateEmbed(guild, area, channels)
 	fields.sort((a,b) => a.order - b.order); // b - a for reverse sort
 	embed.addFields(fields)
 	
-	areaexp = areaexp ? config.xpemoji : ""
+	areaexp = areaexp ? config.emoji.xp : ""
 	embed.setTitle(`${area.icon ? area.icon : ""} ${area.name} ${areaexp}`.trim())
 	
 	//Add the last updated to the embed

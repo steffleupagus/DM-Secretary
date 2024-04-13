@@ -124,7 +124,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole	];
+const whitelistRoles  = [	config.role.Builder	];
 
 module.exports = 
 {
@@ -187,7 +187,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	console.log(owners)
 	const ownerSelect = Prompt.createSelectRow(`${data.name}.modifyOwners`,owners,0,owners.length,"Owners")
 	const buttons = [
-		{style:ButtonStyle.Secondary, emoji:config.xpemoji, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
+		{style:ButtonStyle.Secondary, emoji:config.emoji.xp, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
 		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➖', custom_id:`${data.name}.decThread`},
 		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➕', custom_id:`${data.name}.incThread`},	
 		{style:ButtonStyle.Secondary, emoji:threadIcon, label:'Threads', custom_id:`${data.name}.toggleThread`},

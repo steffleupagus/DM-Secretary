@@ -101,4 +101,4 @@ module.exports =
 	build:config.PRODUCTION || config.DEV
 };
 
-if (config.DEV) module.exports.whitelistRoles = [ config.BuilderRole ]
+if (config.DEV) module.exports.whitelistRoles = [ config.role.Builder ]

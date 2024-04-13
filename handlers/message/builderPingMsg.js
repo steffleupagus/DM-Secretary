@@ -37,7 +37,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	embed.setFooter({text:`Above channel mentions:\n${channelNames}`})
 
 	// if ((message.author.id != config.OWNERID)||
-	// 	(message.channel.id != config.buildSpamChannel))
+	// 	(message.channel.id != config.chan.builder))
 	// 	return message.channel.send({embeds:[embed],components:row})
 	
 	//Handle the travel attachment	

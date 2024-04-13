@@ -52,7 +52,7 @@ async function execute(interaction)
 
 		//Add the bots we'll need
 		if (thread.joinable) await thread.join();
-		await thread.members.add(client.config.avraeId);		
+		await thread.members.add(client.config.bots.avrae);		
 	}
 	
 	if (thread)
@@ -78,7 +78,7 @@ async function run(client, message, command, args)
 {
 }
 
-const builderRoles = [	config.BuilderRole	];
+const builderRoles = [	config.role.Builder	];
 const data = new SlashCommandBuilder()
 	.setName(`startduel${config.DEV ? "dev" : ""}`)
 	.setDescription('Start a thread for a duel')

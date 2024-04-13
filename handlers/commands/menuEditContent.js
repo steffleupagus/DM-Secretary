@@ -5,7 +5,7 @@ const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 
-const requiredRoles = [ config.BuilderRole ];
+const requiredRoles = [ config.role.Builder ];
 
 
 async function GenerateEditMenu(message)

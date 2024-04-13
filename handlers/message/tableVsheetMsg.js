@@ -35,7 +35,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const match = await CharUtils.findClosestMatch(data.char.name, data.player)	
 	if (!match.match)
 	{
-		const errorMsg = `The bot doesn't have a record of \`${data.char.name}\`.\nPlease make sure this character has been properly \`!setup\` in <#${config.xpSpamChannel}> and try again.`
+		const errorMsg = `The bot doesn't have a record of \`${data.char.name}\`.\nPlease make sure this character has been properly \`!setup\` in <#${config.chan.xpSpam}> and try again.`
 		const error = new EmbedBuilder().setTitle(`Character Not Found`)
 					 				    .setDescription(errorMsg)
 		message.reply({content:`<@${data?.player}>`,embeds:[error]})

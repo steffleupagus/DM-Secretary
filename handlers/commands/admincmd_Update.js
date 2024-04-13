@@ -5,7 +5,7 @@ const config = require(`../../config/${mod}_config.json`);
 async function execute(interaction)
 {
 	await interaction.reply({content:"Updating", ephemeral:true})
-	if (interaction.channel.id == config.activityChannel)
+	if (interaction.channel.id == config.chan.activity)
 	{
 		const timer = interaction.client.timers.get('activityUpdate')
 		timer.stopTimer()
@@ -22,7 +22,7 @@ const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,
-	whitelistRoles: [ config.BuilderRole ],
+	whitelistRoles: [ config.role.Builder ],
 	userPermissions: userPermissions,
 	execute: execute,
 	build:config.PRODUCTION //|| config.DEV
