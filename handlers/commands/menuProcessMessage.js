@@ -4,7 +4,7 @@ const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 
-const requiredRoles = [ config.ModeratorRole ];
+const requiredRoles = [ config.role.Moderator ];
 
 async function execute(interaction)
 {

@@ -37,13 +37,13 @@ async function shouldHandle(client, message)
 function verifyMessageMeta(client, message)
 {
 	let author  = message.author.id;
-	author = author == client.config.unbelievaboatId;
+	author = author == client.config.bots.unbelievaboat;
 
 	let channel = message.channel.id;
 	let parent  = message.channel.parentId;
-	channel = ((channel == client.config.botSpamChannel)||
-			   (channel == client.config.dmbotSpamChannel)||
-			   (channel == client.config.gameSpamChannel))
+	channel = ((channel == client.config.chan.botSpam)||
+			   (channel == client.config.chan.dmBotSpam)||
+			   (channel == client.config.chan.gameSpam))
 	return author && channel;
 }
 
@@ -116,17 +116,17 @@ async function handleRespec(client, message)
 		}
 
 		//Add the Respec role
-		await member.roles.add(client.config.RespecRole);
+		await member.roles.add(client.config.role.Respec);
 
 		//Get the respec channel
-		let channelId = client.config.respecChannel;
+		let channelId = client.config.chan.respec;
 		let channel = message.guild.channels.cache.get(channelId);
 
 		//Roles
-		const dmOnDuty = client.config.DMOnDutyRole
-		const moderator= client.config.ModeratorRole
-		const avrae = client.config.avraeId
-		const yagpdb = client.config.yagpdbId
+		const dmOnDuty = client.config.role.DMOnDuty
+		const moderator= client.config.role.Moderator
+		const avrae = client.config.bots.avrae
+		const yagpdb = client.config.bots.yagpdb
 
 		//Send an initial message
 		embed = new EmbedBuilder()
@@ -157,7 +157,7 @@ async function handleRespec(client, message)
 		
 		//Send a message directing user to the thread
 		embed = new EmbedBuilder()
-		embed.setDescription(`To complete your respec, go to [the thread](${msg.url}) in <#${client.config.respecChannel}>`)
+		embed.setDescription(`To complete your respec, go to [the thread](${msg.url}) in <#${client.config.chan.respec}>`)
 		message.reply({content:`<@${userId}>`, embeds:[embed]});
 	}
 }

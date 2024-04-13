@@ -6,8 +6,8 @@ const pattern = /.* : (.*) has purchased a single reroll \(limit 1\) of their ch
 async function shouldHandle(client, message)
 {	
 	if (!message.author.bot) return false
-	if ((message.channel.id != config.botSpamChannel)&&
-		(message.channel.id != config.gameSpamChannel)) 
+	if ((message.channel.id != config.chan.botSpam)&&
+		(message.channel.id != config.chan.gameSpam)) 
 		return false
 
 	if (message.content.match(pattern))
@@ -24,7 +24,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	console.log(result)
 	result = result?.[1] || null;
 
-	const channel = await message.guild.channels.fetch(config.rollChannel)
+	const channel = await message.guild.channels.fetch(config.chan.roll)
 	if (channel)
 		channel.send(message.content)
 }

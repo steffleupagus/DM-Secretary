@@ -137,7 +137,7 @@ async function execute(interaction)
 		embed.addFields(roleFields);
 		
 		await interaction.channel.send({embeds:[embed]});
-		const logChanId = config.debugChannels.guild;
+		const logChanId = config.debug.guild;
 		const logChan = await interaction.guild.channels.fetch(logChanId);
 		await logChan.send({embeds:[embed]})
 		return;
@@ -175,7 +175,7 @@ async function checkAuthorization(guild, oldRank, newRank, targetMember, trigger
 	const triggeringRank = userData.guildRanks[guild] || 0;
 	
 	//Mods and Builders can override a target's rank at any time
-	const overrideRoles = [config.BuilderRole, config.ModeratorRole];
+	const overrideRoles = [config.role.Builder, config.role.Moderator];
 						  
 	const triggeringRoles = triggeringMember.roles.cache;
 	const modOverride = Array.from(triggeringRoles.keys()).filter(key =>
@@ -540,7 +540,7 @@ async function showGuildMembershipToggleMenu(interaction, join)
 		embed.setDescription(null)
 			 .addFields(roleFields)
 
-		const logChanId = config.debugChannels.guild;
+		const logChanId = config.debug.guild;
 		const logChan = await interaction.guild.channels.fetch(logChanId);
 		await logChan.send({ embeds: [embed] })
 	}
@@ -716,7 +716,7 @@ async function handleGuildButton(interaction, guild)
 
 	if (logResult)
 	{
-		const logChanId = config.debugChannels.guild;
+		const logChanId = config.debug.guild;
 		const logChan = await interaction.guild.channels.fetch(logChanId);
 		await logChan.send({ embeds: [embed] })
 	}	

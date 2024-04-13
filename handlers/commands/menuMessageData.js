@@ -5,8 +5,8 @@ const config = require(`../../config/${mod}_config.json`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const MsgUtils = require(`../../utilities/messageUtils.js`)
 
-const requiredRoles = [ config.ModeratorRole,
-					    config.BuilderRole];
+const requiredRoles = [ config.role.Moderator,
+					    config.role.Builder];
 
 async function execute(interaction)
 {

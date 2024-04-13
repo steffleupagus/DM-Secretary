@@ -11,10 +11,10 @@ const dailyExpSchema = require(`../database/dailyExpSchema.js`)
 function isLevelMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author.id == client.config.avraeId;
-	const channel = ((message.channel.id == client.config.xpSpamChannel)||
-	 				 (message.channel.id == client.config.dmSpamChannel)||
-					 (message.channel.id == client.config.retireChannel));
+	const author  = message.author.id == client.config.bots.avrae;
+	const channel = ((message.channel.id == client.config.chan.xpSpam)||
+	 				 (message.channel.id == client.config.chan.dmSpam)||
+					 (message.channel.id == client.config.chan.retire));
 
 
 	const content = (message && message.embeds && message.embeds.length > 0);
@@ -411,7 +411,7 @@ async function updateDataFromMessage(client, message)
 			console.log("UPDATE: ", finalData);
 
 			const oldRecord = await updateLevelData(query, finalData.level);	
-			await message.react(config.xpemoji)
+			await message.react(config.emoji.xp)
 
 			console.log("PREVIOUS: ", oldRecord)
 			updateLevelMessage = (!oldRecord || finalData.level != oldRecord.level)

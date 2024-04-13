@@ -24,7 +24,7 @@ async function execute(interaction)
 
 		if (!embed.url)
 		{
-			const faqChannel = await interaction.guild.channels.fetch(config.faqChannel);
+			const faqChannel = await interaction.guild.channels.fetch(config.chan.faq);
 			const faqMessages = await faqChannel.messages.fetch();
 			faqMessages.each( x => {
 				const title = x?.embeds[0]?.data?.title
@@ -44,7 +44,7 @@ async function execute(interaction)
 	{		
 		if (null == faqIndex)
 		{
-			const faqChannel = await interaction.guild.channels.fetch(config.faqChannel);
+			const faqChannel = await interaction.guild.channels.fetch(config.chan.faq);
 			const faqIndexMsg = await faqChannel.messages.fetch({ limit: 1 });
 			faqIndex = faqIndexMsg?.first()?.embeds[0]
 		}

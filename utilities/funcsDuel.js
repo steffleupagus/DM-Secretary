@@ -17,8 +17,8 @@ const PING_PREFIX = DEBUG ? "-" : "@";
 const MIN_CHARS = DEBUG ? 0 : 750;
 const MIN_POSTS = DEBUG ? 0 : 3;
 const PROMPT_REACTS = false;
-const DUELTITLE = `${config.xpemoji} Duel Complete`;
-const DUELXPTITLE = `${config.xpemoji} Duel`
+const DUELTITLE = `${config.emoji.xp} Duel Complete`;
+const DUELXPTITLE = `${config.emoji.xp} Duel`
 const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
 
 /// Error Messages
@@ -240,7 +240,7 @@ function parseDuel(messages)
 	for (let message of messages)
 	{
 		//We only care about Avrae messages, skip everything else
-		if (message.author.id != config.avraeId) continue;
+		if (message.author.id != config.bots.avrae) continue;
 
 		let event = {round:round, msg:message.url};
 
@@ -671,8 +671,8 @@ async function sendApprovalMessage(duelData, guild)
 		])
 		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
 
-	const dmChan = guild.channels.resolve(config.dmPingChannel);
-	dmEmbed = await dmChan.send({content:`<@&${config.DMOnDutyRole}>`,embeds:[dmEmbed]})
+	const dmChan = guild.channels.resolve(config.chan.dmPing);
+	dmEmbed = await dmChan.send({content:`<@&${config.role.DMOnDuty}>`,embeds:[dmEmbed]})
 	return dmEmbed;
 }
 
@@ -688,11 +688,11 @@ async function closeScene(duelData)
 	const loss 	   = getExpField(duelData.loser, false)
 	const playerEmbed = new EmbedBuilder()
 		.setTitle(DUELTITLE)
-		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.DMOnDutyRole}> immediately*`)	
+		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.role.DMOnDuty}> immediately*`)	
 		.addFields([
 			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, value:win},
 			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss},
-			{name:`Awards`, value:`Awards will be posted in <#${config.xpLogChannel}> once the duel has been reviewed by the DM staff.`}			
+			{name:`Awards`, value:`Awards will be posted in <#${config.chan.xpLog}> once the duel has been reviewed by the DM staff.`}			
 		]);
 	playerEmbed.setFooter({text:"Logged at (Server Time): " + fullDate});
 
@@ -884,11 +884,11 @@ async function postApprovedExp(message, duelData, user)
 			{name:"DM Comment",value:duelData.comment ? duelData.comment : "[None]"}
 		]);
 	
-	var pingChan = message.guild.channels.resolve(config.xpLogChannel);
+	var pingChan = message.guild.channels.resolve(config.chan.xpLog);
 	if (DEBUG)
 		pingChan = message.channel;
 
-	const pings = `<@${duelData.winner.uid}> <@${duelData.loser.uid}> - _Log in <#${config.xpSpamChannel}>_`
+	const pings = `<@${duelData.winner.uid}> <@${duelData.loser.uid}> - _Log in <#${config.chan.xpSpam}>_`
 	pingChan.send({content:pings,embeds:[logEmbed]}).then(async (msg)=>
 	{
 		let embed = EmbedBuilder.from(message.embeds[0].toJSON());

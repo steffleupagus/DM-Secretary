@@ -3,7 +3,7 @@ const { ContextMenuCommandBuilder } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 
-const requiredRoles = [ config.ModeratorRole, config.DMRole, config.BuilderRole];
+const requiredRoles = [ config.role.Moderator, config.role.DM, config.role.Builder];
 
 async function execute(interaction)
 {

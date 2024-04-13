@@ -59,7 +59,7 @@ function getCurrentChanMeta(channel, chanMeta, sync = false)
 		chanMeta.userOwner = owners;
 
 	const topic = channel.topic || ""
-	if (sync && topic.includes(config.xpemoji))
+	if (sync && topic.includes(config.emoji.xp))
 		chanMeta.awardsExp = true;
 	
 	console.log(chanMeta)
@@ -125,7 +125,7 @@ async function updateChannelTopic(channel, chanMeta)
 {
 	let topic = channel.topic || ""
 		
-	if (topic.includes(config.xpemoji)) topic = topic.replaceAll(config.xpemoji,``)
+	if (topic.includes(config.emoji.xp)) topic = topic.replaceAll(config.emoji.xp,``)
 	if (topic.includes(threadIcon)) topic = topic.replaceAll(threadIcon,``)
 	if (topic.includes(":thread:")) topic = topic.replaceAll(":thread:",``)	 
 	ChanUtils.locations.forEach( role => 
@@ -147,7 +147,7 @@ async function updateChannelTopic(channel, chanMeta)
 	const guildEmoji = guild ? 	GuildUtils?.guildData?.[guild]?.emoji : null
 	
 	const prefix = [];
-	if (chanMeta.awardsExp) prefix.push(config.xpemoji)
+	if (chanMeta.awardsExp) prefix.push(config.emoji.xp)
 	if (chanMeta.threadMax > 0) prefix.push(threadIcon)
 	if (chanMeta.guildHall) prefix.push(guildEmoji)
 	if (chanMeta.locations.length > 0) prefix.push(`<@&${chanMeta.locations.join('><@&')}>`)
@@ -157,7 +157,7 @@ async function updateChannelTopic(channel, chanMeta)
 	topic = prefix.join("") + "\n" + topic.trim()
 	
 	if (topic.length > 1024)
-		throw new Error(`Topic is too long to include ${config.xpemoji} icon`)	
+		throw new Error(`Topic is too long to include ${config.emoji.xp} icon`)	
 
 	console.log(topic,"\n\n\n")
 	
@@ -200,7 +200,7 @@ function generateMetaEmbed(chanMeta)
 		embed.setDescription(`\`${"".padEnd(4092," ")}\``)
 		embed.addFields([{name:"Channel", value:`<#${chanMeta.channelId}> (\`${chanMeta.channelId}\`)`}]);
 		embed.addFields([
-			{name:`${config.xpemoji} RP Exp`, value:`${chanMeta.awardsExp ? "✅ On "+ config.xpemoji : "❌ Off"}`, inline:true},
+			{name:`${config.emoji.xp} RP Exp`, value:`${chanMeta.awardsExp ? "✅ On "+ config.emoji.xp : "❌ Off"}`, inline:true},
 			{name:`🧵 Threads`, value:`${threadValue}`, inline:true},
 			{name:`📍 Tracked`, value:`${chanMeta.trackActivity ? "✅ On" : "❌ Off"}`, inline:true}
 		]);
@@ -263,7 +263,7 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	console.log(owners)
 	const ownerSelect = Prompt.createSelectRow(`${data.name}.modifyOwners`,owners,0,owners.length,"Owners")
 	const buttons = [
-		{style:ButtonStyle.Secondary, emoji:config.xpemoji, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
+		{style:ButtonStyle.Secondary, emoji:config.emoji.xp, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
 		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➖', custom_id:`${data.name}.decThread`},
 		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➕', custom_id:`${data.name}.incThread`},	
 		{style:ButtonStyle.Secondary, emoji:threadIcon, label:'Threads', custom_id:`${data.name}.toggleThread`},
@@ -520,7 +520,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole	];
+const whitelistRoles  = [	config.role.Builder	];
 
 module.exports = 
 {
