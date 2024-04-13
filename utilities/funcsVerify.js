@@ -20,14 +20,14 @@ function shouldHandle(client, message)
 function verifyMessageMeta(client, message)
 {
 	let author  = message.author.id;
-	author = author == client.config.avraeId;
+	author = author == client.config.bots.avrae;
 
 	let channel = message.channel.id;
 	let parent  = message.channel.parentId;
-	channel = ((channel == client.config.rollChannel)||
-			   (parent == client.config.rollChannel)||
-			   (channel == client.config.respecChannel)||
-			   (parent == client.config.respecChannel));
+	channel = ((channel == client.config.chan.roll)||
+			   (parent == client.config.chan.roll)||
+			   (channel == client.config.chan.respec)||
+			   (parent == client.config.chan.respec));
 
 	return author && channel;
 }

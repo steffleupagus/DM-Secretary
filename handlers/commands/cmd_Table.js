@@ -64,9 +64,9 @@ const TABLE_MENU_TITLE = `Free-Use Tables`
 const TABLE_MENU_DESC = `**Free-||~~use~~||Play Tables**\n${GOALS}`
 const USER_SLASH_COMMAND_REPLY = `To start or close a table, please use the buttons in <#${TABLE_MENU_CHAN}>.`
 
-const DM_MSG = (user) => `<@${user}>: This channel represents your private behind-the-DM-screen area\n- \`Adding Bots\`: <@${config.avraeId}><@${config.tupperId}>`
-const OOC_MSG = (user) => `This is the OOC and Mechanics/rolling channel.\n\n- \`Adding Bot(s)\`: <@${config.avraeId}>\n- <@${user}>: *@ping your players in this channel to get started!*\n- Each player **including the DM** __MUST__ run a \`!vsheet\` command in this channel\n\n*Only one character per player will earn RP exp*. The \`!vsheet\` command will help the bot determine to which character that experience should be awarded. __Failure to do so *may result in receiving no experience!*__`
-const RP_MSG = (user) => `This is the RP channel\n- \`Adding Bot(s)\`: <@${config.tupperId}>\n- <@${user}>: *@ping your players in this channel to get started!*`
+const DM_MSG = (user) => `<@${user}>: This channel represents your private behind-the-DM-screen area\n- \`Adding Bots\`: <@${config.bots.avrae}><@${config.bots.tupper}>`
+const OOC_MSG = (user) => `This is the OOC and Mechanics/rolling channel.\n\n- \`Adding Bot(s)\`: <@${config.bots.avrae}>\n- <@${user}>: *@ping your players in this channel to get started!*\n- Each player **including the DM** __MUST__ run a \`!vsheet\` command in this channel\n\n*Only one character per player will earn RP exp*. The \`!vsheet\` command will help the bot determine to which character that experience should be awarded. __Failure to do so *may result in receiving no experience!*__`
+const RP_MSG = (user) => `This is the RP channel\n- \`Adding Bot(s)\`: <@${config.bots.tupper}>\n- <@${user}>: *@ping your players in this channel to get started!*`
 
 const TABLE_CREATE_DESC = `
 	Ping your players in your \`OOC\` and \`RP\` threads. 
@@ -75,7 +75,7 @@ const TABLE_UPDATE_DESC = TABLE_CREATE_DESC
 const TABLE_ARCHIVE_DESC = `
 	When a table is archived, threads will still be archived and __**locked**__ for review & exp award by a DM.`
 const TABLE_DELETE_DESC = `Table Deleted`
-const TABLE_AWARD_DESC = `Table RP has been processed for DM & Player rewards\n${config.xpemoji}💰💎`
+const TABLE_AWARD_DESC = `Table RP has been processed for DM & Player rewards\n${config.emoji.xp}💰💎`
 
 const ARCHIVE_CONFIRM = `This will archive and lock the following table and all associated threads.\n**__Warning__: You will not be able to undo this.**`
 const DELETE_CONFIRM = `This will delete the following table and all associated threads.\n**__Warning__: You will not be able to undo this.**`
@@ -212,7 +212,7 @@ async function handleInteraction(interaction){
 		if (error && error.stack) debug.setDescription("```\n"+error.stack+"\n```")
 		//console.log("Debug",debug,table)
 		debug.setFooter({text:`${customId} | ${(table ? table._id?.toString() : "")}`})	
-		const debugChanId = config.debugChannels.table
+		const debugChanId = config.debug.table
 		const debugChan = await interaction.guild?.channels?.fetch(debugChanId);
 		if (debugChan) await debugChan.send({embeds:[debug]});
 	}
@@ -227,7 +227,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config.ModeratorRole	];
+const whitelistRoles  = [	config.role.Builder, config.role.Moderator	];
 
 module.exports = 
 {
@@ -505,7 +505,7 @@ async function promptCloseConfirm(interaction, table) {
 	]
 	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);
 	//if (isBuilder || debugUserAwardButton) 
-		options.push({style:ButtonStyle.Primary, emoji:config.xpemoji, label:`Rewards`, custom_id:`rewards` })		
+		options.push({style:ButtonStyle.Primary, emoji:config.emoji.xp, label:`Rewards`, custom_id:`rewards` })		
 	const buttons = Prompt.createButtonRow(options);
 	let prompts = await interaction.editReply({embeds:[embed],components:[buttons],ephemeral:true})
 	const confirm = await Prompt.collectAllInteractions(prompts, {}, null, Prompt.Time.Std);

@@ -9,7 +9,7 @@ module.exports = {
 	name: 'respecPurchase',
 	bot: true,
 	menu: true,	
-	menuRoles: [ config.ModeratorRole ],
+	menuRoles: [ config.role.Moderator ],
 	shouldHandle: respec.shouldHandle,
 	handleCreate: respec.handleCreate,
 

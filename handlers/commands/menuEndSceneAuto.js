@@ -14,7 +14,7 @@ async function execute(interaction)
 	await client.commands.get(command).autoClose(channel, true)
 }
 
-const requiredRoles = [ config.BuilderRole ]
+const requiredRoles = [ config.role.Builder ]
 module.exports = 
 {
 	data: new ContextMenuCommandBuilder()

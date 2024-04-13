@@ -142,7 +142,7 @@ async function openThreadIfPossible(interaction, channel = null)
 									 embeds:[],components:[]})	
 
 		const guild = interaction.guild;
-		const logChanId = config.debugChannels.thread
+		const logChanId = config.debug.thread
 		const debugChan = await guild?.channels?.fetch(logChanId);
 		if (debugChan) 
 		{			
@@ -411,7 +411,7 @@ const botPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.ViewChannel,						 
 							PermissionsBitField.Flags.SendMessages		];
 const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole		];
+const whitelistRoles  = [	config.role.Builder		];
 module.exports = 
 {
 	data: data,

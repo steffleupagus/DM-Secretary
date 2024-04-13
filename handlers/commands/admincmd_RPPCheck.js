@@ -98,7 +98,7 @@ async function execute(interaction)
 	await cmdEmbed.send(channel)
 	channel.send("Don't forget to wipe the DB")
 	if (award)
-		channel = await guild.channels.fetch(config.botSpamChannel)
+		channel = await guild.channels.fetch(config.chan.botSpam)
 
 	console.log(embed)
 	let sentMsgs = await embed.send(channel)	
@@ -172,7 +172,7 @@ module.exports =
 {
 	data: data,
 	whitelistRoles: [
-		config.BuilderRole
+		config.role.Builder
 	],
 	userPermissions: userPermissions,
 	execute: execute,

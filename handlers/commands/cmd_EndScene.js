@@ -84,8 +84,8 @@ module.exports =
 	build:config.PRODUCTION||config.DEV
 };
 
-const requiredRoles = [ //config.BuilderRole, 
-					    config.DMRole	]
+const requiredRoles = [ //config.role.Builder, 
+					    config.role.DM	]
 if (config.DEV)
 {
 	module.exports.aliases = ["scene"]

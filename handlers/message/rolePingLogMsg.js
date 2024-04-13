@@ -8,10 +8,10 @@ const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
 const logRoles = {
-	[config.BuilderRole]:"Builder Attention Needed",
-	[config.ModeratorRole]:"Mod Attention Needed",
-	[config.DMOnDutyRole]:"DM Attention Needed",
-	[config.ItemTradeRole]:"Item Exchange Log"
+	[config.role.Builder]:"Builder Attention Needed",
+	[config.role.Moderator]:"Mod Attention Needed",
+	[config.role.DMOnDuty]:"DM Attention Needed",
+	[config.role.ItemTrade]:"Item Exchange Log"
 }
 const roleIDs = Object.keys(logRoles)
 
@@ -19,14 +19,9 @@ async function shouldHandle(client, message)
 {
 	let handle = false;	
 
-//	if (message?.mentions?.roles.has(config.BuilderRole))	//DMOnDutyRole))
 	const mentions = message.mentions.roles.filter( x => roleIDs.includes(x.id) )
 	if (mentions.size > 0)
 		handle = true;
-	
-	// if (message.author.id != config.OWNERID)
-	// 	return false;
-	
 	return handle;
 }
 
@@ -34,7 +29,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	const guild = message.guild
 	const msgChan = message.channel
-	const channel = await guild.channels.fetch(config.dmPingChannel)
+	const channel = await guild.channels.fetch(config.chan.dmPing)
 	if (!channel) return;
 	const mentions = message.mentions.roles.filter( x => roleIDs.includes(x.id) )
 	if (mentions.size == 0) return;

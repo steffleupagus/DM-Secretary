@@ -33,12 +33,12 @@ const STEP_COLLECT_DATA  = "Gathering player & character data."
 const STEP_PROCESS_DATA  = "Processing scene data. Please be patient."
 const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
 
-const SCENE_EMBED_TITLE  = `${config.xpemoji} Scene Complete`;
-const SCENE_EMBED_TITLE_AUTO  = `${config.xpemoji} Scene Auto-Closed`;
-const SCENE_EMBED_DESC   = `***Please wait** for the DM staff to confirm this scene before you add your exp.\nAwards will be posted in <#${config.xpLogChannel}> once verified.*`
+const SCENE_EMBED_TITLE  = `${config.emoji.xp} Scene Complete`;
+const SCENE_EMBED_TITLE_AUTO  = `${config.emoji.xp} Scene Auto-Closed`;
+const SCENE_EMBED_DESC   = `***Please wait** for the DM staff to confirm this scene before you add your exp.\nAwards will be posted in <#${config.chan.xpLog}> once verified.*`
 const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
 const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your level looks wrong__: \n• React with 👎 to cancel`
-const REFRESH_INSTRUCTIONS = `• Go to <#${config.xpLogChannel}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
+const REFRESH_INSTRUCTIONS = `• Go to <#${config.chan.xpLog}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
 const CONFIRM_FOOTER = `👍 confirm (all players) / 👎 cancel (any player).\nWill auto-confirm after 30 seconds.`
 
 //const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
@@ -48,14 +48,14 @@ const SCENEURL = "https://discord.com/channels/";
 const Debug = config.DEV;
 
 const PING_PREFIX = Debug ? '~' : '@'
-const dmPingChannel = Debug ? config.debugPingChannel : config.dmPingChannel;
-const xpLogChannel  = Debug ? config.debugPingChannel : config.xpLogChannel;
+const dmPingChannel = Debug ? config.debug.dmPing : config.chan.dmPing;
+const xpLogChannel  = Debug ? config.debug.xpLog : config.chan.xpLog;
 
 const NPC = 0;
 const SKIP = -1;
 
 const dmRoles = [
-			config.DMRole, config.ModeratorRole
+			config.role.DM, config.role.Moderator
 		];
 
 const interactionTimer = {};
@@ -268,7 +268,7 @@ async function generatePlayerXPField(interaction, data, idx)
 	if ((data.level == NPC)&&(!data.rpp))
 		value += `\`NPC (Pending)\`\n`
 	else if (data.level == NPC && (data.rpp > 0 || data.rppMod))
-		value += `${config.rppemoji} \`${data.rpp}\`\n`		
+		value += `${config.emoji.rpp} \`${data.rpp}\`\n`		
 	else if (data.xp >= 0)
 	{
 		//if (!data?.xpData?.xp) data.xpData = {xp:0} 
@@ -838,7 +838,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
 			value += `*RP as \`${data.name}\`*\n`
 		}
 		if (data.rpp >= 0)
-			value += `<@${data.user}>: ${config.rppemoji}\`${data.rpp}\` RPP\n`
+			value += `<@${data.user}>: ${config.emoji.rpp}\`${data.rpp}\` RPP\n`
 		else //if (data.xp >= 0)
 			value += `<@${data.user}>: \`${data.xp}x\` Cap\n`
 			
@@ -887,7 +887,7 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 	if (travel)
 		buttonRow.addComponents(travel)
 	
-	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.DMOnDutyRole}>`, //attachButtons);
+	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.DMOnDuty}>`, //attachButtons);
 					 (message) => message.edit({ components:[buttonRow] }))
 }
 
@@ -964,7 +964,7 @@ async function awaitConfirmation(interaction, expData)
 	if (!confirm)
 	{
 		embed = new EmbedBuilder();
-		embed.setDescription(`If your level was incorrect:\n${inst}\nIf you need help, please ask a <@&${config.DMOnDutyRole}>`);
+		embed.setDescription(`If your level was incorrect:\n${inst}\nIf you need help, please ask a <@&${config.role.DMOnDuty}>`);
 		interaction.editReply({embeds:[embed],components:[]})
 	}
 	
@@ -1122,7 +1122,7 @@ function constructLevelQuery(charRPData, showPctMatch=true, npcAssign=false)
 		desc += line + "\n";		
 	});
 	if (npcAssign)
-		desc += ` • \`NPC\` Earn bonus ${config.rppemoji} RPP instead of ${config.xpemoji} Exp\n`
+		desc += ` • \`NPC\` Earn bonus ${config.emoji.rpp} RPP instead of ${config.emoji.xp} Exp\n`
 	else
 	{
 		desc += ` • \`NPC\` (No level)\n`
@@ -1389,7 +1389,7 @@ async function LogDebugResult(message, data, url = null, channel = null, footer 
 		});
 	}
 	const guild = message.guild;
-	const debugChanId = config.debugChannels.scene
+	const debugChanId = config.debug.scene
 	const debugChan = await guild?.channels?.fetch(debugChanId);
 	if (debugChan) await embed.send(debugChan, `<@${config.OWNERID}>`);
 }

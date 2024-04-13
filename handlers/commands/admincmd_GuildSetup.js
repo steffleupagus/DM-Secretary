@@ -143,7 +143,7 @@ module.exports =
 {
 	data: data,
 	whitelistRoles: [
-		config.BuilderRole
+		config.role.Builder
 	],
 	userPermissions: userPermissions,
 	execute: execute,

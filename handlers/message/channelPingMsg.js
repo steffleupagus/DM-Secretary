@@ -34,7 +34,7 @@ async function shouldHandle(client, message)
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	const guild = message.guild;
-	const citizen = config.CitizenRole;	
+	const citizen = config.role.Citizen;	
 	const channelMentions = message?.mentions?.channels
 	const links = [...message.content.matchAll(discordLinkReg)];
 	await Utils.asyncArrayForEach(links, async link => 
@@ -59,7 +59,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	embed.setFooter({text:`Above channel mentions:\n${channelNames}`})
 
 	// if ((message.author.id != config.OWNERID)||
-	// 	(message.channel.id != config.buildSpamChannel))
+	// 	(message.channel.id != config.chan.builder))
 	// 	return message.channel.send({embeds:[embed],components:row})
 	
 	//Handle the travel attachment	

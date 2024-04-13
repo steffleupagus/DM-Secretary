@@ -26,7 +26,7 @@ const guildEmoji = {
 async function shouldHandle(client, message)
 {	
 	if (!message.author.bot) return false
-	if (message.author.id != config.avraeId) return false
+	if (message.author.id != config.bots.avrae) return false
 
 	const embed = message?.embeds?.[0] || null;
 	const fields = embed?.fields || null;

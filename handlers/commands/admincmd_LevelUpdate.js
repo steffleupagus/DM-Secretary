@@ -8,7 +8,7 @@ async function execute(interaction)
 {
 	interaction.reply({content:"Update Level Message", ephemeral:true})
 
-	const channel = interaction.guild.channels.resolve(config.levelOutputChan)
+	const channel = interaction.guild.channels.resolve(config.chan.levelOut)
 	await LevelData.updateLevelMessage(channel);
 }
 
@@ -19,7 +19,7 @@ const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
 module.exports = 
 {
 	data: data,
-	whitelistRoles: [ config.BuilderRole ],
+	whitelistRoles: [ config.role.Builder ],
 	userPermissions: userPermissions,
 	execute: execute,
 	build:config.PRODUCTION //|| config.DEV

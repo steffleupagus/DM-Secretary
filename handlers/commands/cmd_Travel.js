@@ -250,7 +250,7 @@ async function handleInteraction(interaction)
 	if (!interaction.customId.startsWith(prefix))
 		throw new Error("Interaction routed to incorrect command")	
 
-	const logChanId = config.debugChannels.travel
+	const logChanId = config.debug.travel
 	const logChan = await interaction.guild.channels.fetch(logChanId)
 	const isUnlimited = Utils.hasAnyRole(interaction.member, whitelistRoles);	
 	const customId = interaction.customId.split(":");
@@ -267,9 +267,9 @@ async function handleInteraction(interaction)
 	const MAX = isUnlimited ? 25 : MAX_LOCATIONS
 	const requires = Object.keys(ROLE_REQUIREMENTS);
 	let   defaultMsg = "You are already in this location"
-	if (Utils.hasAnyRole(interaction.member, [config.NeedRPRole]))
+	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP]))
 	{
-		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.profileChannel}>)`)
+		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.chan.pcProfile}>)`)
 		await interaction.editReply({embeds:[embed]})	
 		return;
 	}
@@ -383,9 +383,9 @@ async function execute(interaction)
 	await interaction.deferReply({ephemeral:true})
 	const embed = new EmbedBuilder();
 
-	if (Utils.hasAnyRole(interaction.member, [config.NeedRPRole]))
+	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP]))
 	{
-		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.profileChannel}>)`)
+		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.chan.pcProfile}>)`)
 		await interaction.editReply({embeds:[embed]})	
 		return;
 	}
@@ -466,7 +466,7 @@ const data = new SlashCommandBuilder()
 			.setAutocomplete(true)
 		)
 
-const whitelistRoles = [ config.BuilderRole, config.DMOnDutyRole, config.ModeratorRole ]
+const whitelistRoles = [ config.role.Builder, config.role.DMOnDuty, config.role.Moderator ]
 const userPermissions = [ PermissionsBitField.Flags.SendMessages ];
 module.exports = 
 {
