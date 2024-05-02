@@ -328,7 +328,7 @@ async function autoComplete(interaction)
 }
 
 const data = new SlashCommandBuilder()
-	.setName('content')
+	.setName(`content${config.DEV ? "dev" : ""}`)
 	.setDescription('Update the contents of a static channel')
 	.setDefaultPermission(false)	
 	.addBooleanOption(option => option.setName('clear').setRequired(false).setDescription('Clear old messages or not'))
@@ -351,5 +351,5 @@ module.exports =
 	execute: execute,
 	message: run,
 	autoComplete: autoComplete,
-	build:config.PRODUCTION 
+	build:config.PRODUCTION || config.DEV
 };
