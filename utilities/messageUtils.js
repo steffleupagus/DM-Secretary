@@ -274,15 +274,18 @@ async function scrapeMessages(messages, stats = null)
 
 function checkForBullshit(message)
 {
-	if (!chanUtils.isRoleplayChannel(message.channel))
-		return
 	const content = message.content
+	//We don't care if it isn't an RP channel
+	if (!chanUtils.isRoleplayChannel(message.channel)) return
+	//We don't care if the initial message is too short to even be factored into exp awards
+	if (content.length < MIN_MESSAGE_LENGTH) return
+	//Strip non-ascii characters and check if more than half the length was stripped out
 	const stripped = content.replaceAll(/[^\x00-\x7F]/g,'')
 	if (content.length - stripped.length > (content.length / 2))
 	{
 		const guild = message.guild
 		const debug = guild.channels.fetch(config.debugLogParent).then( chan => 
-		{
+		{	//If it was, flag it for closer inspection
 			chan.send(`<@659069077872181248> [Message](${message.url}) warrants a closer look: ${message}`)
 		})
 	}
