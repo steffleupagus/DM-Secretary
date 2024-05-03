@@ -7,6 +7,7 @@ const Prompt = require(`./promptUtils.js`);
 const MsgUtils = require(`./messageUtils.js`);
 const ChanUtils = require(`./channelUtils.js`);
 const LevelUtils = require(`./levelUtils.js`);
+const ExpUtils = require(`./expUtils.js`);
 
 const Mutex = require(`./mutexUtils.js`);
 const Embed = require(`./EmbedPaginator.js`)
@@ -526,14 +527,14 @@ function calculateExp(duelData)
 	const winuid  = duelData.outcome.winner.uid;
 	const winName = duelData.outcome.winner.char;	//players[winuid].char;
 	const winner  = duelData.characters[winName];
-	const winCap  = LevelUtils.getDuelExpCap(winner.level);
+	const winCap  = ExpUtils.getDuelExpCap(winner.level);
 
 	const losuid  = duelData.outcome.loser.uid;
 	const lossName= duelData.outcome.loser.char;	//players[losuid].char;
 	const loser   = duelData.characters[lossName];
-	const lossCap = LevelUtils.getDuelExpCap(loser.level);
+	const lossCap = ExpUtils.getDuelExpCap(loser.level);
 
-	const exp = LevelUtils.getDuelExp(loser.level);
+	const exp = ExpUtils.getDuelExp(loser.level);
 
 	const date = Utils.getDate();
 	duelData.logDate = date.getTime();
@@ -804,7 +805,7 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	//Update the exp being awarded by the ratio
 	if ((winRatio == 0.5)||(lossRatio == 0.5))
 	{
-		const exp = LevelUtils.getDuelExpCap(duelData.loser.level)
+		const exp = ExpUtils.getDuelExpCap(duelData.loser.level)
 		duelData.loser.xp.xp = exp;
 		duelData.winner.xp.xp = exp;
 	}
@@ -818,8 +819,8 @@ async function approveDuel(duelLogMessage, user, subCommand)
 	}
 	
 	//Update the daily total in the DB
-	const winner = await LevelUtils.updateDailyExp(duelData.winner, cmd, date);
-	const loser  = await LevelUtils.updateDailyExp(duelData.loser, cmd, date);	
+	const winner = await ExpUtils.updateDailyExp(duelData.winner, cmd, date);
+	const loser  = await ExpUtils.updateDailyExp(duelData.loser, cmd, date);	
 	if (winner == null || loser == null)
 		return "Something went wrong";
 	duelData.winner = winner;
