@@ -4,6 +4,7 @@ const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const LevelUtils = require(`../utilities/levelUtils.js`) 
 const ChanUtils = require(`../utilities/channelUtils.js`)
 const CharUtils = require(`../utilities/charUtils.js`)
+const ExpUtils = require(`../utilities/expUtils.js`)
 const MsgUtils = require(`../utilities/messageUtils.js`)
 const Prompt = require(`../utilities/promptUtils.js`)
 const Embed = require(`../utilities/EmbedPaginator.js`)
@@ -206,8 +207,8 @@ async function generatePlayerXPField(interaction, data, idx)
 	data.rp.days = data?.rp?.days || data.daily?.length || "?";
 	data.rpp = data.rpp ?? 0;
 	data.xpMod = data.xpMod ?? data.xp;
-	data.xp = data.level > 0 ? LevelUtils.calculateRoleplayExp(level, data.xp) : 0
-	data.xpMod = data.level > 0 ? LevelUtils.calculateRoleplayExp(level, data.xpMod) : 0;
+	data.xp = data.level > 0 ? ExpUtils.calculateRoleplayExp(level, data.xp) : 0
+	data.xpMod = data.level > 0 ? ExpUtils.calculateRoleplayExp(level, data.xpMod) : 0;
 
 
 	console.log("Data: ",data)
@@ -218,9 +219,9 @@ async function generatePlayerXPField(interaction, data, idx)
 		//Apply daily exp cap
 		{
 			const cmd = `scene${config.DEV ? "dev" : ""}`						
-			const cap = 3 * LevelUtils.getRPExpCap(level);
+			const cap = 3 * ExpUtils.getRPExpCap(level);
 			let xpData = {char:data.char,uid:data.user,xp:{xp:data.xpMod,cap},logDate:data.date}
-				xpData = await LevelUtils.updateDailyExp(xpData, cmd, data.date);
+				xpData = await ExpUtils.updateDailyExp(xpData, cmd, data.date);
 			if (!xpData)
 				throw "Something went very wrong..."
 			//xpData is an object: {xp (final xp after cap applied), cap, total (cumulative daily total)}
@@ -425,7 +426,7 @@ async function handleUndoExp(interaction, message)
 				data.xp   = {xp: -1 * parseInt(exp.exec(field.value)[1]),
 							 cap:     parseInt(cap.exec(field.value)[1]) };
 				data.date = interaction.message.createdTimestamp;
-				data = await LevelUtils.updateDailyExp(data, cmd, data.date)
+				data = await ExpUtils.updateDailyExp(data, cmd, data.date)
 			}
 			catch (e)
 			{
@@ -1021,7 +1022,7 @@ function assignExperience(expData)
 		//Calculate the RP exp multiplier which can be used to calculate a total exp based on final applied level
 		len  = charRPData.rp.length;
 		days = charRPData.rp.days || charRPData.daily.length;
-		mult = LevelUtils.calculateHybridRPMult(len, days);
+		mult = ExpUtils.calculateHybridRPMult(len, days);
 		if (mult < 0) mult = 0
 		expData[idx].xp = mult;
 		if (charRPData.rpp && mult > 0)
@@ -1283,7 +1284,7 @@ async function processCharData(interaction, charRPData, forcePrompt = false, npc
 	//Find a match for this character based on the user
 	if (charRPData.user)
 	{
-		const charDBData = await CharUtils.findClosestMatch(charRPData.name, charRPData.user, forcePrompt);
+		const charDBData = await CharUtils.findClosestMatch(charRPData.name, charRPData.user, [], forcePrompt);
 		charRPData.match =  charDBData?.match;
 		charRPData.matches = charDBData?.matches;
 

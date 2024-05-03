@@ -2,10 +2,7 @@ const mod = process.env.mod || "";
 const root = process.cwd()
 const Utils = require(`${root}/utilities/utilFuncs.js`)
 const config = require(`${root}/config/${mod}_config.json`);
-const MsgUtils = require(`${root}/utilities/messageUtils.js`)
 const LevelUtils = require(`${root}/utilities/levelUtils.js`)
-const LevelSchema = require(`${root}/database/levelSchema.js`)
-const DailyExpSchema = require(`${root}/database/dailyExpSchema.js`)
 const StringSimilarity = require("string-similarity");
 
 const MATCH_THRESHOLD = 0.9
@@ -56,7 +53,7 @@ class CharacterData
 		return result;
 	}
 
-	async findClosestMatch(char, user = null, forceAll = false)
+	async findClosestMatch(char, user = null, npcList = [], forceAll = false, threshold = MIN_THRESHOLD)
 	{
 		//Get a list of all characters - character:{level,player}
 		let options = this.charCache;
@@ -64,14 +61,22 @@ class CharacterData
 			options = options.filter( option => option.user == user );		
 		if (options.length == 0)
 			return null;
-		
+
 		let charTable = {};
 		options.forEach(value => { charTable[value.name] = { level:value.level, user:value.user } });
+
+		// If the calling method has specified a list of NPCs we might care about, 
+		// inject them into the list of options for us to consider prior to finding the best match
+		(npcList ?? []).forEach( npc => 
+		{
+			//console.log(npc)
+			charTable[npc.name] = charTable[npc.name] ?? { level: npc.level, user: user }
+		})
 
 		var names = Object.keys(charTable);
 		if (names.length == 0)
 			return null;
-		
+
 		//If we have an exact match, skip the rest
 		if (charTable[char] && !forceAll)
 		{
@@ -79,22 +84,21 @@ class CharacterData
 			charTable[char].name = char;
 			return {match:charTable[char], options: []}
 		}
-			
+
 		//Find the closest match for that character's name
 		var matches = StringSimilarity.findBestMatch(char, names);
 
 		var match = matches.bestMatch;
-			match = match.rating >= MIN_THRESHOLD ? 			
+			match = match.rating >= threshold ? 			
 					{ 	name: match.target,
 						...(!user && { user: charTable[match.target].user }),
 						level: charTable[match.target].level,
-					 	rating: match.rating
+						rating: match.rating
 					} : null;
 		
 		var matches = matches.ratings;
 		matches = matches
-			// .filter( m => m.target != match?.name )
-			.filter( m => user || m.rating >= MIN_THRESHOLD)
+			.filter( m => user || m.rating >= threshold)
 			.map( m => {
 				let name = m.target
 				return {
@@ -106,7 +110,7 @@ class CharacterData
 			})
 			.sort( (a,b) => b.rating - a.rating )
 			.slice( 0, 10 );
-		
+
  		let result = {match,matches};
 		return result;		
 	}	

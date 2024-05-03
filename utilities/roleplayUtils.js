@@ -74,7 +74,7 @@ async function processCharData(charRPData, interaction = null, thread = null, fo
 	//Find a match for this character based on the user
 	if (charRPData.user)
 	{
-		const charDBData = await CharUtils.findClosestMatch(charRPData.name, charRPData.user, forcePrompt);
+		const charDBData = await CharUtils.findClosestMatch(charRPData.name, charRPData.user, [], forcePrompt);
 		charRPData.match =  charDBData?.match;
 		charRPData.matches = charDBData?.matches;
 
