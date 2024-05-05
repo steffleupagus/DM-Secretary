@@ -1,0 +1,322 @@
+{
+	"Guild Ranks":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds":[
+			{
+				"title":"Ranks",
+				"description":"- <@&1004079923234865273> - One per guild by default, (some may be left vacant and the guilds led by the <@&1003019879953215548>)\n- <@&1003019879953215548> - Leadership Council, Appointed by the Guild Leader (or a mod)\n<@&1003019881928724633> - Dedicated, veteran members. A Leader or Councilor can promote a member to this\n- <@&1003019883145076896> - The rank and file members. A Leader, Council, or Member can initiate someone into the guild\n- <@&1003019884785041570> - Anyone can opt in to become a 'recruit' for a guild. Practically, it won't make them members of the guild, but will essentially mark them as *interested* in joining the guild fully. It will allow them to be pinged when the guild leaders or council members are free and open to recruiting them into the guild proper. It'll allow DMs who want to run tables specifically geared towards certain guild recruits.",
+				"fields":[
+					{
+						"name":"Advancement",
+						"value":"- Any member can recruit up to one below their own rank, or strip rank from anyone who is below their rank.\n- Anyone can pick up rank 1 just to express their interest in the guild\nAnyone rank 3, 4, 5 can make a rank 1 into a rank 2\n- A rank 2 can be promoted to a rank 3 (allowing them to bring in other guild members) only by a rank 4 or 5\n- Only a guild leader can promote someone to rank 4\n\nhttps://dnd.wizards.com/articles/events/faction-talk-part-1"
+					}
+				]
+			},
+			{
+				"title": "Guild Ranks",
+				"fields": [
+					{
+						"name": "General Ranks",	"inline": true,
+				  		"value": "`5:` <@&1004079923234865273> \n`4:` <@&1003019879953215548> \n`3:` <@&1003019881928724633> \n`2:` <@&1003019883145076896> \n`1:` <@&1003019884785041570>"
+					},
+					{						
+						"name": "Arcanum",			"inline": true,
+						"value": "`5:` <@&699245661295738891> \n`4:` <@&833505842178293790> \n`3:` <@&1002797852868739133> \n`2:` <@&717312140821790752> \n`1:` <@&1002797861211218051> \n<@&702348143752118372>"
+					},
+					{ "inline": false, "name": "** **", "value": "** **" },
+					{
+					  	"name": "Black Hand",		"inline": true,
+				  		"value": "`5:` <@&701985965882867712> \n`4:` <@&833508689624563783> \n`3:` <@&1002797883914985473> \n`2:` <@&717312839827587072> \n`1:` <@&1002797891682832435> \n<@&697848468986921030>"
+					},
+					{
+						"name": "Consortium",		"inline": true,
+						"value": "`5:` <@&1219132744446251170> \n`4:` <@&1219132862054535269> \n`3:` <@&1219132951103672360> \n`2:` <@&1219132932803788870> \n`1:` <@&1219133106066554940> \n<@&1219132464816193626>"
+					},
+					{ "inline": false, "name": "** **", "value": "** **" },
+					{				
+				  		"name": "Faith Council",	"inline": true,
+				  		"value": "`5:` <@&766024439749148672> \n`4:` <@&782123983797616700> \n`3:` <@&1002797865401327616> \n`2:` <@&766026787997351947> \n`1:` <@&1002797897777164328> \n<@&766031516038987786>"
+					},
+					{
+				  		"name": "Guardian Guild",	"inline": true,
+					  	"value": "`5:` <@&699575897853788302> \n`4:` <@&833505914619166721> \n`3:` <@&1002797857239224371> \n`2:` <@&717311930171129916> \n`1:` <@&1002797888537116794> \n<@&702481674344071178>"
+					},
+					{ "inline": false, "name": "** **", "value": "** **" },
+					{
+				  		"name": "Outrider's Lodge",	"inline": true,
+				  		"value": "`5:` <@&853348541287890994> \n`4:` <@&853349316139024414> \n`3:` <@&1002797871218839663> \n`2:` <@&853349315866525716> \n`1:` <@&1002797894388174939> \n<@&853346385545920522>"
+					},
+					{
+				  		"name": "Silver Thorn",		"inline": true,
+					  	"value": "`5:` <@&699439189447671889> \n`4:` <@&833509439277367338> \n`3:` <@&1002797900591550474> \n`2:` <@&717313035387142215> \n`1:` <@&1002797903640805466> \n<@&699439109533335623>"
+					}
+			  	]
+			}
+		]
+	},
+	"Guild Benefits":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Community Unlockables",
+				"description":"Community project approach for guilds to gradually unlock mechanical benefits for the guilds once they're ready to be added. Have each guild work to earn points to unlock their respective features."
+			},
+			{
+				"title":"Common Guild Benefits",
+				"description": "Each of the guilds will have some common benefits, and a few unique to them. Many will be tied into the (pending) downtime system, so it might be some time before they are implemented.\n\nTo balance these, I'm considering a Renown system (which would grant benefits to people as they increase their guild Rank), and guild dues (a fee that is charged during downtimes for each Guild you're in that would not restrict the number of guilds you're in but would make joining multiples more costly).\nMost come from Group Patrons, Factions, and inspiration from the Ravnica guilds."
+			},
+			{			
+				"title":"Accommodations",
+				"description":"Every guild has a guild hall or some manner of accommodations they can offer their members. Higher-ranked members enjoy greater benefits of their guild's wealth. <@&1003019884785041570> get no free accommodations, being that they have yet to prove themselves to the guild.\n(Planning to automate Lifestyle expenses with the downtimes, so guilds would allow people to skip those)"
+			},
+			{
+				"title":"Training",
+				"description":"The guilds of Ost retain knowledgeable tutors in subjects pertinent to their interests. Each guild has a set of tools of their trade and three skills that they specialize in. A character may study with tutors of their guild and gain Proficiency in one of those skills. A character can learn any number of tools in this way, but **only** one skill\\*\\*. When you undertake the training downtime activity (as described in the _Player’s Handbook_ & _Xanathar’s Guide to Everything_) and studying a subject the guild specializes in, you gain `some benefit (TBD, discuss)*`\n(\\**either the training takes half as long (OR) you pay only one-half the normal cost...*)\n(\\*\\**If they are already proficient in all three of their guild's specialty skills, they can instead train to the level of Expertise in one skill. The training cost/time for Expertise is not reduced.*)\n`TODO: Determine how Guild Rankings work into this. Maybe allow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?`"
+			},
+			{
+				"title":"Magic Items",
+				"description":"Admittedly this one isn't fully thought out yet, but basing this off the Ravnican guilds, some minor magic items for the guilds could be neat. In Ravnica they are Signet Rings and Keystone Runes, each with a different benefit befitting the guild in question. Likely based on the guild ranks, the items should be relatively lower powered and give a minor benefit that ties into the guild's purpose. I'm considering the possibility that all badges of office are magic items that fall into this category\n\n`TODO: Discuss.`"
+			},
+			{
+				"title":"Guild Spells",
+				"description":"Admittedly this one isn't fully thought out yet, but basing this off the Ravnican guilds, some additional spells being made available to guild members possibly. This would be a little trickier for people on Beyond, so might cut this one.\n\n`TODO: Discuss.`"
+			}
+		]
+	},
+	"🔮 Arcanum":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Tower rooms are well-furnished, magical servants see to the needs of established members, and the guild's importance in the city affords it a certain level of wealth and prestige.\n<@&717312140821790752>: Modest Lifestyle\n<@&1002797852868739133>: Modest Lifestyle\n<@&833505842178293790>: Comfortable Lifestyle\n<@&699245661295738891>: Wealthy Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Any\n- Tool: Artisan's Tools, Alchemy Supplies, Calligrapher's Supplies, Tinker's Tools\n- Skill: Arcana, History, Investigation"
+					}
+				]
+			},
+			{
+				"title":"Library",
+				"description":"The Arcanum has a vast library of lore to facilitate efforts to unearth hidden secrets, and librarians dedicated to studying its contents. You can call in a favor to gain assistance researching lore from such a librarian or research assistant. While in the Arcanum Tower, you have advantage on Intelligence (Arcana) checks involving arcane research (\"Research Lore\" Downtime, as well as copying Spell Scrolls).\n\nThe libraries are not limited to lore, but also contains a repository of spell scrolls. While these libraries are technically open to all of Ost in Edhil for a price, members of the Arcanum can access them more freely. Arcanum members can make copies of these scrolls (into their own spell books, or duplicate scrolls), per the rules of copying spells, but the cost is reduced by up to 10 percent (1d10 at the time of scribing). In addition, when performing the Scribing a Spell Scroll downtime, the chances of complication are reduced."
+			},
+			{
+				"title":"Magic Items",
+				"description":"The Arcanum has cultivated contacts that deal in magical items, and its members can benefit from this network. When engaging in the Buying or Selling Magic Items downtime actions, the guild's connections may give you a better chance of locating a buyer or seller for a specific item, and may tip the prices in your favor by up to 10 percent. Common magic items, potions, and scrolls are almost always available for purchase at such a discount.\nIn addition, Arcanum members gain some benefits when Crafting a Magic Item within the tower. Though you must still acquire any exotic materials required for crafting the item, the cost and time to craft the items is reduced by up to 10 percent. In addition, you may utilize the Guild's tools, laboratories, libraries, or other crafting space and equipment within the guildhall instead of having to own them. Of course, you must still be proficient in the use of the appropriate tools. (And, naturally, any magic item crafting must be approved and overseen by a DM)"
+			},
+			{
+				"title":"Spellcasting Services",
+				"description":"The members of the Arcanum are among the most skilled Arcane spellcasters in Ost, the Council of Faith counts skilled Divine spellcasters among its ranks, and many nature-based Primal spellcasters find themselves among the Outriders. Anyone may hire a spellcaster to cast a spells of the appropriate type on their behalf (for a price) through the use of the \"Spellcasting Services\" downtime. For fellow guild members, that price may be reduced by up to 10 percent, though the recipient must still cover the price of any costly material components."
+			}
+		]
+	},
+	"🗡 Black Hand":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Secret safe houses available for members. Far from luxurious, offering only simple (and nondescript) lodgings in seedier parts of town, and meager meals. They remain below the notice of most.\n<@&717312839827587072>: Poor Lifestyle\n<@&1002797883914985473>: Modest Lifestyle\n<@&833508689624563783>: Comfortable Lifestyle\n<@&701985965882867712>: Wealthy Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Thieves' Cant?\n - (*Discuss: Allow BH members to learn it even if not Rogues?*)\n- Tool: Disguise Kit, Forgery Kit, Poisoner's Tools, Thieves' Tools, any Gaming Set\n- Skill: Deception, Sleight of Hand, Stealth"
+					}
+				]
+			},
+			{
+				"title":"Contraband",
+				"description":"The Black Hand handles all manner of illicit goods, and its members have access to the Guild's \"business\" of dealing with contraband, such as poisons and narcotics, as well as some ill-gotten items which they are eager to unload. In addition to their less-than-reputable dealings, the Hand owns several \"legitimate\" businesses as fronts for laundering money from their less-reputable endeavors. When seeking out basic gear from one of these businesses, they will sell to you at a discount of up to 10%.\nConversely, the guild's fences are useful for dealing not just illicit goods but also expensive items such as works of art or even magic items. In the case of magic items, finding a buyer for such items (per the downtime action) is much easier, and the chances of complication are greatly reduced. The drawback is that the fence takes a 20% cut of the sale price as a finder's fee. Likewise, a fence may be able to find magic items for you to purchase, as long as you don't ask where it came from, and are willing to pay a 20% markup."
+			},
+			{
+				"title":"Criminal Enterprise",
+				"description":"The Black Hand profits greatly from its various criminal endeavors, and its members can benefit from them as well. When performing the `Crime` or `Gambling` downtime actions, your (((*money earned is increased / chances of success are improved / chances of complications are decreased*))). In addition, you can arrange for a guild goon to assist you in planning or pulling off such criminal activity, granting you advantage on rolls for that action, at a cost of a percentage of your gains."
+			},
+			{
+				"title":"Aliases",
+				"description":"The Guild can provide you with falsified or forged identification papers, and matching travel documents showing different identities when performing downtime actions. While they won't increase your chance of success in your endeavors, these documents can give you a chance to escape certain complications and throw any potential rivals off your trail. This results in reduced chances for Complications due to Rivals.\nIn addition, the Black Hand protects its secrecy through both alliances and guile. Its members can enjoy a certain level of anonymity by arranging for false identification as a member of one of the other guilds. While such identities aren't flawless enough to infiltrate the other guilds without the Guild Masters' knowledge, it is sometimes enough to fool most of the normal citizens of Ost to gain a guild's downtime benefit for a time."
+			},
+			{
+				"title":"Information Network",
+				"description":"In their role as the Queen's eyes and ears, the Black Hand is one of the most well informed guilds in the dealings of others. Hands are able to engage in downtimes to gather information or sow rumors with greater ease. (((*Not sure what this means yet, exactly.*)))"
+			}
+		]
+	},
+	"💰 Consortium":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"The finest inns and accommodations that coin can purchase, well-furnished and accompanied by guild-employed servants and valets.\n<@&1219132932803788870>: Modest Lifestyle\n<@&1219132951103672360>: Comfortable Lifestyle\n<@&1219132862054535269>: Wealthy Lifestyle\n<@&1219132744446251170>: Aristocratic Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Any\n- Tool: \n- Skill: Deception, Insight, Persuasion"
+					}
+				]
+			},
+			{
+				"title":"Contraband",
+				"description":"The Consortium moves merchandise, and its members have access to the Guild's supply lines of goods. When seeking out basic gear from one of these businesses, they will sell to you at a discount of up to 10%.\nConversely, the guild's connections will often trade in expensive items such as works of art or even magic items. In the case of magic items, finding a buyer for such items (per the downtime action) is much easier, and the chances of complication are greatly reduced. The drawback is that the fence takes a 20% cut of the sale price as a finder's fee. Likewise, a fence may be able to find magic items for you to purchase, with a healthy profit in it for themselves."
+			}
+		]
+	},
+	"🛕 Faith Council":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Temples & monasteries provide modest monk cells & simple meals for faithful. Not luxurious or glamorous, but functional.\n<@&766026787997351947>: Poor Lifestyle\n<@&1002797865401327616>: Modest Lifestyle\n<@&782123983797616700>: Modest Lifestyle\n<@&766024439749148672>: Comfortable Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Any\n- Tool: Artisan's Tools, Brewer's Supplies, Herbalism Kit, any Musical Instrument\n- Skill: Insight, Medicine, Religion"
+					}
+				]
+			},
+			{
+				"title":"Spellcasting Services",
+				"description":"The members of the Arcanum are among the most skilled Arcane spellcasters in Ost, the Council of Faith counts skilled Divine spellcasters among its ranks, and many nature-based Primal spellcasters find themselves among the Outriders. Anyone may hire a spellcaster to cast a spells of the appropriate type on their behalf (for a price) through the use of the \"Spellcasting Services\" downtime. For fellow guild members, that price may be reduced by up to 10 percent, though the recipient must still cover the price of any costly material components."
+			},
+			{
+				"title":"Religious Service",
+				"description":"The citizens of Ost in Edhil have come to rely on the temples for guidance. Some of the more devout in particular have some issues with coming to terms with their situation in such a debauched place. Through their training, receiving their own guidance from their fellow guild temple keepers, and the respect they've garnered from the populace in the short time the guild has been in operation, members of the council of faith have become adept at fulfilling this mandate. When performing the Religious Service downtime, a member of the temples has (((*Increased chance of success / lower chance of complications*)))"
+			},
+			{
+				"title":"Piety / Boons of the Faithful",
+				"description":"The temples of Ost in Edhil are strangely connected to divinity, and those who maintain them gain boons from the gods who use those temples as conduits. Once per (((*Day? Long Rest? Week? Something else?*))) a member of the Temples has a chance (((*1d20? Lower # sides for higher ranked people?*))) to gain a divine charm (((*[Divine Charms](https://www.dndbeyond.com/sources/dmg/other-rewards#Charms)*))) or divine Inspiration (((*Like Guidance / Bardic inspiration, or DM inspiration?*)))"
+			}
+		]
+	},
+	"⚔ Guardian Guild":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Utilitarian barracks offering a bunk and three square meals. The accommodations are appropriate to the member's rank and station, but are never luxurious.\n<@&717311930171129916>: Modest Lifestyle\n<@&1002797857239224371>: Modest Lifestyle\n<@&833505914619166721>: Comfortable Lifestyle\n<@&699575897853788302>: Comfortable Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Any Weapon or Armor\n- Tool: Artisan's Tools, Blacksmith Tools\n- Skill: Athletics, Intimidation, Perception"
+					}
+				]
+			},
+			{
+				"title":"Armory",
+				"description":"Guardians represent the fighting force of the city of Ost in Edhil, serving as city guards and defenders. As such, the Queen ensures that they are well-equipped to protect her city. Members of the guild can purchase non-magical weapons and armor at a 20 percent discount, and may have an easier time finding magical weapons.\nIn their role as the Queen's military, they also periodically accumulate spoils of war, which may be made available to its members. Magic items among this loot may be purchased by its members, though what is available at any given time is never predictable."
+			},
+			{
+				"title":"Salary",
+				"description":"Each member of the Guardian's Guild earns a regular stipend and share of the military force’s spoils. The amount varies depending on your organization and your position within it, but at minimum you earn 1 gp per day. With higher rank comes commensurately higher pay. In addition, due to the service the guild provides the city at the Queen's behest, this guild is not taxed as the others are. As a result, the guild levies no fees upon its members."
+			},
+			{
+				"title":"???",
+				"description":"- Something tied to the 'Pitfighting' downtime action?\n- A bonus to gold earned in the Arena?"
+			}
+		]
+	},
+	"🍃 Outriders Lodge":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Camps scattered throughout the wilderness, offering shelter ranging from tents to cabins stocked with provisions. Most Outriders have the survival ability to supply their own lifestyle needs, but these resources are available in a pinch\n<@&853349315866525716>: Poor Lifestyle\n<@&1002797871218839663>: Poor Lifestyle\n<@&853349316139024414>: Modest Lifestyle\n<@&853348541287890994>: Modest Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Druidic\n - (*Discuss: allowing Outriders members to learn Druidic even if not Druids?*)\n- Tool: Herbalism Kit, Woodcarver's Tools, Cartographer's Tools, Navigator's Tools\n- Skill: Animal Handling, Nature, Survival"
+					}
+				]
+			},
+			{
+				"title":"Spellcasting Services",
+				"description":"The members of the Arcanum are among the most skilled Arcane spellcasters in Ost, the Council of Faith counts skilled Divine spellcasters among its ranks, and many nature-based Primal spellcasters find themselves among the Outriders. Anyone may hire a spellcaster to cast a spells of the appropriate type on their behalf (for a price) through the use of the \"Spellcasting Services\" downtime. For fellow guild members, that price may be reduced by up to 10 percent, though the recipient must still cover the price of any costly material components."
+			},
+			{
+				"title":"???",
+				"description":"TODO - Something tied to a 'hunt', 'fish', or 'forage' downtime action?"
+			}
+		]
+	},
+	"🌹 Silver Thorn":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"Common Benefits",
+				"fields":
+				[
+					{
+						"name":"Acommodations",
+						"value":"Luxurious accommodations within the Silver Thorn's private suites allow the Roses to live in comfort. The Rose's reputation among the upper class of the city affords them a fancier lifestyle than most other guilds, save perhaps the Consortium\n<@&717313035387142215>: Modest Lifestyle\n<@&1002797900591550474>: Comfortable Lifestyle\n<@&833509439277367338>: Wealthy Lifestyle\n<@&699439189447671889>: Aristocratic Lifestyle"
+					},
+					{
+						"name":"Training",
+						"value":"- Language: Any\n- Tool: Cook's Utensils, Disguise Kit, Any Gaming Set, Any Musical Instrument\n- Skill: Acrobatics, Persuasion, Performance"
+					}
+				]
+			},
+			{
+				"title":"Access",
+				"description":"In their role both as prostitutes and as entertainers, the Roses of the Silver Thorn often receive invitations from those of all walks of life. While the Thorn goes out of its way to appeal to a higher class of clientele, drawing much of its patronage from the nobility of the city, many enjoy slumming it.\nWhen dealing with those in the upper echelons of power, these invitations range from simply the beds of nobles, to entertaining at diplomatic receptions at the royal palace. Regardless of where they are, the Roses are assumed to belong.\nWhen engaging in the Carousing downtime, a Rose may carouse with the lower, middle, or upper-class with equal ease, and the costs of doing so are reduced (thanks to their invitations). In addition, from time to time (((*specifics pending*))), Roses may gain the benefits of a Wealthy or Aristocratic lifestyle at no cost."
+			},
+			{
+				"title":"Gossip",
+				"description":"In Ost in Edhil, the phrase \"heard it through the grapevine\" would make more sense with a rose vine instead. With their access, being overlooked as mere prostitutes or entertainers, or through simple pillow-talk, the Silver Thorn has one of the most insidious gossip (read: information) networks in the city. Roses are able to engage in downtimes to gather information or sow rumors with greater ease. (((*Not sure what this means yet, exactly.*)))"
+			},
+			{
+				"title":"???",
+				"description":"- Something to do with allies & contacts?\n- Something to do with lust power in the Thorn itself?\n- Gold for RP scenes?"
+			}
+		]
+	}
+}
