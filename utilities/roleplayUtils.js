@@ -1,6 +1,7 @@
 const { EmbedBuilder, ButtonStyle, MessageMentions, TextInputStyle } = require('discord.js')
 const { SortOrder } = require(`../utilities/enums.js`)
 const ChannelMeta = require(`../database/chanMetaSchema.js`)
+const LevelUtils = require(`../utilities/levelUtils.js`) 
 const ChanUtils = require(`../utilities/channelUtils.js`)
 const CharUtils = require(`../utilities/charUtils.js`)
 const MsgUtils = require(`../utilities/messageUtils.js`)

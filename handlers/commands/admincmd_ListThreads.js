@@ -6,6 +6,7 @@ const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 const Embed = require(`../../utilities/EmbedPaginator.js`);
 const charUtils = require(`../../utilities/charUtils.js`);
+const LevelUtils = require(`../../utilities/levelUtils.js`);
 const GuildUtils = require(`../../utilities/guildUtils.js`);
 const Utils = require(`../../utilities/utilFuncs.js`)
 
