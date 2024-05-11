@@ -73,11 +73,20 @@
 			},
 			{			
 				"title":"Accommodations",
-				"description":"Every guild has a guild hall or some manner of accommodations they can offer their members. Higher-ranked members enjoy greater benefits of their guild's wealth. <@&1003019884785041570> get no free accommodations, being that they have yet to prove themselves to the guild.\n(Planning to automate Lifestyle expenses with the downtimes, so guilds would allow people to skip those)"
-			},
+				"description":"Each guild has some manner of accommodations to offer their members. Higher-ranked members enjoy greater comfort. <@&1003019884785041570>, who have yet to prove themselves, get no free accommodations.\n(Planning to automate Lifestyle expenses with the downtimes. A guild would cover it.)"
+			}
 			{
 				"title":"Training",
-				"description":"The guilds of Ost retain knowledgeable tutors in subjects pertinent to their interests. Each guild has a set of tools of their trade and three skills that they specialize in. A character may study with tutors of their guild and gain Proficiency in one of those skills. A character can learn any number of tools in this way, but **only** one skill\\*\\*. When you undertake the training downtime activity (as described in the _Player’s Handbook_ & _Xanathar’s Guide to Everything_) and studying a subject the guild specializes in, you gain `some benefit (TBD, discuss)*`\n(\\**either the training takes half as long (OR) you pay only one-half the normal cost...*)\n(\\*\\**If they are already proficient in all three of their guild's specialty skills, they can instead train to the level of Expertise in one skill. The training cost/time for Expertise is not reduced.*)\n`TODO: Determine how Guild Rankings work into this. Maybe allow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?`"
+				"description":"The guilds retain knowledgeable tutors in subjects pertinent to their interests. Each guild has a set of tools of their trade and three skills that they specialize in. A character may study with tutors of their guild and gain Proficiency in one of those subjects. When you undertake the training downtime activity (as described in the _Player’s Handbook_ & _Xanathar’s Guide to Everything_) and studying a subject the guild specializes in, you gain `some benefit` (TBD, discuss: training takes half as long? or the cost is reduced by half)",
+				"fields":[
+					{
+						"name":"Proficiencies",
+						"value":"A character can gain proficiency in any number of tools in this way, but may gain this benefit for only ONE skill. If they are already proficient in all three of their guild's specialty skills, they can instead train to the level of Expertise in one of those skills."
+					},
+					{
+						"name":"TODO",
+						"value":"- Determine how Guild Rankings work into this.\nAllow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?"						
+					}
 			},
 			{
 				"title":"Magic Items",
