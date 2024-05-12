@@ -1,5 +1,6 @@
 const axios = require('axios');
 const avrae_token = process.env['avrae_token']
+const google_token = process.env['google_token']
 
 async function writeGvar(gvar, content)
 {
@@ -19,7 +20,16 @@ async function readGvar(gvar)
 	return res.data.value;
 }
 
+async function readSpreadsheet(file,sheet="JSON")
+{	
+	var request = `https://sheets.googleapis.com/v4/spreadsheets/${file}/values/${sheet}?key=${google_token}`
+	var auth = { 'Authorization': google_token };
+	let res = await axios.get(request, { headers: auth });
+	return res.data.values;
+}
+
 module.exports = {
 	readGvar,
-	writeGvar
+	writeGvar,
+	readSpreadsheet
 }
