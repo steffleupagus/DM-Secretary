@@ -3,7 +3,7 @@ const chanUtils = require(`./channelUtils.js`)
 const Tupper = require(`./tupperUtils.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
-const { MessageMentions } = require('discord.js')
+const { MessageMentions, Collection } = require('discord.js')
 
 const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"	
 const BreakRegex = new RegExp(_regex);
@@ -44,6 +44,42 @@ async function deleteMessages(messages)
 		if (++delayCount >= 5)
 			await Utils.slowdown(1500);
 	})
+}
+
+///
+async function fetchAll(channel, options = { reverseArray: false, userOnly: false, botOnly: false, pinnedOnly: false })
+{
+	const { reverseArray, userOnly, botOnly, pinnedOnly } = options;
+	let messages = new Collection();
+	let lastID;
+	let count = 0;
+
+	while (true) 
+	{
+		const fetchedMessages = await channel.messages.fetch({limit: 100,
+			...(lastID && { before: lastID })
+		});
+
+		if (fetchedMessages.size === 0) {
+			if (reverseArray) {messages = messages.reverse();}
+			if (userOnly) {messages = messages.filter(msg => !msg.author.bot);}
+			if (botOnly) {messages = messages.filter(msg => msg.author.bot);}
+			if (pinnedOnly) {messages = messages.filter(msg => msg.pinned);}
+			return messages;
+		}
+		messages = messages.concat(fetchedMessages);
+
+		// messages = messages.concat(Array.from(fetchedMessages.values()));
+		lastID = fetchedMessages.lastKey();
+
+		count = (count + 1) % 5
+		if (count == 0)
+		{
+			console.log(`${channel.name}: ${messages.size}`);
+			await Utils.slowdown(1500);
+		}
+		await Utils.slowdown(250);		
+	}
 }
 
 ///
@@ -487,5 +523,6 @@ module.exports =
 	scrapeMessageMetadata,	
 	getRoleplayData,
 	getAllRoleplayData,
-	isSceneBreak
+	isSceneBreak,
+	fetchAll
 }	
