@@ -117,15 +117,19 @@
 				"fields":[
 					{
 						"name":"<:d20:704040692946698361> DnD Beyond",
-						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall.\nFor more information, see <#781931745061896232>."
+						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall. If you already have a Beyond account with options unlocked, you probably already know how to use it. But, just in case you don't, check out our <#1247340558259716147>."
 					},
 					{
 						"name":"<:d20:704040692946698361> GSheet",
-						"value":"GSheet is one of the more common ones used. It less user-friendly than Beyond, but we have a guide for it: ⁠<#775178179941892096>.\n**Important**: If GSheet warns you not to change something, __DON'T__ or you will break things and have to start over."
+						"value":"GSheet is one of the most common ones used here. It doesn't automate as much as Beyond and requires a bit more effort to customize, but is flexible and allows for options without having to pay to unlock them in Beyond. Our server has a custom GSheet available, linked in our <#1247340281045581875>."
 					},
 					{
-						"name":"<:d20:704040692946698361> DiceCloud",
-						"value":"Dicecloud is somewhat un-intuitive and has presented some difficulty for new players. The DM staff may not be able to help you.\nIf you choose to use DiceCloud, do so knowing that you may be on your own with the information in ⁠<#781931783897481296>."
+						"name":"<:d20:704040692946698361> DiceCloud v1",
+						"value":"DiceCloud is powerful, and has some nice features, but some have found it un-intuitive and has presented some difficulty for new players. Due to its complexity, the DM staff may not be able to help you fix problems with it. If you choose to use DiceCloud, do so knowing that you may be on your own, but we recommend using v2. We do, however, have a <#1247340491821809765>."
+					},
+					{
+						"name":"<:d20:704040692946698361> DiceCloud v2",
+						"value":"The new and improved DiceCloud v2 is more powerful than v1, and has more automation and community libraries that makes it easier to use than its predecessor. This is covered in our <#1247340452156539021>."
 					}
 				]
 			},

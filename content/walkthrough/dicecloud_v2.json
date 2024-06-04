@@ -1,0 +1,220 @@
+{
+	"Character Walkthrough": {
+		"includeTOC":false,
+		"includeIndex":true,
+		"fieldsIndex":false,
+		"includeSectionBreak":false,
+		"embeds": [
+			{
+				"title":"Introduction",
+				"description":"Dicecloud is a free solution to creating and managing character sheets. It utilizes a container method of creating features, while using a programmatic lite approach to calculate the values that make up a character sheet. Because of this more do-it-yourself style of creating a sheet, Dicecloud is **NOT recommended for beginners** or those who dislike technically manual work. Dicecloud is ideal for individuals who don't mind putting in a little extra work, do not have or do not wish to spend the money on D&D Beyond, or wish to use UA and Homebrew material (elsewhere, as this server does not permit the use of homebrew).",
+				"fields":
+				[
+					{
+						"name":"Note",
+						"value":"This walkthrough is focused on DiceCloud v2. If you would prefer to use the older version of DiceCloud, see our <#1247340491821809765>."
+					}
+				]
+			},
+			{
+				"title":"Setting up a Library",
+				"description":"By default, DiceCloud only supports character options from the SRD. However, DiceCloud v2 provides several powerful community-generated libraries which implement nearly all of the official content for use. The best is the `Libraries of Vexus`, which you'll need to subscribe to in order to use. __The rest of this tutorial is built using this library__. You should only need to do this step once:\n- Head to https://dicecloud.com/ and sign in (or create your account)\n- Select the `Libraries` option in the left-hand menu\n - If you don't see a menu in the left-hand column, click the three horizontal lines in the upper-left of the window to expand it\n- Locate the `Libraries of Vexus` and click the `Subscribe` link at the bottom\n- Locate the `DiceCloud 5th Edition SRD` (it should be the first option), and click the `Unsubscribe` link at the bottom.\n\nThere are many other libraries available. While most of them are homebrew, which makes them unsuitable for use with our server, there are a few which bear mentioning:\n- [Official LoV Homebrew](https://dicecloud.com/library-collection/yiL55xx3ZQ4TCo77i) - While DoL doesn't support Homebrew, this library includes other pieces of interest which we DO allow. Specifically, the Blood Hunter class and several Unearthed Arcana options. Note that while this includes some material that we allow, much of it __is not approved__ for use here. Please verify that your desired content is approved prior to use.\n- [Minimus Arcanum](https://dicecloud.com/library/HvMc89f6THdZDJHfs) - While I cannot confirm this (as I have not used it) this library claims to replicate the DiceCloud v1 experience using v2. If you are already used to v1, you might consider giving this a try."
+			},
+			{"image":{"url":"https://i.imgur.com/dXyRGg3.png"}, "footer":{"text":"Browse Community Libraries"}},
+			{"image":{"url":"https://i.imgur.com/pfhSi8k.png"}, "footer":{"text":"Subscribe to the Libraries of Vexus and unsub from the SRD"}},	
+			{
+				"title":"Creating a Character",
+				"description":"To get started:\n- Head to https://dicecloud.com/ and sign in (or create your account)\n- Select the `Characters` menu option\n- Select the `(+)` button in the lower-right corner to create a new character\n- Fill out the fields to give your character a Name, Gender, and (Optionally) Alignment\n- Enter your starting level (`3`).\n- Click `Next` to proceed to the `Libraries` selection screen\n- Unselect `All user libraries` and make sure the `Libraries of Vexus` option is selected\n - Only select additional libraries if necessary for your build\n- Click the `Create` button\n- Upon returning to your character list, click your newly created character to open it"
+			},
+			{"image":{"url":"https://i.imgur.com/erFMKIt.png"}, "footer":{"text":"Create a new character"}},
+			{"image":{"url":"https://i.imgur.com/MsDJEtt.png"}, "footer":{"text":"Enter character details"}},
+			{"image":{"url":"https://i.imgur.com/8pX1xiU.png"}, "footer":{"text":"Select Libraries"}},
+			{"image":{"url":"https://i.imgur.com/JepPsSH.png"}},
+			{
+				"title":"Navigating Dicecloud v2",
+				"fields":
+				[
+					{
+						"name":"Stats",
+						"value":"The `Stats` tab contains things like your hit points, ability scores, skills, and other similar information."
+					},
+					{
+						"name":"Actions",
+						"value":"The `Actions` tab contains clickable buttons to activate various abilities your character can use, and which will be imported into Avrae."
+					},
+					{
+						"name":"Spells",
+						"value":"The `Spells` tab contains information about your character’s spellcasting abilities, if applicable. You can hide it from your sheet if you don’t want it by going to the `Journal` tab, clicking on your character’s details, and opening `Advanced`."
+					},
+					{
+						"name":"Inventory",
+						"value":"The `Inventory` tab contains information about your character’s items and money. Note that the Avrae bot __will not__ import your inventory - we track that in-server using the `!bag` command - but it is important to equip weapons and armor here."
+					},
+					{
+						"name":"Features",
+						"value":"The `Features` tab contains information about what your character can do, as provided by their race, class, background, feats, and other sources."
+					},
+					{
+						"name":"Journal",
+						"value":"The `Journal` tab features your basic character information, and you can also add notes to track various things like your backstory or campaign notes."
+					},
+					{
+						"name":"Build",
+						"value":"The `Build` tab is where you’ll make most decisions regarding things like your character’s ability scores, race, class, and background - most of your character creation and level advancement steps will be handled in this tab"
+					},
+					{
+						"name":"** **",
+						"value":"Also keep the red (`+`) buttons in mind; most tabs have one, and clicking on them will allow you to add new things to your sheet depending on which tab you use it from."
+					}
+				]				
+			},
+			{
+				"includeIndex":false,
+				"title":"Selecting a Ruleset",
+				"description":"When you first open your character, DiceCloud will open to the Build tab. If you selected multiple libraries, you may see a screen which prompts you to select a Ruleset. If so, click the `Ruleset` item, and select `Tameran's Library of Everything: Character Base`. If not, you may skip this step as a ruleset was selected for you automatically."
+			},
+			{"image":{"url":"https://i.imgur.com/2F0C5vt.png"}, "footer":{"text":"Select a Ruleset"}},
+			{"image":{"url":"https://i.imgur.com/VaTXt6P.png"}, "footer":{"text":"Select Tameran's Library of Everything"}},
+			{
+				"includeIndex":false,
+				"title":"Library-provided Walkthrough",
+				"description":"Once your ruleset is selected (which is done automatically if the only library you selected was the Libraries of Vexus) your sheet will be populated by the library with helpful tidbits provided by the library's author. We recommended choosing to `Explore the Library` at least once, which will provide some additional information on DiceCloud v2 as well as the library itself.\n\nWhile the Introduction to the Library is active, all of the basic slots are disabled to declutter your sheet. The library-provided walkthrough presents buttons at the bottom to reveal specific items on the sheet, step-by-step. Once you've read through the `Explore the Library` information, click `Proceed to Sources` button on the Library Introduction to reveal a `Sources` item.\n\nIf you have already been through the tutorial (or just want to ignore advice and skip it) you can delete the `Tutorial` item, which will restore all the items it hides."
+			},
+			{"image": {"url":"https://i.imgur.com/BjV9Xwg.png"}, "footer":{"text":"Library Tutorial"}},
+			{"image": {"url":"https://i.imgur.com/BJ7tVr4.png"}, "footer":{"text":"Skipping the Tutorial"}},
+			{
+				"includeIndex":false,
+				"title":"Selecting Sources",
+				"description":"Sources allows you to select which sourcebooks, supplements, or other resources DiceCloud will load to provide options for your character. Clicking on the `Sources` item will reveal a long list of possible sources to select. Many of the most relevant sources (the core sourcebooks and supplements) are automatically selected. For certain character options, however, an additional source will need to be manually selected, but avoid selecting them all - selecting too many will slow down your sheet. To select a source, click the checkbox next to the appropriate source(s) and then the `Insert` button in the lower right. Note that many of these sources are not approved for use here, so be sure to check the <#911129455345405992> channel.\n\nIf following along with the Library Tutorial, click `Proceed to House Rules`"
+			},
+			{"image": {"url":"https://i.imgur.com/lCgFtGe.png"}},
+			{"image": {"url":"https://i.imgur.com/Zq1aQby.png"}, "footer":{"text":"Selecting Sources"}},
+			{
+				"includeIndex":false,
+				"title":"Selecting Extensions",
+				"description":"The `Extensions` item contains a list of optional rules to include. Most of these aren't relevant to our server, and it can be safely skipped by just clicking the :x: in the lower right of the `Extensions` box. Optionally, you may select `Additional Actions (PHB)` __or__ `Lightweight Additional Actions` to add some standard combat actions, but it is not necessary.\n\nIf following along with the Library Tutorial, click `Proceed to Character Creation`"
+			},
+			{
+				"title":"Character `Build` Tab",
+				"description":"The `Build` tab is where you’ll make most decisions regarding things like your character’s ability scores, race, class, and background. By clicking on the cards outlined in red, you can select from the available materials to build your character as you see fit; new cards will appear as choices you make require additional detail, such as your class proficiencies or subclass.",
+				"fields":[
+					{"name":"The `Slots` Tree","value":"When making selections on the build tab, the item being populated will usually vanish once it's been filled out. If you change your mind about a selection and need to redo it, you can find it in the `Slots` tree. Clicking the trash can icon to delete the item will remove your selection and allow you to select it again. Be careful - if you delete an option, it will delete all selections that depend on it, so make sure you're deleting the right one!"}
+				]
+			},
+			{"image": {"url":"https://i.imgur.com/9deb0Yz.png"}},
+			{
+				"title":"1️⃣ Set Ability Scores",
+				"description":"To set your ability scores:\n- Click the `Base Ability Scores` item to open a popup of various methods. The only options we really care about are:\n - `Manual` if you rolled for your stats in <#697021317727387718>\n - `Point Buy` if you wish to use Point Buy instead\n - `Standard Array` if you would prefer to simply assign stats. Click the appropriate box, and the `Insert` button in the lower right.\n- For my demo character, I will choose Point Buy\n- Click the `Base Ability Scores` item to open another popup, shown below - presentation will be different depending on the method you select\n- (Optional) You can hide the `Base Ability Scores` item by clicking the :x: in the lower right corner of the box. This will only hide the item, and will not affect the ability scores you've already assigned"
+			},
+			{ "image": { "url":"https://i.imgur.com/BVwH9fE.png" }, "footer":{"text":"Select Ability Score method"}},
+			{ "image": { "url":"https://i.imgur.com/wRw0EjZ.png" }, "footer":{"text":"Assign Ability Scores or delete node to undo selection"}},
+			{ "image": { "url":"https://i.imgur.com/2plWOdE.png" }, "footer":{"text":"Assign Ability Scores (Point Buy)"}},
+			{
+				"title":"2️⃣ Select a Race",
+				"description":"To set your Race\n- Navigate to the `Build` tab, if you're not already there\n- Click the `Race` box to open the pop-up\n- Find your race in the list and click the check box beside it.\n - You can use the Search bar in the upper right corner to find a specific race\n - If your race isn't listed, you may need to select `Load More` or `Show All`\n - You might see some options showing `Requires <title> Source`. You can still select these options by clicking the checkbox beside them\n- Once you have selected your race, click the `Insert` button in the lower right.\n - For our demo, I'll select Reborn.\n\nOnce your race is selected, new options will appear in the `Build` tab to assign the various details of your race. Click each box in turn, and select from the options provided.",
+				"fields":[
+					{"name":"Racial Features","value":"Racial features will be automatically added to the `Features` tab, and any actions they provide will be added to the `Actions` tab"}
+				]
+			},
+			{ "image": { "url": "https://i.imgur.com/Jl0A2NH.png" }, "footer": {"text":"Selecting a Race"} },		
+			{ "image": { "url": "https://i.imgur.com/UOarMXW.png" }, "footer": {"text":"Missing Sources"} },
+			{ "image": { "url": "https://i.imgur.com/PIW3tAW.png" }, "footer": {"text":"Selecting a Race"} },
+			{ "image": { "url": "https://i.imgur.com/KDHVNvp.png" }, "footer": {"text":"Assigning Ability Scores"} },			
+			{
+				"title":"3️⃣ Select a Class",
+				"description":"To set your Race\n- Navigate to the `Build` tab, if you're not already there\n- Click the `Starting Class` box to open the pop-up\n- Find your desired class in the list and select the checkbox beside it\n - Similar to the Race selection, other options may be hidden or require additional sources\n - Several Homebrew options may be present, be sure to confirm that the class you are selecting is approved\n - Multiclassing will be covered momentarily\n- Click the `Insert` button in the lower right\n - For our demo, I'll start with a Warlock\n\nOnce your class is selected, new options will appear to assign the various details of your class, such as proficiencies, and subclass (where appropriate).",
+				"fields":[
+					{
+						"name":"Multiclassing",
+						"value":"Among the items available is a `Multiclass` option. Clicking this will allow you to select a secondary class for which you qualify (based on your ability scores). Select any multiclassing in a similar manner to your first class selection."
+					},
+					{
+						"name":"Level Up",
+						"value":"Beneath the various items is a box that lists your class(es) and levels. By clicking the `Level Up` button beside a level, a popup will appear that will allow you to select your new level in a class. Use this to ensure your starting levels equal 3."
+					},
+					{
+						"name":"Class Features",
+						"value":"Class features will be automatically added to the `Features` tab, and any actions they provide will be added to the `Actions` tab"
+					}
+				]
+			},
+			{ "image": { "url": "https://i.imgur.com/E8Iy2MW.png" }, "footer": {"text":"Selecting a Class"} },		
+			{ "image": { "url": "https://i.imgur.com/G6xBC73.png" }, "footer": {"text":"Selecting a Subclass"} },
+			{ "image": { "url": "https://i.imgur.com/YM2A1Vs.png" }, "footer": {"text":"Increasing Class level"} },
+			{ "image": { "url": "https://i.imgur.com/ddrgTib.png" }, "footer": {"text":"Selecting a Multiclass"} },
+			{
+				"title":"4️⃣ Add a Background",
+				"description":"To select your Background\n- Navigate to the `Build` tab, if you're not already there\n- Click the `Background` box to open the pop-up\n- Find your background in the list and click the check box beside it\n\nOnce your background is selected, new options will appear in the `Build` tab to assign various options. Click each box in turn, and select from the options provided.",
+				"fields":[
+					{
+						"name":"Background Feature",
+						"value":"Your background feature will be automatically added to the `Features` tab"
+					}
+				]
+			},				
+			{ "image": { "url": "https://i.imgur.com/gfQXoqp.png" }, "footer": {"text":"Adding a Background"} },
+			{
+				"title":"5️⃣ Spells [Optional]",
+				"description":"If your chosen class has a feature which allows your character to cast spells we'll first need to select our Spell Slot Structure for DiceCloud to create your spell slots correctly. You will probably have one of these boxes for each spellcaster class you have.\n- Click `Jon's Spell Slot Structure` to open the pop-up\n- Click the first option available, and `Insert`\n- Click the `[JSSS] Spellcasting Type` item and select the type of spellcasting your character does\n - `Spellcasting` - Select this for casters with normal spell slots\n - `Pact Magic` - Select this if your character has any levels in Warlock\n\nNow that that's sorted out, we'll need to enter the spells you know to populate your sheet in Avrae\n- Navigate to the `Spells` tab\n- Click the `+` in your class' spell list to add new spells\n - You can add many at once\n- Click the `Insert` button in the lower right\n- Repeat for any other spell lists available"
+			},
+			{ "image": { "url": "https://i.imgur.com/8mDqL52.png" }, "footer": {"text":"Spell Slot Structure"} },
+			{ "image": { "url": "https://i.imgur.com/3dvBBnz.png" }, "footer": {"text":"Selecting Spells"} },
+			{ "image": { "url": "https://i.imgur.com/QQO5RQM.png" }, "footer": {"text":"Spell Lists"} },
+			{				
+				"title":"6️⃣ Equipment",
+				"description":"Characters begin with their starting equipment and 150 gold. Note that Avrae **does not** sync your equipment from Dicecloud, so you will need to do that by hand with the bot using the `!bag` and `!coins` aliases. Therefore, it isn't necessary to enter most of your equipment. However, it is recommended to do so for anything that provides an attack (weapons) or affects your AC (armor).\n- Navigate to the `Build` tab, if you're not already there\n- Click on the `Starting Funds or Starting Equipment` item for your starting class\n- Select the checkbox beside the `Starting Equipment` option and click `Insert`\n- Additional items will populate for each selection you can make for your starting gear\n- Navigate to the `Inventory` tab\n- Equip newly added weapons or armor by dragging them from the `Carried` container into the `Equipped` container. Armor is not worn and attacks from weapons are not shown in Avrae unless they are in the Equipment section."
+			},			
+			{ "image": {"url":"https://i.imgur.com/yD3YE8U.png"}},
+			{ "image": {"url":"https://i.imgur.com/hbVkGzU.png"}},
+			{
+				"includeIndex":false,
+				"title":"Inventory",
+				"description":"In the `Inventory` tab, clicking the (`+`) button will show two sub-options, to create a new item or a new container. When adding new items such as weapons or armor, be sure to equip them for them to take effect.",
+				"fields":[
+					{
+						"name":"Item",
+						"value":"Use this to add a new item to your inventory. By default, this will show an empty item to create by hand, but by selecting the `Library` tab in the New Item dialog, you can select from a wide variety of pre-created items."
+					},
+					{
+						"name":"Container",
+						"value":"Use this to create an organizational container in your `Inventory` tab."
+					}
+				]
+			},
+			{ "image": {"url":"https://i.imgur.com/Pj6ak0u.png"}},
+			{ "image": {"url":"https://i.imgur.com/4HyYogU.png"}},
+			{
+				"title":"7️⃣ Register Your Sheet with Avrae",
+				"description":"By default, your sheet can be seen by others only if they are explicitly added, so it is necessary to share your sheet so our DMs and Avrae can read it.\n- Go into the Sheet Menu by clicking the three dots in the upper-right\n- Click the `Sharing` button\n- Change the `Who can view this character` dropdown to `Anyone with link`\n- In <#694275490306981947>, enter the command `!import <url>` where <url> is the link to your sheet"
+			},
+			{
+				"title":"Additional Resources",
+				"description":"This walkthrough covers the basics and should be enough to get most characters up and running, but it really only scratches the surface of what DiceCloud can do. The Libraries of Vexus should make it so most customization should be unnecessary, and anything beyond that is outside the scope of this walkthrough. Should you find yourself in need of further guidance, here are a few more resources that might be helpful to you.",
+				"fields":
+				[
+					{
+						"name":"Avrae Automation",
+						"value":"A list of Avrae's [currently automated Actions](https://docs.google.com/spreadsheets/d/1w66DFqD83hkwXqP7rTYx26QAcy1FJmhATpVIgfLmslM/edit#gid=658150111) for use on GSheet and Dicecloud. Most of this should be automated in DiceCloud v2. __**Note**__: Due to Avrae being owned by Wizards of the Coast, any non-SRD actions will be inaccessible if you do not have the relevant source material purchased in DnD Beyond. That is something we will be working to rectify in the future."
+					},
+					{
+						"name":"DiceCloud Helper",
+						"value":"[This Google sheet](https://docs.google.com/spreadsheets/d/1UfZ9e9Z9XFiZ7uapyDxrh9UskZSmPGa-nWr7mCqzevw/edit#gid=0) lists a collection of equations and formulas for use in Dicecloud. Note that this is community-created and has not been fully tested and verified by the Demiplane staff, nor should it be common to alter the formulas that v2 uses under the hood. Use at your own risk."
+					},
+					{
+						"name":"Official Documentation",
+						"value":"DiceCloud v2 has [official documentation](https://dicecloud.com/docs) that may prove helpful, including its own [Getting Started](https://dicecloud.com/docs/getting-started/creating-a-character) guide that this walkthrough used as a starting point."
+					},
+					{
+						"name":"YouTube Tutorial Video",
+						"value":"A [v2 Builder Tutorial](https://www.youtube.com/watch?v=X5XihYfTwoU) is available on YouTube which goes into more detail and visually demonstrates the featurs of DiceCloud."
+					},
+					{
+						"name":"Discord Servers",
+						"value":"For further guidance, you can join Discord servers for both [DiceCloud](https://discord.com/invite/qEvdfeB) in general, and the [Libraries of Vexus](https://discord.com/invite/z3FRWzr63B) in particular."
+					}
+				]
+			}
+
+		]
+	}
+}
