@@ -1,20 +1,20 @@
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`)
 const mongoose = require('mongoose')
-const schemaName = `quest`//${config.DEV ? "dev" : ""}`
+const schemaName = `quest${config.DEV ? "_dev" : ""}`
 
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	char: reqString,
 	user: reqString,
 	chan: reqString,	
-  	damage: {
+	damage: {
 		count: Number,
-    	total: Number
+		total: Number
 	},	
-  	healing: {
+	healing: {
 		count: Number,
-    	total: Number
+		total: Number
 	},
 	guilds: [{
 		guild: String,
@@ -26,7 +26,7 @@ const schema = new mongoose.Schema({
 	skills: [{
 		skill: String,
 		count: Number,
-    	total: Number				
+		total: Number				
 	}]
 })
 
