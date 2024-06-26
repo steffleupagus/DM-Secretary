@@ -7,13 +7,13 @@ const schemaName = `characterMeta${config.DEV ? "_dev" : ""}`
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	user: reqString,
-	profileName: reqString,
-	profileId: String,
+	name: reqString,
+	profile: String,
 	sheetName: String,
-	sheetId: String,
+	sheet: String,
 	level: Number,
-	tuppers: [String],
-	updated: Number
+	//tupper: [String],
+	update: Number
 })
 
 module.exports = mongoose.model(schemaName, schema, schemaName)
