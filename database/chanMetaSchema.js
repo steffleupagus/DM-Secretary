@@ -16,5 +16,5 @@ const schema = new mongoose.Schema({
 	locations: [String],
 	trackActivity: Boolean	
 })
-	
+
 module.exports = mongoose.model(schemaName, schema, schemaName)

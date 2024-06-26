@@ -10,7 +10,7 @@
 				"fields":[
 					{
 						"name":"Character Preferences",
-						"value":"Choose your name. (You can also randomize it for one to be chosen for you)\n\nSelect the various options for your character and then click `Next`. You can use the image below to guide you, but there may be items shown here that you have not purchased.\n\nIf you've purchased __Tasha's Cauldron of Everything__, you'll have the optional features as shown below. If not, these options will not be available via Beyond, and you will need to use GSheet (<#walkthrough>) or DiceCloud (<#walkthrough>)."
+						"value":"Choose your name. (You can also randomize it for one to be chosen for you)\n\nSelect the various options for your character and then click `Next`. You can use the image below to guide you, but there may be items shown here that you have not purchased.\n\nIf you've purchased __Tasha's Cauldron of Everything__, you'll have the optional features as shown below. If not, these options will not be available via Beyond, and you will need to use GSheet (<#1247340281045581875>) or DiceCloud (<#1247340491821809765> or <#1247340452156539021>)."
 					}
 				],
 				"image": [
@@ -20,7 +20,7 @@
 			},
 			{
 				"title":"1️⃣ Select your Race",
-				"description":"buying any books through DnD Beyond, your options for Races are limited to the content of the free sources shown below. As you purchase content, further options will become unlocked. **If you wish to use other approved content without purchasing it, but you will have to use GSheet ( <#walkthrough> ) or DiceCloud ( <#walkthrough> ) instead.**\n\nFor demonstration purposes, we'll choose a High Elf, one of the sub-races of Elf. Clicking \"Elf,\" then \"High Elf,\" and finally `Choose Race` to confirm our choice.",
+				"description":"buying any books through DnD Beyond, your options for Races are limited to the content of the free sources shown below. As you purchase content, further options will become unlocked. **If you wish to use other approved content without purchasing it, but you will have to use GSheet or DiceCloud instead.**\n\nFor demonstration purposes, we'll choose a High Elf, one of the sub-races of Elf. Clicking \"Elf,\" then \"High Elf,\" and finally `Choose Race` to confirm our choice.",
 				"fields":
 				[
 					{
@@ -42,7 +42,7 @@
 				[
 					{
 						"name":"Set your Level",
-						"value":"All characters here start at level 3, so we will set that now via the level dropdown. It will give you a confirmation screen, and automatically set your XP to your correct starting value of 900.\n*Multiclassing*You can select the `+Add Another Class` option beneath your class. You must meet the ability score requirements for multiclassing, and your total class levels cannot exceed 3 for a new character."
+						"value":"All characters here start at level 3, so we will set that now via the level dropdown. It will give you a confirmation screen, and automatically set your XP to your correct starting value of 900.\n*Multiclassing*You can select the `+Add Anothwer Class` option beneath your class. You must meet the ability score requirements for multiclassing, and your total class levels cannot exceed 3 for a new character."
 					},
 					{
 						"name":"Choose Class Options",

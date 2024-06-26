@@ -20,7 +20,7 @@ function extractMention(embed)
 	const fields = embed.fields || [];
 	const fieldText = fields.map(field => field.value).join(" ");
 	const content = desc + " " + fieldText;
-	
+
 	// The id is the first and only match found by the RegEx.
 	let matches = content.matchAll(MessageMentions.CHANNELS_PATTERN);
 	// If supplied variable did not include a mention,
@@ -30,7 +30,7 @@ function extractMention(embed)
 
 	if (matches.length == 0)
 		return null;
-	
+
 	console.log(matches);
 	return matches;
 }
@@ -50,7 +50,7 @@ async function publishContent(channel, content)
 		let contents = [];
 		indexInline = indexInline && (value.inlineIndex ?? true);
 		indexFields = indexFields && (value.fieldsIndex ?? true);
-		
+
 		if (typeof value === 'string')
 		{
 			await channel.send(value);
@@ -79,6 +79,8 @@ async function publishContent(channel, content)
 				//Prep the index field break and cleanup
 				let fieldBreak = embed.indexBreak ?? false
 				delete embed.indexBreak
+				let includeIndex = embed.includeIndex ?? value.includeIndex;
+				delete embed.includeIndex
 				//Prep the attachments and cleanup
 				let attachments = embed.attachments || null;
 				delete embed.attachments;
@@ -108,7 +110,7 @@ async function publishContent(channel, content)
 				//Push the link into the ToC or the Index
 				if (value.includeTOC && title)
 					contents.push({"prefix":prefix,"title":title,"url":item.url});
-				else if (value.includeIndex && title)
+				else if (value.includeIndex && title && includeIndex)
 					index.push({"prefix":prefix,"title":title,"url":item.url,"break":fieldBreak});
 				//If we have a thread, start it
 				if (thread && thread.name) 
@@ -117,7 +119,7 @@ async function publishContent(channel, content)
 					threadQueue.push(thread);
 					console.log(threadQueue)
 				}
-								
+
 				lastMessage = item.id
 				//Extract any channel mentions and send them separately?
 				let chanMentions = extractMention(embed).trim();
@@ -128,7 +130,7 @@ async function publishContent(channel, content)
 				await wait(waitTime);
 			});
 		}
-				
+
 		if (value.includeTOC)
 		{
 			let title = value.title || `${key} Index`;
@@ -220,7 +222,7 @@ async function publishIndexFields(channel, index, indexInline)
 	});
 	await embed.send(channel);
 }
-				
+
 function requireUncached(module) 
 {
 	delete require.cache[require.resolve(module)];
@@ -243,7 +245,7 @@ function getContent(channel, override = null)
 		content = requireUncached(content)
 		console.log(content)
 	}
-	catch(e){}
+	catch(e){ console.log(e) }
 	return content
 }
 
@@ -265,13 +267,6 @@ async function execute(interaction)
 	const override = interaction.options.getString('content') ?? null
 
 	await interaction.deferReply({ephemeral:true});
-	
-	//Make sure this channel has content specified before continuing
-	if (!index.hasOwnProperty(channel.id))
-	{
-		await interaction.editReply(`No content found for <#${channel.id}>. Aborting`);
-		return false
-	}
 
 	//Grab the data for the new content according to what goes in this channel
 	const content = getContent(channel, override);
@@ -287,7 +282,7 @@ async function execute(interaction)
 		await interaction.editReply(`Cleaning old content from <#${channel.id}>`);
 		await MsgUtils.channelCleanup(channel);
 	}
-	
+
 	//Write the content to the channel
 	await interaction.editReply(`Writing contents to <#${channel.id}>`);
 	const result = await publishContent(channel, content);
@@ -296,8 +291,8 @@ async function execute(interaction)
 	else
 		await interaction.followUp({ content: 'Write failure!', ephemeral: true });
 
-	
-	
+
+
 	interaction.deleteReply();
 }
 
@@ -309,7 +304,8 @@ async function run(client, message, command, args)
 async function autoComplete(interaction) 
 {
 	const focusedOption = interaction.options.getFocused(true);
-	if (TEST_CHAN.includes(interaction.channel.id) && focusedOption.name === 'content') 
+	const isTestChan = TEST_CHAN.includes(interaction.channel.id) || TEST_CHAN.includes(interaction.channel?.parent?.id);	
+	if (isTestChan && focusedOption.name === 'content') 
 	{
 		const value = focusedOption.value.toLowerCase();
 		console.log(value);
@@ -317,7 +313,7 @@ async function autoComplete(interaction)
 								.map( x => ({ name: x.data.replace(".json",""), value: x.data }) )
 								.filter( x => x.value.toLowerCase().includes(value) )
 		console.log(response)
-		
+
 		try {
 			interaction.respond(response.length <= 25 ? response : []);
 		}

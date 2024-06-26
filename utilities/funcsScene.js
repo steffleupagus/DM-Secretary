@@ -121,7 +121,7 @@ async function processScene(interaction, message)
 	//If no message specified, it will search for the moost recent scene break
 	//If message is specified, it will search for scene break book ends in both directions.
 	var rpData
-	await interaction.editReply(STEP_MESSAGE_DATA)	
+	await updateStatus(interaction, STEP_MESSAGE_DATA)	
 	try 	  { rpData = await MsgUtils.getRoleplayData(channel, message); }
 	catch(err){	Mutex.unlock(channel, err)	}
 	
@@ -140,14 +140,14 @@ async function processScene(interaction, message)
 	endTime = performance.now()
 
 	//Take gathered stats & put them into a list of individual characters
-	await interaction.editReply(STEP_COLLECT_DATA)	
+	await updateStatus(interaction, STEP_COLLECT_DATA)	
 	try			{ rpData = await processData(interaction, rpData) }
 	catch(err)	{ Mutex.unlock(channel, err) }
 	if (null == rpData) return Mutex.unlock(channel, ERROR_CMD_CANCELED);
 
 	// Consolidate the data & combine into a single record
-	// Assign experience - This will just be a multiplier based on the RP associated with each character	
-	await interaction.editReply(STEP_PROCESS_DATA)	
+	// Assign experience - This will just be a multiplier based on the RP associated with each character
+	await updateStatus(interaction, STEP_PROCESS_DATA)
 	let pcData = JSON.parse(JSON.stringify(rpData));
 	try	{ 
 		pcData = consolidateData(pcData); 
@@ -163,7 +163,7 @@ async function processScene(interaction, message)
 	delete interactionTimer[interaction.id]
 	
 	//Close out the scene and get the players to confirm their levels
-	await interaction.editReply(STEP_CONFIRM_DATA)
+	await updateStatus(interaction, STEP_CONFIRM_DATA)
 	const confirm = await awaitConfirmation(interaction, pcData);
 	if (confirm !== true) return Mutex.unlock(channel, ERROR_CMD_CANCELED);
 	
@@ -194,7 +194,10 @@ async function processScene(interaction, message)
 }
 
 
-
+async function updateStatus(interaction, content)
+{
+	await interaction.editReply({content:content, components:[]});
+}
 
 ///
 ///

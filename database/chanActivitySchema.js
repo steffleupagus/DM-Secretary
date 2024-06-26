@@ -14,5 +14,5 @@ const schema = new mongoose.Schema({
 	scene: 	Boolean,
 	update: Number
 })
-	
+
 module.exports = mongoose.model(schemaName, schema, schemaName)
