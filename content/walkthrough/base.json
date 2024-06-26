@@ -7,6 +7,7 @@
 			{
 				"title":"▶️ Getting Started",
 				"description":"The character walkthrough is intended to be useful for D&D newbies, as well as experienced players who just need to know how we do things in the server. The main description block of each step is aimed towards explaining the facets of a character sheet to newbies to D&D while server-specific instructions and information have been broken out into separate fields so experienced players can find them easily."
+<<<<<<< HEAD
 			},
 			{
 				"indexBreak":true,
@@ -42,6 +43,43 @@
 			},
 			{
 				"title":"1️ Choose Race",
+=======
+			},
+			{
+				"indexBreak":true,
+				"title":"▶️ Create an RP Profile",
+				"description":"The Demiplane of Lust is an RP-focused server, so it will be necessary to create an RP profile for your character in <#694861975896719450>. The following information will be checked by the DMs before your profile will be approved.\n\n```\n**Name**: (Required)\n**Age**: (Optional, but MUST be over 18 (100 for Elves))\n**Gender**: (Optional but highly recommended)\n**Race**: (MUST be one of the approved playable races)\n**Class**: (Optional)\n**Alignment**: (Optional)\n**Physical Description**: (Optional but recommended)\n**Backstory**: (Optional. Not required to be extensive. External link to a Google Doc is allowed)\n\n**Sexual Orientation/Role**: (Heavily recommended)\n**Kinks**: (Required. See below)\n**Off-limits**: (Required. See below)\n\n\n(A reference image is HIGHLY recommended)```",
+				"fields":
+				[
+					{
+						"name":"Character Race",
+						"value":"All beginning characters must adhere to one of the approved playable races as listed in the ⁠<#911129455345405992> channel."
+					},
+					{
+						"name":"Reference Image",
+						"value":"An image reference for your character is not strictly required, but is recommended. AI art is heavily discouraged. If you do not have the artistic talent to make your own, or funds to commission one, found art is acceptable. Please note that the staff may flag any art that we deem inappropriate at our discretion."
+					},
+					{						
+						"name":"Kinks & Limits",
+						"value":"You *must* enter something for your kinks and limits, and we heavily encourage you to actually give this some thought and put something in besides \n`Kinks: Everything / Limits: None`\nMore often than not people find out the hard way that they aren't actually into *everything*. Even if you are actually limitless, this vagueness is *extremely* unhelpful for people who might want to roleplay with you. Give them some idea of what kind of thing they might be getting into when they play with you.\nIf your list is truly extensive, fill out your biggest ones.\nYou can also use a [kink list generator](https://steffleupagus.github.io/kinklist/) to help you out.\nIf you're not sure what you're into, that's fine too. A [kink test](https://www.kinktest.org/test) may help you.\n\nIt's not uncommon for a person's sexuality to constantly evolve. Feel free to edit your kinks and limits as you discover new things that you enjoy (or not)!"
+					}
+				]
+			},
+			{
+				"indexBreak":true,
+				"title":"▶️ Create a Sheet [**Optional**]",
+				"description":"If you are only interested in roleplaying, then creating a character sheet is unnecessary. Once your <#694861975896719450> is approved, you can start roleplaying. A good place to start looking for roleplay partners is <#779540190321967124>. If you want to find a place to roleplay, check the <#738987459651829830>, and you can use the <#1099439209284116531> to find a place that's free.\n\nHowever, if you are planning to join tables/quests, fight in the Arena, gain experience, roll dice, or otherwise participate in the full DnD experience, you will need a character sheet as well.",
+				"fields":
+				[
+					{
+						"name":"Quick Sheet Creation Summary",
+						"value":"- Approved races and classes can be found ⁠here: <#911129455345405992>.\n- Homebrew is not permitted at this time\n- Ability scores may be rolled by following the pinned instructions in <#697021317727387718>.\n- Point Buy is available if you do not like your roll(s).\n- Characters begin at level 3 (900xp).\n- Avrae supports [DnD Beyond](https://dndbeyond.com), our own custom [GSheet](https://bit.ly/dol-gsheet), [Dicecloud v1](https://v1.dicecloud.com/), or [Dicecloud v2](https://dicecloud.com/)"
+					}
+				]
+			},
+			{
+				"title":"1️⃣ Choose Race",
+>>>>>>> 9f23863 (Updating Walkthroughs and FAQ links to the same. Updating some Content command stuff)
 				"description":"Every character belongs to a race, one of the many intelligent species in the D&D world. The race you choose contributes to your character’s identity in an important way, by establishing a general appearance and the natural talents gained from culture and ancestry. Your character’s race grants particular racial traits, such as special senses, proficiency with certain weapons or tools, proficiency in one or more skills, or the ability to use minor spells. These traits sometimes dovetail with the capabilities of certain classes (see step `2️`). Races also allow one or more ability score increases, which you apply in step `3️`.",
 				"fields":
 				[
@@ -52,7 +90,7 @@
 				]
 			},
 			{
-				"title":"2️ Choose Class",
+				"title":"2️⃣ Choose Class",
 				"description":"Every adventurer is a member of a class. Class broadly describes a character’s vocation, what special talents he or she possesses, and the tactics he or she is most likely to employ when exploring a dungeon, fighting monsters, or engaging in a tense negotiation.\n\nYour character receives a number of benefits from your choice of class. Many of these benefits are **class features** — capabilities that set your character apart from members of other classes. You also gain a number of **proficiencies**: armor, weapons, skills, saving throws, and sometimes tools. Your proficiencies define many of the things your character can do particularly well, from using certain weapons to telling a convincing lie.",
 				"fields":
 				[
@@ -63,7 +101,11 @@
 				]
 			},
 			{
+<<<<<<< HEAD
 				"title":"3️ Determine Ability Scores",
+=======
+				"title":"3️⃣ Determine Ability Scores",
+>>>>>>> 9f23863 (Updating Walkthroughs and FAQ links to the same. Updating some Content command stuff)
 				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion.\n",
 				"fields":
 				[
@@ -77,7 +119,7 @@
 				"image":{"url":"https://i.imgur.com/enqFGs9.png"}
 			},
 			{
-				"title":"4️ Choose Background",
+				"title":"4️⃣ Choose Background",
 				"description":"Once you know the basic game aspects of your character, it’s time to flesh them out as a person. Your character needs a name. Spend a few minutes thinking about what he or she looks like and how he or she behaves in general terms. Flesh out your character’s physical appearance and personality traits. Choose your character’s alignment (the moral compass that guides his or her decisions) and ideals.\n\nYou also choose your background at this stage. Your character’s background describes where he or she came from, his or her original occupation, and the character’s place in the D&D world. A background gives your character a background feature (a general benefit) and proficiency in two skills, and it might also give you additional languages or proficiency with certain kinds of tools.",
 				"fields":
 				[
@@ -88,27 +130,31 @@
 				]
 			},
 			{
-				"title":"5️ Create Sheet",
+				"title":"5️⃣ Create Sheet",
 				"description":"Once you've made all your choices, it's time to put your character together and register it with the bot. The bot supports sheets from Beyond, DiceCloud, and GSheet. We have a separate walkthrough for each of them.\nRegardless of sheet:\n🔸Characters start at level 3 (which may be multiclassed, provided all multiclass requirements are met)\n🔸Take the default/average Hit Points, not rolled or manual.",
-				
+
 				"fields":
 				[
 					{
 						"name":"<:d20:704040692946698361> DnD Beyond",
-						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall. If you already have a Beyond account with options unlocked, you probably already know how to use it. But, just in case you don't, check out our <#walkthrough>."
+						"value":"DnD Beyond is by far the most user friendly, but a significant number of its options are behind a pay wall. If you already have a Beyond account with options unlocked, you probably already know how to use it. But, just in case you don't, check out our <#1247340558259716147>."
 					},
 					{
 						"name":"<:d20:704040692946698361> GSheet",
-						"value":"GSheet is one of the most common ones used here. It doesn't automate as much as Beyond and requires a bit more effort to customize, but is flexible and allows for options without having to pay to unlock them in Beyond. Our server has a custom GSheet available, linked in our <#walkthrough>."
+						"value":"GSheet is one of the most common ones used here. It doesn't automate as much as Beyond and requires a bit more effort to customize, but is flexible and allows for options without having to pay to unlock them in Beyond. Our server has a custom GSheet available, linked in our <#1247340281045581875>."
 					},
 					{
-						"name":"<:d20:704040692946698361> Dicecloud",
-						"value":"DiceCloud is powerful, and has some nice features, but some have found it un-intuitive and has presented some difficulty for new players. The DM staff may not be able to help you fix problems with it. If you choose to use DiceCloud, do so knowing that you may be on your own. We do, however, have a <#walkthrough>."
+						"name":"<:d20:704040692946698361> Dicecloud v1",
+						"value":"DiceCloud is powerful, and has some nice features, but some have found it un-intuitive and has presented some difficulty for new players. Due to its complexity, the DM staff may not be able to help you fix problems with it. If you choose to use DiceCloud, do so knowing that you may be on your own, but we recommend using v2. We do, however, have a <#1247340491821809765>."
+					},
+					{
+						"name":"<:d20:704040692946698361> Dicecloud v2",
+						"value":"The new and improved DiceCloud v2 is more powerful than v1, and has more automation and community libraries that makes it easier to use than its predecessor. This is covered in our <#1247340452156539021>."
 					}
 				]
 			},
 			{
-				"title":"6️ Required Setup & Approval",
+				"title":"6️⃣ Required Setup & Approval",
 				"description":"Once you have completed one of the above sheet walkthroughs, and your sheet has been properly imported into the bot, there are several things that our server relies on which might not be properly set in Avrae. To ensure they are set, please run the following steps in <#697620228703649892>:",
 				"fields":
 				[
@@ -131,7 +177,7 @@
 				]
 			},
 			{
-				"title":"7️ Optional Setup",
+				"title":"7️⃣ Optional Setup",
 				"description":"There are several things on your sheet that are not automatically imported into Avrae. If you choose to do these steps, please run the commands in <#697620228703649892>:",
 				"fields":
 				[

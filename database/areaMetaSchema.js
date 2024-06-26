@@ -12,5 +12,5 @@ const schema = new mongoose.Schema({
 	icon:	String,
 	guild:	String
 })
-	
+
 module.exports = mongoose.model(schemaName, schema, schemaName)

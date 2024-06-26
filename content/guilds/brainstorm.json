@@ -20,7 +20,7 @@
 				"fields": [
 					{
 						"name": "General Ranks",	"inline": true,
-				  		"value": "`5:` <@&1004079923234865273> \n`4:` <@&1003019879953215548> \n`3:` <@&1003019881928724633> \n`2:` <@&1003019883145076896> \n`1:` <@&1003019884785041570>"
+						"value": "`5:` <@&1004079923234865273> \n`4:` <@&1003019879953215548> \n`3:` <@&1003019881928724633> \n`2:` <@&1003019883145076896> \n`1:` <@&1003019884785041570>"				  	
 					},
 					{						
 						"name": "Arcanum",			"inline": true,
@@ -28,8 +28,8 @@
 					},
 					{ "inline": false, "name": "** **", "value": "** **" },
 					{
-					  	"name": "Black Hand",		"inline": true,
-				  		"value": "`5:` <@&701985965882867712> \n`4:` <@&833508689624563783> \n`3:` <@&1002797883914985473> \n`2:` <@&717312839827587072> \n`1:` <@&1002797891682832435> \n<@&697848468986921030>"
+						"name": "Black Hand",		"inline": true,
+						"value": "`5:` <@&701985965882867712> \n`4:` <@&833508689624563783> \n`3:` <@&1002797883914985473> \n`2:` <@&717312839827587072> \n`1:` <@&1002797891682832435> \n<@&697848468986921030>"
 					},
 					{
 						"name": "Consortium",		"inline": true,
@@ -37,23 +37,23 @@
 					},
 					{ "inline": false, "name": "** **", "value": "** **" },
 					{				
-				  		"name": "Faith Council",	"inline": true,
-				  		"value": "`5:` <@&766024439749148672> \n`4:` <@&782123983797616700> \n`3:` <@&1002797865401327616> \n`2:` <@&766026787997351947> \n`1:` <@&1002797897777164328> \n<@&766031516038987786>"
+						"name": "Faith Council",	"inline": true,
+						"value": "`5:` <@&766024439749148672> \n`4:` <@&782123983797616700> \n`3:` <@&1002797865401327616> \n`2:` <@&766026787997351947> \n`1:` <@&1002797897777164328> \n<@&766031516038987786>"
 					},
 					{
-				  		"name": "Guardian Guild",	"inline": true,
-					  	"value": "`5:` <@&699575897853788302> \n`4:` <@&833505914619166721> \n`3:` <@&1002797857239224371> \n`2:` <@&717311930171129916> \n`1:` <@&1002797888537116794> \n<@&702481674344071178>"
+						"name": "Guardian Guild",	"inline": true,
+						"value": "`5:` <@&699575897853788302> \n`4:` <@&833505914619166721> \n`3:` <@&1002797857239224371> \n`2:` <@&717311930171129916> \n`1:` <@&1002797888537116794> \n<@&702481674344071178>"
 					},
 					{ "inline": false, "name": "** **", "value": "** **" },
 					{
-				  		"name": "Outrider's Lodge",	"inline": true,
-				  		"value": "`5:` <@&853348541287890994> \n`4:` <@&853349316139024414> \n`3:` <@&1002797871218839663> \n`2:` <@&853349315866525716> \n`1:` <@&1002797894388174939> \n<@&853346385545920522>"
+						"name": "Outrider's Lodge",	"inline": true,
+						"value": "`5:` <@&853348541287890994> \n`4:` <@&853349316139024414> \n`3:` <@&1002797871218839663> \n`2:` <@&853349315866525716> \n`1:` <@&1002797894388174939> \n<@&853346385545920522>"
 					},
 					{
-				  		"name": "Silver Thorn",		"inline": true,
-					  	"value": "`5:` <@&699439189447671889> \n`4:` <@&833509439277367338> \n`3:` <@&1002797900591550474> \n`2:` <@&717313035387142215> \n`1:` <@&1002797903640805466> \n<@&699439109533335623>"
+						"name": "Silver Thorn",		"inline": true,
+						"value": "`5:` <@&699439189447671889> \n`4:` <@&833509439277367338> \n`3:` <@&1002797900591550474> \n`2:` <@&717313035387142215> \n`1:` <@&1002797903640805466> \n<@&699439109533335623>"
 					}
-			  	]
+				]
 			}
 		]
 	},
@@ -74,7 +74,7 @@
 			{			
 				"title":"Accommodations",
 				"description":"Each guild has some manner of accommodations to offer their members. Higher-ranked members enjoy greater comfort. <@&1003019884785041570>, who have yet to prove themselves, get no free accommodations.\n(Planning to automate Lifestyle expenses with the downtimes. A guild would cover it.)"
-			}
+			},
 			{
 				"title":"Training",
 				"description":"The guilds retain knowledgeable tutors in subjects pertinent to their interests. Each guild has a set of tools of their trade and three skills that they specialize in. A character may study with tutors of their guild and gain Proficiency in one of those subjects. When you undertake the training downtime activity (as described in the _Player’s Handbook_ & _Xanathar’s Guide to Everything_) and studying a subject the guild specializes in, you gain `some benefit` (TBD, discuss: training takes half as long? or the cost is reduced by half)",
@@ -87,6 +87,7 @@
 						"name":"TODO",
 						"value":"- Determine how Guild Rankings work into this.\nAllow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?"						
 					}
+				]
 			},
 			{
 				"title":"Magic Items",

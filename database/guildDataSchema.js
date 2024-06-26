@@ -3,7 +3,6 @@ const config = require(`../config/${mod}_config.json`);
 const mongoose = require('mongoose')
 const schemaName = `guildData${config.DEV ? "_dev" : ""}`
 
-
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	guild: reqString,
