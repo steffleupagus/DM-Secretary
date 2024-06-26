@@ -2,7 +2,7 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 
 const mongoose = require('mongoose')
-const schemaName = `channelActivity${config.DEV ? "dev" : ""}`
+const schemaName = `channelActivity${config.DEV ? "_dev" : ""}`
 
 //const stringArray = { type:[String] }
 const reqString = { type:String, required:true }

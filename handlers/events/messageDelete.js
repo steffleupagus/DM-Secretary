@@ -5,7 +5,7 @@ async function execute(client, message)
 	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
 	{
 		if (handler.hasOwnProperty("build") && !handler.build) return;
-		if (handler.bot != message.author.bot) return;
+		if (handler.bot != message.author?.bot) return;
 		const shouldHandle = await handler.shouldHandle(client, message);
 		if (shouldHandle && handler.handleDelete) 
 			await handler.handleDelete(client, message)

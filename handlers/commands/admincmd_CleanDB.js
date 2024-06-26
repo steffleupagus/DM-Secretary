@@ -8,6 +8,7 @@ const Embed = require(`../../utilities/EmbedPaginator.js`);
 const charUtils = require(`../../utilities/charUtils.js`);
 const LevelUtils = require(`../../utilities/levelUtils.js`);
 const GuildUtils = require(`../../utilities/guildUtils.js`);
+const TupperUtils = require(`../../utilities/tupperUtils.js`);
 const Utils = require(`../../utilities/utilFuncs.js`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 
@@ -95,9 +96,12 @@ async function execute(interaction)
 			embed.extendField(`<@${user}>: ${charList}`);
 			empty = false;
 		}
-	}	
-	if (empty)
-		embed.extendField(`Database has no stale entries!`);
+	}
+	if (empty) embed.extendField(`Database has no stale entries!`);
+
+	let tupper = await TupperUtils.cleanTupperData();
+	if (tupper) embed.addField("Tupper",`${tupper ?? 0} stale tupper records deleted`)
+
 	let embeds = embed.embeds();
 	     embed = embeds.shift();
 	await interaction.editReply({embeds:[embed], ephemeral: ephemeral})
@@ -106,7 +110,7 @@ async function execute(interaction)
 			await interaction.followUp({embeds:[embed], ephemeral: ephemeral})
 		else
 			await interaction.channel.send({embeds:[embed]})
-	})	
+	})
 }
 
 async function cleanupDB(user_id)

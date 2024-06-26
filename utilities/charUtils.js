@@ -1,8 +1,7 @@
 const mod = process.env.mod || "";
-const root = process.cwd()
-const Utils = require(`${root}/utilities/utilFuncs.js`)
-const config = require(`${root}/config/${mod}_config.json`);
-const LevelUtils = require(`${root}/utilities/levelUtils.js`)
+const config = require(`../config/${mod}_config.json`);
+const Utils  = require(`../utilities/utilFuncs.js`);
+const LevelUtils = require(`../utilities/levelUtils.js`)
 const StringSimilarity = require("string-similarity");
 
 const MATCH_THRESHOLD = 0.9
@@ -53,7 +52,7 @@ class CharacterData
 		return result;
 	}
 
-	async findClosestMatch(char, user = null, npcList = [], forceAll = false, threshold = MIN_THRESHOLD)
+	async findClosestMatch(char, user = null, forceAll = false, npcs = [], threshold = MIN_THRESHOLD)
 	{
 		//Get a list of all characters - character:{level,player}
 		let options = this.charCache;
@@ -67,7 +66,7 @@ class CharacterData
 
 		// If the calling method has specified a list of NPCs we might care about, 
 		// inject them into the list of options for us to consider prior to finding the best match
-		(npcList ?? []).forEach( npc => 
+		(npcs ?? []).forEach( npc => 
 		{
 			//console.log(npc)
 			charTable[npc.name] = charTable[npc.name] ?? { level: npc.level, user: user }
@@ -95,10 +94,10 @@ class CharacterData
 						level: charTable[match.target].level,
 						rating: match.rating
 					} : null;
-		
+
 		var matches = matches.ratings;
 		matches = matches
-			.filter( m => user || m.rating >= threshold)
+			.filter( m => user || m.rating >= threshold )
 			.map( m => {
 				let name = m.target
 				return {
@@ -111,9 +110,10 @@ class CharacterData
 			.sort( (a,b) => b.rating - a.rating )
 			.slice( 0, 10 );
 
- 		let result = {match,matches};
+		let result = {match,matches};
 		return result;		
 	}	
+
 
 
 	
