@@ -21,13 +21,15 @@ async function execute(interaction)
 {
 	const archivist = interaction.member;
 	const channel = interaction.channel;
+	const parent  = channel.parent;
 	const message = interaction.targetMessage;	
 	if (!message)
 		return interaction.reply({ 	content: 'No message found', ephemeral: true });
 	const author = message.author
 
-	const isChar = (channel.id == config.chan.pcProfile || channel.id == config.chan.npcProfile);	
-	const archiveChanId =  isChar ? config.chan.charArchive : config.chan.modArchive
+	const isChar = (channel.id == config.chan.pcProfile || channel.id == config.chan.npcProfile);
+	const isArchivedChar = (parent.id == config.chan.pcProfile || parent.id == config.chan.npcProfile);
+	const archiveChanId =  (isChar || isArchivedChar) ? config.chan.charArchive : config.chan.modArchive
 	const archiveChannel = await interaction.guild.channels.fetch(archiveChanId)
 	const attachments = message.attachments.map( x => x )
 
@@ -35,27 +37,24 @@ async function execute(interaction)
 	await interaction.reply({ 	content: reply, 
 								ephemeral: true });
 
-	const embed = getLogEmbed(author, archivist, channel)
-	if (message?.content?.length > 0)
-		  embed.setDescription(message.content)
-		  //embed.addFields([{name:"Posted",value:`<t:${}:`}])
-	embed.setFooter({text: `Original post created: `})
-	embed.setTimestamp(message.createdTimestamp)
-	
-	const archiveMsg = await archiveChannel.send({embeds:[embed,...message.embeds]});
+	let embed = null;
+	if (isArchivedChar && message.embeds?.length > 0)
+	{
+		embed = await archiveChannel.send({embeds:[...message.embeds]});
+	}
+	else
+	{
+		embed = getLogEmbed(author, archivist, channel)
+		if (message?.content?.length > 0)
+			  embed.setDescription(message.content)
+		embed.setFooter({text: `Original post created: `})
+		embed.setTimestamp(message.createdTimestamp)
+		embed = await archiveChannel.send({embeds:[embed,...message.embeds]});
+	}		
 	if (attachments.length)
 		await archiveChannel.send({files:attachments});
 
-	// let content = message.content;
-	// while (content.length > 2000)
-	// {
-	// 	let subContent = content.substr(0,2000);
-	// 	content = content.substr(2000);
-	// 	await archiveChannel.send({content:subContent});
-	// }
-	// await archiveChannel.send({content:content, embeds:message.embeds, files:attachments});
-
-	reply += `\nMessage [Archived](${archiveMsg.url})`
+	reply += `\nMessage [Archived](${embed.url})`
 	await interaction.editReply({content: reply})
 }
 
@@ -67,5 +66,5 @@ module.exports =
 	whitelistRoles: requiredRoles,
 	execute: execute,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION //|| config.DEV
 };

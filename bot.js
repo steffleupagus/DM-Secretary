@@ -10,14 +10,22 @@ class Bot
 {
 	constructor() 
 	{
-		let intents = [	
+		const intents = 
+		[	
 			GatewayIntentBits.Guilds, 
 			GatewayIntentBits.GuildMessages,
 			GatewayIntentBits.GuildMessageReactions,
 			GatewayIntentBits.MessageContent,
 			GatewayIntentBits.GuildMembers,			
 		]
-		this.client = new Client({intents: intents});
+		const partials = 
+		[
+			Partials.Channel, 
+			Partials.Message, 			
+			Partials.User, 
+			Partials.GuildMember
+		]
+		this.client = new Client({partials, intents});
 		this.loadBot();
 	}
 

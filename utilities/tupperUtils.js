@@ -126,6 +126,16 @@ async function getTupperData(message)
 	return result;	
 }
 
+async function cleanTupperData()
+{
+	const offset = 360 * 25 * 60 * 60 * 1000
+	const timestamp = Date.now() - offset	
+	const query = {time:{$lt:timestamp}};	//1672531200000}};
+	const result = await tupperSchema.find(query);
+	const deleted = await tupperSchema.deleteMany(query);
+	console.log(query, result.length, deleted)
+	return deleted.deletedCount
+}
 
 module.exports = {
 	isTupperProxyMessage,
@@ -133,6 +143,7 @@ module.exports = {
 	logTupperMessage,
 	parseTupperLog,
 	getTupperData,
-	deleteTupperProxyMessage
+	deleteTupperProxyMessage,
+	cleanTupperData
 }
 
