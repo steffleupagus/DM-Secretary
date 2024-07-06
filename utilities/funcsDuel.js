@@ -46,6 +46,9 @@ const INIT_REGEX = /Initiative [0-9]+ \(round [0-9]+\)/i;
 const INIT_MATCH = /\-*COMBAT ENDED\-*/i;
 const GROUP_REGEX = /.* (?:was )?added to (?:combat with initiative [0-9]+ as part of )?group .*\./gim;
 
+const Debug = config.DEV;
+const dmPingChannel = Debug ? config.debug.dmPing : config.chan.dmPing;
+
 ///
 /// Process the most recent duel in the specified channel
 /// @channel: The channel in which the command was executed
@@ -672,7 +675,7 @@ async function sendApprovalMessage(duelData, guild)
 		])
 		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
 
-	const dmChan = guild.channels.resolve(config.chan.dmPing);
+	const dmChan = guild.channels.resolve(dmPingChannel);
 	dmEmbed = await dmChan.send({content:`<@&${config.role.DMOnDuty}>`,embeds:[dmEmbed]})
 	return dmEmbed;
 }
