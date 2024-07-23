@@ -42,7 +42,7 @@
 				[
 					{
 						"name":"Set your Level",
-						"value":"All characters here start at level 3, so we will set that now via the level dropdown. It will give you a confirmation screen, and automatically set your XP to your correct starting value of 900.\n*Multiclassing*You can select the `+Add Anothwer Class` option beneath your class. You must meet the ability score requirements for multiclassing, and your total class levels cannot exceed 3 for a new character."
+						"value":"All characters here start at level 3, so we will set that now via the level dropdown. It will give you a confirmation screen, and automatically set your XP to your correct starting value of 900.\n*Multiclassing*You can select the `+Add Another Class` option beneath your class. You must meet the ability score requirements for multiclassing, and your total class levels cannot exceed 3 for a new character."
 					},
 					{
 						"name":"Choose Class Options",
