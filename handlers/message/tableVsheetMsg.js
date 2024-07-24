@@ -3,7 +3,6 @@
 \*--------------------------------------------------------------*/
 const mod = process.env.mod || ""
 const config = require(`../../config/${mod}_config.json`)
-const LevelData = require(`../../utilities/levelUtils.js`)
 const CharUtils = require(`../../utilities/charUtils.js`)
 const ChanUtils = require(`../../utilities/channelUtils.js`)
 const TableMeta = require(`../../database/tableSchema.js`)
