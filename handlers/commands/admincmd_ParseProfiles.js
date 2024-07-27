@@ -214,7 +214,7 @@ function generateDBRecords(interaction, sheetRecords, profileRecords)
 	profileRecords = profileRecords.map(char => ({
 		user: char.user,
 		name: char.name,
-		profile: char.id,
+		profileId: char.id,
 		level: __NPC,
 		update: Date.now()		
 	}));
@@ -351,7 +351,7 @@ function generateMatches(char, records, isSheet) {
 	else
 	{
 		//Check for false negatives. Not 100% accurate, so flag with a question mark		
-		const commonWords = ["the"]
+		const commonWords = ["the","in"]
 		const charParts = char.name.toLowerCase().split(/\s/g).filter(x => !commonWords.includes(x))
 		ratings.forEach(opt => 
 		{

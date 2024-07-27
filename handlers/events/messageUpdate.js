@@ -5,8 +5,9 @@ async function execute(client, oldMessage, newMessage)
 	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
 	{
 		if (handler.hasOwnProperty("build") && !handler.build) return;
-		if (handler.bot != newMessage.author.bot) return;
-		const shouldHandle = await handler.shouldHandle(client, newMessage);
+		if (newMessage.author.bot && !handler.bot) return;
+		if (handler.bot && !handler.user && !newMessage.author.bot) return;
+		const shouldHandle = await handler.shouldHandle(client, newMessage, "Update");
 		if (shouldHandle && handler.handleUpdate) 
 			await handler.handleUpdate(client, oldMessage, newMessage)	
 	});

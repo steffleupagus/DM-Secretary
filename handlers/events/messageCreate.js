@@ -11,7 +11,7 @@ async function processMessage(client, message)
 		//If the handler is ONLY meant for bots, early out if a user triggered
 		if (handler.bot && !handler.user && !message.author.bot) return;
 		
-		const shouldHandle = await handler.shouldHandle(client, message);
+		const shouldHandle = await handler.shouldHandle(client, message, "Create");
 		if (shouldHandle) await handler.handleCreate(client, message)
 	});
 }
