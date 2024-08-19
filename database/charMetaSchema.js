@@ -7,12 +7,12 @@ const schemaName = `characterMeta${config.DEV ? "_dev" : ""}`
 const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	user: reqString,
-	name: reqString,
+	profileName: String,
 	profileId: String,
+	tuppers: [String],
 	sheetName: String,
 	sheetId: String,
 	level: Number,
-	//tupper: [String],
 	update: Number
 })
 
