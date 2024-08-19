@@ -23,7 +23,7 @@ function parseProfileFields(message)
 	{
 		name:null,		
 		user:message.author.id,
-		profileId:message.id,
+		profileId:message.channel.id+"/"+message.id,
 		url:message.url
 	}
 	const fields = {
