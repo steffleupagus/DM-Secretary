@@ -1,38 +1,33 @@
 const { ActivityType } = require('discord.js');
 const client = require(`../../bot`)
+const utils = require(`../../utilities/utilFuncs.js`)
 
 function execute(client)
 {
 	console.log(`Ready! Logged in as ${client.user.tag} ✅`);
 
 	const bld = Date.now() % 10000;
-	const name = `You Fap (Build: ${bld})`;
+	const time = utils.formatDate(utils.getDate())
+	const lastReboot = `Last Reboot: ${time}`
+	const statusArray = [
+		// {type: ActivityType.Custom, name:"Testing", state: "💋"},
+		{type: ActivityType.Playing, name:"With Myself", state: lastReboot},
+		{type: ActivityType.Watching, name:"You Fap", state: lastReboot},
+		{type: ActivityType.Listening, name: "You Moan", state: lastReboot}
+	];
+	
 	client.user.setPresence({ 
-		activities: [{ type: 3, name: name }], 
+		activities: [statusArray[0]],	//[{ type: 3, name: name }], 
 		status: 'dnd' 
 	});
 
-// 	const statusArray = [
-// 		`${client.guilds.cache.size} servers | ${client.config.prefix}help`,
-// 		`${client.channels.cache.size} channels | ${client.config.prefix}help`,
-// 		` ${client.guilds.cache
-// 				.reduce((a, b) => a + b.memberCount, 0)
-// 				.toLocaleString()} users | ${client.config.prefix}help`,
-// //		`${client.commands.size} commands | ${client.config.prefix}help`,
-//    	];
-
-	const statusArray = [
-		[ActivityType.Watching,"You Fap"],
-		[ActivityType.Listening,"You Moan"],
-		[ActivityType.Playing,"With Myself"],
-	];
-
-   	let index = 0;
+	let index = 0;
 	setInterval(() => 
 	{	
 		if (index === statusArray.length) index = 0;
 		const status = statusArray[index];
-		client.user.setActivity(status[1], { type: status[0] });
+		//client.user.setActivity(status[1], status );//{ type: status[0] });
+		client.user.setActivity(status)
 		index++;
 	}, 60000);
 }
