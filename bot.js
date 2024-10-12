@@ -209,6 +209,6 @@ class Bot
 }
 
 const bot = new Bot();
-require("./dashboard")(bot.client)
+//require("./dashboard")(bot.client)
 
 module.exports = bot.client;
