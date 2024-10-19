@@ -40,7 +40,8 @@ const CONFIRM_FOOTER = `👍 confirm (both players) / 👎 cancel (one player).\
 
 /// REGEX
 const PLAYER_MATCH = /.* \(Round ([0-9]+)\).*: (.*) \(<@([0-9]+)>\).*/gim;
-const CHAR_MATCH = /(?:[0-9]+:| +-) (.*) <([0-9]+)\/[0-9]+ HP>.*/gim;
+//const CHAR_MATCH = /(?:[0-9]+:| +-) (.*) <([0-9]+)\/[0-9]+ HP>.*/gim;
+const CHAR_MATCH = /(?:[0-9]+:| +-) (.*) <([0-9]+)\/[0-9]+ HP(?:, [0-9]+ temp)?>.*/gim;
 const ROUND_MATCH = /.*\(round ([0-9]+)\)/i;
 const INIT_REGEX = /Initiative [0-9]+ \(round [0-9]+\)/i;
 const INIT_MATCH = /\-*COMBAT ENDED\-*/i;
