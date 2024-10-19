@@ -54,11 +54,13 @@ async function handleUpdate(client, oldMessage, newMessage)
 	const tupperData = await Tupper.getTupperData(newMessage)
 	if (tupperData)
 	{
+		const newLen = newMessage?.content?.length || 0
+		const oldLen = oldMessage?.content?.length || 0
 		const record = await updateRPPFromTupperProxy({
 			user: tupperData.aId,
 			posts: 0,
 			proxy: 0,
-			chars: newMessage.content.length - oldMessage.content.length,
+			chars: newLen - oldLen,
 			scene: tupperData.cId,
 			last: tupperData.mId
 		});
