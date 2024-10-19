@@ -55,10 +55,10 @@ async function updateLevelMessage(channel)
 		if (list.length <= 20)
 			listSize = list.length
 		else if (list.length <= 40)
-			listSize = list.length / 2			
+			listSize = (list.length / 2) + 1
 		if (listSize > 20)
 			listSize = 20;
-			
+
 		var s = 1;
 		var totalList = list.length;
 		while (list.length > 0)
