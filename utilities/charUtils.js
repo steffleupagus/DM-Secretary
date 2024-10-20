@@ -4,6 +4,8 @@ const Utils  = require(`../utilities/utilFuncs.js`);
 const LevelUtils = require(`../utilities/levelUtils.js`)
 const StringSimilarity = require("string-similarity");
 
+const CharMeta = require(`../database/charMetaSchema.js`)
+
 const MATCH_THRESHOLD = 0.9
 const MIN_THRESHOLD = 0.15
 

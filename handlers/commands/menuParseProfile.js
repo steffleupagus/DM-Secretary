@@ -23,7 +23,7 @@ async function execute(interaction) {
 	/// Process a single profile post and provide the json response
 
 	//TODO - Get previous message to see if this is a follow-up
-	let profile = Profile.processProfile(message);
+	let profile = Profile.parseProfile(message);
 	if (!profile)
 		return
 
