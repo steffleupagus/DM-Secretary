@@ -8,9 +8,9 @@ const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	user: reqString,
 	name: reqString,
-	profile: String,
+	profileId: String,
 	sheetName: String,
-	sheet: String,
+	sheetId: String,
 	level: Number,
 	//tupper: [String],
 	update: Number

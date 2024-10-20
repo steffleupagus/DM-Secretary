@@ -73,7 +73,7 @@ async function processBatchProfiles(interaction) {
 			const type = message.channel.id == config.chan.pcProfile ? "PC" : "NPC"
 			const followup = last?.user == message.author.id
 			//Parse the profile
-			const profile = Profile.processProfile(message, !followup);	
+			const profile = Profile.parseProfile(message, !followup);	
 			
 			//If we have a name, push it
 			if (profile?.name)
