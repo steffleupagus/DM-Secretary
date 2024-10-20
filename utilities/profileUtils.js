@@ -14,7 +14,7 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 
 ///
-function parseProfile(message)
+function parseProfileFields(message)
 {
 	if (!message || 0 == message.length)
 		return null
@@ -23,7 +23,7 @@ function parseProfile(message)
 	{
 		name:null,		
 		user:message.author.id,
-		profile:message.id,
+		profileId:message.id,
 		url:message.url
 	}
 	const fields = {
@@ -47,38 +47,6 @@ function parseProfile(message)
 	return profile	
 }
 
-///
-/// Process the profile message into usable data
-///
-function processProfile(message, fallback = true) {
-	const pcProfile = message.channel.id == config.chan.pcProfile
-	
-	message.content = message?.content ?? "";
-	message.content = message.content.replace(breakRegex,"")
-					 				 .replace(emojiRegex,"")					 
-									 .replace(customEmoji,"")
-					 				 .normalize(normalize).trim();
-	
-	//Parse the profile
-	const profile = parseProfile(message);
-	if (profile)
-	{
-		profile.type  = pcProfile ? "PC" : "NPC"
-
-		//If we didn't find a name, try a fallback test.
-		if (!profile.name && fallback)
-		{
-			const fallback = fallbackParse(message)
-			for (const [key, value] of Object.entries(fallback)) 
-				profile[key] = profile[key] || fallback[key]
-		}
-		console.log(`${profile.profile}: ${profile.name}`)
-	}
-
-	//console.log(profile)
-	return profile
-}
-
 function fallbackParse(message)
 {
 	message.content = message.content.split("\n")[0].replace(/.*name\:?/i,"").trim() || null
@@ -93,12 +61,38 @@ function fallbackParse(message)
 	}
 }
 
+///
+/// Process the profile message into usable data
+///
+function parseProfile(message, fallback = true) {
+	const pcProfile = message.channel.id == config.chan.pcProfile
+	
+	message.content = message?.content ?? "";
+	message.content = message.content.replace(breakRegex,"")
+					 				 .replace(emojiRegex,"")					 
+									 .replace(customEmoji,"")
+					 				 .normalize(normalize).trim();
+	
+	//Parse the profile
+	const profile = parseProfileFields(message);
+	if (profile)
+	{
+		profile.type  = pcProfile ? "PC" : "NPC"
 
+		//If we didn't find a name, try a fallback test.
+		if (!profile.name && fallback)
+		{
+			const fallback = fallbackParse(message)
+			for (const [key, value] of Object.entries(fallback)) 
+				profile[key] = profile[key] || fallback[key]
+		}
+		console.log(`${profile.profileId}: ${profile.name}`)
+	}
 
-
-
+	//console.log(profile)
+	return profile
+}
 
 module.exports = {
-	parseProfile,
-	processProfile
+	parseProfile
 }
