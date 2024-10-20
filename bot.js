@@ -6,23 +6,23 @@ const { promisify } = require("util");
 const globPromise = promisify(glob);
 const mongoose = require('mongoose')
 
-class Bot 
+class Bot
 {
-	constructor() 
+	constructor()
 	{
-		const intents = 
-		[	
-			GatewayIntentBits.Guilds, 
+		const intents =
+		[
+			GatewayIntentBits.Guilds,
 			GatewayIntentBits.GuildMessages,
 			GatewayIntentBits.GuildMessageReactions,
 			GatewayIntentBits.MessageContent,
-			GatewayIntentBits.GuildMembers,			
+			GatewayIntentBits.GuildMembers,
 		]
-		const partials = 
+		const partials =
 		[
-			Partials.Channel, 
-			Partials.Message, 			
-			Partials.User, 
+			Partials.Channel,
+			Partials.Message,
+			Partials.User,
 			Partials.GuildMember
 		]
 		this.client = new Client({partials, intents});
@@ -34,19 +34,19 @@ class Bot
 		this.loadConfig();
 		await this.loadEvents();
 		await this.loadMessageHandlers();
-		this.client.on("ready", async () => 
+		this.client.on("ready", async () =>
 		{
 			await this.loadCommands();
 			await this.loadDatabase();
-			await this.loadTimers();		
-		});				
+			await this.loadTimers();
+		});
 		this.runBot();
 
-		process.on('uncaughtException', function(error) 
-		{ 
+		process.on('uncaughtException', function(error)
+		{
 			console.error("Unhandled Bullshit: ", error)
 			//console.error(error.stack);
-		});		
+		});
 	}
 
 	/// Load configuration file
@@ -55,7 +55,7 @@ class Bot
 		const mod = process.env.mod || "";
 		this.client.config = require(`./config/${mod}_config.json`);
 		this.client.config.token = process.env.token;
-		
+
 		console.log(`CONFIG LOADED: ${this.client.config.CONFIG}`)
 	}
 
@@ -73,8 +73,8 @@ class Bot
 			keepAlive: true
 		})
 		.then(console.log('Mongodb ✅'))
-		.catch(console.error)		
-	}	
+		.catch(console.error)
+	}
 
 	/// Load individual event files and register the event for dynamic execution
 	async loadEvents()
@@ -83,7 +83,7 @@ class Bot
 		this.client.eventHandlers = new Collection();
 
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));	
-		const eventFiles = await globPromise(`./handlers/events/*.js`);    
+		const eventFiles = await globPromise(`./handlers/events/*.js`);
 		eventFiles.map((file) => 
 		{
 			//const event = require(`./events/${file}`);
@@ -111,7 +111,7 @@ class Bot
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.messageHandlers = [];
-		for (const file of messageHandlers) 
+		for (const file of messageHandlers)
 		{
 			const handler = require(`./handlers/message/${file}`);
 			console.log(" - Handler: ", handler.name);
@@ -119,7 +119,7 @@ class Bot
 			{
 				this.client.messageHandlers.push(handler);
 			}
-		}		
+		}
 	}
 
 	loadReactHandlers()
@@ -129,7 +129,7 @@ class Bot
 								  .filter(file => file.endsWith('.js'));
 
 		this.client.reactHandlers = [];
-		for (const file of messageHandlers) 
+		for (const file of messageHandlers)
 		{
 			const handler = require(`./handlers/reations/${file}`);
 			console.log(" - Handler: ", handler.name);
@@ -156,7 +156,7 @@ class Bot
 				this.client.timers.set(timer.name, timer)	//.push(timer);
 				timer.startTimer(this.client);
 			}
-		}		
+		}
 	}
 
 	/// Load the individual command files and register them for dynamic execution
@@ -176,16 +176,16 @@ class Bot
 			const enabled = !command?.hasOwnProperty("build") || command?.build;
 			// console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
 			if (command && enabled)
-			{			
+			{
 				console.log(` - Command: ${command.data.name}${enabled ? "" : " [Disabled]"}`);
 				// Set a new item in the Collection; key = command name, value = exported module
 				this.client.commands.set(command.data.name, command);
-	
+
 				// Allow commands to have aliases for non-slash execution
 				command?.aliases?.forEach(alias => {
-					this.client.commands.set(alias, command);			
-				});					
-			}		
+					this.client.commands.set(alias, command);
+				});
+			}
 		}
 	}
 
@@ -195,12 +195,12 @@ class Bot
 		//Login
 		console.log("Logging in...")
 		this.client.login(this.client.config.token).catch(console.error);
-		
+
 		//handle trying to re-login on disco
-		this.client.on("disconnect", () => setTimeout(() => 
+		this.client.on("disconnect", () => setTimeout(() =>
 		{
 			console.log("Bot disconnected :(");
-			this.client.destroy().then(() => 
+			this.client.destroy().then(() =>
 			{
 				this.runBot();
 			});
@@ -209,6 +209,6 @@ class Bot
 }
 
 const bot = new Bot();
-require("./dashboard")(bot.client)
+//require("./dashboard")(bot.client)
 
 module.exports = bot.client;
