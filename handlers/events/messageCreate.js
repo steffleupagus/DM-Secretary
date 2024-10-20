@@ -1,17 +1,17 @@
 const Utils = require(`../../utilities/utilFuncs.js`)
 async function processMessage(client, message)
 {
-	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
+	Utils.asyncArrayForEach(client.messageHandlers, async (handler) =>
 	{
 		if (handler.hasOwnProperty("build") && !handler.build) return;
 
-		//If the handler is not meant for bots, early out if a bot triggered it		
-		if (message.author.bot && !handler.bot) return;
+		//If the handler is not meant for bots, early out if a bot triggered it
+		if (!handler.bot && message.author?.bot) return;
 
 		//If the handler is ONLY meant for bots, early out if a user triggered
-		if (handler.bot && !handler.user && !message.author.bot) return;
+		if (handler.bot && !handler.user && !message.author?.bot) return;
 
-		const shouldHandle = await handler.shouldHandle(client, message);
+		const shouldHandle = await handler.shouldHandle(client, message, "Create");
 		if (shouldHandle && handler.handleCreate)
 			await handler.handleCreate(client, message)
 	});
@@ -26,7 +26,7 @@ async function execute(client, message)
 	}
 
 	const prefix = client.config.prefix;
-	//If it starts with the command character, process it as command		
+	//If it starts with the command character, process it as command
 	if (message.content.startsWith(prefix))//&& message.guild.id == client.config.GUILDID)
 	{
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -34,12 +34,12 @@ async function execute(client, message)
 		const command = client.commands.get(commandName);
 		if (command)
 		{
-			if (command.hasOwnProperty("build") && !command.build) return;		
+			if (command.hasOwnProperty("build") && !command.build) return;
 			try 
 			{
 				await command.message(client, message, commandName, args);
 			}
-			catch (error) 
+			catch (error)
 			{
 				console.error(error);
 				await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -50,7 +50,7 @@ async function execute(client, message)
 
 	//Finally, if we're all the way through here, check for RP messages
 	if (!message.author.bot)
-		processMessage(client, message)	
+		processMessage(client, message)
 }
 
 module.exports = {
