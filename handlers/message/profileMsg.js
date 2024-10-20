@@ -4,6 +4,7 @@
 const mod = process.env.mod || ""
 const config = require(`../../config/${mod}_config.json`)
 const Profile = require(`../../utilities/profileUtils.js`)
+const CharUtils = require(`../../utilities/charUtils.js`)
 
 async function shouldHandle(client, message, type)
 {
@@ -14,26 +15,20 @@ async function shouldHandle(client, message, type)
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	const profileData = Profile.parseProfile(message);
-	console.log(profileData);
-
-	// const updated = await LevelData.logLevelMessage(client, message, interaction, sendResult)
-	// if (updated && !config.DEV)
-	// {
-	// 	const channel = await message.guild.channels.resolve(config.chan.levelOut)
-	// 	console.log(channel.id)
-	// 	await LevelData.updateLevelMessage(channel);
-	// }	
+	await CharUtils.createProfile(profileData);
 }
 
 async function handleUpdate(client, oldMessage, newMessage)
 {
 	console.log(`Edit Profile ${newMessage.id}`)
-	console.log(Profile.parseProfile(newMessage))
+	const profileData = Profile.parseProfile(newMessage);
+	await CharUtils.updateProfile(profileData);
 }
 
 async function handleDelete(client, message, interaction=null, sendResult=true)
 {
 	console.log(`Delete Profile ${message.id}`)
+	await CharUtils.deleteProfile(profileData);
 }
 
 module.exports = {
