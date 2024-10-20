@@ -1,18 +1,22 @@
 const Utils = require(`../../utilities/utilFuncs.js`)
-async function execute(client, oldMessage, newMessage)
+async function execute(client, message)
 {
 	//Finally, if we're all the way through here, check for RP messages
 	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
 	{
 		if (handler.hasOwnProperty("build") && !handler.build) return;
-		if (handler.bot != newMessage.author.bot) return;
-		const shouldHandle = await handler.shouldHandle(client, newMessage);
-		if (shouldHandle && handler.handleUpdate) 
-			await handler.handleUpdate(client, oldMessage, newMessage)	
+		if (message.author)
+		{
+			if (message.author.bot && !handler.bot) return;
+			if (handler.bot && !handler.user && !message.author?.bot) return;
+		}
+		const shouldHandle = await handler.shouldHandle(client, message, "Delete");
+		if (shouldHandle && handler.handleDelete) 
+			await handler.handleDelete(client, message)
 	});
 }
 
 module.exports = {
-	name: 'messageUpdate',
+	name: 'messageDelete',
 	execute: execute
 };
