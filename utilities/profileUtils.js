@@ -23,7 +23,7 @@ function parseProfileFields(message)
 	{
 		name:null,		
 		user:message.author.id,
-		profileId:message.id,
+		profileId:message.channel.id+"/"+message.id,
 		url:message.url
 	}
 	const fields = {
@@ -52,13 +52,11 @@ function fallbackParse(message)
 	message.content = message.content.split("\n")[0].replace(/.*name\:?/i,"").trim() || null
 	if (!message.content || message.content.length == 0) 
 		return {}
-	else
-	{
-		message.content = `name: ${message.content}`
-		const profile = parseProfile(message)		
-		if (!profile.name) return {}
-		return profile
-	}
+
+	message.content = `name: ${message.content}`
+	const profile = parseProfileFields(message)		
+	if (!profile.name) return {}
+	return profile
 }
 
 ///
@@ -93,6 +91,17 @@ function parseProfile(message, fallback = true) {
 	return profile
 }
 
+function isProfileMessage(client, message)
+{
+	if (!message) return false;
+	const channel = ((message.channel.id == client.config.chan.npcProfile)||
+					 (message.channel.id == client.config.chan.pcProfile)||
+					 (message.channel.id == client.config.debug.profile));
+	const author  = !message.author?.bot;
+	return channel && author
+}
+
 module.exports = {
+	isProfileMessage,
 	parseProfile
 }
