@@ -18,7 +18,7 @@ class EmbedPaginator
 			DESC:  EMBED_DESC_MAX,
 			TITLE: EMBED_TITLE_MAX
 		}
-				
+
         this._current_field_name = '';
         this._current_field_inline = false;
         this._current_field = [];
@@ -34,7 +34,7 @@ class EmbedPaginator
         this._embeds = [new EmbedBuilder(embed_options)];
 		this._total_fields = 0;
 		this._current_fields = 0;
-	}	
+	}
 
 	countEmbeds()
 	{
@@ -54,6 +54,7 @@ class EmbedPaginator
             throw "The current embed cannot fit this title.";
         this._embeds[this._embeds.length-1].setTitle(value)
         this._embed_count += value.length
+		return this;
 	}
 
 	setUrl(value)
@@ -62,13 +63,15 @@ class EmbedPaginator
 			throw "The current embed cannot fit this url.";
         this._embeds[this._embeds.length-1].url = value
         this._embed_count += value.length
+		return this;
 	}
 
 	setColor(value)
 	{
 		this._embeds[this._embeds.length-1].setColor(value);
+		return this;
 	}
-	
+
 	/// Adds a description to the embed. 
 	/// Appears before any fields. Will throw if the current embed can't fit the value.
     setDescription(value)
@@ -78,6 +81,7 @@ class EmbedPaginator
 
         this._embeds[this._embeds.length-1].setDescription(value)
         this._embed_count += value.length
+		return this;
 	}
 
 	setThumbnail(value)
@@ -86,6 +90,7 @@ class EmbedPaginator
             throw "The current embed cannot fit this thumbnail URL.";
         this._embeds[this._embeds.length-1].setThumbnail(value);
         this._embed_count += value.length
+		return this;
 	}
 
 	setImage(value)
@@ -94,15 +99,16 @@ class EmbedPaginator
             throw "The current embed cannot fit this image URL.";
         this._embeds[this._embeds.length-1].setImage(value);
         this._embed_count += value.length
+		return this;
 	}
 
 
 	canSafelyAddField(name, value)
 	{
-        if (value.length > EMBED_FIELD_MAX || 
+        if (value.length > EMBED_FIELD_MAX ||
 			name.length > EMBED_TITLE_MAX)
 			return false;
-		return true;		
+		return true;
 	}
 
 	/// Add a new field to the help embed.
@@ -119,7 +125,7 @@ class EmbedPaginator
 
 		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
 			this.close_embed()
-			
+
 		this._total_fields++;
 		this._current_fields++;
         this._field_count += value.length + 1
@@ -127,6 +133,8 @@ class EmbedPaginator
         this._current_field_name = name
         this._current_field_inline = inline
         this._current_field.push(value)
+
+		return this;
 	}
 
 	/// Add a line of text to the last field in the embed.
@@ -145,6 +153,8 @@ class EmbedPaginator
             this._field_count += value.length + 1;
             this._current_field.push(value);
 		}
+
+		return this;
 	}
 
 	/// Terminate the current field and write it to the last embed.
@@ -157,7 +167,7 @@ class EmbedPaginator
 
 		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
 			this.close_embed();
-		
+
         this._embeds[this._embeds.length-1].addFields([{name:this._current_field_name, 
 														value:value,
 													  	inline:this._current_field_inline}]);
@@ -173,18 +183,19 @@ class EmbedPaginator
 	{
 		return name.length + value.length
 	}
-	
+
 	closeField()
 	{
 		this.close_field()
 	}
-
 
 	/// Sets the footer on the final embed.
     setFooter(value=null, icon_url=null)
 	{
 		this._footer_text = value.text || value
         this._footer_url = icon_url
+
+		return this;
 	}
 
 	/// Write the footer to the last embed."""
@@ -228,7 +239,7 @@ class EmbedPaginator
 	{
 		var total = 0;
 		return total + this._embed_count;
-	
+
 		// this._embeds.forEach(e => {
 		// 	total += e.length;
 		// });
@@ -281,7 +292,7 @@ class EmbedPaginator
 	}
 }
 
-EmbedPaginator.prototype.toString = function EmbedPaginatorToString() 
+EmbedPaginator.prototype.toString = function EmbedPaginatorToString()
 {
 	var output = "<EmbedPaginator\n";
 		output+= `\t_current_field_name=${this._current_field_name}\n`
@@ -292,10 +303,10 @@ EmbedPaginator.prototype.toString = function EmbedPaginatorToString()
 
 	for (let e=0; e<this._embed_count; ++e)
 	{
-		const embed = this._embeds[e];	
+		const embed = this._embeds[e];
 
 //		console.log(e, embed)
-		if (!embed) continue;		
+		if (!embed) continue;
 		output+= `\tEmbed ${e}: ${embed.fields.length} fields | ${embed.length} total length\n`
 	}
 
