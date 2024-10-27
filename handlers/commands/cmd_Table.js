@@ -68,8 +68,8 @@ const TABLE_MENU_DESC = `**Free-||~~use~~||Play Tables**\n${GOALS}`
 const USER_SLASH_COMMAND_REPLY = `To start or close a table, please use the buttons in <#${config.chan.tableMenu}>.`
 
 const DM_MSG = (user,desc) => `<@${user}>: This channel represents your private behind-the-DM-screen area\n- \`Adding Bots\`: <@${config.bots.avrae}><@${config.bots.tupper}>`
-const OOC_MSG = (user,desc) => `This is the OOC and Mechanics/rolling channel.\n\n- \`Adding Bot(s)\`: <@${config.bots.avrae}>\n- <@${user}>: *@ping your players in this channel to get started!*\n- Each player **including the DM** __MUST__ run a \`!vsheet\` command in this channel\n\n*Only one character per player will earn RP exp*. The \`!vsheet\` command will help the bot determine to which character that experience should be awarded. __Failure to do so *may result in receiving no experience!*__`
-const RP_MSG = (user,desc) => `This is the RP channel\n- \`Adding Bot(s)\`: <@${config.bots.tupper}>\n- \`Dungeon Master\`: <@${user}>\n  - *@ping your players in this channel to get started!*\n\n_\`${desc}\`_`
+const OOC_MSG = (user,desc) => `This is the OOC and Mechanics/rolling channel.\n- \`Adding Bot(s)\`: <@${config.bots.avrae}>\n- \`Dungeon Master\`: <@${user}>\n  - *@ping your players in this channel to get started!*\nEach player **including the DM** __MUST__ run a \`!vsheet\` command in this channel\n\n*Only one character per player will earn RP exp*.\nThe \`!vsheet\` command will help the bot determine to which character that experience should be awarded.\n__Failure to do so *may result in receiving no experience!*__`
+const RP_MSG = (user,desc) => `This is the RP channel\n- \`Adding Bot(s)\`: <@${config.bots.tupper}>\n- \`Dungeon Master\`: <@${user}>\n  - *@ping your players in this channel to get started!*`+(desc?`\n\n_\`${desc}\`_`:"")
 
 const TABLE_CREATE_DESC = `
 	Ping your players in your \`OOC\` and \`RP\` threads.
@@ -108,8 +108,7 @@ async function execute(interaction){
 		await interaction.channel.send({embeds:[tables], components: [buttons]})
 		await interaction.editReply("Done.");
 	}
-	else if (channel.isThread && channel.parent.id == config.chan.tableMenu)
-	{
+	else if (channel.isThread && channel.parent.id == config.chan.tableMenu) {
 		//TODO - Handle using this command to close or delete a thread
 		await interaction.editReply("Pending implementation\n"+USER_SLASH_COMMAND_REPLY);
 	}
@@ -142,8 +141,7 @@ async function handleInteraction(interaction){
 	// Lock this user out from being able to spam buttons while it's still processing
 	try { Mutex.Lock(interaction.member, ERROR_USER_LOCKED) } catch (e) { error = e; }
 	if (!error){
-		switch(command)
-		{
+		switch(command) {
 			case "createTable":		//Don't defer since we need to throw a modal
 				opDesc = TABLE_CREATE_DESC;
 				try { table = await createTable(interaction) } catch (e){ error = e; }
@@ -381,15 +379,18 @@ async function promptSelectTable(interaction, callbacks = null) {
 		archivedTables = getTableSelectMenu(archivedTables, "archivedTables"+id, "Select archived table...")
 		components.push(archivedTables)
 	}
-
 	//Bail if the menu would be empty
 	if (components.length == 0)
 		return null;
+
+	const cancelButton = Prompt.createButtonRow([{style:ButtonStyle.Secondary, label:`Cancel`, custom_id:`cancel`}]);
+	components.push(cancelButton)
 
 	//Show the prompt, gather and return the response.
 	const prompt = await interaction.followUp({embeds:[menu],components:components,ephemeral:true})
 	let response = await Prompt.collectAllInteractions(prompt, callbacks || {}, null, Prompt.Time.Std)
 							   .catch(console.error)
+	if (response == "cancel") return null
 	if (callbacks) return response;
 
 	//If we don't have a callback to process the response, convert the table ID into a record and return it
@@ -484,8 +485,10 @@ async function promptCloseConfirm(interaction, table) {
 		{style:ButtonStyle.Secondary,				label:`Cancel ${op}`, 	custom_id:`cancel`	}
 	]
 	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);
-	//if (isBuilder || debugUserAwardButton)
+	if (isBuilder || debugUserAwardButton)
 		options.push({style:ButtonStyle.Primary, emoji:config.emoji.xp, label:`Rewards`, custom_id:`rewards` })
+	if (isBuilder)
+		options.push({style:ButtonStyle.Danger,	emoji:"✖️", label:`Confirm Delete`, custom_id:`delete` })
 	const buttons = Prompt.createButtonRow(options);
 	let prompts = await interaction.editReply({embeds:[embed],components:[buttons],ephemeral:true})
 	const confirm = await Prompt.collectAllInteractions(prompts, {}, null, Prompt.Time.Std);
@@ -606,6 +609,7 @@ async function updateTable(interaction) {
 		{
 			const values  = selectInteraction.values
 			const tableId = (Array.isArray(values)) ? values[0] : values;
+			if (tableId == "cancel") return null;
 				  table   = await getTableById(tableId)
 			return await promptModal(selectInteraction, null, table)
 		}
@@ -615,6 +619,7 @@ async function updateTable(interaction) {
 			return null
 		}
 		const callbacks = {"*": {func:processSelectedTable, args:null}}
+			  callbacks.cancel = {func:timeout, args:null}
 			  callbacks.timeout = {func:timeout, args:null}
 		details = await getTableArg(interaction, isBuildMod, callbacks)
 		if (details) await details.modal.deleteReply()
@@ -625,7 +630,7 @@ async function updateTable(interaction) {
 		if (table) details = await promptModal(interaction, null, table)
 	}
 
-	if (!table) return null;
+	if (!table || !details) return null;
 
 	//If the table was archived, unarchive the threads
 	if (table.archived) await archiveTable(interaction, table, false)
@@ -635,9 +640,9 @@ async function updateTable(interaction) {
 	const tableRecord = {
 		_id:		table._id,
 		user: 		table.user,
-		title: 		details.title || table.title,
-		name: 		details.name || table.name,
-		desc: 		details.desc || "",
+		title: 		details?.title || table.title,
+		name: 		details?.name || table.name,
+		desc: 		details?.desc || "",
 		dmThread:	table.dmThread,
 		oocThread:	table.oocThread,
 		rpThread:	table.rpThread,
@@ -682,6 +687,7 @@ async function closeTable(interaction) {
 			return null
 		}
 		const callbacks = {"*": {func:processSelectedTable, args:null}}
+			  callbacks.cancel = {func:timeout, args:null}
 			  callbacks.timeout = {func:timeout, args:null}
 		table = await getTableArg(interaction, isBuildMod, callbacks)
 	}
@@ -700,7 +706,7 @@ async function closeTable(interaction) {
 			table.awarded = true
 		}
 		// Delete an archived table
-		else if (isBuildMod && table.archived) {
+		else if (isBuildMod && (table.archived || confirm == "delete")) {
 			reply = await deleteTable(interaction, table);
 			table.deleted = true
 		}
@@ -729,8 +735,9 @@ async function archiveTable(interaction, table, archived = true) {
 	return table
 }
 
-async function _archiveTableInternal(channel, table, timestamp, archived = true)
-{
+// TODO: Refactor this to remove the need for a helper method
+// Archive if not archived, THEN set the table archived timestamp
+async function _archiveTableInternal(channel, table, timestamp, archived = true) {
 	if (!table) throw "Attempted to archive invalid table."
 
 	table.archived = archived ? (table.archived || timestamp) : 0;
@@ -757,7 +764,6 @@ async function _archiveTableInternal(channel, table, timestamp, archived = true)
 	table = await updateTableRecord(table);
 	return table
 }
-
 
 async function autoClose(thread, table, interaction = null){
 	const timestamp = Math.floor(thread.archiveTimestamp/1000)
