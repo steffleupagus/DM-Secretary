@@ -27,7 +27,7 @@ function getSelectRow()
 function getButtonRow()
 {
 	const options = [
-		{style:ButtonStyle.Primary, emoji:"☑️", custom_id:"demo.bluecheck"},	
+		{style:ButtonStyle.Primary, emoji:"☑️", custom_id:"demo.bluecheck"},
 		{style:ButtonStyle.Success, emoji:"✅", custom_id:"demo.greencheck"},
 		{style:ButtonStyle.Danger, emoji:"❌", custom_id:"demo.redx"},
 		{style:ButtonStyle.Secondary, emoji:"✖️", custom_id:"demo.grayx"},
@@ -42,17 +42,24 @@ async function execute(interaction)
 {
 	const user  = interaction.user;
 	const client = interaction.client;
-	const guildId = interaction.guildId;
+	const guild = interaction.guild;
 	const messageId = interaction.targetId;
 
 	let embed = new EmbedBuilder();
 		embed.setTitle("Interaction Demo");
 		embed.setDescription("Demo buttons & select box");
 
-	const buttons = getButtonRow()
-	const select = getSelectRow()
-	const rows = [buttons,select]
-	await interaction.reply({embeds:[embed], components: rows})
+	// const buttons = getButtonRow()
+	// const select = getSelectRow()
+	// const rows = [buttons,select]
+	// await interaction.reply({embeds:[embed], components: rows})
+
+	const members = await guild.members.fetch({ user: ['659069077872181248', '647540953103728665', '670473952761741332']});
+	const users = members.map(member => member.id);
+	await interaction.deferReply({ephemeral:false});
+	const confirm = await Prompt.confirmDialog(interaction, {content:"Test"}, users);
+	await interaction.deleteReply();
+	await interaction.followUp({content: "Confirm: "+confirm, ephemeral:true})
 
 	// const modal = await Prompt.createModal();
 	// console.log(modal)
@@ -65,8 +72,11 @@ async function run(client, message, command, args)
 
 async function button(interaction)
 {
-	await interaction.reply({content:`Handling: ${interaction.customId}`, 
-							 ephemeral: true})
+	if (interaction.customId.includes(data.name))
+	{
+		await interaction.reply({content:`Handling: ${interaction.customId}`,
+								 ephemeral: true})
+	}
 }
 
 async function select(interaction)
@@ -79,16 +89,17 @@ async function select(interaction)
 const data = new SlashCommandBuilder()
 	.setName('demo')
 	.setDescription('Demo Features')
-	.setDefaultPermission(false)	
+	.setDefaultPermission(false)
 	.addChannelOption(option => option.setName('target').setRequired(false)
 									  .setDescription('Specify a target channel'))
 
 const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
-module.exports = 
+module.exports =
 {
 	data: data,
 	whitelistRoles: [
-		config.role.Builder
+		config.role.Builder,
+		config.role.Tester,
 	],
 	userPermissions: userPermissions,
 	execute: execute,
