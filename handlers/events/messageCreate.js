@@ -34,19 +34,12 @@ async function execute(client, message)
 		if (command)
 		{
 			if (command.hasOwnProperty("build") && !command.build) return;
-			try 
-			{
-				const name = command.data.name
-				const commands = await message.guild.commands.fetch().catch(console.error);
-				const commandId = commands.findKey(cmd=> cmd.name === name);
-				const reply = await message.channel.send(`~ commands no longer work. Use </${name}:${commandId}>.`)
-				//await command.message(client, message, commandName, args);
-			}
-			catch (error)
-			{
-				console.error(error);
-				await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-			}
+			const name = command.data.name
+			const commands = await message.guild.commands.fetch().catch(console.error);
+			const commandId = commands.findKey(cmd=> cmd.name === name);
+			const reply = `\`~${commandName}\` is no longer supported. Use </${name}:${commandId}> instead.`;
+			await message.reply(reply);
+			await message.delete();
 		}
 		return;
 	}
