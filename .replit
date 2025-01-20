@@ -93,7 +93,7 @@ ignorePorts = true
 [workflows]
 
 [[workflows.workflow]]
-name = "Deploy"
+name = "Deploy Dev"
 mode = "sequential"
 author = 3559563
 
