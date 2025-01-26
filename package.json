@@ -13,12 +13,14 @@
   },
   "//": "npm run deploy -- dev // npm run deploy -- prod",
   "dependencies": {
-    "axios": "^1.7.2",
+    "axios": "^1.7.9",
     "chalk": "^4.1.2",
+    "cli-color": "^2.0.4",
     "discord.js": "^14.15.3",
     "express": "^4.18.1",
     "glob": "^7.2.3",
-    "mongoose": "^6.13.0",
+    "luxon": "^3.5.0",
+    "mongoose": "^8.9.5",
     "string-similarity": "^4.0.4",
     "unb-api": "^1.2.0"
   }

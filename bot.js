@@ -66,12 +66,7 @@ class Bot
 		mongoose.connection.on('disconnected', console.log)
 
 		mongoose.set('strictQuery', true);
-		await mongoose.connect(process.env.mongodb_url,
-		{
-			useUnifiedTopology: true,
-			useNewUrlParser: true,
-			keepAlive: true
-		})
+		await mongoose.connect(process.env.mongodb_url, { })
 		.then(console.log('Mongodb ✅'))
 		.catch(console.error)
 	}
