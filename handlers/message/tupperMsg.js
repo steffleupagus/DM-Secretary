@@ -3,11 +3,11 @@
 \*-------------------------------------------------*/
 const Tupper = require(`../../utilities/tupperUtils.js`)
 const RPP = require(`../../database/rppTrackerSchema.js`)
+const mod = process.env.mod || "";
+const config = require(`../../config/${mod}_config.json`)
 
 async function shouldHandle(client, message)
 {
-	if (process.env.mod == "dev")
-		return false;
 	return Tupper.isTupperLogMessage(client, message) ||
 		Tupper.isTupperProxyMessage(message)
 }
@@ -20,13 +20,13 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 		const record = await updateRPPFromTupperProxy({
 			user: tupperData.aId,
 			posts: 1,
-			proxy: 1,			
+			proxy: 1,
 			chars: tupperData.len,
 			scene: tupperData.cId,
 			last: tupperData.mId
 		});
 		if (record)
-			console.log(`Proxy (logged (${record.user}): ${record.posts} posts | ${record.chars} chars `)		
+			console.log(`Proxy (logged (${record.user}): ${record.posts} posts | ${record.chars} chars `)
 	}
 }
 
@@ -38,13 +38,13 @@ async function handleDelete(client, message)
 		const record = await updateRPPFromTupperProxy({
 			user: tupperData.aId,
 			posts: -1,
-			proxy: -1,			
+			proxy: -1,
 			chars: -tupperData.len,
 			scene: tupperData.cId,
 			last: tupperData.mId
 		});
 		if (record)
-			console.log(`Proxy deleted ${record.user}: ${record.posts} posts | ${record.chars} chars `)		
+			console.log(`Proxy deleted ${record.user}: ${record.posts} posts | ${record.chars} chars `)
 	}
 }
 
@@ -65,7 +65,7 @@ async function handleUpdate(client, oldMessage, newMessage)
 			last: tupperData.mId
 		});
 		if (record)
-			console.log(`Proxy updated ${record.user}: ${record.posts} posts | ${record.chars} chars `)			
+			console.log(`Proxy updated ${record.user}: ${record.posts} posts | ${record.chars} chars `)
 	}
 }
 
@@ -75,20 +75,22 @@ async function updateRPPFromTupperProxy(record)
 	const update = {
 		$set: { user: record.user, last: record.last },
 		$inc: { posts: record.posts, proxy: record.proxy, chars: record.chars },
-		$addToSet: {scene: record.scene}	
+		$addToSet: {scene: record.scene}
 	};
 	const options = { new: true, upsert: true }
-	
-	record = await RPP.findOneAndUpdate(query, update, options);	
+
+	record = await RPP.findOneAndUpdate(query, update, options);
 	return record;
 }
 
 module.exports = {
 	name: 'tupperMsg',
-	bot: true,	
+	bot: true,
 	menu: true,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 	handleUpdate: handleUpdate,
-	handleDelete: handleDelete
+	handleDelete: handleDelete,
+
+	build: config.PRODUCTION || config.DEV
 };
