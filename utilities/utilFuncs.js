@@ -40,20 +40,35 @@ module.exports =
 		return fields;
 	},
 
-	deepDiff(obj1, obj2, logKeys = []) {
+	deepDiff(obj1, obj2, skipKeys = [], logKeys = []) {
 		const changes = {};
+		const diff = {};
+
 		function findDiff(obj1, obj2, path = '') {
 			// Check for keys present in obj1 but not in obj2
 			for (const key in obj1) {
 				const fullPath = path ? `${path}.${key}` : key;
+				if (skipKeys.includes(key)) continue;
 				if (logKeys.includes(key))
-					changes[fullPath] = { type: '#', oldValue:obj1[key].toString(), newValue:obj2[key]?.toString()}
+				{
+					const hasDiff = obj2[key] && obj2[key] != obj1[key]
+					diff[fullPath] = `*** [${key}] ${obj1[key]}` + (hasDiff ? ` | ${obj2[key]}` : ``)
+					changes[fullPath] = diff[fullPath]
+//						hasDiff ? { type: '#', old:obj1[key].toString(), new:obj2[key]?.toString() }
+//												: { type: '#', val:obj1[key].toString() }
+				}
 				if (!(key in obj2)) {
-					changes[fullPath] = { type: '-', oldValue: obj1[key] };
-				} else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
+					diff[fullPath] = `- [${key}]: ${obj1[key]}`
+					changes[fullPath] = `delete: ${diff[fullPath]}`
+//						{ type: '-', oldValue: obj1[key] };
+				} else if (typeof obj1[key] === 'object' && obj1[key] !== null &&
+						   typeof obj2[key] === 'object' && obj2[key] !== null) {
 					findDiff(obj1[key], obj2[key], fullPath);
 				} else if (obj1[key] !== obj2[key]) {
-					changes[fullPath] = { type: '~', oldValue: obj1[key], newValue: obj2[key] };
+//					diff[fullPath] = `~ [${key}]: ${obj1[key]} => ${obj2[key]}`
+					diff[fullPath] = `- [${key}]: ${obj1[key]}\n+ [${key}]: ${obj2[key]}`
+					changes[fullPath] = `change: [${key}]: ${obj1[key]} => ${obj2[key]}`
+//						{ type: '~', old: obj1[key], new: obj2[key] };
 				}
 			}
 
@@ -61,14 +76,17 @@ module.exports =
 			for (const key in obj2) {
 				const fullPath = path ? `${path}.${key}` : key;
 				if (!(key in obj1)) {
-					changes[fullPath] = { type: '+', newValue: obj2[key] };
+					diff[fullPath] = `+ [${key}]: ${obj2[key]}`
+					changes[fullPath] = `add: ${diff[fullPath]}`
+//						{ type: '+', new: obj2[key] };
 				}
 			}
 		}
 
 		findDiff(obj1, obj2);
 
-		return changes;
+		const diffStr = Object.values(diff).join("\n")
+		return {json:changes, diff:diffStr};
 	},
 
 	/// Splits a JSON string into logical chunks, ensuring key-value pairs stay together.
@@ -278,29 +296,28 @@ module.exports =
 		return ms;
 	},
 
+	getTZOffset(timeStamp = null) {
+		const stdTimezoneOffset = () => {
+			var jan = new Date(0, 1)
+			var jul = new Date(6, 1)
+			return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
+		}
+
+		var today = timeStamp ? new Date(timeStamp) : new Date()
+
+		const isDstObserved = (today) =>
+		{
+			return today.getTimezoneOffset() < stdTimezoneOffset()
+		}
+
+		if (isDstObserved(today))
+			return -5
+		else
+			return -6
+	},
+
 	getDate(timeStamp = null) {
 		// Get time zone offset for NY, USA
-		const getTZOffset = () => {
-			const stdTimezoneOffset = () => {
-				var jan = new Date(0, 1)
-				var jul = new Date(6, 1)
-				return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
-			}
-
-			var today = timeStamp ? new Date(timeStamp) : new Date()
-
-			const isDstObserved = (today) => 
-			{
-				return today.getTimezoneOffset() < stdTimezoneOffset()
-			}
-
-//			console.log("DST: "+isDstObserved(today))
-
-			if (isDstObserved(today))
-				return -4
-			else
-				return -5
-		}
 
 		const d = timeStamp ? new Date(timeStamp) : new Date()
 		const localTime = d.getTime()
@@ -308,7 +325,7 @@ module.exports =
 		const utcTime = localTime + localOffset
 
 		// obtain and add destination's UTC time offset
-		const tzOffset = getTZOffset()
+		const tzOffset = this.getTZOffset(timestamp)
 
 //		console.log("Offset: "+tzOffset)
 
