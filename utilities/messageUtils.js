@@ -5,7 +5,7 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const { MessageMentions, Collection } = require('discord.js')
 
-const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"	
+const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"
 const BreakRegex = new RegExp(_regex);
 const _quote = "^>.*"
 const TupperQuote = new RegExp(_quote);
@@ -78,7 +78,7 @@ async function fetchAll(channel, options = { reverseArray: false, userOnly: fals
 			console.log(`${channel.name}: ${messages.size}`);
 			await Utils.slowdown(1500);
 		}
-		await Utils.slowdown(250);		
+		await Utils.slowdown(250);
 	}
 }
 
@@ -244,7 +244,7 @@ async function findFenceposts(channel, message, limit = 500)
 	if (before && !before.id && before.messages && before.messages.length > 0)
 		before.id = before.messages[0].id
 	console.log(`findFenceposts: ${before.id}->${after.id} | ${messages.length} total messages`)
-	
+
 	return { start: before.id, end: after.id, messages: messages };
 }
 
@@ -325,8 +325,7 @@ function checkForBullshit(message)
 			chan.send(`<@659069077872181248> [Message](${message.url}) warrants a closer look: ${message}`)
 		})
 	}
-	else
-		console.log('.')
+	//else console.log('.')
 }
 
 function cleanMessageContent(message)
@@ -343,7 +342,7 @@ function cleanMessageContent(message)
 	content = content.replaceAll(spaces," ")
 
 	checkForBullshit(message)
-	
+
 	return content.trim()
 }
 
@@ -357,7 +356,7 @@ async function scrapeMessageMetadata(stats, message)
 	if (!chanUtils.isRoleplayChannel(message.channel) &&
 		!chanUtils.isRoleplayThread(message.channel))
 		return false
-	
+
 	let user = message.author;
 	let authorId = user.id;
 	let guildMembers = message.guild?.members;
@@ -371,8 +370,8 @@ async function scrapeMessageMetadata(stats, message)
 	}
 
 	stats = stats || { tupperMap: {} }	//Assign the stats if they don't already exist
-	
-	// if (!user.bot && !member)		
+
+	// if (!user.bot && !member)
 	// {
 	// 	try { member = await guildMembers.fetch(authorId); }
 	// 	catch (err) { member = null; }
@@ -434,7 +433,11 @@ async function scrapeMessageMetadata(stats, message)
 		stats[0].char[name] = stats[0].char[name] || { uId: authorId, t: user.bot ? true : false }
 	}
 
+//	console.log(`${authorId}: Posts: ${stats[authorId]?.posts} | Len: ${stats[authorId]?.length}`)
+
 	stats[authorId] = incrementStats(stats[authorId], authorId, name, message, user.bot);
+
+//	console.log(`${authorId}: Posts: ${stats[authorId].posts} | Len: ${stats[authorId].length}`)
 
 	return stats;
 }
@@ -444,9 +447,11 @@ function assignUnknown(stats, authorId, name, tupperData)
 	const unknown = stats ?.[0] ?.char ?.[name];
 
 	stats[authorId] = stats ?.[authorId] || { char: {} }
-	stats[authorId].char[name] = stats ?.[authorId] ?.char ?.[name] || { length: 0, posts: 0 } 
-	stats[authorId].char[name].length += unknown.length || 0;
-	stats[authorId].char[name].posts += unknown.posts || 0;
+	stats[authorId].char[name] = stats ?.[authorId] ?.char ?.[name] || { length: 0, posts: 0 }
+	stats[authorId].char[name].length += unknown?.length ?? 0;
+	stats[authorId].char[name].posts += unknown?.posts ?? 0;
+	stats[authorId].length = (stats ?.[authorId] ?.length ?? 0) + (unknown?.length ?? 0);
+	stats[authorId].posts = (stats ?.[authorId] ?.posts ?? 0) + (unknown?.posts ?? 0);
 	if (unknown.chan)
 	{
 		stats[authorId].chan = stats[authorId].chan ?? [];
@@ -467,11 +472,11 @@ function assignUnknown(stats, authorId, name, tupperData)
 			if (!stats[authorId]?.char?.[name]?.dates?.[date])
 				stats[authorId].char[name].dates[date] = { length:0, posts:0 }
 			stats[authorId].char[name].dates[date].length += unknown.dates[date].length
-			stats[authorId].char[name].dates[date].posts += unknown.dates[date].posts									   
+			stats[authorId].char[name].dates[date].posts += unknown.dates[date].posts
 		});
-		delete unknown.dates				
+		delete unknown.dates
 	}
-	
+
 	stats[0].char[name] = { uId: authorId, t: tupperData ? true : false }
 
 	debug(stats[authorId].char[name]);
@@ -483,14 +488,14 @@ function incrementStats(data, id, name, message, tupperData)
 {
 	const channel = message.channel.id;
 	const content = cleanMessageContent(message)
-	
+
 	const length  = content.length;
 	let   date    = message.createdAt;
-		  date    = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`	
-	
-	data = data ?? { length: 0, posts: 0, char: {}, chan: [] };	
-	data.length += length;
-	data.posts += 1;
+		  date    = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`
+
+	data = data ?? { length: 0, posts: 0, char: {}, chan: [] };
+	data.length = (data.length ?? 0) + length;
+	data.posts = (data.posts ?? 0) + 1;
 	data.chan = data.chan || [];
 	if (!data.chan.includes(channel))
 		data.chan.push(channel)
@@ -498,7 +503,7 @@ function incrementStats(data, id, name, message, tupperData)
 	data.char[name] = data.char[name] ?? { length: 0, posts: 0, t: tupperData ? true : false, chan: [], dates: {} }
 	data.char[name].length += length;
 	data.char[name].posts += 1;
-	
+
 	data.char[name].chan = data.char[name].chan ?? []
 	if (!data.char[name].chan.includes(channel))
 		data.char[name].chan.push(channel)
@@ -523,9 +528,9 @@ module.exports =
 	findFenceposts,
 	cleanMessageContent,
 	scrapeMessages,
-	scrapeMessageMetadata,	
+	scrapeMessageMetadata,
 	getRoleplayData,
 	getAllRoleplayData,
 	isSceneBreak,
 	fetchAll
-}	
+}
