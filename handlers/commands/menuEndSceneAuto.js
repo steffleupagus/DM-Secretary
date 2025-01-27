@@ -6,12 +6,12 @@ const config = require(`../../config/${mod}_config.json`)
 async function execute(interaction)
 {
 	const client = interaction.client;
-	const messageId = interaction.targetId;
+	const message = interaction.targetMessage;
 	const channel = interaction.channel;
-	const message = await channel?.messages.fetch(messageId);
+	//const message = await channel?.messages.fetch(messageId);
 
 	const command = `scene${config.DEV ? "dev" : ""}`
-	await client.commands.get(command).autoClose(channel, true)
+	await client.commands.get(command).autoClose(message)
 }
 
 const requiredRoles = [ config.role.Builder ]
@@ -23,5 +23,5 @@ module.exports =
 		.setDefaultPermission(false),
 	execute: execute,
 	whitelistRoles: requiredRoles,
-	build:config.DEV
+	build:false//config.DEV
 };

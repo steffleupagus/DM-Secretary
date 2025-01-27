@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const ChanUtils = require(`../../utilities/channelUtils.js`)
 const DuelUtils = require(`../../utilities/funcsDuel.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
@@ -15,62 +15,60 @@ async function execute(interaction)
 	const guildId = interaction.guildId;
 	const opponent = interaction.options?.getUser('opponent') || null
 	const button = interaction.options?.getBoolean('button') || false
-	
+	const ephemeral = {flags: MessageFlags.Ephemeral}
+
 	if (!ChanUtils.isDuelRPChannel(channel))
 	{
-		interaction.reply({ephemeral:true, 
-						   content:"Cannot start a duel in this channel"})
+		interaction.reply({content:"Cannot start a duel in this channel", ...ephemeral})
 		return
 	}
 
-	const isBuilder= Utils.hasAnyRole(interaction.member, builderRoles);	
+	const isBuilder= Utils.hasAnyRole(interaction.member, builderRoles);
 	if (button)
 	{
-		interaction.reply({ephemeral:true,content:"Resetting duel button"})
+		interaction.reply({content:"Resetting duel button", ...ephemeral})
 		await DuelUtils.resetDuelButton(channel)
 		return
 	}
-	
-	
+
 	await interaction.reply("Starting duel...");
-	if (interaction.message)
+	if (interaction.message && !config.DEV) 
 		await interaction.message.edit({content:"``` ```",components:[]})
-	
+
 	let thread = null;
 	let threads = await channel.threads.fetchActive()
+	let threadcount = threads?.threads?.size || 0
 	thread = threads?.threads?.first()
-	if (!thread)
-	{
-		threads = await channel.threads.fetchArchived();
-		thread = threads?.threads?.first()
-	}
 
-	if (!thread)
+	threads = await channel.threads.fetchArchived();
+	threadcount += threads?.threads?.size || 0
+	if (!thread) thread = threads?.threads?.first()
+
+	if (!thread || config.DEV)
 	{
-		const name = channel.name.replace("🗣","⚙").replace("_rp","_mechanics")	
+		const suffix = `-` + Utils.toRomanNumeral(threadcount+1).toLowerCase()
+		const name = channel.name.replace("🗣","⚙").replace("_rp","_mechanics") + (config.DEV ? suffix : '')
 		thread = await channel.threads?.create({name:name});
 
 		//Add the bots we'll need
 		if (thread.joinable) await thread.join();
-		await thread.members.add(client.config.bots.avrae);		
+		await thread.members.add(client.config.bots.avrae);
 	}
-	
+
 	if (thread)
 	{
-		if (thread.archived)
-			await thread.setArchived(false)
+		if (thread.archived) await thread.setArchived(false)
 
 		await thread.members.add(user.id);
-		if (opponent)
-			await thread.members.add(opponent.id);
-	
+		if (opponent) await thread.members.add(opponent.id);
+
 		//Inform the user about the channel split
 		thread.send(`@ping your opponent here. Roleplay in <#${channel.id}>`)
-		await interaction.editReply(`Duel Started (Mechanics in <#${thread.id}>)`);	
-	}	
+		await interaction.editReply(`Duel Started (Mechanics in <#${thread.id}>)`);
+	}
 	else
 	{
-		interaction.editReply(`Something went wrong creating the thread`);	
+		interaction.editReply(`Something went wrong creating the thread`);
 	}
 }
 
@@ -88,7 +86,7 @@ const data = new SlashCommandBuilder()
 	.addBooleanOption(option => option.setName('button')
 			.setDescription('Show the start duel button instead of starting the duel')
 			.setRequired(false));
-module.exports = 
+module.exports =
 {
 	data: data,
 	execute: execute,
@@ -96,4 +94,5 @@ module.exports =
 	build:config.PRODUCTION || config.DEV
 };
 
-if (config.DEV) module.exports.whitelistRoles = builderRoles
+//if (config.DEV) module.exports.whitelistRoles = builderRoles
+if (config.DEV) module.exports.aliases = ["startduel"]
