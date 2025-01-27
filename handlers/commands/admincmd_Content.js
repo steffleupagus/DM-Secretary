@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
+const { SlashCommandBuilder, PermissionsBitField, MessageFlags } = require('discord.js')
 const { MessageMentions } = require('discord.js');
 const Embed = require(`../../utilities/EmbedPaginator.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
@@ -265,8 +265,8 @@ async function execute(interaction)
 	const channel = interaction.channel;
 	const clear  = interaction.options.getBoolean('clear') ?? false
 	const override = interaction.options.getString('content') ?? null
-
-	await interaction.deferReply({ephemeral:true});
+	const ephemeral = {flags:MessageFlags.Ephemeral}
+	await interaction.deferReply({...ephemeral});
 
 	//Grab the data for the new content according to what goes in this channel
 	const content = getContent(channel, override);
@@ -287,11 +287,9 @@ async function execute(interaction)
 	await interaction.editReply(`Writing contents to <#${channel.id}>`);
 	const result = await publishContent(channel, content);
 	if (result)
-		await interaction.followUp({ content: 'Write success!', ephemeral: true });
+		await interaction.followUp({ content: 'Write success!', ...ephemeral });
 	else
-		await interaction.followUp({ content: 'Write failure!', ephemeral: true });
-
-
+		await interaction.followUp({ content: 'Write failure!', ...ephemeral });
 
 	interaction.deleteReply();
 }

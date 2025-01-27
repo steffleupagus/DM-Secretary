@@ -24,7 +24,7 @@ async function execute(interaction)
 	if (char && level)
 	{
 		await interaction.deferReply({ephemeral: false});
-		
+
 		const levelQuery = {name:char, level}
 		const levelResult = await LevelUtils.getLevelData(levelQuery);
 		const user = levelResult?.user;
@@ -35,19 +35,19 @@ async function execute(interaction)
 		const guilds = guildResult.map( x => {
 			return `${x.guild} (${x.rank})`
 		}).join("\n")
-		
+
 		const embed = new EmbedBuilder()
 			.setTitle("Char Cleanup")
 			.addFields([
 				{name:"Char",value:`${levelResult.name} (${levelResult.level})`,inline:true},
 				{name:"User",value:`<@${levelResult.user}>`,inline:true},
 				{name:"Guilds", value:guilds || "None"}
-			])		
+			])
 
-		const prompt = await interaction.followUp({embeds:[embed], ephemeral:false})
-		const confirm = await Prompt.confirmDialog(prompt,[interaction.user.id])
+		const prompt = {embeds:[embed], ephemeral:false}
+		const confirm = await Prompt.confirmDialog(interaction, prompt, [interaction.user.id])
 		if (confirm)
-		{	
+		{
 			let result = await LevelUtils.PurgeChar(levelQuery)
 			console.log(result)
 			if (guilds)
@@ -56,13 +56,9 @@ async function execute(interaction)
 				console.log(result)
 			}
 		}
-		await prompt.delete();				
-		return;		
+		return;
 	}
-		
 
-
-	
 	for (var i=0; i < 5; ++i)
 	{
 		const targetMember  = interaction.options.getMember(`user_${i}`);
@@ -71,7 +67,7 @@ async function execute(interaction)
 			await interaction.reply({content:`${targetMember} is still active in the server`, ephemeral: ephemeral})
 			return;
 		}
-		
+
 		const targetUser = interaction.options.getUser(`user_${i}`);
 		if (targetUser)	
 			await cleanupDB(targetUser.id);
@@ -85,8 +81,8 @@ async function execute(interaction)
 	embed.addField("** **", '');
 
 	await charUtils.RefreshCache();
-	const members = await guild.members.fetch();	
-	let empty = true;	
+	const members = await guild.members.fetch();
+	let empty = true;
 	for (const [user,chars] of Object.entries(charUtils.charByUser))
 	{
 		const member = members.get(user);
@@ -126,7 +122,7 @@ async function run(client, message, command, args)
 const data = new SlashCommandBuilder()
 	.setName('cleandb')
 	.setDescription('Check the database data for invalid members and remove their records')
-	.setDefaultPermission(false)	
+	.setDefaultPermission(false)
 	.addStringOption(option => option
 			.setName('char')
 			.setDescription('Character to clean from the databases')
@@ -135,7 +131,7 @@ const data = new SlashCommandBuilder()
 			.setName('level')
 			.setDescription('Level of the char to clean from the databases')
 			.setRequired(false))
-	
+
 	.addUserOption(option => option
 			.setName('user_0')
 			.setDescription('User to clean from the databases')
