@@ -1,3 +1,4 @@
+const { DateTime } = require("luxon");
 const Utils = require(`../utilities/utilFuncs.js`)
 const dailyExpSchema = require(`../database/dailyExpSchema.js`)
 
@@ -6,51 +7,28 @@ const dailyExpSchema = require(`../database/dailyExpSchema.js`)
 \*╚════════════════════════════╝*/
 function getDuelExpCap(level)
 {
-	const cap = [	0,				0,				0,	
-					150,			250,			500,	
-					600,			750,			900,
-					1100,			1200,			1600,
-					2000,			2200,			2500,
-					2800,			3200,			3900,
-					4200,			4900,			5700		];
-
-	//const cap = [	0,				0,				0,	
-	// 				200,			350,			700,	
-	// 				850,			1000,			1200,
-	// 				1400,			1600,			1600,
-	// 				2000,			2200,			2500,
-	// 				2800,			3500,			4000,
-	// 				4500,			5000,			6000		];	
+/*	const cap = [	0,				0,				0,				//	0,		1,		2,
+					150,			250,			500,			//	3,		4,		5,
+					600,			750,			900,			//	6,		7,		8,
+					1100,			1200,			1600,			//	9,		10,		11,
+					2000,			2200,			2500,			//	12,		13,		14,
+					2800,			3200,			3900,			//	15,		16,		17,
+					4200,			4900,			5700	];		//	18,		19,		20
+*/
+	const cap = [	0,				0,				0,				//	0,		1,		2,
+					200,			350,			600,			//	3,		4,		5,
+					800,			1000,			1200,			//	6,		7,		8,
+					1400,			1600,			1800,			//	9,		10,		11,
+					2000,			2200,			2500,			//	12,		13,		14,
+					2800,			3200,			3900,			//	15,		16,		17,
+					4500,			5200,			6000	];		//	18,		19,		20
 	return cap[level];
-}
-
-
-function getDuelExp(level)
-{
-	//Exp table array by level, each entry is an array of [winner, loser]
-	const exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
-					[113, 	37], 	[188,	62], 	[375,	125],	// 3,  4,  5
-					[450, 	150],	[563,	187],	[675,	225],	// 6,  7,  8
-					[825, 	275],	[900,	300],	[1200,	400],	// 9, 10, 11
-					[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
-					[2100,	700],	[2400,	800],	[2925,	975],	//15, 16, 17
-					[3150,	1050],	[3675,	1125],	[4275,	1425]];	//18, 19, 20
-
-	// const exp = [	[0, 	0],		[0,		0], 	[0,		0],		// 0,  1,  2
-	// 				[150,	50],	[265,	90],	[525,	175],	// 3,  4,  5
-	// 				[640,	215],	[750,	250],	[900,	300],	// 6,  7,  8
-	// 				[1050,	350],	[1200,	400],	[1200,	400],	// 9, 10, 11
-	// 				[1500,	500],	[1650,	550],	[1875,	625],	//12, 13, 14
-	// 				[2100,	700],	[2625,	875],	[3000,	1000],	//15, 16, 17
-	// 				[3375,	1125],	[3750,	1250],	[4500,	1500]];	//18, 19, 20
-
-	return exp[level];
 }
 
 /*╔════════════════════════════════════════════════════════╗*\
 │ ║ Calculate multiplier from total characters of roleplay ║ │
 \*╚════════════════════════════════════════════════════════╝*/
-function calculateSingleDayRPMult(total)	
+function calculateSingleDayRPMult(total)
 {
 	const magicA = 1.4
 	const magicB = 0.8
@@ -58,8 +36,8 @@ function calculateSingleDayRPMult(total)
 	const high   = 10000
 	const round  = 0.1
 
-	let scaled = ( (total - low) / high) * 2 * Math.PI; 
-	let mult   = ( (scaled*magicA) / Math.sqrt(scaled*scaled+magicA*magicA) ) * magicB	
+	let scaled = ( (total - low) / high) * 2 * Math.PI;
+	let mult   = ( (scaled*magicA) / Math.sqrt(scaled*scaled+magicA*magicA) ) * magicB
 		mult   = Utils.mround(mult, round)
 	return mult
 }
@@ -106,8 +84,8 @@ function calculateRoleplayExp(level, mult)
 \*╚════════════════════════════╝*/
 function getRPExpCap(level)
 {
-	var cap = [ 0,				0,				0,	
-				150,			250,			500,	
+	var cap = [ 0,				0,				0,
+				150,			250,			500,
 				600,			750,			900,
 				1100,			1200,			1600,
 				2000,			2200,			2500,
@@ -131,8 +109,38 @@ function getTableExpCap(level)
 /*╔══════════════════════════════════════════════════════════╗*\
 │ ║ Update the daily exp log, and cap the exp from this data ║ │
 \*╚══════════════════════════════════════════════════════════╝*/
-async function updateDailyExp(data, type, logDate)
-{
+async function applyDuelExp(data, logDate, reset) { return applyDailyExp(data, logDate, reset, "duel") }
+async function undoDuelExp(data) {return applyDailyExp(data, 0, 1, "duel", true) }
+async function resetDuelExp(data) { return applyDailyExp(data, -1, 0, "duel") }
+async function applyDailyExp(data, logDate, reset, type, undo = false) {
+	//Generate a query and find the previous record (if any)
+	const { name, user, xpCap:cap } = data
+	const query = { name, user, type }
+	const record = (await dailyExpSchema.findOne(query)) ?? { exp:0, reset:0 }
+
+	if (record) {
+		//If the newly logged record is after the reset, clear the current exp and cap
+		if (logDate >= record.reset || logDate < 0) record.exp = 0
+		//Note if the result has been capped for display purposes
+		if ((record.exp + data.xpAmt) > cap) data.capped = true
+		//Update the xp amount and cumulative exp total
+		if (undo) data.xpMod = Math.min(0, -data?.xpMod ?? -data?.xpAmt ?? 0)
+		else data.xpMod = Math.max(0, Math.min(data.xpAmt, cap - record.exp))
+		data.xpCum = Math.max(0, record.exp + data.xpMod)
+		//console.log(`Updating exp total. ${record.exp} => ${data.xpCum}`)
+		if (undo) reset = record.reset
+	}
+
+	//Generate an update to push to the database
+	const update = { name, user, type, exp:data.xpCum, cap, reset }
+	const options = { new: true, upsert: true }
+	const newResult = await dailyExpSchema.findOneAndUpdate( query, update, options )
+
+	//Return the modified character data with the capped information
+	return data
+}
+
+async function updateDailyExp(data, type, logDate) {
 	data.xp.total = data.xp.xp
 	const search = {
 		name: data.char,
@@ -145,11 +153,9 @@ async function updateDailyExp(data, type, logDate)
 	const newReset = new Date(new Date(logDate).setHours(24,0,0,0))
 
 	const result = await dailyExpSchema.findOne(search)
-	if (result)
-	{
+	if (result) {
 		oldReset = new Date(result.reset)
-		if (logDate >= result.reset)
-		{
+		if (logDate >= result.reset) {
 			console.log("Resetting daily cap")
 			result.exp = 0
 			result.cap = data.xp.cap
@@ -162,12 +168,7 @@ async function updateDailyExp(data, type, logDate)
 		console.log(`Updating exp total. ${result.exp} => ${data.xp.total}`)
 	}
 
-	// console.log("Reset:",oldReset)
-	// console.log("Logged:",logged)
-	// console.log("Now:",Utils.getDate())
-	// console.log("New Reset:",newReset)
-	if (data.xp.xp < 0)
-		data.xp.total = Math.max(0, data.xp.total)
+	if (data.xp.xp < 0) data.xp.total = Math.max(0, data.xp.total)
 
 	const newResult = await dailyExpSchema.findOneAndUpdate(
 		search,
@@ -187,13 +188,19 @@ async function updateDailyExp(data, type, logDate)
 	return data
 }
 
+
+
 module.exports = {
-	getDuelExp,
 	getDuelExpCap,
+	applyDuelExp,
+	resetDuelExp,
+	undoDuelExp,
+
 	updateDailyExp,
+
 	getRPExpCap,
 	calculateSingleDayRPMult,
 	calculateMultiDayRPMult,
-	calculateHybridRPMult,		
+	calculateHybridRPMult,
 	calculateRoleplayExp
 }

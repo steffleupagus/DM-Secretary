@@ -130,6 +130,7 @@ module.exports = {
 	getLevelData,
 	findLevelData,
 	updateLevelMessage,
+	updateLevelData,
 	PurgeUser,
 	PurgeChar
 }
