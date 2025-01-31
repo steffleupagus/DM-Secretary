@@ -11,12 +11,21 @@ async function execute(interaction)
 	const user = interaction.options.getMember('user')?.id ?? null;
 	const name = interaction.options.getString('name')?.trim() ?? null;
 	const level = interaction.options.getNumber('level') ?? 3;
+	const clean = interaction.options.getBoolean('delete') ?? false;
+	let content = ''
 	if (user && name) {
-		const update = await LevelUtils.updateLevelData({user, name}, level);
-		Log.DEBUG(update)
-		await interaction.reply({content:`Updated \`${update.name}\` (<@${update.user}>) to level \`${update.level}\``,
-								 flags:MessageFlags.Ephemeral})
+		if (clean) {
+			const update = await LevelUtils.PurgeChar({user,name})
+			content = `Purged \`${update?.name||name}\` (<@${update?.user||user}>)`
+		}
+		else {
+			const update = await LevelUtils.updateLevelData({user, name}, level);
+			Log.DEBUG(update)
+			content = `Updated \`${name}\` (<@${user}>) to level \`${level}\``
+		}
+		await interaction.reply({content, flags:MessageFlags.Ephemeral})
 	}
+	CharUtils.RefreshCache();
 }
 
 ////// Handle autocomplete options for the Character field
@@ -50,6 +59,11 @@ const data = new SlashCommandBuilder()
 	.addNumberOption(option => option
 		.setName('level')
 		.setDescription('Character level')
+		.setRequired(false)
+	)
+	.addBooleanOption(option => option
+		.setName('delete')
+		.setDescription('Delete the character')
 		.setRequired(false)
 	)
 
