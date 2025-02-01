@@ -1,5 +1,6 @@
-const { ActionRowBuilder, EmbedBuilder, ButtonStyle, TextInputStyle, MessageMentions } = require('discord.js')
+const { ActionRowBuilder, EmbedBuilder, ButtonStyle, MessageMentions, TextInputStyle } = require('discord.js')
 const { DateTime } = require("luxon");
+const { SortOrder } = require(`./enums.js`)
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`)
@@ -82,8 +83,10 @@ const ERROR = {
 	ABORTED: `Duel aborted.`,
 
 	//DM Alerts
+	USER_GROUP: {name:"Auto Group", value:`Characters played by the same user are auto-grouped.`},
 	MANUAL_GROUP: {name:"Manual Groups", value:`Groups manually modified.`},
 	INVALID_OUTCOME: {name:"Invalid Outcome", invalid:`Duel ended without clear conclusion.`, manual:`Outcome manually modified.`},
+
 
 	//Data validation warnings
 	NO_PLAYER: { name:"No Player", value:(err) => `Was not able to identify player for \`${err.name}\``},
@@ -312,7 +315,7 @@ async function _handleErrorLog(args) {
 	const {interaction, duelData, error} = args
 
 	// Early out if this is just a cancel message - we don't need to log every cancellation
-//	if (error?.message?.includes(ERROR.CANCELLED)) return;
+	if (error?.message?.includes(ERROR.CANCELLED)) return;
 
 	// Add the duelData to the debug log embed
 	if (!error.cause && duelData) error.cause = DEBUGFIELDS(duelData, debugStr)
@@ -893,6 +896,8 @@ function _aggregateTeams(duelData) {
 		users = users.users ?? users
 		//Find all characters of this group
 		const chars = duelData.characters.filter(x => users.includes(x.user));
+		if (chars.length > 1)
+			duelData.errors.USER_GROUP = ERROR.USER_GROUP.value
 		chars.sort((a,b) => b.level - a.level);
 		const names = chars.map(x => x.name)
 		//Determine the team name - the highest level character of the user, or "Group X"
@@ -910,7 +915,8 @@ function _aggregateTeams(duelData) {
 	duelData.characters.map(c => {
 		c.team = duelData.teams.findIndex(t => t.users.includes(c.user))
 	})
-	duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, {team:1,level:-1,hp:-1}))
+	const sortKeys = {team:SortOrder.ASC,level:SortOrder.DESC,hp:SortOrder.DESC}
+	duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
 
 	return duelData;
 }
@@ -1198,7 +1204,7 @@ function _calculateExp(duelData) {
 		const capTotal = (c.win ? victorCapTotal : (partial ? partVictorTotal : defeatCapTotal));
 //		const grpPool = (c.win ? victorExpPool : (partial ? partVictorPool : defeatExpPool));
 		const grpPool = (c.win ? (partial ? partDefeatPool : victorExpPool)	//Victor
-						 	   : (partial ? partVictorPool : defeatExpPool))//Defeat
+							   : (partial ? partVictorPool : defeatExpPool))//Defeat
 		const totalPool = (partial && !c.win) ? partVictorTotal : defeatCapTotal
 		const poolPct = Math.min(100, c.xpCap / capTotal);
 		const unCapExp = poolPct * grpPool;
@@ -1599,9 +1605,10 @@ async function editDuel(interaction) {
 		duelData = _cleanData(duelData)
 		const dmEmbed = await _sendApprovalMessage(duelData, interaction)
 
+		const sortKeys = {name:SortOrder.ASC,level:SortOrder.DESC}
 		duelData.characters.forEach(c => { delete c.xpData; delete c.xpCap; delete c.gpData })
-		duelDiff.characters.sort((a,b) => Utils.priorityCompare(a, b, {name:1,level:-1}))
-		duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, {name:1,level:-1}))
+		duelDiff.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+		duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
 		duelDiff = Utils.deepDiff(duelDiff.characters,duelData.characters,[], ["name"])
 		const dataFn = {
 			json: (data) => ({name:"Data JSON", value:`\`\`\`json\n${JSON.stringify(data,null,2)}\n\`\`\``}),
@@ -1661,7 +1668,7 @@ async function _editDuelDataRaw(duelData, interaction) {
 				])
 			//Create a select dropdown of each character
 			const charStrFormat = { team:false, user:false, xp:false, gp:false, hp:true, defeat:false,
-								   	calc: false, string: true, data: false }
+									calc: false, string: true, data: false }
 			const charOpts = duelData.characters.map(char => {
 				let desc = _charToString(char, [], charStrFormat).replaceAll(/[\`\*]/g,``)
 				return Prompt.createSelectOption(char.name, desc, char.name)

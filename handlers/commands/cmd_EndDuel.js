@@ -15,7 +15,7 @@ async function execute(interaction, message=null) {
 		if (response !== true)
 			await interaction.editReply(response);
 		else if (interaction.ephemeral)
-			await interaction.editReply("Done")
+			await interaction.editReply({content:"Done",components:[]})
 	}
 	catch (error) {
 		error = error.error || error

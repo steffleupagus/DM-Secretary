@@ -13,8 +13,8 @@
 				"prefix":"<:d20:704040692946698361> ",
 				"title": "Requirements",
 				"fields":[
-					{"name":"Character Sheet","value":"Duels require a character sheet to have been approved and properly `!setup`."},
-					{"name":"Roleplaying","value":"Some effort into roleplaying the actions of the duel are required. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands."}
+					{"name":"Character Sheet","value":"Duels require a character sheet to have been approved and properly `!setup`. The bot may not process a duel which involves an unrecognized participant."},
+					{"name":"Roleplaying","value":"Some effort into roleplaying the actions of the duel are required. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands. The bot will not process a duel unless a minimum RP threshold has been met by all participants."}
 				]
 			},
 			{
@@ -25,14 +25,17 @@
 			{
 				"prefix":"<:d20:704040692946698361> ",
 				"title": "Duels are Fought to Zero HP",
-				"description": "For duels to be considered valid and a winner to be determined, one or more combatants must be reduced to zero hit poitns.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when at least one participant is reduced to zero HP.",
+				"description": "For duels to be considered valid and a winner to be determined, one or more combatants must be reduced to zero hit poitns.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when at least one participant is marked as 'defeated' (i.e. reduced to zero HP).",
 				"fields":[{"name":"Throwing Fights","value":"Surrendering or otherwise throwing the victory to the opponent will not be permitted. This includes, but is not limited to, a player rage-quitting by manually setting their HP to zero, or a high-level character allowing a low-level character to defeat them for a greater share of exp. If the DMs catch you doing this, you may lose your ability to gain exp from duels at all."}]
 			},
 			{
 				"prefix":"⚠️ ",
 				"title": "[Experimental] Team Duels",
 				"description": "Previously, duels were limited to 1v1. An effort has been made to permit more than this base configuration of two combatants. When a duel is closed with more than two participants, the bot will give participants the option to group players for team combat.",
-				"fields":[{"name":"Duel Permutations","value":"- 2 Participants: `1v1` (Standard Duel)\n- 3 Participants: `1v1v1` / `1v2`\n- 4 Participants: `1v1v1v1` / `1v1v2` / `1v3` / `2v2`\n- 5 Participants: `1v1v1v1v1` / `1v1v1v2` / `1v1v3` / `1v4` / `1v2v2`/ `2v3`\n- 6 Participants: `etc.`"}]
+				"fields":[
+					{"name":"Duel Permutations","value":"- 2 Participants: `1v1` (Standard Duel)\n- 3 Participants: `1v1v1` / `1v2`\n- 4 Participants: `1v1v1v1` / `1v1v2` / `1v3` / `2v2`\n- 5 Participants: `1v1v1v1v1` / `1v1v1v2` / `1v1v3` / `1v4` / `1v2v2`/ `2v3`\n- 6 Participants: `etc.`"},
+					{"name":"Multiple Characters","value":"A player will not be able to pit their own characters against one another. If a player has multiple character in the same duel, they will automatically be treated as part of the same team, and cannot be split."}
+				]
 			},
 			{
 				"indexBreak":true,
