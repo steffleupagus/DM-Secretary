@@ -6,22 +6,22 @@
 		"embeds": [
 			{
 				"description":"**Map Name**: `arena`\n**Map Size**: `42x26`\n**1v1 Start Coords**: `S13` & `Y13`\nRecommended for use as the main Colosseum.\nLarge elliptical arena, with a large variety of additional options to spice up your duels. (Optional rules for the variants is still being considered, and suggestions may be posted in <#694306844079947838>).",
-				"image":{"url":"https://i.imgur.com/tJodUwe.png"},
-				"fields":[{"name":"Variants","value":"`arena_night` ([link](https://i.imgur.com/yuUdsc0.png)) - A night time version \n`arena_glow` ([link](https://i.imgur.com/O9bCc5C.png)) - A dark version with blue glow\n`arena_platform`  ([link](https://i.imgur.com/XIGUbVg.png)) - A platform surrounded by pillars\n`arena_columns` ([link](https://i.imgur.com/Pyo0YOv.png)) - Rows of columns for cover\n`arena_arcane` ([link](https://i.imgur.com/wJJnoQp.png)) - Glowing arcane sigils and wards\n`arena_hill` ([link](https://i.imgur.com/Td1GCkM.png)) - A King of the Hill variant\n`arena_air` ([link](https://i.imgur.com/PWyf7lp.png)) - Wind swirls in the center\n`arena_earth` ([link](https://i.imgur.com/kOD42l7.png)) - Stone rubble provides obstacles and cover\n`arena_fire` ([link](https://i.imgur.com/tkX6VMO.png)) - Narrow corridors surrounded by flame\n`arena_water` ([link](https://i.imgur.com/EoJEwPp.png)) - Narrow walkways over water"}],
-				"attachments":["https://i.imgur.com/yuUdsc0.png","https://i.imgur.com/O9bCc5C.png","https://i.imgur.com/XIGUbVg.png","https://i.imgur.com/Pyo0YOv.png","https://i.imgur.com/wJJnoQp.png","https://i.imgur.com/Td1GCkM.png","https://i.imgur.com/PWyf7lp.png","https://i.imgur.com/kOD42l7.png","https://i.imgur.com/tkX6VMO.png","https://i.imgur.com/EoJEwPp.png"]
+				"image":{"url":"https://a.l3n.co/i/YiFvYb.png"},
+				"fields":[{"name":"Variants","value":"`arena_night` ([link](https://a.l3n.co/i/YiFPpD.png)) - A night time version \n`arena_glow` ([link](https://c.l3n.co/i/YiUVnr.png)) - A dark version with blue glow\n`arena_platform`  ([link](https://b.l3n.co/i/YiU9yF.png)) - A platform surrounded by pillars\n`arena_columns` ([link](https://c.l3n.co/i/YiUqT3.png)) - Rows of columns for cover\n`arena_arcane` ([link](https://c.l3n.co/i/YiU3Zq.png)) - Glowing arcane sigils and wards\n`arena_hill` ([link](https://a.l3n.co/i/YiU4sA.png)) - A King of the Hill variant\n`arena_air` ([link](https://b.l3n.co/i/YiUOQa.png)) - Wind swirls in the center\n`arena_earth` ([link](https://a.l3n.co/i/YiUHne.png)) - Stone rubble provides obstacles and cover\n`arena_fire` ([link](https://b.l3n.co/i/YiUl5k.png)) - Narrow corridors surrounded by flame\n`arena_water` ([link](https://c.l3n.co/i/YiUSTx.md.png)) - Narrow walkways over water"}],
+				"attachments":["https://a.l3n.co/i/YiFPpD.png","https://c.l3n.co/i/YiUVnr.png","https://b.l3n.co/i/YiU9yF.png","https://c.l3n.co/i/YiUqT3.png","https://c.l3n.co/i/YiU3Zq.png","https://a.l3n.co/i/YiU4sA.png","https://b.l3n.co/i/YiUOQa.png","https://a.l3n.co/i/YiUHne.png","https://b.l3n.co/i/YiUl5k.png","https://c.l3n.co/i/YiUSTx.md.png"]
 			},
 			{
-				"description":"**Map Name**: `arena_round`\n**Map Size**: `30x29`\n**URL**: https://i.imgur.com/2daINBr.png\n**1v1 Start Coords**: `L15` & `S15`\nA large no-frills circular arena.",
-				"image":{"url":"https://i.imgur.com/2daINBr.png"}
+				"description":"**Map Name**: `arena_round`\n**Map Size**: `30x29`\n**URL**: https://b.l3n.co/i/YiUeOH.png\n**1v1 Start Coords**: `L15` & `S15`\nA large no-frills circular arena.",
+				"image":{"url":"https://b.l3n.co/i/YiUeOH.png"}
 			},
 			{
-				"description":"**Map Name**: `sidearena1`\n**Map Size**: `22x21`\n**URL**: https://i.imgur.com/eO8bkiI.jpg\n**1v1 Start Coords**: `H11` & `O12`\nA small circular arena",
-				"image":{"url":"https://i.imgur.com/eO8bkiI.jpg"}
+				"description":"**Map Name**: `sidearena1`\n**Map Size**: `22x21`\n**URL**: https://a.l3n.co/i/YiUnc1.jpg\n**1v1 Start Coords**: `H11` & `O12`\nA small circular arena",
+				"image":{"url":"https://a.l3n.co/i/YiUnc1.jpg"}
 			},
 			{
-				"description":"**Map Name**: `sidearena2`\n**Map Size**: `24x15`\n**URL**: https://i.imgur.com/t5kTkvM.png\n**1v1 Start Coords**: `I8` & `P8`\nA small oval arena with pillars",
-				"image":{"url":"https://i.imgur.com/t5kTkvM.png"}
-			}		
+				"description":"**Map Name**: `sidearena2`\n**Map Size**: `24x15`\n**URL**: https://a.l3n.co/i/YiUMsK.png\n**1v1 Start Coords**: `I8` & `P8`\nA small oval arena with pillars",
+				"image":{"url":"https://a.l3n.co/i/YiUMsK.png"}
+			}
 		]
 	}
 }
