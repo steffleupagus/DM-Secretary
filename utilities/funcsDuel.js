@@ -296,8 +296,16 @@ function DebugFn(args=debugStr) {
 		errors: (errors) => { return _errorsToFields(errors) }
 	}
 }
-function DEBUGFIELDS(data,args) { const {events, ...debugData} = data; return Log.DEBUGFIELDS(data, DebugFn(args)) }
-function DEBUGTHROW(data){ const {events, ...debugData} = data; Log.DEBUGTHROW(debugData, DebugFn()) }
+function DEBUGFIELDS(data,args) {
+	if (!data) Log.ERROR(Error().stack)
+	const {events, ...debugData} = data;
+	return Log.DEBUGFIELDS(data, DebugFn(args));
+}
+function DEBUGTHROW(data){
+	if (!data) Log.ERROR(Error().stack)
+	const {events, ...debugData} = data;
+	Log.DEBUGTHROW(debugData, DebugFn()) 
+}
 /// Handle an error with the edit components by restoring the original embed/components passed in via args
 async function _handleComponentError(args) {
 	const {interaction, restoreEmbeds, restoreComponents, duelData, error} = args
@@ -344,9 +352,9 @@ async function processDuel(interaction, message) {
 
 	if (error) {
 		const duelData = error.cause
-		error.cause = DEBUGFIELDS(duelData, debugStr)
+		error.cause = duelData ? DEBUGFIELDS(duelData, debugStr) : null
 		_handleErrorLog({interaction, duelData, error})
-		error.cause = DEBUGFIELDS(duelData, playerStr)
+		error.cause = duelData ? DEBUGFIELDS(duelData, playerStr) : null
 	}
 
 	Mutex.unlock(channel,	error);
@@ -1145,9 +1153,10 @@ async function _promptWinners(duelData, interaction, victors = [], edit = false,
 	if (modDM) buttons.push({style:ButtonStyle.Danger, emoji:no, label:"Abort", custom_id:"abort"})
 
 	//Create select components
-	const winSelect = Prompt.createSelectRow(customId="winners", opts, 1, opts.length-1, "Select winner...");
-	const buttonRow = Prompt.createButtonRow(buttons)
-	const components = [winSelect,buttonRow];
+	const components = []
+	if (opts.length)
+		components.push(Prompt.createSelectRow(customId="winners", opts, 1, opts.length-1, "Select winner..."))
+	components.push(Prompt.createButtonRow(buttons))
 
 	//Present to the user and await the response
 	const {ephemeral} = interaction
@@ -1220,7 +1229,8 @@ function _calculateExp(duelData) {
 /// @duelData		- Extant data gathered from the initiativ
 function _calculateGold(duelData) {
 	//			 Level :  0, 1, 2, 3,  4,  5,  6,  7,  8,  9, 10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20
-	const goldPerLevel = [0, 0, 0, 4, 12, 32, 40, 48, 56, 64, 72, 100, 120, 160, 200, 240, 280, 360, 440, 520, 600];
+	const goldPerLevel = [0, 0, 0, 4,  8, 16, 24, 32, 40, 48, 56,  72,  88, 104, 120, 136, 152, 184, 216, 248, 280];
+					//	 [0, 0, 0, 4, 12, 32, 40, 48, 56, 64, 72, 100, 120, 160, 200, 240, 280, 360, 440, 520, 600];
 
 	// const xpTotal = duelData.characters.reduce((x,c) => x += c.xpAmt, 0)
 	// const gpPurse = duelData.characters.reduce((g,c) => g += goldPerLevel[c.level], 0)
@@ -1688,7 +1698,7 @@ async function _editDuelDataRaw(duelData, interaction) {
 			"cancel": {func: buttonCallback, args: "cancel"},
 			"reset": {func: buttonCallback, args: "reset"}
 		}
-		const promptArgs = {callbackMap}
+		const promptArgs = {callbackMap,users:[interaction.user.id]}
 		response = await Prompt.collectComponents(prompt, promptArgs)
 		const input = response.values ? response.values[0] : null
 
@@ -1779,7 +1789,7 @@ async function _resetDaily(duelData, interaction) {
 			components.push(buttonRow, charSelect)
 		}
 		const prompt = await interaction.editReply({components});
-		response = await Prompt.collectComponents(prompt)
+		response = await Prompt.collectComponents(prompt,{users:[interaction.user.id]})
 		const input = response.values ? response.values[0] : null
 
 		const reset = []
@@ -1813,14 +1823,23 @@ async function approveDuel(interaction) {
 /// Handle reactions to the exp log message for ease of DM validation
 /// @interaction	- The interaction of the button press
 async function rejectDuel(interaction) {
-	await _handleDuelResult(interaction,false)
+	if (!interaction.deferred) await interaction.deferUpdate();
+	const content = interaction?.message?.content
+	const restoreEmbeds = interaction?.message?.embeds//?.[0]?.toJSON();
+	const restoreComponents = interaction?.message?.components;
+
+	try {
+		await _handleDuelResult(interaction,false)
+	} catch (error) {
+		await _handleComponentError({interaction, restoreEmbeds, restoreComponents, duelData, error})
+	}
 }
 
 /// Handle reactions to the exp log message for ease of DM validation
 /// @interaction	- The interaction of the button press
 /// @approved		- If the duel in question should be approved or not
 async function _handleDuelResult(interaction, approved) {
-	await interaction.deferUpdate();
+	if (!interaction.deferred) await interaction.deferUpdate();
 	const content = interaction?.message?.content
 	const restoreEmbeds = interaction?.message?.embeds//?.[0]?.toJSON();
 	const restoreComponents = interaction?.message?.components;
@@ -1927,7 +1946,7 @@ async function _postDuelResultLog(interaction, duelData, approved) {
 	const fields 	= characters.map(c => _charToString(c, characters, charFieldArgs));
 	if (comments) fields.push(...comments);
 
-	fields.push({name:"** **", value:`-# [Roleplay](${roleplay}) / [Duel](${duel}) / [Transcript](${transcript})\n${instruct}-# Next Daily Exp Reset <t:${duelData.reset}:R>\n-# <t:${duelData.reset}:F>`})
+	fields.push({name:"** **", value:`-# [Roleplay](${roleplay}) / [Duel](${duel}) / [Transcript](${transcript})\n${instruct}-# Next Daily Exp Reset (from time of duel) <t:${duelData.reset}:R>\n-# <t:${duelData.reset}:F>`})
 
 	const matchup	= duelData.matchup ? ` (${duelData.matchup})` : ``
 	const logEmbed	= new EmbedBuilder().setTitle(`${DUELTITLE}${matchup}`)

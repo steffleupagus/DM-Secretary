@@ -9,7 +9,7 @@ const util = require('util')
 
 async function execute(interaction, message=null) {
 	const ephemeral = (message) ? {flags:MessageFlags.Ephemeral} : {}
-	const reply = await interaction.deferReply({fetchReply:true, ...ephemeral})
+	await interaction.deferReply({...ephemeral})
 	try {
 		const response = await DuelUtils.processDuel(interaction, message);
 		if (response !== true)
