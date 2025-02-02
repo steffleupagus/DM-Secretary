@@ -26,7 +26,8 @@ const DUELTHUMB = "https://i.imgur.com/2U90DwW.png";
 const JSONURL = "http://tinyurl.com/tjson?input="
 const PING_PREFIX = config.DEV ? "-" : "@";
 const dmPingChannel = config.DEV ? config.debug.dmPing : config.chan.dmPing;
-const dmRoles = [config.role.DM, config.role.DMOnDuty, config.role.Builder];
+const xpLogChannel = config.DEV ? config.debug.duel : config.chan.xpLog;
+const dmRoles = [config.role.DM, config.role.DMOnDuty, config.role.Moderator, config.role.Builder];
 
 const BR = `\n\`${' '.repeat(69)}\``
 const DM_PING = `<${PING_PREFIX}&${config.role.DMOnDuty}>`
@@ -63,7 +64,7 @@ const INSTRUCT = {
 	CONFIRM_FOOTER: (yes,no) => `${yes} approve (all particpants) / ${no} cancel (any participant).\nWill auto-confirm after 30 seconds.`,
 //DM Approval Screen
 	APPROVE_FOOTER: `${config.emoji.yes}  Approve | ${config.emoji.no} Reject (no exp) | ${config.emoji.edit} Comment | Toggle Exp Calc | Edit`,
-	PENDING_APPROVAL: (msg) => `***Please wait** a [@DM](${msg}) will review your duel as soon as possible. Awards will be posted in <#${config.chan.xpLog}> once the duel has been reviewed by the DM staff.*\n*If anything looks incorrect, contact ${DM_PING} for assistance.*\n${BR}\n`,
+	PENDING_APPROVAL: (msg) => `***Please wait** a [@DM](${msg}) will review your duel as soon as possible. Awards will be posted in <#${xpLogChannel}> once the duel has been reviewed by the DM staff.*\n*If anything looks incorrect, contact ${DM_PING} for assistance.*\n${BR}\n`,
 //Duel Approved
 	LOG_FOOTER: `-# Log your gains in <#${config.chan.xpSpam}>\n-# - ${config.emoji.xp} \`!xp <#>\`\n-# - ${config.emoji.gp} \`!coins <#>\`\n`
 }
@@ -334,15 +335,14 @@ async function _handleErrorLog(args) {
 }
 
 /// Process the most recent duel in the specified channel in a try/catch harness
-/// @channel: The channel in which the command was executed
-/// @user: The user who executed the command
+/// @interaction: The slash command interaction (where applicable)
 /// @message: Optionally, the message on which the menu command was run
 async function processDuel(interaction, message) {
 	/// Arguments will vary depending on the method of entry
 	///		- User-Ended via slash command:	interaction (contains channel)
 	///		- User-Ended via context menu :	interaction (contains channel & message)
 	///		- Auto-ended via thread update: channel & message (NO interaction)
-	const args = { interaction, message }
+	const args			=	{ interaction, message }
 	if (message) args.skipRP = true;
 	const channel		=	args.channel ?? interaction?.channel ?? message?.channel
 	let ret 			=	null;
@@ -1958,7 +1958,7 @@ async function _postDuelResultLog(interaction, duelData, approved) {
 	characters.forEach(c => { if (c.xpMod > 0 && !players.includes(c.user)) players.push(c.user) })
 	const content	= players.map(p => `<${PING_PREFIX}${p}>`).join('');
 
-	const logChan = await guild?.channels?.resolve(DEBUG ? config.debug.duel : config.chan.xpLog)
+	const logChan = await guild?.channels?.resolve(xpLogChannel)
 	const message = await logChan.send({content,embeds:[logEmbed]})
 	return message;
 }
