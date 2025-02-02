@@ -218,9 +218,7 @@ function _charTeamString(char, charList) {
 }
 function _charExpDetails(char) {
 	if (!char?.xpData) return null
-	let { capTotal, totalPool, grpPool, poolPct, unCapExp, partial } = char.xpData
-//	type = char.win ? "victor" : (partial ? "partial victory" : "defeat")
-//	xpMult = char.win ? VICTOR_XP : (partial ? PARTIAL_XP : DEFEAT_XP)
+	let { capTotal, totalPool, poolPct, unCapExp, partial } = char.xpData
 	type = partial ? "partial victory" : (char.win ? "victor" : "defeat")
 	xpMult = partial ? PARTIAL_XP : (char.win ? VICTOR_XP : DEFEAT_XP)
 	xpMult = Utils.precise(100 * xpMult,1)
@@ -228,19 +226,26 @@ function _charExpDetails(char) {
 	unCapExp = Math.round(unCapExp)
 	capExp = (unCapExp>char.xpAmt) ? ` => Capped: \`${char.xpAmt}\`` : ``
 	xpSet = char.hasOwnProperty("xpSet") ? `\n-# -\t• \`Manual Override\`: \`${char.xpSet}\`` : ``
-	const summary = `\n-# - Exp Summary:
--# -\t• \`${totalPool}\` (*total exp pool*) * \`${xpMult}%\` (*${type}*) = \`${grpPool}\` (*exp pool*)
--# -\t• \`${char.xpCap}\` (*xp Cap*) / \`${capTotal}\` (*total ${type} cap*) = \`${poolPct}%\` (*pool %*)
--# -\t• \`${poolPct}%\` (*pool %*) * \`${grpPool}\` (*exp pool*) = \`${unCapExp}\`${capExp}xp${xpSet}`
+	const summary = `
+-# - \`${char.xpCap}\` (*xp Cap*) / \`${capTotal}\` (*team cap*) = \`${poolPct}%\` (*pool %*)
+-# - \`${totalPool}\` (*exp pool*) * \`${xpMult}%\` (*${type}*) * \`${poolPct}%\` (*pool %*) = \`${unCapExp}\`${capExp}xp${xpSet}`
 	return summary
 }
 function _charGoldDetails(char) {
 	if (!char?.gpData || !char?.xpData) return null
-	let { purse, gpPct } = char.gpData
+	let { cap, capTotal, totalPurse, poolPct, uncapGold } = char.gpData
+	let { partial } = char.xpData
 	type = char.xpData.partial ? "partial victory" : (char.win ? "victor" : "defeat")
 	gpSet = char.hasOwnProperty("gpSet") ? `\n-# -\t• \`Manual Override\`: \`${char.gpSet}\`` : ``
-	gpPct = Utils.precise(100 * gpPct,1)
-	return `\n-# - \`${purse}\` (total purse) * \`${gpPct}%\` (*${type}*) = \`${char.gpAmt}\`gp${gpSet}`
+	gpMult = partial ? PARTIAL_XP : (char.win ? VICTOR_XP : DEFEAT_XP)
+	gpMult = Utils.precise(100 * gpMult,1)
+	poolPct = Utils.precise(100 * poolPct,1)
+	upcapGold = Math.round(uncapGold)
+	capGold = (uncapGold>char.gpAmt) ? ` => Capped: \`${char.gpAmt}\`` : ``
+	const summary = `
+-# - \`${cap}\` (*gp Cap*) / \`${capTotal}\` (*team cap*) = \`${poolPct}%\` (*pool %*)
+-# - \`${totalPurse}\` (*purse*) * \`${gpMult}%\` (*${type}*) * \`${poolPct}%\` (*pool %*) = \`${uncapGold}\`${capGold}xp${gpSet}`
+	return summary
 }
 function _teamToString(t, data, includeList) {
 	const team = []
@@ -1202,24 +1207,33 @@ function _calculateExp(duelData) {
 
 	const victorCapTotal = victors.reduce((total,team) => total + team.xpCap, 0)
 	const defeatCapTotal = defeats.reduce((total,team) => total + team.xpCap, 0)
-	const victorExpPool = Math.ceil(defeatCapTotal * VICTOR_XP)
-	const defeatExpPool = Math.floor(defeatCapTotal * DEFEAT_XP)
-	const partVictorPool = Math.ceil(partVictorTotal * PARTIAL_XP)
-	const partDefeatPool = Math.ceil(defeatCapTotal * PARTIAL_XP)
-	const xpData = {victorCapTotal, victorExpPool, defeatCapTotal, defeatExpPool, partVictorPool}
+	// const victorExpPool = Math.ceil(defeatCapTotal * VICTOR_XP)
+	// const defeatExpPool = Math.floor(defeatCapTotal * DEFEAT_XP)
+	// const partVictorPool = Math.ceil(partVictorTotal * PARTIAL_XP)
+	// const partDefeatPool = Math.ceil(defeatCapTotal * PARTIAL_XP)
+	// const xpData = {victorCapTotal, victorExpPool, defeatCapTotal, defeatExpPool, partVictorPool}
 
 	duelData.characters.map(c => {
-		const partial = (c.win ? c.hpCur == 0 : partVictorPool >= defeatExpPool) ? 1 : 0
-		const capTotal = (c.win ? victorCapTotal : (partial ? partVictorTotal : defeatCapTotal));
-//		const grpPool = (c.win ? victorExpPool : (partial ? partVictorPool : defeatExpPool));
-		const grpPool = (c.win ? (partial ? partDefeatPool : victorExpPool)	//Victor
-							   : (partial ? partVictorPool : defeatExpPool))//Defeat
+		const partial = (c.win ? c.hpCur == 0 : partVictorTotal >= defeatCapTotal) ? 1 : 0
+
+		//Determine the total pool
 		const totalPool = (partial && !c.win) ? partVictorTotal : defeatCapTotal
-		const poolPct = Math.min(100, c.xpCap / capTotal);
-		const unCapExp = poolPct * grpPool;
+		//Determine the group's percentage of the total purse
+		const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
+		const grpPool = totalPool * grpPoolPct;
+		// const grpPool = (c.win ? (partial ? partDefeatPool : victorExpPool)	//Victor
+		// 	   				   : (partial ? partVictorPool : defeatExpPool))//Defeat
+		//Determine the individual's percentage of their group's pool
+		const capTotal = (c.win ? victorCapTotal : defeatCapTotal);
+		const poolPct = Math.min(1, c.xpCap / capTotal);
+		//Calculate the individual's total award
+		const unCapExp = Math.round(totalPool * grpPoolPct * poolPct);
 		c.xpAmt = Math.min(c.xpCap, Math.round(unCapExp));
+
+		console.log(totalPool, grpPoolPct, poolPct)
+
 		c.team = duelData.teams.findIndex(t => t.users.includes(c.user))
-		c.xpData = { capTotal, totalPool, grpPool, poolPct, unCapExp, partial }
+		c.xpData = { capTotal, totalPool, poolPct, unCapExp, partial }
 	})
 
 	return duelData;
@@ -1230,16 +1244,28 @@ function _calculateExp(duelData) {
 function _calculateGold(duelData) {
 	//			 Level :  0, 1, 2, 3,  4,  5,  6,  7,  8,  9, 10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20
 	const goldPerLevel = [0, 0, 0, 4,  8, 16, 24, 32, 40, 48, 56,  72,  88, 104, 120, 136, 152, 184, 216, 248, 280];
-					//	 [0, 0, 0, 4, 12, 32, 40, 48, 56, 64, 72, 100, 120, 160, 200, 240, 280, 360, 440, 520, 600];
 
-	// const xpTotal = duelData.characters.reduce((x,c) => x += c.xpAmt, 0)
-	// const gpPurse = duelData.characters.reduce((g,c) => g += goldPerLevel[c.level], 0)
+	const { characters } = duelData
+	const victorTotal = characters.reduce((t, c) => t += (c.win ? goldPerLevel[c.level] : 0), 0)
+	const partialTotal = characters.reduce((t,c) => t += ((c.win && c.hpCur == 0) ? goldPerLevel[c.level] : 0), 0)
+	const defeatTotal = characters.reduce((t, c) => t += (c.win ? 0 : goldPerLevel[c.level]), 0)
+
 	duelData.characters.map(c => {
-		//const gpPct = c.xpAmt / xpTotal;
-		const gpPurse = goldPerLevel[c.level]
-		const gpPct = (c.xpData?.partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP));
-		c.gpAmt = Math.round(gpPurse * gpPct)
-		c.gpData = {purse:gpPurse, gpPct}
+		const { partial } = c.xpData;
+
+		//Determine the purse amount
+		const totalPurse = (partial && !c.win) ? partialTotal : defeatTotal
+		//Determine the group's percentage of the total purse
+		const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
+		//Determine the individual's percentage of their group's pool
+		const goldCap = goldPerLevel[c.level];
+		const capTotal = (c.win ? victorTotal : defeatTotal);
+		const poolPct = Math.min(1, goldCap / capTotal);
+		//Calculate the individual's total gold award
+		const uncapGold = totalPurse * grpPoolPct * poolPct
+
+		c.gpAmt = Math.min(goldCap, Math.round(uncapGold))
+		c.gpData = { cap:goldCap, capTotal, totalPurse, poolPct, uncapGold }
 	})
 
 	return duelData;
