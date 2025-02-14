@@ -13,14 +13,14 @@
 			},
 			{
 				"title": "Arcanum Sage Council",
-				"description":"`                                                                     `\n\n<@&833505842178293790>\n\nFew ever attain this position within the Arcanum. Only those hand-chosen by the High Magus, or the Queen herself, will don the fine set of robes which mark them as a member of the Sage Council. Though seldom seen outside of the tower in these robes, they are widely known and respected by the people of Ost.",
+				"description":"`                                                                     `\n\n<@&833505842178293790>\n\nFew ever attain this position within the Arcanum. Only those hand-chosen by the High Magus, or the Queen herself, will don the fine set of robes which mark them as a member of the Sage Council. Though seldom seen in these robes outside of the tower, they are widely known and respected by the people of Ost.",
 				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
 				"image": { "url": "https://i.imgur.com/PQ7GNKf.png" },
 				"footer": { "text": "Arcanum: Sage Council" }
 			},
 			{
 				"title": "Arcanum Adept",
-				"description":"`                                                                     `\n\n<@&1002797852868739133>\n\nAdvancement in the guild is rewarded with a pendant, which mark the status of a full-fledged member of the Arcanum guild. Save for a select few trusted sages chosen to council and advise the High Magus, this is the highest rank most members can easily attain. None the less, those wearing the pendant proudly and prominently command a certain respect from the citizens of Ost in Edhil, and the wearer is assumed (even if not always the case) to be a skilled spellcaster.",
+				"description":"`                                                                     `\n\n<@&1002797852868739133>\n\nAdvancement in the guild is rewarded with a pendant, which mark the status of a full-fledged member of the Arcanum guild. Save for a select few trusted sages chosen to council and advise the High Magus, this is the highest rank most members can easily attain. None the less, those wearing the pendant proudly and prominently command a certain respect from the citizenry, and the wearer is assumed (even if not always the case) to be a skilled spellcaster.",
 				"thumbnail": { "url":"https://i.imgur.com/wFyU5cr.png" },
 				"image": [
 					{ "url": "https://i.imgur.com/ViUvTyC.png" },
@@ -52,10 +52,10 @@
 		"includeTOC":true,
 		"includeIndex":true,
 		"includeSectionBreak":true,
-		"embeds": [		
+		"embeds": [
 			{
 				"title": "Black Hand Mastermind",
-				"description":"`                                                                     `\n\n<@&701985965882867712>\n\nThe identity and whereabouts of the Black Hand Mastermind are perhaps the closest-guarded secret in a guild whose stock in trade is closely guarded secrets. None, save *perhaps* the Queen herself, know the answer to such questions, and she doesn't even acknowledge that the guild even exists...\n\nIf the Mastermind existed (which is *obviously* only rumor) the ring they bear represents the myriad threads that form the web of intrigue, of which they sit at the center.",
+				"description":"`                                                                     `\n\n<@&701985965882867712>\n\nThe identity and whereabouts of the Black Hand Mastermind are perhaps the closest-guarded secret in a guild whose stock in trade is closely guarded secrets. None, save *perhaps* the Queen herself, know the answer to such questions, and she doesn't even acknowledge that the guild so much as exists...\n\nIf such a Mastermind existed (which is *obviously* only rumor) the ring they bear represents the myriad threads that form the web of intrigue, of which they sit at the center.",
 				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
 				"image": { "url": "https://i.imgur.com/uOIdxxX.png" },
 				"footer": { "text": "Black Hand: Mastermind" }
@@ -69,7 +69,7 @@
 			},
 			{
 				"title": "Black Hand Phantom",
-				"description":"`                                                                     `\n\n<@&1002797883914985473>\n\nWhile perhaps not as privy to the entire bredth and scope of the Guild's plans as the Council or Mastermind, those who have advanced far enough into the shadows to be considered Phantoms are none the less afforded a greater degree of trust than Initiates, and certainly moreso than the Recruits. Upon attaining this rank, they are entrusted with... a decoder ring. Despite any outward similarities to that provided by the previous rank, this ring entrusts the member with access to a different (and far more secure) code, which will allow them to decode messages and access carefully guarded missions from the Guild's leadership.",
+				"description":"`                                                                     `\n\n<@&1002797883914985473>\n\nWhile perhaps not as privy to the entire bredth and scope of the Guild's plans as the Council or Mastermind, those who have advanced far enough into the shadows to be considered Phantoms are afforded a greater degree of trust than Initiates, and certainly moreso than the Recruits. Upon attaining this rank, they are entrusted with... a decoder ring. Despite any outward similarities to that provided by the previous rank, this ring entrusts the member with access to a different (and far more secure) code, which will allow them to decode messages and access carefully guarded missions from the Guild's leadership.",
 				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
 				"image": { "url": "https://i.imgur.com/bns61yJ.png" },
 				"footer": { "text": "Black Hand: Phantom" }
@@ -83,7 +83,7 @@
 			},
 			{
 				"title": "Black Hand Dim",
-				"description":"`                                                                     `\n\n<@&1002797891682832435>\n\nRecruitment into the Black Hand is far from simple. Shrouded in secrecy as the guild is, even learning of its existence is no small accomplisment. When the guild learns of their interest, and begins evaluating them for initiation, the recruit takes their first steps into the shadows. They are not a badge of office nor a symbol of their membership in the guild, but a tool that they will need to pursue the dangerous tasks ahead of them.",
+				"description":"`                                                                     `\n\n<@&1002797891682832435>\n\nRecruitment into the Black Hand is far from simple. Shrouded in secrecy as the guild is, even learning of its existence is no small accomplisment. When the guild learns of their interest, and begins evaluating them for initiation, the recruit takes their first steps into the shadows. They are not bestowed a badge of office nor a symbol of their membership in the guild, but a tool that they will need to pursue the dangerous tasks ahead of them.",
 				"thumbnail": { "url":"https://i.imgur.com/tjKEe7P.png" },
 				"image": { "url": "https://i.imgur.com/Sg57l0g.png" },
 				"footer": { "text": "Black Hand: Dim" }
@@ -94,10 +94,10 @@
 		"includeTOC":true,
 		"includeIndex":true,
 		"includeSectionBreak":true,
-		"embeds": [		
+		"embeds": [
 			{
 				"title": "Faith Council Hierophant",
-				"description":"`                                                                     `\n\n<@&766024439749148672>\n\nAs the spiritual leader of Ost in Edhil, ...",
+				"description":"`                                                                     `\n\n<@&766024439749148672>\n\nThis staff, bestowed by the Queen, marks the recipient as the spiritual leader of Ost in Edhil, and the connection between the common folk and the divine. As awe-inspiring as the position is, the townspeople view the Hierophant more as a symbol of hope. And yet the responsibilities demanded of such a position are great - somehow balancing clergy of faiths diametrically opposed to one another is no small feat.",
 				"image": { "url": "https://i.imgur.com/PzsXpx4.png" },
 				"thumbnail": { "url":"https://i.imgur.com/MqhgS8Z.png" },
 				"footer": { "text": "Faith Council: Hierophant" }
@@ -248,7 +248,7 @@
 				"description":"`                                                                     `\n\n<@&699439189447671889>\n\n...",
 				"image": [
 					{ "url":"https://i.imgur.com/EVsH0rO.png" },
-					{ "url":"https://i.imgur.com/ElSqg4x.png" }					
+					{ "url":"https://i.imgur.com/ElSqg4x.png" }
 				],
 				"thumbnail": { "url":"https://i.imgur.com/RlbPGmw.png" },
 				"footer": { "text": "Silver Thorn: Mistress" }
