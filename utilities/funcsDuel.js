@@ -14,7 +14,6 @@ const ExpUtils = require(`./expUtils.js`)
 const Mutex = require(`./mutexUtils.js`)
 const Log = require(`./loggerUtils.js`)
 
-const DELETE_ON_UNDO = true
 const MIN_CHARS = 750;
 const MIN_POSTS = 3;
 const VICTOR_XP = 0.75;
@@ -26,7 +25,7 @@ const DUELTHUMB = "https://i.imgur.com/2U90DwW.png";
 const JSONURL = "http://tinyurl.com/tjson?input="
 const PING_PREFIX = config.DEV ? "-" : "@";
 const dmPingChannel = config.DEV ? config.debug.dmPing : config.chan.dmPing;
-const xpLogChannel = config.DEV ? config.debug.duel : config.chan.xpLog;
+const xpLogChannel = config.DEV ? config.debug.xpLog : config.chan.xpLog;
 const dmRoles = [config.role.DM, config.role.DMOnDuty, config.role.Moderator, config.role.Builder];
 
 const BR = `\n\`${' '.repeat(69)}\``
@@ -356,6 +355,7 @@ async function processDuel(interaction, message) {
 	catch(err) 	{ error =	err }
 
 	if (error) {
+		if (error.message.includes(ERROR.CANCELLED)) error.name = "Cancelled"
 		const duelData = error.cause
 		error.cause = duelData ? DEBUGFIELDS(duelData, debugStr) : null
 		_handleErrorLog({interaction, duelData, error})
@@ -681,7 +681,7 @@ function _parseEventInitGroupAdd(duelData, message) {
 	if (addMatch.length > 0)
 	{
 		//We have a match, extract the data
-		const name	= addMatch[0][1].trim();
+		const name	= addMatch[0][1].replace(/\"/g,'').trim();
 		const init	= parseInt((addMatch[0][2] || addMatch[0][3] || "0")?.trim());
 		const group = addMatch[0][4]?.trim();
 
@@ -709,7 +709,7 @@ function _parseEventPlayer(duelData, message) {
 	if (match.length > 0) {
 		const init	= parseInt(match[0][2].trim());
 		const round	= match[0][3].trim();
-		const name	= match[0][4].trim();
+		const name	= match[0][4].replace(/\"/g,'').trim();
 		const id	= match[0][5].trim();
 
 		// See if we have a character by this name in init with no user and set it
