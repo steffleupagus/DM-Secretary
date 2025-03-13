@@ -371,12 +371,6 @@ async function scrapeMessageMetadata(stats, message)
 
 	stats = stats || { tupperMap: {} }	//Assign the stats if they don't already exist
 
-	// if (!user.bot && !member)
-	// {
-	// 	try { member = await guildMembers.fetch(authorId); }
-	// 	catch (err) { member = null; }
-	// }
-
 	let name = member?.nickname ?? user?.username;
 	let tupperData = null
 

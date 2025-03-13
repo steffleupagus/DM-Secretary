@@ -4,26 +4,19 @@ const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const TableMeta = require(`../database/tableSchema.js`)
 const AreaMeta = require(`../database/chanMetaSchema.js`)
 
-///
 /// Identify if a channel is an RP channel
-///
-function isRoleplayChannel(channel)
-{
+function isRoleplayChannel(channel) {
 	return channel.name.includes("🗣");
 }
 
-function isRoleplayThread(channel)
-{
+function isRoleplayThread(channel) {
 	if (!channel.isThread()) return false;
 	if (channel.name.includes("⚙")) return false;
-	
 	return	isRoleplayChannel(channel) ||
 			isRoleplayChannel(channel.parent);
 }
 
-///
 /// Check if this channel is an RP exp channel
-///
 async function isRPExpChannel(channel)
 {
 	const result = await ChannelMeta.findOne({ channelId: channel.id });
@@ -80,7 +73,6 @@ function getDuelChannelPair(channel)
 	{
 		if (channel.isThread && channel.parent.id == pair.RP)
 			pair.MECHANICS = channel.id;
-	
 		if ((channel.id == pair.RP)||(channel.id == pair.MECHANICS))
 			return pair;
 	}
@@ -90,9 +82,8 @@ function getDuelChannelPair(channel)
 
 function isDuelRPChannel(channel)
 {
-	const pair = getDuelChannelPair(channel)
-	if (!pair) return false;
-	return (pair.RP == channel.id)
+	const duelChan = config.duelChannels.find( c => c.RP == (channel?.id || channel) )
+	return duelChan != undefined;
 }
 
 
@@ -104,6 +95,13 @@ async function fetchThreads(channel)
 	const allThreads = activeThreads.threads.concat(archivedThreads.threads)
 	allThreads.sort((a,b) => a.createdTimestamp - b.createdTimestamp)
 	return {active:activeThreads, archive:archivedThreads, all:allThreads};
+}
+
+
+async function getChannelOwner(channel) {
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;
+	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
+	return chanMeta?.userOwner
 }
 
 //Put these in a centralized location so we don't copy/paste them in multiple places
@@ -121,12 +119,12 @@ const locations = [
 	{value:"713002635267145758",label:"City Dock"},
 	{value:"695238063517073461",label:"Outside City Blessed Gate"},
 	{value:"697174243556982816",label:"Outside City Cursed Gate"},
-	
+
 	{value:"695808294945816586", label:"City Colosseum"},
 	{value:"709376645521342464", label:"City Slum"},
 	{value:"699203153274601491", label:"Arcanum Tower Guild Hall"},
 	{value:"699205524960313424", label:"Temple District"},
-	{value:"833787998150590481", label:"Wilderness"},	
+	{value:"833787998150590481", label:"Wilderness"},
 	{value:"696807848117534820", label:"Silver Thorn Brothel"},
 	{value:"699064641950842880", label:"Silver Thorn Suites"}
 ]
@@ -139,16 +137,16 @@ const guildLocations = [
 
 	{value:"709376645521342464", label:"City Slum"},
 	{value:"742107953577984110", label:"Black Hand Guild Hall"},
-	
+
 	{value:"699205524960313424", label:"Temple District"},
 	{value:"766031999864668191", label:"Temple Sanctuary"},
-	
+
 	{value:"695808294945816586",label:"Colosseum"},
 	{value:"742107924255735849", label:"Guardian Guild Barracks	"},
 
 	{value:"833787998150590481", label:"Wilderness"},
 	{value:"853362003691438101", label:"Outrider's Lodge Guild Hall"},
-	
+
 	{value:"696807848117534820", label:"Silver Thorn Brothel"},
 	{value:"699064641950842880", label:"Silver Thorn Suites"},
 	{value:"768307340625575977", label:"Brothel Blindfold Room"},
@@ -167,6 +165,7 @@ module.exports =
 	isTableMechanicsThread,
 	isTrackedChannel,
 	isDuelRPChannel,
+	getChannelOwner,
 	getDuelChannelPair,
 	fetchThreads,
 	locations,
