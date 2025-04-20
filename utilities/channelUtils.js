@@ -170,4 +170,4 @@ module.exports =
 	fetchThreads,
 	locations,
 	guildLocations
-}	
+}

@@ -305,13 +305,13 @@ function generateMatches(char, records, isSheet) {
 	const matType = isSheet ? "Profile" : "Sheet"
 	const type    = isNPC ? "NPC" : "RP"
 	let icon  = ""
-	let value = ""	
+	let value = ""
 	let error = ""
 	let match = null
 	let matchList = ""
 
 	//If we have no character name to match, early exit
-	if (!char || !char.name) return {error: `This ${recType} has no name. How did we get here?`}	
+	if (!char || !char.name) return {error: `This ${recType} has no name. How did we get here?`}
 	//If we have no names to match against, early exit
 	if (!records || records.length == 0)
 	{
@@ -323,10 +323,10 @@ function generateMatches(char, records, isSheet) {
 
 	const names = records.map(item => item.name);
 	const simpleNames = names.map(name => name.replace(/\(.*\)/,''))
-			char.name = char.name.replace(/\(.*\)/,'')	
+			char.name = char.name.replace(/\(.*\)/,'')
 
 	//Find the best match or log some info as to why it faled
-	const matches = StrComp.findBestMatch(char.name, simpleNames) 
+	const matches = StrComp.findBestMatch(char.name, simpleNames)
 	// catch(e) { console.log(char.name, names); return `Match Failed: ${char.name}\n${names.join("\n")}` }
 	//Process the results into something more usable
 	let best      = matches.bestMatch ?? null;
@@ -346,11 +346,11 @@ function generateMatches(char, records, isSheet) {
 			icon = '❌'
 			error = "NPC profile has a matching sheet record - Delete!"
 		}
-		//value = `\`*Best ${matType} Match:* \`${match.target} [${Math.floor(match.rating * 1000)/10}%]`			
-	}	
+		//value = `\`*Best ${matType} Match:* \`${match.target} [${Math.floor(match.rating * 1000)/10}%]`
+	}
 	else
 	{
-		//Check for false negatives. Not 100% accurate, so flag with a question mark		
+		//Check for false negatives. Not 100% accurate, so flag with a question mark
 		const commonWords = ["the"]
 		const charParts = char.name.toLowerCase().split(/\s/g).filter(x => !commonWords.includes(x))
 		ratings.forEach(opt => 
@@ -360,7 +360,7 @@ function generateMatches(char, records, isSheet) {
 			const partialMatches = [...optParts.map(part => char.name.toLowerCase().includes(part) ? part : ""),
 								    ...charParts.map(part => optName.includes(part) ? part : "")].filter(n => n)
 			const parts = [...new Set(partialMatches)];
-			let flag = "";			
+			let flag = "";
 			const contains = optName.includes(char.name) || char.name.includes(optName) || partialMatches.length > 0
 			if (contains)
 			{
@@ -370,11 +370,11 @@ function generateMatches(char, records, isSheet) {
 				value = `⚠️ Partial Match` + (partialMatches.length > 0 ? ` [${parts.join(",")}]` : ``)
 			}
 			if (!isNPC || flag)
-				matchList += `- ${opt.target} [${Math.floor(opt.rating * 1000)/10}%]${flag}\n`			
+				matchList += `- ${opt.target} [${Math.floor(opt.rating * 1000)/10}%]${flag}\n`
 		})
 		//We don't have a good match, output that status
 		if (!match)
-		{	
+		{
 			icon = isSheet ? '❌' : isNPC ? '✅' : '⚠️'
 			if (isSheet)
 				error = `Sheet has insufficient profile match - Delete?`
@@ -412,8 +412,7 @@ function countMemberProfiles(member, profiles, slotInfo) {
 
 /// Calculate the slot info for a member based on their roles
 function getMemberSlotInfo(member) {
-	const pcRoles = config.role.pcRoles
-	const npcRoles = config.role.npcRoles	
+	const { pcRoles, npcRoles } = config.role
 	let pcSlots = 1
 	let npcSlots= 0
 	let pcRole = "";
@@ -422,7 +421,7 @@ function getMemberSlotInfo(member) {
 	{
 		const roles = member.roles.cache.filter(x => pcRoles.includes(x.id) || npcRoles.includes(x.id))
 		roles.forEach(role => {
-			pcSlots  += pcRoles.findIndex(e => e == role.id) + 1 
+			pcSlots  += pcRoles.findIndex(e => e == role.id) + 1
 			npcSlots += npcRoles.findIndex(e => e == role.id) + 1
 		})
 		pcRole = pcRoles.filter(id => roles.some(role => role.id === id)).map(id => `<@&${id}>`).join("")
@@ -458,11 +457,11 @@ const data = new SlashCommandBuilder()
 		.setDescription('Show errors')
 	)
 
-const userPermissions = [	PermissionsBitField.Flags.ViewChannel,						 
-							PermissionsBitField.Flags.SendMessages		];
+const userPermissions = [	PermissionsBitField.Flags.ViewChannel,
+							PermissionsBitField.Flags.SendMessages	];
 const whitelistRoles  = [	config.role.Builder	];
 
-module.exports = 
+module.exports =
 {
 	data: data,
 	whitelistRoles: whitelistRoles,

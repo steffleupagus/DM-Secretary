@@ -2,21 +2,19 @@ const { ActionRowBuilder,
 		ButtonBuilder,
 		ButtonStyle,
 		ComponentType,
-	   	InteractionType,
-	    MessageMentions,
-	   	ModalBuilder,
+		InteractionType,
+		MessageMentions,
+		ModalBuilder,
 		StringSelectMenuBuilder,
-	    StringSelectMenuOptionBuilder,
-	    TextInputBuilder,
+		StringSelectMenuOptionBuilder,
+		TextInputBuilder,
 		TextInputStyle } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const Utils = require(`./utilFuncs.js`)
 
-const dmRoles = [
-					config.role.DM, config.role.Moderator
-				];
+const dmRoles = [ config.role.DM, config.role.Moderator ];
 const PROMPT_TIME = 30000;
 const REACT_TIME = 30000;
 const INTERACT_TIME = 30000;
@@ -37,7 +35,7 @@ const Time = {
 //@defaultResponse	- selected if it times out
 //@time 			- time (in seconds) to wait for the user input
 async function promptUserInput(channel, prompt=null, users=[],
-							   defaultResponse=null, time=PROMPT_TIME)
+								defaultResponse=null, time=PROMPT_TIME)
 {
 	var response = defaultResponse;
 	const filter = (m) =>
@@ -132,78 +130,6 @@ async function promptUserPing(channel, prompt, users=[], time=PROMPT_TIME)
 
 	return response;
 }
-
-// ////
-// // Prompt the user to react to the prompt message
-// //@channel			- the prompt should be sent to
-// //@prompt			- displayed to the users
-// //@users			- array of user IDs that can respond to this prompt
-// //@options			- react options to attach to the given message
-// //@defaultOption	- returned if it times out
-// //@failOptions		- early-exit options will return immediately if any are selected
-// //@returnFirst 		- return after the first reaction if true, if false, wait for all @users to react
-// //@time 			- time (in seconds) to wait for the user input
-// async function promptUserReaction(channel, prompt, users, options,
-// 								  defaultOption=null, failOptions=null,
-// 								  returnFirst=false, time=REACT_TIME)
-// {
-// 	//Sort the users so we can compare the lists easily later
-// 	users.sort();
-
-// 	//Set up a default option if one isn't specified
-// 	if (!defaultOption) defaultOption = options[0];
-
-// 	// //Send the prompt, and then apply all the reaction options
-// 	// prompt = await channel.send({embeds:[prompt]});
-// 	//Add the initial reactions for the users
-// 	var reactPromises = [];
-// 	for (const option of options)
-// 		reactPromises.push(prompt.react(option));
-// 	await Promise.all(reactPromises);
-
-// 	const filter = (reaction, user) =>
-// 	{
-// 		const msg = reaction.message.id == prompt.id;
-// 		const valid = options.includes(reaction.emoji.name);
-// 		const member = channel.guild.members.resolve(user.id);
-// 		const modDM = Utils.hasAnyRole(member, dmRoles) && !user.bot;
-// 		const validUser = users.includes(user.id);
-// 		return (msg && valid && (modDM || validUser));
-// 	};
-
-// 	var reactedUsers = [];
-// 	return new Promise((resolve, reject) =>
-// 	{
-// 		const collector = prompt.createReactionCollector({
-// 			filter, time: time, errors: ['time']
-// 		});
-// 		collector.on('collect', (reaction, user) =>
-// 		{
-// 			const member = channel.guild.members.resolve(user.id);
-// 			const modDM = Utils.hasAnyRole(member, dmRoles) && !user.bot;
-
-//  			if (modDM || returnFirst || failOptions.includes(reaction.emoji.name))
-// 			{
-// 				const idx = options.indexOf(reaction.emoji.name);
-//  				resolve({react:reaction.emoji.name, idx: idx, user:user});
-//  				collector.stop();
-// 			}
-// 			else if (!reactedUsers.includes(user.id))
-// 			{
-// 				reactedUsers.push(user.id);
-// 				reactedUsers.sort();
-// 				if (Utils.isEqual(reactedUsers, users))
-// 					collector.stop();
-// 			}
-// 		});
-
-// 		collector.once('end', (reactions, reason) =>
-// 		{
-// 			const idx = options.indexOf(defaultOption);
-// 			resolve({react:defaultOption, idx:idx});
-// 		});
-// 	});
-// }
 
 ////
 // Prompt users with a series of button options
