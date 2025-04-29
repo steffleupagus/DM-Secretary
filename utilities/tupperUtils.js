@@ -14,7 +14,7 @@ function parseTupperLog(client, message, silent = true)
 		var tupperName = embed.title;
 		var authorId = embed.fields.find(field => field.name == 'Registered by');
 			authorId = authorId.value.match(/[0-9]+/g)[0];
-		var user = client.users.resolve(authorId);
+		var user = client?.users?.resolve(authorId) ?? null;
 		var member = message.guild.members.resolve(authorId);
 		var name = member ? member.displayName : (user ? user.username : null);
 		var content = embed.description;
@@ -50,14 +50,14 @@ function isTupperProxyMessage(message)
 	const isBot = message.author.bot;
 	const isTupper = message.applicationId == config.bots.tupper;
 	const isWebhook = message.webhookId;
-	return (isBot && isTupper && isWebhook);	
+	return (isBot && isTupper && isWebhook);
 }
 
 function isTupperLogMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author.id == client.config.bots.tupper;
-	const channel = message.channel.id == client.config.chan.tupperLog;
+	const author  = message.author.id == config.bots.tupper;
+	const channel = message.channel.id == config.chan.tupperLog;
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
@@ -69,9 +69,9 @@ async function logTupperMessage(client, message)
 		const tupperData = parseTupperLog(client, message)
 		if (tupperData)
 		{
-			if (process.env.mod == "dev")
-				return tupperData;
-			
+			// if (process.env.mod == "dev")
+			// 	return tupperData;
+
 			const channel = message.guild.channels.resolve(tupperData.cId);
 			if (channel && (chanUtils.isRoleplayChannel(channel) ||
 							chanUtils.isRoleplayThread(channel)))
@@ -103,18 +103,8 @@ async function deleteTupperProxyMessage(client, message)
 	return null;
 }
 
-async function getTupperLogLegacy(search)
-{
-	const legacyLog = require(`../config/tupperMap.json`);
-	const result = legacyLog[search.mId];
-	result.aId = result.uid;	
-	return result;
-}
-
 async function getTupperLog(search)
 {
-//	return getTupperLogLegacy(search);
-	
 	const result = await tupperSchema.findOne(search)
 	return result;
 }
@@ -122,14 +112,28 @@ async function getTupperLog(search)
 async function getTupperData(message)
 {
 	const query = {mId:message.id};
-	const result = await getTupperLog(query);
-	return result;	
+	let result = await getTupperLog(query);
+	if (null == result) result = await fetchTupperLog(message)
+	return result;
+}
+
+async function fetchTupperLog(message) {
+	const guild = message.guild;
+	const channel = guild.channels.resolve(config.chan.tupperLog);
+	const messages = await channel.messages.fetch({ limit: 10, cache: false, after: message.id })
+	const logMsg = messages.reverse().find(log => {
+		const logId = log.embeds[0].footer.text
+		return (logId.includes(message.id));
+	});
+
+	const data = logMsg ? parseTupperLog(guild, logMsg) : null;
+	console.log(data)
 }
 
 async function cleanTupperData()
 {
 	const offset = 360 * 25 * 60 * 60 * 1000
-	const timestamp = Date.now() - offset	
+	const timestamp = Date.now() - offset
 	const query = {time:{$lt:timestamp}};	//1672531200000}};
 	const result = await tupperSchema.find(query);
 	const deleted = await tupperSchema.deleteMany(query);
@@ -141,7 +145,6 @@ module.exports = {
 	isTupperProxyMessage,
 	isTupperLogMessage,
 	logTupperMessage,
-	parseTupperLog,
 	getTupperData,
 	deleteTupperProxyMessage,
 	cleanTupperData
