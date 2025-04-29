@@ -309,7 +309,7 @@ function DEBUGFIELDS(data,args) {
 function DEBUGTHROW(data){
 	if (!data) Log.ERROR(Error().stack)
 	const {events, ...debugData} = data;
-	Log.DEBUGTHROW(debugData, DebugFn()) 
+	Log.DEBUGTHROW(debugData, DebugFn())
 }
 /// Handle an error with the edit components by restoring the original embed/components passed in via args
 async function _handleComponentError(args) {
@@ -356,10 +356,10 @@ async function processDuel(interaction, message) {
 
 	if (error) {
 		if (error.message.includes(ERROR.CANCELLED)) error.name = "Cancelled"
-		const duelData = error.cause
-		error.cause = duelData ? DEBUGFIELDS(duelData, debugStr) : null
-		_handleErrorLog({interaction, duelData, error})
-		error.cause = duelData ? DEBUGFIELDS(duelData, playerStr) : null
+		const debugData = error.cause
+		error.cause = debugData ? DEBUGFIELDS(debugData, debugStr) : null
+		_handleErrorLog({interaction, debugData, error})
+		error.cause = duelData ? DEBUGFIELDS(debugData, playerStr) : null
 	}
 
 	Mutex.unlock(channel,	error);
@@ -375,7 +375,7 @@ async function _closeDuelInternal(args) {
 	const duelId		=	channel.id;
 	const skipRP		=	(args.skipRP || DEBUG?.IGNORE_RP) ?? false
 	const forceClose	=	null != message;// && !DEBUG;
-	const trackProgress =	async(interaction, duelData, stage) => {
+	const trackProgress =	async(interaction, d, stage) => {
 		/// Finish up the previous stage output
 		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === progressStage);
 		const { events, ...debugData } = (duelData ?? {});
@@ -1350,7 +1350,7 @@ function _generateTranscriptFromData(duelData) {
 	return embed.embeds();
 }
 
-/// Close the scene, sends a message to the DM channel
+/// Sends approval message to the DM channel
 /// @duelData		- Extant data gathered from the initiative
 /// @interaction	- Original interaction, needed for player input
 async function _sendApprovalMessage(duelData, interaction, components = null, calc = false) {
@@ -1499,17 +1499,6 @@ function _reconstructData(duelData) {
 
 	duelData = {...duelData, players, teams, outcome}
 	return duelData
-}
-
-/// Given a guild and a string containing a discord URL, return the message that URL points to
-async function _getMessageFromURL(guild, url) {
-	const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d*)\/(\d*)\/(\d*)/;
-	const match = url.match(discordLinkReg) || null
-	if (!match) return
-	const [, guildId, channelId, messageId] = match
-	const channel = await guild?.channels?.fetch(channelId).catch(e => null) || null;
-	const message = await channel?.messages?.fetch(messageId).catch(e => null) || null;
-	return message || null
 }
 
 /*===================*\
@@ -1903,7 +1892,7 @@ async function _handleDuelResult(interaction, approved) {
 		const approveMsg = await _sendApprovalMessage(duelData, interaction, components);
 
 		//Add a react to the original initiative post when approved by a DM
-		await _reactToMessageURL(interaction, duelData.urls.duel, icon);
+		await MsgUtils.reactToMessageURL(interaction.guild, duelData.urls.duel, icon);
 	} catch (error) {
 		await _handleComponentError({interaction, restoreEmbeds, restoreComponents, duelData, error})
 	}
@@ -1928,10 +1917,10 @@ async function undoResult(interaction) {
 		const embed = EmbedBuilder.from(restoreEmbeds[0])
 		const field = embed.data.fields.pop();
 		//Retrieve and delete the logged message from the exp log channel
-		const message = await _getMessageFromURL(interaction.guild, field.value)
+		const message = await MsgUtils.getMessageFromURL(interaction.guild, field.value)
 		await message?.delete();
 		//Remove all reacts to the original initiative post
-		await _reactToMessageURL(interaction, duelData.urls.duel, null);
+		await MsgUtils.reactToMessageURL(interaction.guild, duelData.urls.duel, null);
 
 		//Update each character's exp mod
 		await Utils.asyncArrayForEach(duelData.characters, async (char,i) => {
@@ -1989,21 +1978,11 @@ async function _postDuelResultLog(interaction, duelData, approved) {
 	return message;
 }
 
-/// Post the approved exp message to the Exp Log channel
-/// @interaction	- The interaction of the button press
-/// @url			- The url of the message to react to
-/// @emoji			- The emoji to react
-async function _reactToMessageURL(interaction, url, emoji) {
-	const message = await _getMessageFromURL(interaction.guild, url)
-	if (emoji) await message?.react(emoji)
-	else await message?.reactions?.removeAll()
-}
-
 /// Reset the duel button and break in the specified rp channel
 /// @rpChan			- The channel to add the duel button into
 async function resetDuelButton(rpChan) {
 	let button = Prompt.createButtonRow([
-		{style:ButtonStyle.Secondary, emoji:"⚔️", label:"Start New Duel", custom_id:"duel.startDuel"}
+		{style:ButtonStyle.Secondary, emoji:config.emoji.duel, label:"Start New Duel", custom_id:"duel.startDuel"}
 	])
 	button = [button]
 	await rpChan.send({content:"``` ```",components:button});
