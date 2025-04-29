@@ -24,6 +24,7 @@ async function execute(interaction, message=null) {
 		if (error.message) embed.setDescription(error.message)
 		if (error.cause) embed.addFields(error.cause)
 		await interaction.editReply({content:"", embeds:[embed], components:[]});
+		throw error
 	}
 }
 

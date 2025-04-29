@@ -53,7 +53,8 @@ const INSTRUCT = {
 	CLOSE_DUEL: `**The previous duel is still active.**\nPlease close it with \`!i end\` before continuing.\n${CONTACT}`,
 //Team Confirmation
 	CONFIRM_TEAM: `${CONTACT}`,
-	CONFIRM_TEAM_FOOTER: `${config.emoji.yes} Accept teams | ${config.emoji.no} Cancel command\n${config.emoji.edit} Move participant to team | ${config.emoji.undo} Reset all participants`,
+	CONFIRM_TEAM_FOOTER: `${config.emoji.yes} Accept teams | ${config.emoji.no} Cancel command\n`+
+						 `${config.emoji.edit} Move participant to team | ${config.emoji.undo} Reset all participants`,
 //Winner confirmation
 	SELECTWIN: `Select the winner(s), or \`${config.emoji.no} Cancel\`.`,
 	SETUP: `*If your level is incorrect or your character is missing, you may need to run \`!setup\` in <#${config.chan.xpSpam}>*`,
@@ -325,13 +326,13 @@ async function _handleComponentError(args) {
 }
 /// Handle a thrown error by logging it to the appropriate log channel
 async function _handleErrorLog(args) {
-	const {interaction, duelData, error} = args
+	const {interaction, debugData, error} = args
 
 	// Early out if this is just a cancel message - we don't need to log every cancellation
 	if (error?.message?.includes(ERROR.CANCELLED)) return;
 
 	// Add the duelData to the debug log embed
-	if (!error.cause && duelData) error.cause = DEBUGFIELDS(duelData, debugStr)
+	if (!error.cause && debugData) error.cause = DEBUGFIELDS(debugData, debugStr)
 
 	// Log the error to the debug channel
 	// Log.DEBUG(error)
@@ -359,7 +360,7 @@ async function processDuel(interaction, message) {
 		const debugData = error.cause
 		error.cause = debugData ? DEBUGFIELDS(debugData, debugStr) : null
 		_handleErrorLog({interaction, debugData, error})
-		error.cause = duelData ? DEBUGFIELDS(debugData, playerStr) : null
+		error.cause = debugData ? DEBUGFIELDS(debugData, playerStr) : null
 	}
 
 	Mutex.unlock(channel,	error);
