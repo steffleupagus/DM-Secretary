@@ -162,11 +162,9 @@ async function showChannelLook(interaction) {
 		const update = await handleEdits(interaction, prompt)
 		if (update) {
 			await showChannelLook(interaction);
-		}
-		else {
-			console.log("Disable Components")
+		} else {
 			components = await generateComponents(true)
-			interaction.editReply({components})
+			await interaction.editReply({components})
 		}
 	}
 }
@@ -205,18 +203,22 @@ async function _promptTextModal(interaction) {
 						 required:false, min:0, max:4000, value:desc}
 	const descInput = Prompt.createTextInput(descParams)
 
-	const modal = await Prompt.promptModal(interaction, "Look Edit", "edit"+interaction.id, [titleInput, descInput]);
-	if (!modal) return false;
+	const customId = `edit_${interaction.id}`
+	const modal = await Prompt.promptModal(interaction, "Look Edit", customId, [titleInput, descInput]);
+
+	if (!modal) return false
+	if (modal.customId != customId) return true
 
 	const fields = modal.fields
 	title = fields.getTextInputValue("title") || null;
 	desc = fields.getTextInputValue("desc") || null;
 
+	await modal.deferUpdate()
 	if (title != look.title || desc != look.desc) {
 		look.title = title
 		look.desc = desc
 		await updateDBRecord(look)
-		await modal.update({content:"Updated"})
+		await modal.editReply({content:"Updated"})
 		return true
 	}
 
@@ -236,12 +238,17 @@ async function _promptImageModal(interaction) {
 	{
 		imageParams.label = `Image URL (${i+1})`
 		imageParams.customId = `image${i}`
-		imageParams.value = images?.[i] ?? images ?? ""
+		imageParams.value = ""
+		if (images && Array.isArray(images) && i < images.length) 
+			imageParams.value = images[i]
 		inputs.push( Prompt.createTextInput(imageParams) )
 	}
 
-	const modal = await Prompt.promptModal(interaction, "Edit Images", "edit"+interaction.id, inputs);
+	const customId = `edit_${interaction.id}`
+	const modal = await Prompt.promptModal(interaction, "Edit Images", customId, inputs);
+
 	if (!modal) return false
+	if (modal.customId != customId) return true
 
 	const fields = modal.fields
 	const newImages = []
@@ -252,10 +259,11 @@ async function _promptImageModal(interaction) {
 		if (image) newImages.push(image)
 	}
 
+	await modal.deferUpdate()
 	if (JSON.stringify(images) !== JSON.stringify(newImages)) {
 		look.image = newImages;
 		await updateDBRecord(look)
-		await modal.update({content:"Updated"})
+		await modal.editReply({content:"Updated"})
 		return true
 	}
 
