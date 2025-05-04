@@ -52,7 +52,7 @@ function getDefaultTitle(channel) {
 function getDefaultDescription(channel) {
 	let desc;
 	if (!channel.topic && channel.isThread()) channel = channel.parent
-	desc = channel.topic
+	desc = channel.topic || ""
 	desc = desc.replaceAll(new RegExp(MessageMentions.UsersPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.RolesPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.ChannelsPattern, `gim`), ``)
