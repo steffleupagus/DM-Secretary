@@ -130,28 +130,24 @@ const locations = [
 ]
 
 const guildLocations = [
-	{value:"1001640103841632306", label:"OpenRP"},
+	{value:"699203153274601491", emoji:"🔮", label:"Arcanum Tower Guild Hall"},
+	{value:"742107921835360376", emoji:"🔮", label:"Arcanum Inner Sanctum"},
 
-	{value:"699203153274601491", label:"Arcanum Tower Guild Hall"},
-	{value:"742107921835360376", label:"Arcanum Inner Sanctum"},
+	{value:"709376645521342464", emoji:"🧤", label:"City Slum"},
+	{value:"742107953577984110", emoji:"🧤", label:"Black Hand Guild Hall"},
 
-	{value:"709376645521342464", label:"City Slum"},
-	{value:"742107953577984110", label:"Black Hand Guild Hall"},
+	{value:"699205524960313424", emoji:"🕯️", label:"Temple District"},
+	{value:"766031999864668191", emoji:"🕯️", label:"Temple Sanctuary"},
 
-	{value:"699205524960313424", label:"Temple District"},
-	{value:"766031999864668191", label:"Temple Sanctuary"},
+	{value:"695808294945816586", emoji:"⚔️", label:"Colosseum"},
+	{value:"742107924255735849", emoji:"⚔️", label:"Guardian Guild Barracks	"},
 
-	{value:"695808294945816586",label:"Colosseum"},
-	{value:"742107924255735849", label:"Guardian Guild Barracks	"},
+	{value:"833787998150590481", emoji:"🍃", label:"Wilderness"},
+	{value:"853362003691438101", emoji:"🍃", label:"Outrider's Lodge Guild Hall"},
 
-	{value:"833787998150590481", label:"Wilderness"},
-	{value:"853362003691438101", label:"Outrider's Lodge Guild Hall"},
-
-	{value:"696807848117534820", label:"Silver Thorn Brothel"},
-	{value:"699064641950842880", label:"Silver Thorn Suites"},
-	{value:"768307340625575977", label:"Brothel Blindfold Room"},
-
-	{value:"1117612647421063268", label:"Testing"}
+	{value:"696807848117534820", emoji:"699470814356963418", label:"Silver Thorn Brothel"},
+	{value:"699064641950842880", emoji:"699470814356963418", label:"Silver Thorn Suites"},
+	{value:"768307340625575977", emoji:"699470814356963418", label:"Brothel Blindfold Room"}
 ]
 
 module.exports =
