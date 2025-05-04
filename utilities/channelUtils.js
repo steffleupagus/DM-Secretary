@@ -4,83 +4,64 @@ const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const TableMeta = require(`../database/tableSchema.js`)
 const AreaMeta = require(`../database/chanMetaSchema.js`)
 
-///
 /// Identify if a channel is an RP channel
-///
-function isRoleplayChannel(channel)
-{
+function isRoleplayChannel(channel) {
 	return channel.name.includes("🗣");
 }
 
-function isRoleplayThread(channel)
-{
+function isRoleplayThread(channel) {
 	if (!channel.isThread()) return false;
 	if (channel.name.includes("⚙")) return false;
-	
+
 	return	isRoleplayChannel(channel) ||
 			isRoleplayChannel(channel.parent);
 }
 
-///
 /// Check if this channel is an RP exp channel
-///
-async function isRPExpChannel(channel)
-{
+async function isRPExpChannel(channel) {
 	const result = await ChannelMeta.findOne({ channelId: channel.id });
 	return result && result.awardsExp;
 }
 
-async function isTrackedChannel(channel)
-{
+async function isTrackedChannel(channel) {
 	if (channel.isThread())
 		return await isTrackedChannel(channel.parent)
 	const result = await ChannelMeta.findOne({ channelId: channel.id })
 	return result && result.trackActivity
 }
 
-async function isRPExpThread(channel)
-{
+async function isRPExpThread(channel) {
 	if (!channel.isThread()) return false
 	const result = await isRPExpChannel(channel.parent);
 	return result
 }
 
-async function isRPExpEligible(channel)
-{
+async function isRPExpEligible(channel) {
 	if (channel.isThread())
 		return await isRPExpThread(channel)
 	return await isRPExpChannel(channel)
 }
 
-///
 /// Check if this channel is a table thread
-///
-async function isTableRPThread(channel)
-{
+async function isTableRPThread(channel) {
 	const result = await TableMeta.findOne({ rpThread: channel.id })
 	return result;
 }
 
-///
 /// Check if this channel is a table thread
-///
-async function isTableMechanicsThread(channel)
-{
+async function isTableMechanicsThread(channel) {
 	const result = await TableMeta.findOne({ oocThread: channel.id })
 	return result;
 }
 
-///
 /// Duel chanels come in pairs of an RP channel and a Mechanics channel
-/// Given one, find the pair.
-/// 
-function getDuelChannelPair(channel)
-{
+/// Given one, find the pair
+function getDuelChannelPair(channel) {
 	for (let pair of config.duelChannels)
 	{
 		if (channel.isThread && channel.parent.id == pair.RP)
 			pair.MECHANICS = channel.id;
-	
+
 		if ((channel.id == pair.RP)||(channel.id == pair.MECHANICS))
 			return pair;
 	}
@@ -88,17 +69,13 @@ function getDuelChannelPair(channel)
 }
 //TODO - Remove duelChannels from config; make it a field in the channel meta database.
 
-function isDuelRPChannel(channel)
-{
+function isDuelRPChannel(channel) {
 	const pair = getDuelChannelPair(channel)
 	if (!pair) return false;
 	return (pair.RP == channel.id)
 }
 
-
-
-async function fetchThreads(channel)
-{
+async function fetchThreads(channel) {
 	const activeThreads = await channel.threads.fetchActive();
 	const archivedThreads = await channel.threads.fetchArchived();
 	const allThreads = activeThreads.threads.concat(archivedThreads.threads)
@@ -131,28 +108,24 @@ const locations = [
 ]
 
 const guildLocations = [
-	{value:"1001640103841632306", label:"OpenRP"},
+	{value:"699203153274601491", emoji:"🔮", label:"Arcanum Tower Guild Hall"},
+	{value:"742107921835360376", emoji:"🔮", label:"Arcanum Inner Sanctum"},
 
-	{value:"699203153274601491", label:"Arcanum Tower Guild Hall"},
-	{value:"742107921835360376", label:"Arcanum Inner Sanctum"},
+	{value:"709376645521342464", emoji:"🧤", label:"City Slum"},
+	{value:"742107953577984110", emoji:"🧤", label:"Black Hand Guild Hall"},
 
-	{value:"709376645521342464", label:"City Slum"},
-	{value:"742107953577984110", label:"Black Hand Guild Hall"},
+	{value:"699205524960313424", emoji:"🕯️", label:"Temple District"},
+	{value:"766031999864668191", emoji:"🕯️", label:"Temple Sanctuary"},
 
-	{value:"699205524960313424", label:"Temple District"},
-	{value:"766031999864668191", label:"Temple Sanctuary"},
+	{value:"695808294945816586", emoji:"⚔️", label:"Colosseum"},
+	{value:"742107924255735849", emoji:"⚔️", label:"Guardian Guild Barracks	"},
 
-	{value:"695808294945816586",label:"Colosseum"},
-	{value:"742107924255735849", label:"Guardian Guild Barracks	"},
+	{value:"833787998150590481", emoji:"🍃", label:"Wilderness"},
+	{value:"853362003691438101", emoji:"🍃", label:"Outrider's Lodge Guild Hall"},
 
-	{value:"833787998150590481", label:"Wilderness"},
-	{value:"853362003691438101", label:"Outrider's Lodge Guild Hall"},
-
-	{value:"696807848117534820", label:"Silver Thorn Brothel"},
-	{value:"699064641950842880", label:"Silver Thorn Suites"},
-	{value:"768307340625575977", label:"Brothel Blindfold Room"},
-
-	{value:"1117612647421063268", label:"Testing"}
+	{value:"696807848117534820", emoji:"699470814356963418", label:"Silver Thorn Brothel"},
+	{value:"699064641950842880", emoji:"699470814356963418", label:"Silver Thorn Suites"},
+	{value:"768307340625575977", emoji:"699470814356963418", label:"Brothel Blindfold Room"}
 ]
 
 module.exports =
