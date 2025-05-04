@@ -236,7 +236,7 @@ async function _promptImageModal(interaction) {
 	{
 		imageParams.label = `Image URL (${i+1})`
 		imageParams.customId = `image${i}`
-		imageParams.value = images[i]
+		imageParams.value = images?.[i] ?? images ?? ""
 		inputs.push( Prompt.createTextInput(imageParams) )
 	}
 
