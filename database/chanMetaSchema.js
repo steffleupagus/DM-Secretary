@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
 	guildHall: String,
 	threadMax: Number,
 	locations: [String],
-	trackActivity: Boolean	
+	trackActivity: Boolean
 })
 
 module.exports = mongoose.model(schemaName, schema, schemaName)

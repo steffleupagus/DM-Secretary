@@ -10,12 +10,11 @@ const config = require(`../../config/${mod}_config.json`);
 const index = require(`../../content/_contentIndex.json`)
 const TEST_CHAN = ["940061953064329216","1132477827095212032"];
 
-function isObject (value) {  
+function isObject (value) {
   return Object.prototype.toString.call(value) === '[object Object]'
 }
 
-function extractMention(embed) 
-{
+function extractMention(embed) {
 	const desc = embed.description || "";
 	const fields = embed.fields || [];
 	const fieldText = fields.map(field => field.value).join(" ");
@@ -35,43 +34,37 @@ function extractMention(embed)
 	return matches;
 }
 
-async function publishContent(channel, content)
-{
+async function publishContent(channel, content) {
 	let threadQueue = [];
 	let index = [];
 	let indexInline = true;
 	let indexFields = true;
-	await Utils.asyncObjectForEach(content, async (value, key)=>
-	{
+	await Utils.asyncObjectForEach(content, async (value, key)=> {
 		if (value.skip) return;
 		const header = `\`\`\`md\n# --- ${key} --- #\n\`\`\``;
-		const tableOfContents = value.includeTOC || value.includeHeader ? 
+		const tableOfContents = value.includeTOC || value.includeHeader ?
 									await channel.send(header) : null;
 		let contents = [];
 		indexInline = indexInline && (value.inlineIndex ?? true);
 		indexFields = indexFields && (value.fieldsIndex ?? true);
 
-		if (typeof value === 'string')
-		{
+		if (typeof value === 'string') {
 			await channel.send(value);
-		}
-		else
-		{
+		} else {
 			let lastMessage = null;
-			await Utils.asyncArrayForEach(value.embeds, async (embed)=>
-			{			
+			await Utils.asyncArrayForEach(value.embeds, async (embed)=> {
 				if (embed?.description?.includes("<last_id>"))
 					embed.description = embed.description.replace("<last_id>",lastMessage)
 
 				const content = embed.content ?? null;
-				delete embed.content;				
+				delete embed.content;
 				//Prep the prefix & cleanup
 				const prefix = embed.prefix ?? "";
 				delete embed.prefix;
 				//Prep the title with the prefix & cleanup
 				const title = embed.title || embed.Title || "";
 				delete embed.Title;
-				embed.title = `${prefix}${title}`.trim()				
+				embed.title = `${prefix}${title}`.trim()
 				//Prep the thread and cleanup
 				let thread = embed.thread || null;
 				if (thread && !isObject(thread)) thread = {name:thread, content:null}
@@ -88,7 +81,7 @@ async function publishContent(channel, content)
 				//Prep for multiple images
 				let images = embed.image;
 				if (images && Array.isArray(images))
-					embed.image = images.pop();
+					embed.image = images.unshift();
 				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
 				let item;
@@ -97,13 +90,12 @@ async function publishContent(channel, content)
 				else
 					item = await channel.send({embeds:embeds});
 
-				if (images && Array.isArray(images) && images.length > 0)
-				{
+				if (images && Array.isArray(images) && images.length > 0) {
 					embeds[0].url = item.url
 					images.map( img => { embeds.push( {url:item.url,"image":img} ) })
 					await item.edit({embeds:embeds})
 					const waitTime = value.waitTime ?? 1000
-					await wait(waitTime);			
+					await wait(waitTime);
 				}
 
 				if (attachments) await channel.send({files:attachments});
@@ -113,8 +105,7 @@ async function publishContent(channel, content)
 				else if (value.includeIndex && title && includeIndex)
 					index.push({"prefix":prefix,"title":title,"url":item.url,"break":fieldBreak});
 				//If we have a thread, start it
-				if (thread && thread.name) 
-				{
+				if (thread && thread.name) {
 					thread.thread = await item.startThread({name:thread.name})
 					threadQueue.push(thread);
 					console.log(threadQueue)
@@ -131,8 +122,7 @@ async function publishContent(channel, content)
 			});
 		}
 
-		if (value.includeTOC)
-		{
+		if (value.includeTOC) {
 			let title = value.title || `${key} Index`;
 			let prefix = value.prefix || "";
 			let note = value.note || null;
@@ -142,13 +132,11 @@ async function publishContent(channel, content)
 				embed.setFooter(title)
 				embed.addField(`**${title}**`, '', true);
 			let count = 0;
-			contents.forEach( (item)=>
-			{
+			contents.forEach( (item)=> {
 				prefix = item.title?.startsWith('🚫') ? "" : prefix;
 				const field = `${prefix}[${item.title}](${item.url})`
 				embed.extendField(field, "** **", true);
-				if (value.maxEntriesPerField && ++count >= value.maxEntriesPerField)
-				{
+				if (value.maxEntriesPerField && ++count >= value.maxEntriesPerField) {
 					embed.close_field();
 					embed.addField(`** **`, '', true);
 					count = 0
@@ -167,16 +155,14 @@ async function publishContent(channel, content)
 	});
 
 
-	if (index.length)
-	{
+	if (index.length) {
 		if (indexFields)
 			await publishIndexFields(channel, index, indexInline);
 		else
 			await publishIndexDesc(channel, index);
 	}
 
-	if (threadQueue.length)
-	{
+	if (threadQueue.length) {
 		await Utils.asyncArrayForEach(threadQueue, async thread => {
 			thread.content = getContent(thread.thread, thread.content);
 			await publishContent(thread.thread, thread.content)
@@ -185,60 +171,50 @@ async function publishContent(channel, content)
 	return true
 }
 
-async function publishIndexDesc(channel, index)
-{
+async function publishIndexDesc(channel, index) {
 	let desc = ""
-	index.forEach( (item)=>
-	{
+	index.forEach( (item)=> {
 		if (!item.title) return;
 		desc += `${item.prefix || ""}[${item.title}](${item.url})\n`
-	});	
+	});
 	let embed = new Embed()
 		embed.setDescription(desc)
-		embed.setFooter({text:"Index"})	
+		embed.setFooter({text:"Index"})
 	await embed.send(channel);
 }
 
-async function publishIndexFields(channel, index, indexInline)
-{
+async function publishIndexFields(channel, index, indexInline) {
 	let embed = new Embed()
 		embed.addField("**Index**", '', indexInline);
 		embed.setFooter({text:"Index"})
-	index.forEach( (item)=>
-	{
+	index.forEach( (item)=> {
 		if (!item.title) return;
 		let fieldHeader = "** **";
 
-		if (item.break)
-		{
+		if (item.break) {
 			if (typeof item.break == "string")
 				fieldHeader = item.break;
 			embed.closeField();
 			embed.addField(fieldHeader,'', indexInline)
 		}
 
-		const field = `${item.prefix || ""}[${item.title}](${item.url})`			
+		const field = `${item.prefix || ""}[${item.title}](${item.url})`
 		embed.extendField(field, fieldHeader, indexInline);
 	});
 	await embed.send(channel);
 }
 
-function requireUncached(module) 
-{
+function requireUncached(module) {
 	delete require.cache[require.resolve(module)];
-	try
-	{
+	try {
 		return require(module);
-	}
-	catch (e)
-	{
+	} catch (e) {
 		return null;
 	}
 }
 
-function getContent(channel, override = null)
-{
-	let source = override || index[channel.id].data	
+function getContent(channel, override = null) {
+	let source = override || index[channel.id].data
 	let content = null;
 	try {
 		content = `../../content/${source}`
@@ -249,8 +225,7 @@ function getContent(channel, override = null)
 	return content
 }
 
-async function execute(interaction)
-{
+async function execute(interaction) {
 	//Base functionality (no args/subcommands): write the contents of the channel
 	//   					  channel argument: write contents to the specified channel
 	//TODO: Edit subcommand
@@ -270,15 +245,13 @@ async function execute(interaction)
 
 	//Grab the data for the new content according to what goes in this channel
 	const content = getContent(channel, override);
-	if (!content)
-	{
+	if (!content) {
 		await interaction.editReply(`No content found for <#${channel.id}>. Aborting`);
 		return false;
-	}	
+	}
 
 	//Clean up the old messages in the channel
-	if (clear)
-	{
+	if (clear) {
 		await interaction.editReply(`Cleaning old content from <#${channel.id}>`);
 		await MsgUtils.channelCleanup(channel);
 	}
@@ -291,22 +264,14 @@ async function execute(interaction)
 	else
 		await interaction.followUp({ content: 'Write failure!', ephemeral: true });
 
-
-
 	interaction.deleteReply();
 }
 
-async function run(client, message, command, args)
-{
-}
-
 ////// Handle autocomplete options for the Character field
-async function autoComplete(interaction) 
-{
+async function autoComplete(interaction) {
 	const focusedOption = interaction.options.getFocused(true);
-	const isTestChan = TEST_CHAN.includes(interaction.channel.id) || TEST_CHAN.includes(interaction.channel?.parent?.id);	
-	if (isTestChan && focusedOption.name === 'content') 
-	{
+	const isTestChan = TEST_CHAN.includes(interaction.channel.id) || TEST_CHAN.includes(interaction.channel?.parent?.id);
+	if (isTestChan && focusedOption.name === 'content') {
 		const value = focusedOption.value.toLowerCase();
 		console.log(value);
 		const response = Object.values(index)
@@ -326,7 +291,6 @@ async function autoComplete(interaction)
 const data = new SlashCommandBuilder()
 	.setName(`content${config.DEV ? "dev" : ""}`)
 	.setDescription('Update the contents of a static channel')
-	.setDefaultPermission(false)	
 	.addBooleanOption(option => option.setName('clear').setRequired(false).setDescription('Clear old messages or not'))
 	.addStringOption(option => option
 			.setName('content')
@@ -337,15 +301,11 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.SendMessages		];
 
-module.exports = 
-{
+module.exports = {
 	data: data,
-	whitelistRoles: [
-		config.role.Builder,
-	],
+	whitelistRoles: [ config.role.Builder, ],
 	userPermissions: userPermissions,
 	execute: execute,
-	message: run,
 	autoComplete: autoComplete,
 	build:config.PRODUCTION || config.DEV
 };
