@@ -56,7 +56,7 @@ function getDefaultDescription(channel) {
 	desc = desc.replaceAll(new RegExp(MessageMentions.UsersPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.RolesPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.ChannelsPattern, `gim`), ``)
-				.replace(emojiRegex,"")
+				.replace(emojiRegex,"").replace(":thread:","")
 				.replace(customEmoji,"")
 				.normalize("NFKC").trim()
 	desc = desc || "*No description*"
