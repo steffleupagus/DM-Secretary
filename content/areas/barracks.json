@@ -5,37 +5,46 @@
 		"embeds": 
 		[
 			{
+				"title":"Guardian Guild Barracks",
+				"description":"<#699438898643730462>",
+				"image":{ "url":"https://i.imgur.com/SBnRkkD.jpeg" },
+				"footer": { "text":"https://www.artstation.com/lapinell" }
+			},
+			{
 				"title":"Mess Hall",
 				"description":"<#699570321950244914>",
 				"image": [
-					{ "url": "https://i.imgur.com/4yVKSBF.jpg" },
-					{ "url": "https://i.imgur.com/Gx41js9.jpg" }
-				]
+					{ "url": "https://i.imgur.com/iR9qjKX.jpeg" },
+					{ "url": "https://i.imgur.com/4yVKSBF.jpg" }
+				],
+				"footer": { "text":"https://www.artstation.com/wmisuo" }
 			},
 			{
 				"title":"Barracks Quarters",
 				"description":"<#699573766195511307>",
-				"image": { "url": "https://i.imgur.com/EHzeIVc.jpg" }
+				"image": { "url": "https://i.imgur.com/EHzeIVc.jpg" },
+				"footer": { "text":"https://www.artstation.com/strangefate12" }
 			},
 			{
 				"title":"Barracks Baths",
 				"description":"<#699574231238836334>",
-				"image": { "url": "https://i.imgur.com/dyKb625.jpg" }
+				"image": { "url": "https://i.imgur.com/dyKb625.jpg" },
+				"footer": { "text":"https://www.artstation.com/armandosavoia" }
 			},
 			{
 				"title":"Champion Chambers",
 				"description":"<#699571359893946398>",
-				"image": { "url": "https://i.imgur.com/xpnmQvQ.jpg" }
+				"image": { "url": "https://i.imgur.com/xpnmQvQ.jpg" },
+				"footer": { "text":"https://www.artstation.com/victorkudr" }
 			},
-		
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n:stadium: Return to the public Colosseum "
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Colosseum skip:3 nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

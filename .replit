@@ -89,3 +89,23 @@ start = "typescript-language-server --stdio"
 run = ["sh", "-c", "node bot.js"]
 deploymentTarget = "gce"
 ignorePorts = true
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Deploy Prod"
+mode = "sequential"
+author = 3559563
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run deploy -- prod"
+
+[[workflows.workflow]]
+name = "Deploy Dev"
+mode = "sequential"
+author = 3559563
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run deploy -- dev"

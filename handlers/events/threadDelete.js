@@ -1,6 +1,7 @@
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
+const ChannelLook = require(`../../database/chanLookSchema.js`)
 const ChanActivity = require(`../../database/chanActivitySchema.js`)
 
 async function cleanRecord(channelId)
@@ -10,6 +11,9 @@ async function cleanRecord(channelId)
 
 	const metaRecord = await ChannelMeta.findOneAndDelete({channelId:channelId})
 	console.log("Meta: ", metaRecord);
+
+	const lookRecord = await ChannelLook.findOneAndDelete({channelId:channelId})
+	console.log("Look: ", lookRecord);
 }
 
 async function execute(client, channel)

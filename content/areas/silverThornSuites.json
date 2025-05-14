@@ -7,57 +7,82 @@
 			{
 				"title":"Silver Thorn Suites",
 				"description":"<#699589168304488559>",
-				"image": { "url": "https://i.imgur.com/CmpPIUa.png" }
+				"image": { "url": "https://i.imgur.com/CmpPIUa.png" },
+				"footer":{ "text":"https://www.artstation.com/jorgebarros"}
+			},
+			{
+				"title":"Silver Thorn Roses",
+				"image": { "url": "https://i.imgur.com/RwoWCc2.png" },
+				"footer":{ "text":"https://steveargyle.com"}
 			},
 			{
 				"title":"Mistress Suite ",
 				"description":"<#699589233983094834>",
-				"image": { "url": "https://i.imgur.com/LkUe3hw.png" }
+				"image": { "url": "https://i.imgur.com/LkUe3hw.png" },
+				"footer":{ "text":"Artist Unknown"}
 			},
 			{
-				"title":"Suites",
 				"description":"<#699588115458687016>",
-				"image": { "url": "https://i.imgur.com/pCaCerS.png" }
-					
+				"image": { "url": "https://i.imgur.com/pCaCerS.png" },
+				"footer":{ "text":"https://monikazawistowska.wordpress.com"}
 			},
 			{
 				"description":"<#699587998907367475>",
-				"image": { "url": "https://i.imgur.com/ElaXlDI.png" }
+				"image": { "url": "https://i.imgur.com/ElaXlDI.png" },
+				"footer":{ "text":"https://monikazawistowska.wordpress.com"}
 			},
 			{
 				"description":"<#704379754434002964>",
-				"image": { "url": "https://i.imgur.com/UA08ib4.png" }
+				"image": { "url": "https://i.imgur.com/UA08ib4.png" },
+				"footer":{ "text":"https://www.artstation.com/morganyon"}
 			},
 			{
 				"description":"<#705546694984466573>",
-				"image": { "url": "https://i.imgur.com/poKZ9iQ.png" }
+				"image": { "url": "https://i.imgur.com/poKZ9iQ.png" },
+				"footer":{ "text":"Artist Unknown"}
 			},
 			{
-				"description":"<#730461020358705203>",
-				"image": { "url": "https://i.imgur.com/iG77yzK.png" }
-			},
-			{
-				"title":"Silver Thorn Roses",
-				"image": { "url": "https://i.imgur.com/RwoWCc2.png" }
+				"description":"<#773236980355956766>",
+				"image": { "url": "https://i.imgur.com/iG77yzK.png" },
+				"footer":{ "text":"Artist Unknown"}
 			},
 			{
 				"title":"Brothel Baths",
 				"description":"<#722618344641134622>",
-				"image": { "url": "https://i.imgur.com/LoZxPRw.png" }
+				"image": { "url": "https://i.imgur.com/LoZxPRw.png" },
+				"footer":{ "text":"https://www.artstation.com/fmacmanus"}
 			},
 			{
 				"title":"Brothel Dungeon",
 				"description":"<#722622076061745233>",
-				"image": { "url": "https://i.imgur.com/dDxUjRE.png" }
+				"image": { "url": "https://i.imgur.com/dDxUjRE.png" },
+				"footer":{ "text":"https://monikazawistowska.wordpress.com"}
 			},
-			
+			{
+				"title":"Hidden Room",
+				"description":"<#731208109196050523>",
+				"image": { "url": "https://i.imgur.com/eDs5cD6.jpeg" },
+				"footer":{ "text":"https://www.artstation.com/lucamaria"}
+			},
+			{
+				"title":"Glory Hole",
+				"description":"",
+				"image":[
+					{ "url": "https://pbs.twimg.com/media/Gqg288xXwAAYnRm.png" },
+					{ "url": "https://pbs.twimg.com/media/Gqg1bziWoAA0I0i.png" },
+					{ "url": "https://pbs.twimg.com/media/Gqg2TfHWgAA00VL.png" },
+					{ "url": "https://pbs.twimg.com/media/Gqg1oppXUAApPkm.png" }
+				],
+				"footer":{"text":"https://www.hentai-foundry.com/user/Rino99\nhttps://strangemythos.bsky.social\nhttps://alexisflower.bsky.social\nhttps://www.hentai-foundry.com/user/CiosArt"}
+			},
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🚪 Return to the front of the Silver Thorn Brothel"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Brothel skip:2 nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

@@ -9,68 +9,69 @@
 				"title":"Arcanum Tower",
 				"description":"<#699226459025309736>",
 				"image": [
-					{ "url": "https://i.imgur.com/SvMcehG.png" },
-					{ "url": "https://i.imgur.com/Z7B06V8.jpg" }
-				]
+					{ "url": "https://i.imgur.com/Z7B06V8.jpg" },
+					{ "url": "https://i.imgur.com/SvMcehG.png" }
+				],
+				"footer": { "text": "https://www.artstation.com/wizboy" }
 			},
 			{
-				"title":"Tower Entrance",
+				"title":"Arcanum Guild Hall",
 				"description":"<#699208736601931778>",
-				"image": { "url": "https://i.imgur.com/x3gVI1O.png" }
+				"image": { "url": "https://i.imgur.com/x3gVI1O.png" },
+				"footer": { "text": "https://www.artstation.com/danilluzin" }
 			},
 			{
 				"title":"Archive",
 				"description":"<#699226033240539186>",
-				"image": { "url": "https://i.imgur.com/1cgJGxX.png" }
+				"image": { "url": "https://i.imgur.com/1cgJGxX.png" },
+				"footer": { "text": "Artist Unknown" }
 			},
 			{
 				"title":"Alchemy Lab",
 				"description":"<#699226177801420820>",
 				"image": [
 					{ "url": "https://i.imgur.com/cqBpxnw.jpg" },
-					{ "url": "https://i.imgur.com/T3WYMCM.jpg" },
 					{ "url": "https://i.imgur.com/QmgjkvF.jpg" },
-					{ "url": "https://i.imgur.com/RAvqQcQ.jpg" }
-				]
+					{ "url": "https://i.imgur.com/RAvqQcQ.jpg" },
+					{ "url": "https://i.imgur.com/g2XbXEP.jpeg" }
+				],
+				"footer": { "text": "https://www.deviantart.com/doodle-space\nhttps://www.deviantart.com/xngel\nhttps://www.artstation.com/ssu_ya\nhttps://www.artstation.com/malthuswolf" }
 			},
 			{
 				"title":"Artificer's Workshop",
 				"description":"<#700502195384221786>",
-				"image": { "url": "https://i.imgur.com/TG5d9DM.jpg" }
+				"image": { "url": "https://i.imgur.com/TG5d9DM.jpg" },
+				"footer": { "text":"https://www.artstation.com/agirard"}
 			},
 			{
 				"image": { "url": "https://i.imgur.com/FdGSr1D.png" }
-			},			
-			{
-				"title":"Resident Parlour",
-				"description":"<#699233051598782595>",
-				"image": [
-					{ "url": "https://i.imgur.com/T02FenY.png" },
-					{ "url": "https://i.imgur.com/MSejY2O.png" }
-				]
 			},
 			{
 				"title":"Resident Bedroom",
 				"description":"<#699233162231939102>",
-				"image": { "url": "https://i.imgur.com/5XFqrPh.png" }
+				"image": { "url": "https://i.imgur.com/gpJl50D.jpeg" },
+				"footer": { "text":"https://www.artstation.com/xiaoshawnx99"}
 			},
 			{
 				"title":"Bath Chamber",
 				"description":"<#699233311884836985>",
 				"image": [
-					{ "url": "https://i.imgur.com/WAG6fHw.jpg" },
-					{ "url": "https://i.imgur.com/Wn2XNXl.jpg" }
-				]
+					{ "url": "https://i.imgur.com/pIb0lZX.jpeg" },
+					{ "url": "https://i.imgur.com/TnbJBNJ.jpeg" }
+				],
+				"footer": { "text":"Artists Unknown"}
 			},
 			{
 				"title":"Tower Balcony",
 				"description":"<#699235759009431653>",
-				"image": { "url": "https://i.imgur.com/lf08Chj.png" }
+				"image": { "url": "https://i.imgur.com/lf08Chj.png" },
+				"footer": { "text":"https://x.com/artellerslie"}
 			},
 			{
 				"title":"High Magus Chamber",
 				"description":"<#699241091777560596>",
-				"image": { "url": "https://i.imgur.com/E4bjZqJ.jpg" }
+				"image": { "url": "https://i.imgur.com/E4bjZqJ.jpg" },
+				"footer": { "text":"https://www.artstation.com/bekas"}
 			},
 
 			{
@@ -79,7 +80,8 @@
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Arcanum nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

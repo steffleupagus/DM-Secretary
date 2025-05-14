@@ -7,43 +7,53 @@
 			{
 				"title":"Dockyard",
 				"description":"<#713002614589227028> <#713002716590374973>",
-				"image": { "url": "https://i.imgur.com/PemD4NY.png" }
+				"image": { "url": "https://i.imgur.com/PemD4NY.png" },
+				"footer": { "text":"https://www.artstation.com/patrickfaulwetter" }
 			},
 			{
 				"title":"Frisky Fairy Tavern",
 				"description":"<#840447148251807784>",
-				"image": { "url": "https://i.imgur.com/2ZMrbBs.png" }
+				"image": [
+					{ "url": "https://i.imgur.com/2ZMrbBs.png" },
+					{ "url": "https://i.imgur.com/7wXruPA.png" }
+				],
+				"footer": { "text":"Artists Unknown" }
 			},
 			{
-				"image": { "url": "https://i.imgur.com/7wXruPA.png" }
+				"title":"Frisky Fairy Tavern: Proprietor (NPC)",
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099780531983487098/fairy_3.jpg" },
+				"footer": { "text":"https://www.hentai-foundry.com/user/Vlankt" }
 			},
 			{
-				"title":"Frisky Fairy Tavern Proprietor (NPC)",
-				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099780531983487098/fairy_3.jpg" }
-			},
-			{
-				"title":"Dockyard Wharf | Pier",
+				"title":"Dockyard Wharf & Pier",
 				"description":"<#744711990500524052> <#744711929708150965>",
-				"image": { "url": "https://i.imgur.com/C8rsGJh.png" }
+				"image": [
+					{ "url": "https://i.imgur.com/C8rsGJh.png" },
+					{ "url": "https://i.imgur.com/EdSgVc7.jpeg" }
+				],
+				"footer": { "text":"https://www.artstation.com/robertogatto\nhttps://www.artstation.com/ihortovstohan" }
 			},
 			{
 				"title":"Dockyard Warehouse",
 				"description":"<#748759431180976258>",
-				"image": { "url": "https://i.imgur.com/7apnMHn.png" }
+				"image": { "url": "https://i.imgur.com/7apnMHn.png" },
+				"footer": { "text":"https://www.deviantart.com/wolfewolf" }
 			},
 			{
 				"title":"Docked Vessel",
 				"description":"<#829840323823927306>",
-				"image": { "url": "https://i.imgur.com/UG4NZlg.png" }
+				"image": { "url": "https://i.imgur.com/UG4NZlg.png" },
+				"footer": { "text":"https://www.deviantart.com/coder980" }
 			},
-			
+
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n:moneybag: Follow the road to the Mercantile Quarter\n\n:house_abandoned: Slip through the narrow alley into the Slums\n\n:island: Charter a vessel to take you to an Island off the Coast"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Dock nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

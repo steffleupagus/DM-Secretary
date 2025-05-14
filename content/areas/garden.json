@@ -2,22 +2,25 @@
 	"garden":
 	{
 		"includeIndex":false,
-		"embeds": 
+		"embeds":
 		[
 			{
 				"title":"Garden Promenade",
 				"description":"<#708026473264578601>",
-				"image": { "url": "https://i.imgur.com/3766ux5.png" }
+				"image": { "url": "https://i.imgur.com/3766ux5.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
 				"title":"Garden Nook",
 				"description":"<#762043570869108824>",
-				"image": { "url": "https://i.imgur.com/O0JwRUO.png" }
+				"image": { "url": "https://i.imgur.com/O0JwRUO.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
 				"title":"Arcane Falls",
 				"description":"<#708026959728214136> <#831365120999424010>",
-				"image": { "url": "https://i.imgur.com/kDkrpvA.png" }
+				"image": { "url": "https://i.imgur.com/kDkrpvA.png" },
+				"footer":{"text":"https://www.deviantart.com/namkoart/"}
 			},
 			{
 				"title":"Hidden Grotto",
@@ -25,25 +28,28 @@
 				"image": [
 					{ "url": "https://i.imgur.com/cJn8MKb.png" },
 					{ "url": "https://i.imgur.com/b718XhB.png" }
-				]
+				],
+				"footer":{"text":"https://www.artstation.com/olga_antonenko"}
 			},
 			{
 				"title":"Hot Springs",
 				"description":"<#732009747401932820>",
-				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1124516559495385218/unknown.png" }
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1124516559495385218/unknown.png" },
+				"footer":{"text":"https://www.deviantart.com/evulart/"}
 			},
 			{
-				"image": {"url":"https://cdn.discordapp.com/attachments/1099734278025265192/1124516502297657424/image.png"}
+				"image": {"url":"https://cdn.discordapp.com/attachments/1099734278025265192/1124516502297657424/image.png"},
+				"footer":{"text":"https://www.artstation.com/nise_loftsteinn"}
 			},
 
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🏘️ Leave the Gardens and return to the Residential Quarter\n\n🔮 Cross the river to the Arcanum Tower"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Garden nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

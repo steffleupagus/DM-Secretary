@@ -9,7 +9,10 @@ const schema = new mongoose.Schema({
 	channelId:	reqString,
 	title:		String,
 	image:		[String],
-	desc:		String
+	desc:		String,
+	name:		String,
+	value:		String,
+	footer:		String
 })
 
 module.exports = mongoose.model(schemaName, schema, schemaName)

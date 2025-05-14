@@ -81,7 +81,7 @@ async function publishContent(channel, content) {
 				//Prep for multiple images
 				let images = embed.image;
 				if (images && Array.isArray(images))
-					embed.image = images.unshift();
+					embed.image = images[0];
 				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
 				let item;
@@ -90,7 +90,8 @@ async function publishContent(channel, content) {
 				else
 					item = await channel.send({embeds:embeds});
 
-				if (images && Array.isArray(images) && images.length > 0) {
+				if (images && Array.isArray(images) && images.length > 1) {
+					images = images.slice(1)
 					embeds[0].url = item.url
 					images.map( img => { embeds.push( {url:item.url,"image":img} ) })
 					await item.edit({embeds:embeds})

@@ -7,46 +7,41 @@
 			{
 				"title":"Ample Ogre Inn",
 				"description":"<#696553906045714492>",
-				"image": { "url": "https://i.imgur.com/6k9ASva.png" }
+				"image": { "url": "https://i.imgur.com/6k9ASva.png" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
 			},
-			
 			{
 				"title":"Inn Common Room",
-				"description":"<#762042861637861386>",
-				"image": { "url": "https://i.imgur.com/0j1n6gw.png" }
+				"description":"<#696554217158082630> <#762042861637861386>",
+				"image": { "url": "https://i.imgur.com/m4BlycC.jpeg" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
 			},
-			{
-				"description":"<#696554217158082630>",
-				"image": { "url": "https://i.imgur.com/HJNXFxM.png" }
-			},
-
 			{
 				"title":"Inn Rooms",
-				"description":"<#697831832749736067> <#697832108646727712> <#727201032827961387>",
-				"image": { "url": "https://i.imgur.com/h5nxXah.png" }
+				"description":"<#697831832749736067> <#697832108646727712>",
+				"image": { "url": "https://i.imgur.com/IbkTld6.jpeg" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
 			},
-			{
-				"image": { "url": "https://i.imgur.com/SR4Q4dH.png" }
-			},
-
 			{
 				"title":"Communal Bath",
 				"description":"<#775202925756678164> <#759944916989640735>",
-				"image": { "url": "https://i.imgur.com/IKgEpXk.png" }
+				"image": { "url": "https://i.imgur.com/IKgEpXk.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
-			
 			{
 				"title":"Proprietors",
-				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099734450004295710/unknown.png" }
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099734450004295710/unknown.png" },
+				"footer":{"text":"https://www.hentai-foundry.com/user/curanto"}
 			},
-			
+
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🚪 Leave the Ample Ogre and return to the Residential Quarter"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Inn nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }
