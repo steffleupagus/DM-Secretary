@@ -7,25 +7,28 @@
 			{
 				"title":"Outrider's Lodge",
 				"description":"<#853363208109948938>",
-				"image": { "url": "https://i.imgur.com/rNs6nSq.png" }
+				"image": { "url": "https://i.imgur.com/rNs6nSq.png" },
+				"footer": {"text":"https://www.valkiri.llc/fantasy-art"}
 			},
 			{
 				"title":"Lodge",
 				"description":"<#853364033612152842>",
-				"image": { "url": "https://i.imgur.com/rOhyl7k.png" }
+				"image": { "url": "https://i.imgur.com/rOhyl7k.png" },
+				"footer": {"text":"https://www.artstation.com/jerycedia"}
 			},
 			{
 				"title":"Lodge Quarters",
 				"description":"<#853364287954485248>",
-				"image": { "url": "https://i.imgur.com/xFB36T5.png" }
+				"image": { "url": "https://i.imgur.com/xFB36T5.png" },
+				"footer": {"text":"https://www.artstation.com/chrismorales23"}
 			},
 			{
 				"title":"Warden's Chambers",
 				"description":"<#853363954499452928>",
-				"image": { "url": "https://i.imgur.com/DzbEWdl.png" }
+				"image": { "url": "https://i.imgur.com/DzbEWdl.png" },
+				"footer": {"text":"https://www.artstation.com/evgmusienko"}
 			},
 
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🚪 Leave the lodge and return to the Wilderness"

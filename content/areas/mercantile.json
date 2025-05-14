@@ -5,47 +5,54 @@
 		"embeds": 
 		[
 			{
+				"title":"Mercantile Quarter",
+				"description":"<#695638243504553994>",
+				"image": { "url": "https://i.imgur.com/VoANkz5.jpeg" },
+				"footer": {"text":"https://www.artstation.com/ilona_ribeiro_0807"}
+			},
+			{
 				"title":"Mercantile Plaza",
 				"description":"<#695638277914624061>",
-				"image": { "url": "https://i.imgur.com/DZaKA3J.png" }
+				"image": { "url": "https://i.imgur.com/u38HhV6.jpeg" },
+				"footer": {"text":"https://www.artstation.com/nemo_duffort"}
 			},
 			{
 				"title":"Market",
 				"description":"<#694285592955191336>",
-				"image": { "url": "https://i.imgur.com/u2YQZkf.png" }
+				"image": { "url": "https://i.imgur.com/u2YQZkf.png" },
+				"footer": {"text":"Artist Unknown"}
 			},
 			{
 				"title":"Bazaar",
 				"description":"<#694286716302786570>",
-				"image": { "url": "https://i.imgur.com/BeE9Smd.png" }
+				"image": { "url": "https://i.imgur.com/BeE9Smd.png" },
+				"footer": {"text":"https://www.deviantart.com/sandara"}
 			},
 			{
 				"title":"Artisan Workshop",
 				"description":"<#902984302575362068>",
-				"image": { "url": "https://i.imgur.com/kT4zzX4.png" }
+				"image": { "url": "https://i.imgur.com/kT4zzX4.png" },
+				"footer": {"text":"Artist Unknown"}
 			},
 			{
 				"title":"Merchant Shop",
 				"description":"<#902984322762547220>",
-				"image": { "url": "https://i.imgur.com/3V4NT5o.png" }
+				"image": { "url": "https://i.imgur.com/3V4NT5o.png" },
+				"footer": {"text":"Artist Unknown"}
 			},
 			{
 				"title":"Creamy Bean Café",
 				"description":"<#902984632599994418>",
-				"image": { "url": "https://i.imgur.com/bkZ8P2x.png" }
+				"image": { "url": "https://i.imgur.com/bkZ8P2x.png" },
+				"footer": {"text":"https://www.artstation.com/ilmjaehyuk"}
 			},
 			{
-				"title":"Restaurant Bar",
-				"description":"<#829836773823479828>",
-				"image": { "url": "https://i.imgur.com/yLlhOl5.png" }
-			},
-			{
-				"title":"Restaurant Dining",
-				"description":"<#1062439598950715422>",
-				"image": { "url": "https://i.imgur.com/TMGgu0j.png" }
-			},
-			{
-				"image": {"url":"https://i.imgur.com/4YFvG3H.jpeg"}
+				"title":"Cyu'unt Restaurant",
+				"description":"<#829836773823479828> <#1062439598950715422>",
+				"image": [
+					{ "url": "https://i.imgur.com/yLlhOl5.png" },
+					{ "url": "https://i.imgur.com/TMGgu0j.png" }
+				]
 			},
 			{
 				"title":"Travel",
@@ -53,7 +60,8 @@
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Mercantile nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

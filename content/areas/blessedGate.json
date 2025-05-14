@@ -7,26 +7,36 @@
 			{
 				"title":"Blessed Gate",
 				"description":"<#833425039251472384>\n<#694283478719791124> <#695239086033862737>",
-				"image": { "url": "https://i.imgur.com/q0Y6Joz.jpg" }
+				"image": { "url": "https://i.imgur.com/q0Y6Joz.jpg" },
+				"footer": {"text":"Artist Unknown"}
 			},
 			{
 				"title":"Coastal Highway",
 				"description":"<#1099785390367440966>",
-				"image": { "url": "https://i.imgur.com/UTlyjSX.png" }
+				"image": { "url": "https://i.imgur.com/UTlyjSX.png" },
+				"footer": {"text":"https://www.deviantart.com/psdeluxe"}
+			},
+			{
+				"title":"Farmstead",
+				"description":"<#695239086033862737>",
+				"image": { "url": "https://i.imgur.com/Vk7p5v3.png" },
+				"footer": {"text":"https://www.artstation.com/pqe"}
 			},
 			{
 				"title":"Countryside",
 				"description":"<#699802570952015872>",
-				"image": { "url": "https://i.imgur.com/Vk7p5v3.png" }
+				"image": { "url": "https://i.imgur.com/Vk7p5v3.png" },
+				"footer": {"text":"https://www.artstation.com/pqe"}
 			},
-			
+
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n⛲ - Pass through the Blessed Gate into the city\n\n🏔️ - Adventure to the Wilderness beyond the mountain pass\n\n🪦 - Circle around the city to the Cursed Gate"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Gates nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

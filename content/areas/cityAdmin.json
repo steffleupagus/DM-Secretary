@@ -8,10 +8,8 @@
 			{
 				"title":"Administrative District",
 				"description":"<#695638537575596122>",
-				"image": [
-					{ "url": "https://i.imgur.com/ip0OjyX.png" },
-					{ "url": "https://i.imgur.com/ekGK7Hs.png" }
-				]					
+				"image": { "url": "https://i.imgur.com/jftXGlX.jpeg" },
+				"footer": { "text": "https://www.artstation.com/martheart" }
 			},
 			{
 				"title":"Queen's Citadel",
@@ -20,27 +18,30 @@
 					{ "url": "https://i.imgur.com/xF7iGnR.png" },
 					{ "url": "https://i.imgur.com/v4dFrWK.png" },
 					{ "url": "https://i.imgur.com/aGkdWWI.png" }
-				]
+				],
+				"footer": { "text": "https://www.artstation.com/zpz\nhttps://www.artstation.com/skaven_zverov" }
 			},
 			{
 				"title":"Throne Room",
 				"description":"<#707928290832416798>",
-				"image": { "url": "https://i.imgur.com/lw5raLz.jpg" }
+				"image": { "url": "https://i.imgur.com/lw5raLz.jpg" },
+				"footer": { "text": "https://www.artstation.com/thiagoklafke\nhttps://www.artstation.com/martinholmberg" }
 			},
 			{
 				"title":"Public Stockades",
 				"description":"<#1023012444391616522>",
 				"image": [
-					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814464660181073/image.png" },
-					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814465029296138/sabudenego-621017-Bad-Ending_Yennefer_Witcher_3.png" },
-					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814465536786473/M7dCo9p.png" },
-					{ "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1123814464135888916/sample_dcca06694328df47220b139df14ee0d1.png" }					
-				]
+					{ "url": "https://pbs.twimg.com/media/GqPGSzsXIAAWqhk.png" },
+					{ "url": "https://pbs.twimg.com/media/GqPGT-AXkAA8vK-.png" },
+					{ "url": "https://pbs.twimg.com/media/GqPGVNOWsAACNlR.png" }
+				],
+				"footer": { "text": "https://www.hentai-foundry.com/pictures/user/sabudenego\nhttps://www.hentai-foundry.com/pictures/user/Kaihlan" }
 			},
 			{
 				"title":"Dungeon Cell",
 				"description":"<#833463963047821358>",
-				"_image": { "url": "https://i.imgur.com/orYPcWf.png" }
+				"_image": { "url": "https://i.imgur.com/orYPcWf.png" },
+				"footer": { "text": "https://www.deviantart.com/rukkits" }
 			},
 			{
 				"content":"``` ```",
@@ -49,7 +50,8 @@
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Administrative nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

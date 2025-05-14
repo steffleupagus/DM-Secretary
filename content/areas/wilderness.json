@@ -2,68 +2,88 @@
 	"wilderness":
 	{
 		"includeIndex":false,
-		"embeds": 
+		"embeds":
 		[
+			{
+				"title":"Wilderness",
+				"description":"<#833791497862119444>",
+				"image": [
+					{ "url": "https://i.imgur.com/S2KX9x1.jpeg" },
+					{ "url": "https://i.imgur.com/UffQHdu.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/alayna"}
+			},
 			{
 				"title":"Mountain Foothills",
 				"description":"<#696775878671204403>",
-				"image": { "url": "https://i.imgur.com/tKSPxnf.png" }
+				"image": { "url": "https://i.imgur.com/tKSPxnf.png" },
+				"footer":{"text":"https://www.deviantart.com/orioto"}
 			},
 			{
 				"title":"Lookout Point",
 				"description":"<#744714003619643472>",
-				"image": { "url": "https://i.imgur.com/IdNI3lM.png" }
+				"image": { "url": "https://i.imgur.com/IdNI3lM.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
 				"title":"Sapphire Lake",
 				"description":"<#762044371800948778>",
-				"image": { "url": "https://i.imgur.com/h04sqiw.png" }
+				"image": { "url": "https://i.imgur.com/h04sqiw.png" },
+				"footer":{"text":"https://www.deviantart.com/krstn54"}
 			},
 			{
 				"description":"<#732008548166533201>",
-				"image": { "url": "https://i.imgur.com/arZyozh.png" }
+				"image": { "url": "https://i.imgur.com/arZyozh.png" },
+				"footer":{"text":"https://www.artstation.com/wez"}
 			},
 			{
 				"title":"Moaning Wood",
 				"description":"<#732009498331578388> <#762044475610234880>",
-				"image": { "url": "https://i.imgur.com/6rTGlmX.png" }
+				"image": { "url": "https://i.imgur.com/6rTGlmX.png" },
+				"footer":{"text":"https://www.deviantart.com/jkroots"}
 			},
 			{
-				"image": { "url": "https://i.imgur.com/dNGM6zZ.png" }
+				"image": { "url": "https://i.imgur.com/dNGM6zZ.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
-				"image": { "url": "https://i.imgur.com/R3FIwIM.png" }
+				"image": { "url": "https://i.imgur.com/R3FIwIM.png" },
+				"footer":{"text":"https://www.artstation.com/jjcanvas"}
 			},
 			{
 				"title":"Druid Grove",
 				"description":"<#762044526134951956>",
-				"image": { "url": "https://i.imgur.com/giIOm7Q.png" }
+				"image": { "url": "https://i.imgur.com/giIOm7Q.png" },
+				"footer":{"text":"https://www.artstation.com/makkhariel"}
 			},
 			{
-				"image": { "url": "https://i.imgur.com/qeV8O02.png" }
+				"image": { "url": "https://i.imgur.com/qeV8O02.png" },
+				"footer":{"text":"https://www.artstation.com/herve_leblan"}
 			},
 			{
-				"image": { "url": "https://i.imgur.com/b4cD754.png" }
+				"image": { "url": "https://i.imgur.com/b4cD754.png" },
+				"footer":{"text":"https://www.artstation.com/wwsketch"}
 			},
 			{
 				"title":"Baal's Deep",
 				"description":"<#840453499870642196>",
-				"image": { "url": "https://i.imgur.com/a69zMvs.jpg" }
+				"image": { "url": "https://i.imgur.com/a69zMvs.jpg" },
+				"footer":{"text":"https://www.artstation.com/summerpudding"}
 			},
 			{
 				"title":"Island off the Coast",
 				"description":"<#833467268863623199>",
-				"image": { "url": "https://i.imgur.com/dp21C1Q.png" }
+				"image": { "url": "https://i.imgur.com/dp21C1Q.png" },
+				"footer":{"text":"https://www.artstation.com/alayna"}
 			},
-
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🏔️ - Travel through the mountain pass to the city\n\n🏕️ - Attempt to locate the trail to the Outrider's Lodge\n(*Only <@&853346385545920522> guild members will succeed*)"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Wilderness nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }
