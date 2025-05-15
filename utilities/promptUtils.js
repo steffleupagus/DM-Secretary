@@ -15,11 +15,6 @@ const config = require(`../config/${mod}_config.json`);
 const Utils = require(`./utilFuncs.js`)
 
 const dmRoles = [ config.role.DM, config.role.Moderator ];
-const PROMPT_TIME = 30000;
-const REACT_TIME = 30000;
-const INTERACT_TIME = 30000;
-const MODAL_INPUT_TIME = 30000;
-
 const Time = {
 	Extended: 15*59*1000,	//14.75 minutes
 	Long: 5*60*1000,		//5 minutes
@@ -27,6 +22,11 @@ const Time = {
 	Short: 10000,			//10s
 	Debug: 1				//1ms
 }
+
+const PROMPT_TIME = 30000;
+const REACT_TIME = 30000;
+const INTERACT_TIME = 30000;
+const MODAL_INPUT_TIME = Time.Extended;
 
 ////// Prompt the user for message input
 //@channel			- the prompt should be sent to
@@ -143,8 +143,7 @@ async function promptUserPing(channel, prompt, users=[], time=PROMPT_TIME)
 //@time 			- time (in seconds) to wait for the user input
 async function promptUserButton(channel, prompt, users, options,
 								defaultOption=null, failOptions=null,
-				    			returnFirst=false, time=INTERACT_TIME)
-{
+								returnFirst=false, time=INTERACT_TIME) {
 	//Sort the users so we can compare the lists easily later
 	users.sort();
 	if (!defaultOption) defaultOption = options[0];
@@ -154,8 +153,7 @@ async function promptUserButton(channel, prompt, users, options,
 	const row = await createButtonRow(options)
 	await addComponentRows(prompt, [row]);
 
-	const filter = i =>
-	{
+	const filter = i => {
 		i.deferUpdate();
 		const user = i.user;
 		const msg = i.message.id == prompt.id;
@@ -167,32 +165,27 @@ async function promptUserButton(channel, prompt, users, options,
 
 	var reactedUsers = [];
 	var reactCount = {};
-	return new Promise((resolve, reject) =>
-	{
+	return new Promise((resolve, reject) => {
 		const collector = prompt.createMessageComponentCollector({
 			filter, componentType: ComponentType.Button, time: time, errors:['time']
 		});
 
-		collector.on('collect', async(i) =>
-		{
+		collector.on('collect', async(i) => {
 			const member = i.member;
 			const modDM = Utils.hasAnyRole(member, dmRoles) && !i.user.bot;
- 			if (modDM || returnFirst || failOptions.includes(i.customId))
-			{
+			if (modDM || returnFirst || failOptions.includes(i.customId)) {
 				const idx = options.map(opt => opt.custom_id).indexOf(i.customId);
- 				resolve({react:i.customId, idx: idx, user:i.user});
- 				collector.stop();
+				resolve({react:i.customId, idx: idx, user:i.user});
+				collector.stop();
 			}
-			else if (!reactedUsers.includes(i.user.id))
-			{
+			else if (!reactedUsers.includes(i.user.id)) {
 				reactedUsers.push(i.user.id);
 				reactedUsers.sort();
 				const idx = options.map(opt => opt.custom_id).indexOf(i.customId);
 				reactCount[idx] = (reactCount[idx] || 0) + 1;
 				if (Utils.isEqual(reactedUsers, users))
 					collector.stop();
-				else
-				{
+				else {
 					const label = `${options[idx].label || ''} x ${reactCount[idx]}`
 					row.components[idx].label = label;
 					await prompt.edit({components: [row]})
@@ -200,15 +193,12 @@ async function promptUserButton(channel, prompt, users, options,
 			}
 		});
 
-		collector.on('end', collected =>
-		{
+		collector.on('end', collected => {
 			const idx = options.map(opt => opt.custom_id).indexOf(defaultOption);
 			resolve({react:defaultOption, idx:idx});
 		});
 	});
 }
-
-
 
 ////
 // Create a selection row component to attach to a message
@@ -217,9 +207,7 @@ async function promptUserButton(channel, prompt, users, options,
 //@min				- minimum number of options that can be selected
 //@max				- maximum number of options that can be selected
 //@placeholder		- string that specifies the text to be displayed prior to selection
-function createSelectRow(customId="select", options=[], min=null, max=null,
-					   	 placeholder=null)
-{
+function createSelectRow(customId="select", options=[], min=null, max=null, placeholder=null) {
 	placeholder = placeholder || 'Nothing selected'
 	const row = new ActionRowBuilder();
 	const select = new StringSelectMenuBuilder()
@@ -236,8 +224,7 @@ function createSelectRow(customId="select", options=[], min=null, max=null,
 }
 
 //// Create a select option object
-function createSelectOption(label, description, value)
-{
+function createSelectOption(label, description, value) {
 	if (description)
 		return {label:label, description: description, value: value};
 	else
@@ -251,12 +238,10 @@ function createSelectOption(label, description, value)
 ////
 // Create a button row component to attach to a message
 //@options	- an array of objects that contains button row data
-function createButtonRow(options)
-{
+function createButtonRow(options) {
 	//Add the button interactions for the users
 	const row = new ActionRowBuilder()
-	for (let option of options)
-	{
+	for (let option of options) {
 		if (typeof(option) !== 'object')
 			option = {style:'SECONDARY', emoji:option, custom_id:option}
 		row.addComponents(new ButtonBuilder(option))
@@ -268,8 +253,7 @@ function createButtonRow(options)
 // Add multiple component rows to a specified message
 //@message	- the message to which the component rows should be added
 //@rows		- an array of the component row data
-async function addComponentRows(message, rows)
-{
+async function addComponentRows(message, rows) {
 	if (message.edit)
 		await message.edit({components: rows})
 	else if (message.editReply)
@@ -279,20 +263,16 @@ async function addComponentRows(message, rows)
 ///
 ///
 ///
-async function collectSelectInteractions(interaction, callbackMap = {}, defaultOption=null, time=PROMPT_TIME)
-{
+async function collectSelectInteractions(interaction, callbackMap = {}, defaultOption=null, time=PROMPT_TIME) {
 	const prompt = await interaction.fetchReply();
-	return new Promise((resolve, reject) =>
-	{
+	return new Promise((resolve, reject) => {
 		const collector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.SelectMenu, time: time, errors:['time']
 		});
 
-		collector.on('collect', async(i) =>
-		{
+		collector.on('collect', async(i) => {
 			let value = i.values[0]
-			if (callbackMap && callbackMap[value])
-			{
+			if (callbackMap && callbackMap[value]) {
 				try {
 					value = await callbackMap[value].func(i, callbackMap[value].args);
 				} catch (error) {
@@ -303,9 +283,7 @@ async function collectSelectInteractions(interaction, callbackMap = {}, defaultO
 				if (!i.deferred && !i.replied )
 					i.deferUpdate()
 				resolve(value);
-			}
-			else
-			{
+			} else {
 				i.deferUpdate()
 				resolve(i.values);
 			}
@@ -313,8 +291,7 @@ async function collectSelectInteractions(interaction, callbackMap = {}, defaultO
 			collector.stop();
 		});
 
-		collector.on('end', collected =>
-		{
+		collector.on('end', collected => {
 			resolve(defaultOption)
 		});
 	});
@@ -323,27 +300,22 @@ async function collectSelectInteractions(interaction, callbackMap = {}, defaultO
 ///
 ///
 ///
-async function collectButtonInteractions(interaction, callbackMap={}, defaultOption=null, time=PROMPT_TIME)
-{
+async function collectButtonInteractions(interaction, callbackMap={}, defaultOption=null, time=PROMPT_TIME) {
 	const prompt = await interaction.fetchReply();
 	return collectButtonPrompt(prompt, callbackMap, defaultOption, time)
 }
 
-async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, time=PROMPT_TIME)
-{
-	return new Promise((resolve, reject) =>
-	{
+async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, time=PROMPT_TIME) {
+	return new Promise((resolve, reject) => {
 		const collector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.Button, time: time, errors:['time']
 		});
 
-		collector.on('collect', async(i) =>
-		{
+		collector.on('collect', async(i) => {
 			let value = i.customId
 
 			//let value = i.value
-			if (callbackMap[value])
-			{
+			if (callbackMap[value]) {
 				try {
 					value = await callbackMap[value].func(i, callbackMap[value].args);
 					if (!i.deferred && !i.replied )
@@ -353,9 +325,7 @@ async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, t
 					resolve(null);
 				}
 				resolve(value);
-			}
-			else
-			{
+			} else {
 				i.deferUpdate()
 				resolve(value);
 			}
@@ -363,8 +333,7 @@ async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, t
 			collector.stop();
 		});
 
-		collector.on('end', collected =>
-		{
+		collector.on('end', collected => {
 			resolve(defaultOption)
 		});
 	});
@@ -373,29 +342,24 @@ async function collectButtonPrompt(prompt, callbackMap={}, defaultOption=null, t
 ///
 ///
 ///
-async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=null, time=PROMPT_TIME, max=null)
-{
-	return new Promise((resolve, reject) =>
-	{
+async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=null, time=PROMPT_TIME, max=null) {
+	return new Promise((resolve, reject) => {
 		const selectCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.StringSelect, time: time, errors:['time'] });
 		const buttonCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.Button, time: time, errors:['time'] });
 		const collectors = [selectCollector, buttonCollector];
 		let resolved = false;
-		const stopCollecting = () =>
-		{
+		const stopCollecting = () => {
 			resolved = true;
 			collectors.forEach(collector => collector.stop());
 		}
-		const collect = async(i) =>
-		{
+		const collect = async(i) => {
 			let value = i.isButton() ? i.customId : i.values[0]
 			console.log("Collected:", value)
 
 			let callback = callbackMap?.[value] || callbackMap?.['*'] || null;
-			if (callback)
-			{
+			if (callback) {
 				try {
 					value = await callback.func(i, callback.args || null, value);
 				} catch (error) {
@@ -406,17 +370,13 @@ async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=nu
 
 				if (!i.deferred && !i.replied )
 					i.deferUpdate()
-				if (!resolved)
-				{
+				if (!resolved) {
 					stopCollecting();
 					resolve(value);
 				}
-			}
-			else
-			{
+			} else {
 				i.deferUpdate()
-				if (!resolved)
-				{
+				if (!resolved) {
 					stopCollecting();
 					resolve( i.isButton() ? value : i.values);
 				}
@@ -424,18 +384,14 @@ async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=nu
 		}
 
 		collectors.forEach(collector => collector.on('collect', collect));
-		collectors.forEach(collector => collector.on('end', async(collected) =>
-		{
+		collectors.forEach(collector => collector.on('end', async(collected) => {
 			console.log("Reason: ", collector.endReason)
-			if (!resolved)
-			{
+			if (!resolved) {
 				resolved = true;
 				let value = defaultOption
-				if (collector.endReason == 'time')
-				{
+				if (collector.endReason == 'time') {
 					let callback = callbackMap.timeout || null;
-					if (callback)
-					{
+					if (callback) {
 						try {
 							value = await callback.func(collected, callback.args || null, defaultOption)
 						} catch (error) {
@@ -524,7 +480,7 @@ async function collectComponents(prompt, args = defaultArgs) {
 			const modDM = Utils.hasAnyRole(i.member, dmRoles) && !i.user.bot;
 			if (modDM || returnFirst || fail || Utils.isEqual(reactedUsers, users))
 			{
-	 			collector.stop();
+				collector.stop();
 			}
 		});
 		//Setup end / timeout method for all collectors
@@ -683,8 +639,7 @@ async function collectComponents(prompt, args = {callbackMap:{}, default:null, t
 // @returnFirst 		- return after the first reaction if true, if false, wait for all @users to react
 ////
 async function collectMultiUserButton(prompt, users=[], defaultOption=null, failOptions=[],
-									  callbackMap={}, time=PROMPT_TIME)
-{
+									  callbackMap={}, time=PROMPT_TIME) {
 	const returnFirst = false // make this a param?
 
 	//Sort the users so we can compare the lists easily later
@@ -694,8 +649,7 @@ async function collectMultiUserButton(prompt, users=[], defaultOption=null, fail
 	var reactedUsers = [];
 	var reactCount = {};
 
-	const filter = i =>
-	{
+	const filter = i => {
 		const user = i.user;
 		const msg = i.message.id == prompt.id;
 		const member = i.member;
@@ -704,14 +658,12 @@ async function collectMultiUserButton(prompt, users=[], defaultOption=null, fail
 		return (msg && (modDM || validUser));
 	};
 
-	return new Promise((resolve, reject) =>
-	{
+	return new Promise((resolve, reject) => {
 		const collector = prompt.createMessageComponentCollector({
 			filter, componentType: ComponentType.Button, time: time, errors:['time']
 		});
 
-		collector.on('collect', async(i) =>
-		{
+		collector.on('collect', async(i) => {
 			let value = i.customId
 
 			if (!i.deferred && !i.replied)
@@ -719,11 +671,9 @@ async function collectMultiUserButton(prompt, users=[], defaultOption=null, fail
 
 			reactCount[value] = (reactCount[value] || 0) + 1;
 
-			if (callbackMap)
-			{
+			if (callbackMap) {
 				let callback = callbackMap[value] || callbackMap['*'] || null;
-				if (callback)
-				{
+				if (callback) {
 					try {
 						await callback.func(i, reactCount, callback.args || null);
 					} catch (error) {
@@ -734,21 +684,18 @@ async function collectMultiUserButton(prompt, users=[], defaultOption=null, fail
 			}
 
 			const modDM = Utils.hasAnyRole(i.member, dmRoles) && !i.user.bot;
-			if (users.includes(i.user.id) && !reactedUsers.includes(i.user.id))
-			{
+			if (users.includes(i.user.id) && !reactedUsers.includes(i.user.id)) {
 				reactedUsers.push(i.user.id)
 				reactedUsers.sort();
 			}
 
- 			if (modDM || returnFirst || failOptions.includes(i.customId) || Utils.isEqual(reactedUsers, users))
-			{
+			if (modDM || returnFirst || failOptions.includes(i.customId) || Utils.isEqual(reactedUsers, users)) {
 				resolve(value);
- 				collector.stop();
+				collector.stop();
 			}
 		});
 
-		collector.on('end', collected =>
-		{
+		collector.on('end', collected => {
 			resolve(defaultOption)
 		});
 	});
@@ -803,10 +750,8 @@ async function confirmDialog_Backup(interaction, prompt, users=[]){
 	prompt.components = [buttons]
 	prompt = await interaction.followUp(prompt);
 
-	let callbackFunc = async function(buttonInteraction, reactCount, args)
-	{
-		for (b=0; b<options.length; ++b)
-		{
+	let callbackFunc = async function(buttonInteraction, reactCount, args) {
+		for (b=0; b<options.length; ++b) {
 			const option = options[b];
 			const count = reactCount[option.custom_id];
 			let label = `${option.label || ''}`
@@ -909,30 +854,21 @@ async function promptModal(interaction, title="Modal", customId="modal", inputs 
 	// from it's Custom ID. See https://discord.js.org/#/docs/discord.js/stable/class/ModalSubmitFieldsResolver for more info.
 }
 
-
-
-
-
-
-
-
-
-module.exports =
-{
- 	promptUserPing,				//<-- funcsScene: Used to ping player of unknown tupper messages
- 	promptUserInput,			//<-- funcsDuels: Used to prompt for reason for denying exp. TODO: Swap with Modal for general comments
- 	promptUserButton,			//<-- funcsDuels: Use buttons for prompting winner/confirmation. Replaces reacts
- 	promptModal,				//<-- cmdGuild: Prompt for character name
- 	collectSelectInteractions,	//<-- cmdGuild: Prompt for character from list in main interaction reply
- 	collectButtonInteractions,	//<-- cmdGuild
+module.exports = {
+	promptUserPing,				//<-- funcsScene: Used to ping player of unknown tupper messages
+	promptUserInput,			//<-- funcsDuels: Used to prompt for reason for denying exp. TODO: Swap with Modal for general comments
+	promptUserButton,			//<-- funcsDuels: Use buttons for prompting winner/confirmation. Replaces reacts
+	promptModal,				//<-- cmdGuild: Prompt for character name
+	collectSelectInteractions,	//<-- cmdGuild: Prompt for character from list in main interaction reply
+	collectButtonInteractions,	//<-- cmdGuild
 	collectAllInteractions,		//<-- funcsScene
 	collectComponents,
 	collectMultiUserButton,
 	confirmDialog,
- 	createButtonRow,			//
- 	createSelectRow,			//
- 	createSelectOption,			//
- 	createTextInputRow,			// DEPRECATED - REPLACE THIS WITH createTextInput
+	createButtonRow,			//
+	createSelectRow,			//
+	createSelectOption,			//
+	createTextInputRow,			// DEPRECATED - REPLACE THIS WITH createTextInput
 	createTextInput,
 	Time
 }

@@ -6,13 +6,14 @@ async function processMessage(client, message)
 		if (handler.hasOwnProperty("build") && !handler.build) return;
 
 		//If the handler is not meant for bots, early out if a bot triggered it
-		if (message.author.bot && !handler.bot) return;
+    if (!handler.bot && message.author?.bot) return;
 
 		//If the handler is ONLY meant for bots, early out if a user triggered
-		if (handler.bot && !handler.user && !message.author.bot) return;
+		if (handler.bot && !handler.user && !message.author?.bot) return;
 
-		const shouldHandle = await handler.shouldHandle(client, message);
-		if (shouldHandle) await handler.handleCreate(client, message)
+		const shouldHandle = await handler.shouldHandle(client, message, "Create");
+		if (shouldHandle && handler.handleCreate)
+			await handler.handleCreate(client, message)
 	});
 }
 

@@ -81,7 +81,7 @@ async function publishContent(channel, content) {
 				//Prep for multiple images
 				let images = embed.image;
 				if (images && Array.isArray(images))
-					embed.image = images.unshift();
+					embed.image = images[0];
 				const embeds = [embed];
 				//Send the embed and (if we have attachments) send those as a separate message
 				let item;
@@ -90,7 +90,8 @@ async function publishContent(channel, content) {
 				else
 					item = await channel.send({embeds:embeds});
 
-				if (images && Array.isArray(images) && images.length > 0) {
+				if (images && Array.isArray(images) && images.length > 1) {
+					images = images.slice(1)
 					embeds[0].url = item.url
 					images.map( img => { embeds.push( {url:item.url,"image":img} ) })
 					await item.edit({embeds:embeds})
@@ -136,8 +137,7 @@ async function publishContent(channel, content) {
 				prefix = item.title?.startsWith('🚫') ? "" : prefix;
 				const field = `${prefix}[${item.title}](${item.url})`
 				embed.extendField(field, "** **", true);
-				if (value.maxEntriesPerField && ++count >= value.maxEntriesPerField)
-				{
+				if (value.maxEntriesPerField && ++count >= value.maxEntriesPerField) {
 					embed.close_field();
 					embed.addField(`** **`, '', true);
 					count = 0
@@ -291,7 +291,6 @@ async function autoComplete(interaction) {
 const data = new SlashCommandBuilder()
 	.setName(`content${config.DEV ? "dev" : ""}`)
 	.setDescription('Update the contents of a static channel')
-	.setDefaultPermission(false)
 	.addBooleanOption(option => option.setName('clear').setRequired(false).setDescription('Clear old messages or not'))
 	.addStringOption(option => option
 			.setName('content')
@@ -302,8 +301,7 @@ const data = new SlashCommandBuilder()
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.SendMessages		];
 
-module.exports =
-{
+module.exports = {
 	data: data,
 	whitelistRoles: [ config.role.Builder ],
 	userPermissions: userPermissions,

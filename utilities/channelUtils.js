@@ -17,58 +17,45 @@ function isRoleplayThread(channel) {
 }
 
 /// Check if this channel is an RP exp channel
-async function isRPExpChannel(channel)
-{
+async function isRPExpChannel(channel) {
 	const result = await ChannelMeta.findOne({ channelId: channel.id });
 	return result && result.awardsExp;
 }
 
-async function isTrackedChannel(channel)
-{
+async function isTrackedChannel(channel) {
 	if (channel.isThread())
 		return await isTrackedChannel(channel.parent)
 	const result = await ChannelMeta.findOne({ channelId: channel.id })
 	return result && result.trackActivity
 }
 
-async function isRPExpThread(channel)
-{
+async function isRPExpThread(channel) {
 	if (!channel.isThread()) return false
 	const result = await isRPExpChannel(channel.parent);
 	return result
 }
 
-async function isRPExpEligible(channel)
-{
+async function isRPExpEligible(channel) {
 	if (channel.isThread())
 		return await isRPExpThread(channel)
 	return await isRPExpChannel(channel)
 }
 
-///
 /// Check if this channel is a table thread
-///
-async function isTableRPThread(channel)
-{
+async function isTableRPThread(channel) {
 	const result = await TableMeta.findOne({ rpThread: channel.id })
 	return result;
 }
 
-///
 /// Check if this channel is a table thread
-///
-async function isTableMechanicsThread(channel)
-{
+async function isTableMechanicsThread(channel) {
 	const result = await TableMeta.findOne({ oocThread: channel.id })
 	return result;
 }
 
-///
 /// Duel chanels come in pairs of an RP channel and a Mechanics channel
-/// Given one, find the pair.
-/// 
-function getDuelChannelPair(channel)
-{
+/// Given one, find the pair
+function getDuelChannelPair(channel) {
 	for (let pair of config.duelChannels)
 	{
 		if (channel.isThread && channel.parent.id == pair.RP)
@@ -80,16 +67,16 @@ function getDuelChannelPair(channel)
 }
 //TODO - Remove duelChannels from config; make it a field in the channel meta database.
 
-function isDuelRPChannel(channel)
-{
+function isDuelRPChannel(channel) {
 	const duelChan = config.duelChannels.find( c => c.RP == (channel?.id || channel) )
 	return duelChan != undefined;
+
+//  const pair = getDuelChannelPair(channel)
+//	if (!pair) return false;
+//	return (pair.RP == channel.id)
 }
 
-
-
-async function fetchThreads(channel)
-{
+async function fetchThreads(channel) {
 	const activeThreads = await channel.threads.fetchActive();
 	const archivedThreads = await channel.threads.fetchArchived();
 	const allThreads = activeThreads.threads.concat(archivedThreads.threads)
@@ -115,7 +102,6 @@ const locations = [
 	{value:"696533919075401788",label:"City Tavern"},
 	{value:"699065480165589003",label:"City Gardens"},
 	{value:"695641819094188042",label:"City Mercantile Quarter"},
-	{value:"711726751549489203",label:"City Cyu'unt Restaurant"},
 	{value:"713002635267145758",label:"City Dock"},
 	{value:"695238063517073461",label:"Outside City Blessed Gate"},
 	{value:"697174243556982816",label:"Outside City Cursed Gate"},

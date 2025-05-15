@@ -27,7 +27,7 @@
 				]
 			},
 			{
-				"prefix":":four: ",				
+				"prefix":":four: ",
 				"title": "Consent is Key",
 				"description": "This may be an extension of respecting your limits and no harassment, but it bears special mention. Any play involving Non-Con/Rape, mental effects that remove consent, sexual violence, or other such potentially triggering topics MUST be discussed with your partner beforehand and be EXPLICITLY consented to.",
 				"fields":[
@@ -41,12 +41,17 @@
 				"description": "Certain topics are sensitive and potentially inflammatory. In an effort to keep the peace on the server, certain topics should be avoided in general OOC conversation. Real-life Politics and Religion are the most common topics at the center of contention and should not be discussed. In-character politics and religion are permitted, provided it remains civil.\n\nSubjects such as depression, suicide, and self-harm can also be sensitive for some members and should also be avoided. This is not a professional therapy environment, and our members are not licensed to act as therapists (and, if they are, should not be expected to do so for free or in their off-hours).\n\n[If you need immediate help, there are numbers you can call](https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines)"
 			},
 			{
-				"prefix":":six: ",				
-				"title": "Staff's Word is Law",
-				"description": "If an admin or moderator asks you to drop a subject, drop it. If you feel a mod has abused their power, you may contact another mod or the server owner to discuss the situation. Failure to comply with the rules will result in a first warning, and possibly a kick/ban depending of the gravity of the act. If you are being disruptive to the server or other members within it, \"It isn't in the rules\" is not a valid excuse. The staff, at their own discretion, has the right to kick a user if they're found to be a bad fit for the server's community.\n\nDM's have leeway at their table to make rule calls. If you disagree with their decision, approach the situation respectfully. Arguing is likely to see you blacklisted from future table sessions. If you and your DM cannot come to an agreement, you may bring it to the attention of another DM or a Moderator, and the staff will discuss how to move forward."
+				"prefix":":six: ",
+				"title": "No Generated AI Content",
+				"description": "Our community loves and supports artists who work tirelessly to produce the works we love, both within our community, and those whose work we appreciate and share in our image channels. The simple fact is that AI hurts artists and threatens their livelihood - especially smaller, independent artists. AI models are trained on huge datasets that include scraped art from real artists without consent or credit. It systemically devalues the creative labor, with no appreciation of the hours of effort taken by artists to learn and refine their skills.\n\nAvoid posting AI images in chat channels. Characters using AI image references will not be approved, and you may be asked to change your reference image if it slips through. If already approved using AI images, we strongly encourage you to replace it with human-made art.\n\nMistakes can and will happen. Please be respectful, both when pointing out others' use of AI or if it is pointed out to you. See rule :three:\n\nSimilarly, don't use ChatGPT to write your RP posts. This server is created to interact and roleplay with a community of people, not with an AI."
 			},
 			{
 				"prefix":":seven: ",
+				"title": "Staff's Word is Law",
+				"description": "If an admin or moderator asks you to drop a subject, drop it. If you feel a mod has abused their power, you may contact another mod or the server owner to discuss the situation. Failure to comply with the rules will result in a first warning, and possibly a kick/ban depending of the gravity of the act. If you are being disruptive to the server or other members within it, \"It isn't in the rules\" is not a valid excuse. The staff, at their own discretion, has the right to kick a user if they're found to be a bad fit for the server's community.\n\nDM's have leeway at their table to make rule calls. If you disagree with their decision, approach the situation respectfully. Arguing is likely to see you blacklisted from future table sessions. If you and your DM cannot come to an agreement, you may bring it to the attention of another DM or a Moderator, and the staff will discuss how to move forward."
+			},
+{
+				"prefix":":eight: ",
 				"title": "Just Don't Be a Dick",
 				"description": "You can have a dick. You can enjoy dick. But don’t **be** a dick.\nWe strive to have a friendly community, and actions that make other members feel uncomfortable will not be tolerated. We're all here to have fun, the mod team included, and nobody needs to deal with internet drama on top of real world things. We expect everyone to be polite, respectful, and kind to all members. Those who are rude, antagonistic, or creepy will be warned and potentially banned if they consistently violate this rule."
 			}

@@ -4,7 +4,6 @@ const SortOrder = require(`${root}/utilities/enums.js`)
 
 module.exports =
 {
-
 	/// Convert the provided data into Embed fields for debugging
 	/// @param {Object} obj 	- The object to convert.
 	/// @returns {Array} 		- An array of embed fields.
@@ -54,21 +53,16 @@ module.exports =
 					const hasDiff = obj2[key] && obj2[key] != obj1[key]
 					diff[fullPath] = `*** [${key}] ${obj1[key]}` + (hasDiff ? ` | ${obj2[key]}` : ``)
 					changes[fullPath] = diff[fullPath]
-//						hasDiff ? { type: '#', old:obj1[key].toString(), new:obj2[key]?.toString() }
-//												: { type: '#', val:obj1[key].toString() }
 				}
 				if (!(key in obj2)) {
 					diff[fullPath] = `- [${key}]: ${obj1[key]}`
 					changes[fullPath] = `delete: ${diff[fullPath]}`
-//						{ type: '-', oldValue: obj1[key] };
 				} else if (typeof obj1[key] === 'object' && obj1[key] !== null &&
 						   typeof obj2[key] === 'object' && obj2[key] !== null) {
 					findDiff(obj1[key], obj2[key], fullPath);
 				} else if (obj1[key] !== obj2[key]) {
-//					diff[fullPath] = `~ [${key}]: ${obj1[key]} => ${obj2[key]}`
 					diff[fullPath] = `- [${key}]: ${obj1[key]}\n+ [${key}]: ${obj2[key]}`
 					changes[fullPath] = `change: [${key}]: ${obj1[key]} => ${obj2[key]}`
-//						{ type: '~', old: obj1[key], new: obj2[key] };
 				}
 			}
 
@@ -78,7 +72,6 @@ module.exports =
 				if (!(key in obj1)) {
 					diff[fullPath] = `+ [${key}]: ${obj2[key]}`
 					changes[fullPath] = `add: ${diff[fullPath]}`
-//						{ type: '+', new: obj2[key] };
 				}
 			}
 		}
@@ -119,37 +112,36 @@ module.exports =
 
 		if (stripPrefix) str = str.split("│")[1]
 		str = str.replace(/[\|\-]/g," ")
-	    str = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+		str = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 		str = str.replace(/ i*/ig, function(txt){return txt.toUpperCase()});
 		return str.trim()
 	},
-
 	// helper function to convert number to Roman numeral
 	toRomanNumeral(number) {
 		const romans = [
-		    { value: 1000, numeral: 'M' },
-		    { value: 900, numeral: 'CM' },
-		    { value: 500, numeral: 'D' },
-		    { value: 400, numeral: 'CD' },
-		    { value: 100, numeral: 'C' },
-		    { value: 90, numeral: 'XC' },
-		    { value: 50, numeral: 'L' },
-		    { value: 40, numeral: 'XL' },
-		    { value: 10, numeral: 'X' },
-		    { value: 9, numeral: 'IX' },
-		    { value: 5, numeral: 'V' },
-		    { value: 4, numeral: 'IV' },
-		    { value: 1, numeral: 'I' }
+			{ value: 1000, numeral: 'M' },
+			{ value: 900, numeral: 'CM' },
+			{ value: 500, numeral: 'D' },
+			{ value: 400, numeral: 'CD' },
+			{ value: 100, numeral: 'C' },
+			{ value: 90, numeral: 'XC' },
+			{ value: 50, numeral: 'L' },
+			{ value: 40, numeral: 'XL' },
+			{ value: 10, numeral: 'X' },
+			{ value: 9, numeral: 'IX' },
+			{ value: 5, numeral: 'V' },
+			{ value: 4, numeral: 'IV' },
+			{ value: 1, numeral: 'I' }
 		];
 
 		let result = '';
 		for (const { value, numeral } of romans) {
-	    	while (number >= value)
+			while (number >= value)
 			{
 				result += numeral;
 				number -= value;
-		    }
-	  	}
+			}
+		}
 		return result;
 	},
 
@@ -176,18 +168,17 @@ module.exports =
 	// reduce runs this anonymous function on each element of `data` (the `item` parameter,
 	// returning the `storage` parameter at the end
 	groupBy(data, key) {
-		return data.reduce(function(storage, item) 
-		{
+		return data.reduce(function(storage, item) {
 			// get the first instance of the key by which we're grouping
 			var group = item[key];
-			// set `storage` for this instance of group to the outer scope 
+			// set `storage` for this instance of group to the outer scope
 			// (if not empty) or initialize it
-		    storage[group] = storage[group] || [];
-		    // add this item to its group within `storage`
-		    storage[group].push(item);
-		    // return the updated storage to the reduce function, 
-			// which will then loop through the next 
-		    return storage;
+      storage[group] = storage[group] || [];
+      // add this item to its group within `storage`
+      storage[group].push(item);
+      // return the updated storage to the reduce function,
+      // which will then loop through the next 
+      return storage;
 		}, {}); // {} is the initial value of the storage
 	},
 
@@ -196,8 +187,7 @@ module.exports =
 		let result = null;
 		Object.keys(compareKeys).forEach( key => {
 			// console.log(`${compareKeys[key]} | ${key}: ${a[key]} vs ${b[key]}`)
-			if (result == null)
-			{
+			if (result == null) {
 				if (a[key] > b[key])
 					result = 1 * compareKeys[key]
 				else if (a[key] < b[key])
@@ -225,16 +215,14 @@ module.exports =
 		const count = collection.size;
 		const keys = Array.from(collection.keys());
 
-		for (let index = 0; index < count; index++) 
-		{
+		for (let index = 0; index < count; index++) {
 			const key = keys[index];
 			await callback(collection.get(key), key, collection);
 		}
 	},
 
 	async asyncObjectForEach(object, callback) {
-		for (const [key, value] of Object.entries(object))
-		{
+		for (const [key, value] of Object.entries(object)) {
 			await callback(value, key, object);
 		}
 	},
@@ -242,8 +230,7 @@ module.exports =
 	async asyncArrayForEach(array, callback) {
 		if (!array) return;
 		const count = array.length;
-		for (let index = 0; index < count; index++) 
-		{
+		for (let index = 0; index < count; index++) {
 			await callback(array[index], index, array);
 		}
 	},
@@ -251,8 +238,7 @@ module.exports =
 	async asyncArrayMap(array, callback) {
 		if (!array) return;
 		const count = array.length;
-		for (let index = 0; index < count; ++index)
-		{
+		for (let index = 0; index < count; ++index) {
 			array[index] = await callback(array[index], index, array);
 		}
 		return array
@@ -260,8 +246,7 @@ module.exports =
 
 	hasAnyRole(member, roleArray) {
 		const userRoles = member.roles.cache;
-		for (const role of roleArray)
-		{
+		for (const role of roleArray) {
 			if (userRoles.has(role))
 				return true;
 		};
@@ -305,8 +290,7 @@ module.exports =
 
 		var today = timeStamp ? new Date(timeStamp) : new Date()
 
-		const isDstObserved = (today) =>
-		{
+		const isDstObserved = (today) => {
 			return today.getTimezoneOffset() < stdTimezoneOffset()
 		}
 
@@ -325,15 +309,15 @@ module.exports =
 		const utcTime = localTime + localOffset
 
 		// obtain and add destination's UTC time offset
-		const tzOffset = this.getTZOffset(timestamp)
+		const tzOffset = this.getTZOffset(timeStamp)
 
-//		console.log("Offset: "+tzOffset)
+	//		console.log("Offset: "+tzOffset)
 
 		const usa = utcTime + (60 * 60 * 1000 * tzOffset)
 		// convert msec value to date string
 		const nd = new Date(usa)
 
-//		console.log(this.formatDate(nd))
+	//		console.log(this.formatDate(nd))
 		return nd;
 	},
 

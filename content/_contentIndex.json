@@ -17,7 +17,6 @@
 	"833537974166618122":{"data":"areas/slums.json"},
 	"701879121365565600":{"data":"areas/blackHand.json"},
 	"695638243504553994":{"data":"areas/mercantile.json"},
-	"711727898939097138":{"data":"areas/restaurant.json"},
 	"713002614589227028":{"data":"areas/docks.json"},
 	"697166768887824465":{"data":"areas/cursedGate.json"},
 	"833425039251472384":{"data":"areas/blessedGate.json"},
@@ -72,5 +71,5 @@
 	{
 		"name":"📜│test-content-ii",
 		"data":""
-	}	
+	}
 }

@@ -5,17 +5,34 @@
 		"embeds": 
 		[
 			{
+				"title":"Entertainment Promenade",
+				"description":"<#1207123925281275954>",
+				"image": [
+					{ "url": "https://i.imgur.com/HDEGSyk.png" },
+					{ "url": "https://i.imgur.com/6mz4ot4.jpeg" }
+				],
+				"footer": { "text":"https://www.artstation.com/bdahowell\nhttps://www.artstation.com/gliulian" }
+			},
+			{
 				"title":"Entertainment Plaza",
 				"description":"<#695638703250341958>",
 				"image": [
-					{ "url": "https://i.imgur.com/L97B2Bc.png" },
-					{ "url": "https://i.imgur.com/yHsRBEM.jpg" }					
-				]
+					{ "url": "https://i.imgur.com/yHsRBEM.jpg" },
+					{ "url": "https://i.imgur.com/DrZNGux.jpeg" }
+				],
+				"footer": { "text":"https://www.artstation.com/pablodominguez\nhttps://www.artstation.com/taegongsin" }
 			},
 			{
 				"title":"Amphitheater",
 				"description":"<#840447125916483614> <#840452873401794580>",
-				"image": { "url": "https://i.imgur.com/Pvn4X6w.png" }
+				"image": { "url": "https://i.imgur.com/Pvn4X6w.png" },
+				"footer": { "text":"Artist Unknown" }
+			},
+			{
+				"title":"Night Club",
+				"description":"<#1207124234154020874>",
+				"image": { "url": "https://i.imgur.com/cyBVvH0.jpeg" },
+				"footer": { "text":"https://www.artstation.com/suzannehelmigh" }
 			},
 			{
 				"title":"Travel",
@@ -23,7 +40,8 @@
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Entertainment nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

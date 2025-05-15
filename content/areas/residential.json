@@ -7,29 +7,42 @@
 			{
 				"title":"Residential Quarter",
 				"description":"<#695638409368305704> <#709377269726183474>",
-				"image": { "url": "https://i.imgur.com/4OX2gFW.png" }
+				"image": { "url": "https://i.imgur.com/4OX2gFW.png" },
+				"footer":{"text":"https://www.artstation.com/rroland"}
 			},
 			{
-				"title":"Elven Domicile",
-				"description":"<#696556128171196466> <#833466554191446016>",
-				"image": { "url": "https://i.imgur.com/Oj9GiUN.png" }
+				"title":"Wealthy Domicile",
+				"description":"<#696556128171196466>",
+				"image": [
+					{ "url": "https://i.imgur.com/myFnr8S.png" },
+					{ "url": "https://i.imgur.com/BEaLbVt.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/artwork/LQ8BK"}
 			},
 			{
-				"image": { "url": "https://i.imgur.com/myFnr8S.png" }
+				"title":"Modest Domicile",
+				"description":"<#1350935370786934896>",
+				"image": [
+					{ "url": "https://i.imgur.com/dzjFdix.jpeg" },
+					{ "url": "https://i.imgur.com/cK3RMsM.jpeg" },
+					{ "url": "https://i.imgur.com/8nSPyLs.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/enriccosta\nhttps://www.artstation.com/artwork/X12ZVn\nhttps://www.artstation.com/n-ix"}
 			},
-			{
+{
 				"title":"Horn Pub",
 				"description":"<#840447167293816842>",
-				"image": { "url": "https://i.imgur.com/J6RKmWI.png" }
+				"image": { "url": "https://i.imgur.com/J6RKmWI.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n⛲ Leave the Residential Quarter and travel to the City Square\n\n🍻 Enter the Manticore's Dream Tavern\n\n🛏️ Enter the Ample Ogre Inn\n\n🏞️ Enter the Veluthe-Oro Gardens\n\n🏚️ Enter the slums"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Residential nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

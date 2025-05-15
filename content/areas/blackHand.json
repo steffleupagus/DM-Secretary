@@ -7,31 +7,35 @@
 			{
 				"title":"Guild Quarters",
 				"description":"<#697757268258717749>",
-				"image": { "url": "https://i.imgur.com/jQvVyUC.png" }
+				"image": { "url": "https://i.imgur.com/jQvVyUC.png" },
+				"footer": {"text":"https://www.deviantart.com/florentllamas"}
 			},
 			{
 				"title":"Bath House",
 				"description":"<#701880984584585447>",
-				"image": { "url": "https://i.imgur.com/LUr4O6c.png" }
+				"image": { "url": "https://i.imgur.com/LUr4O6c.png" },
+				"footer": {"text":"Artist Unknown"}
 			},
 			{
 				"title":"Meeting Hall",
 				"description":"<#701882177583054941>",
-				"image": { "url": "https://i.imgur.com/38iQgIQ.png" }
+				"image": { "url": "https://i.imgur.com/SmyazFF.jpeg" },
+				"footer": {"text":"https://www.czepeku.com/"}
 			},
 			{
 				"title":"Guildmaster Chamber",
 				"description":"<#701881082848477306>",
-				"image": { "url": "https://i.imgur.com/MBV70Ox.png" }
-			},		
-					
+				"image": { "url": "https://i.imgur.com/MBV70Ox.png" },
+				"footer": {"text":"https://artstation.com/paulwrightdesign"}
+			},
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🚪 Exit to the Slums"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Den nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

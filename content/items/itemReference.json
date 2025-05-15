@@ -2,7 +2,7 @@
 	"Guild Items": {
 
 		"skip":true,
-		
+
 		"includeTOC":false,
 		"includeIndex":true,
 		"includeHeader":true,
@@ -12,7 +12,7 @@
 				"title":"Guild Items",
 				"description":"`                                                                     `\nThe Guilds of Ost in Edhil\n\n\t- True political power in the city\n\t- Five ranks in each (Guild Master, Council, Member, Initiate, Recruit), each with their own item\n\t- Items cannot be obtained except by rising through the ranks of the guild.",
 				"thread": { "name": "📌 Guild Items","content":"items/guildItems.json"}
-			}			
+			}
 		]
 	},
 	"Consumables & Potions": {
@@ -22,99 +22,96 @@
 		"embeds": [
 			{
 				"title":"<:d20:704040692946698361>500 - Concocktion of Gender Fluidity",
-				"description":"`                                                                     `\nBased upon a limited application of the Alter Self spell, this potion allows the imbiber to alter their genetalia. For the duration of the scene, the character can change their sexual organs at will between male, futa, and female. Precise size and shape are also within their control.",
-				"image": { "url": "https://i.imgur.com/ra0KpPE.png" },
+				"description":"`                                                                     `\nBased upon a limited application of the Alter Self spell, this potion allows the imbiber to alter their genetalia. For the duration of the scene, the character can change their sexual organs at will between male, futa, and female. Precise size and shape are also within their control.\n\n-# `/item buy name:Concocktion of Gender Fluidity` in <#697620228703649892>\n-# `/item use name:Concocktion of Gender Fluidity` to alter your gender for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEZ8IXgAABDx_.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Draught of Air",
-				"description":"`                                                                     `\nThis cloudy potion allows its imbiber to not need to breathe for a short time. All manner of lewd acts that would normally prevent breathing can now be performed without danger.",
+				"description":"`                                                                     `\nThis cloudy potion allows its imbiber to not need to breathe for a short time. All manner of lewd acts that would normally prevent breathing can now be performed without danger.\n\n-# `/item buy name:Draught of Air` in <#697620228703649892>\n-# `/item use name:Draught of Air` to utilize for a scene",
 				"image": [
-					{ "url": "https://i.imgur.com/AmKgBE1.png" },
-					{ "url": "https://i.imgur.com/4ZhlrGV.png" }
+					{ "url": "https://pbs.twimg.com/media/GpbEdMDX0AAam58.png" },
+					{ "url": "https://pbs.twimg.com/media/GpbEbzWWwAAhLfZ.png" }
 				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Elixir of Elasticity",
-				"description":"`                                                                     `\nA potion devised by the alchemists of the Silver Thorn, it makes the imbiber's body elastic and stretchy, allowing them to accommodate large and unusual insertions without pain or lasting damage.",
-				"image": { "url": "https://i.imgur.com/fozNzot.png" },
+				"description":"`                                                                     `\nA potion devised by the alchemists of the Silver Thorn, it makes the imbiber's body elastic and stretchy, allowing them to accommodate large and unusual insertions without pain or lasting damage.\n\n-# `/item buy name:Elixir of Elasticity` in <#697620228703649892>\n-# `/item use name:Elixir of Elasticity` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEekJX0AAe52P.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Fragrance of Flavorful Fluids",
-				"description":"`                                                                     `\nA fragrance that flavors the individual's fluids (saliva, milk, cum, etc) for anyone who can smell it. Many varieties are available to customize the flavor of their fluids are affected. The effects last for the remainder of the scene.",
-				"image": { "url": "https://i.imgur.com/6lvaehs.png" },
+				"description":"`                                                                     `\nA fragrance that flavors the individual's fluids (saliva, milk, cum, etc) for anyone who can smell it. Many varieties are available to customize the flavor of their fluids are affected. The effects last for the remainder of the scene.\n\n-# `/item buy name:Fragrance of Flavorful Fluids` in <#697620228703649892>\n-# `/item use name:Fragrance of Flavorful Fluids` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEhl3XsAAksn2.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Potion of Pregnancy Permutation",
-				"description":"`                                                                     `\nA variety of alchemical concoctions capable of increasing or decreasing fertility (user's choice), effectively ensuring or preventing pregnancy. Taken while pregnant, this potion will either safely accelerate or terminate an existing pregnancy.",
-				"image": { "url": "https://i.imgur.com/gMegsAH.png" },
+				"description":"`                                                                     `\nA variety of alchemical concoctions capable of increasing or decreasing fertility (user's choice), effectively ensuring or preventing pregnancy. Taken while pregnant, this potion will either safely accelerate or terminate an existing pregnancy.\n\n-# `/item buy name:Potion of Pregnancy Permutation` in <#697620228703649892>\n-# `/item use name:Potion of Pregnancy Permutation` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEjRYXEAAy-6I.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Salve of Size",
-				"description":"`                                                                     `\nA salve of localized Enlarge/Reduce allows the user to apply it to specific body parts to make them larger or smaller for a short time.",
-				"image": { "url": "https://i.imgur.com/Tz7XUbr.png" },
+				"description":"`                                                                     `\nA salve of localized Enlarge/Reduce allows the user to apply it to specific body parts to make them larger or smaller for a short time.\n\n-# `/item buy name:Salve of Size` in <#697620228703649892>\n-# `/item use name:Salve of Size` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEk7MXgAAo5fx.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Thermal Lipstick",
-				"description":"`                                                                     `\nAvailable in shades of ice-blue or fire-red. When applied makes the wearer's mouth icy cold (blue) or fiery hot (red) to the touch for the remainder of the scene.",
-				"image": [
-					{ "url": "https://i.imgur.com/G5bsuHc.png" },
-					{ "url": "https://i.imgur.com/itdz8mR.png" }
-				],
+				"description":"`                                                                     `\nComes in multiple shades. When applied, the lipstick imparts a particular minor, harmless effect for the duration of the scene: icy cold to the touch (white), fiery hot to the touch (red), electric tingling (blue), sensitivity-increasing (black), aphrodisiac (green).\n\n-# `/item buy name:Thermal Lipstick` in <#697620228703649892>\n-# `/item use name:Thermal Lipstick` to apply for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEvzWWgAAIdwK.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>500 - Tincture of Lactation",
-				"description":"`                                                                     `\nA small bottle of liquid that, when ingested, temporarily induces lactation in the user, regardless of gender. It may have the additional side effect of temporarily causing the breasts to increase in size.",
-				"image": { "url": "https://i.imgur.com/ws5msIt.png" },
+				"description":"`                                                                     `\nA small bottle of liquid that, when ingested, temporarily induces lactation in the user, regardless of gender. It may have the additional side effect of temporarily causing the breasts to increase in size.\n\n-# `/item buy name:Tincture of Lactation` in <#697620228703649892>\n-# `/item use name:Tincture of Lactation` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbEzHEWIAAgIkX.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>1000 - Bottle of Boggle Oil",
-				"description":"`                                                                     `\nBoggles can secrete an oil that can be either extremely slippery or immobilizingly sticky. Both varieties of this oil have been bottled and made available for purchase.",
-				"image": { "url": "https://i.imgur.com/85yuiUh.png" },
+				"description":"`                                                                     `\nBoggles can secrete an oil that can be either extremely slippery or immobilizingly sticky. Both varieties of this oil have been bottled and made available for purchase.\n\n-# `/item buy name:Bottle of Boggle Oil` in <#697620228703649892>\n-# `/item use name:Bottle of Boggle Oil` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbE1ENWUAAw3_p.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>1000 - Vial of Virility",
-				"description":"`                                                                     `\nA small vial containing a salty viscous white liquid that, when ingested, causes the individual to produce larger than normal volumes of cum for a single sexual encounter.",
-				"image": { "url": "https://i.imgur.com/0ydgp5F.png" },
+				"description":"`                                                                     `\nA small vial containing a salty viscous white liquid that, when ingested, causes the individual to produce larger than normal volumes of cum or other sexual fluids for a single sexual encounter.\n\n-# `/item buy name:Vial of Virility` in <#697620228703649892>\n-# `/item use name:Vial of Virility` to utilize for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbE2uhWEAAvAgW.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>1500 - Balm of Bestial Attribute",
-				"description":"`                                                                     `\nThis balm smells of animal musk. When used, it enhances existing animal traits and adds others. Tails, ears, fur, tusks and horns are the most common, though beast-like genitalia are naturally quite popular as well.",
-				"image": { "url": "https://i.imgur.com/kxWcUy2.png" },
+				"description":"`                                                                     `\nThis balm smells of animal musk. When used, it enhances existing animal traits and adds others. Tails, ears, fur, tusks and horns are the most common, though beast-like genitalia are naturally quite popular as well.\n\n-# `/item buy name:Balm of Bestial Attribute` in <#697620228703649892>\n-# `/item use name:Balm of Bestial Attribute` to apply for a scene",
+				"image": { "url": "https://pbs.twimg.com/media/GpbE4JKWIAAq1nn.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>2000 - Demiplanar Essence",
-				"description":"`                                                                     `\nGathered via complex magical practice by enterprising Arcanum alchemists, is distilled magical energy of the demiplane itself. Ingesting it causes the consumer to experience uncontrollable wild magic surges, entirely of the lewd variety. The user of this item can make use of the `!lewdsurge` alias for the duration of the scene.",
+				"description":"`                                                                     `\nGathered via complex magical practice by enterprising Arcanum alchemists, is distilled magical energy of the demiplane itself. Ingesting it causes the consumer to experience uncontrollable wild magic surges, entirely of the lewd variety. The user of this item can make use of the `!lewdsurge` alias for the duration of the scene.\n\n-# `/item buy name:Demiplanar Essence` in <#697620228703649892>\n-# `/item use name:Demiplanar Essence` to utilize for a scene",
 				"image": [
-					{ "url": "https://i.imgur.com/UWrh7FS.png" },
-					{ "url": "https://i.imgur.com/bNgD62E.png" }
+					{ "url": "https://pbs.twimg.com/media/GpbE8HbX0AAfPU7.png" },
+					{ "url": "https://pbs.twimg.com/media/GpbE63_XYAAAPa0.png" }
 				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>2000 - Syrup of Somnophilia",
-				"description":"`                                                                     `\nA sweet & sticky syrup that makes one drowsy. If they relent to the sensation, they fall into a deep dream-trance. If two individuals each consume a dose, they find they share a dreamscape that allows the them both to shape their shared experience.",
+				"description":"`                                                                     `\nA sweet & sticky syrup that makes one drowsy. If they relent to the sensation, they fall into a deep dream-trance. If two individuals each consume a dose, they find they share a dreamscape that allows the them both to shape their shared experience.\n\n-# `/item buy name:Syrup of Somnophilia` in <#697620228703649892>\n-# `/item use name:Syrup of Somnophilia` to utilize for a scene",
 				"image": [
-					{ "url": "https://i.imgur.com/Eu7OU60.png" },					
-					{ "url": "https://i.imgur.com/1yvgaFn.png" }					
+					{ "url": "https://pbs.twimg.com/media/GpbE_nTXgAAaIpS.png" },
+					{ "url": "https://pbs.twimg.com/media/GpbE-JWWQAAs3iw.png" }
 				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>5000 - Jar of Living Tentacles",
-				"description":"`                                                                     `\nThe jar's contents were either gifted or harvested from a fathomless eldritch entity of infinite tentacles. Breaking or otherwise opening the jar releases them to engage in all manner of sexual deviancy, before fading away at the end of the scene.\n\nThe tentacles are not (necessarily) under the user's control, and may behave according to unrecognizable eldritch whims. However, the nature of the demiplane has had a profound impact on even these otherworldly eldritch manifestations, and their behavior is entirely lewd.",
+				"description":"`                                                                     `\nThe jar's contents were either gifted or harvested from a fathomless eldritch entity of infinite tentacles. Breaking or otherwise opening the jar releases them to engage in all manner of sexual deviancy, before fading away at the end of the scene.\n\nThe tentacles are not (necessarily) under the user's control, and may behave according to unrecognizable eldritch whims. However, the nature of the demiplane has had a profound impact on even these otherworldly eldritch manifestations, and their behavior is entirely lewd.\n\n-# `/item buy name:Jar of Living Tentacles` in <#697620228703649892>\n-# `/item use name:Jar of Living Tentacles` to utilize for a scene",
 				"image": [
-					{ "url": "https://i.imgur.com/2TKfYdH.png" }
+					{ "url": "https://pbs.twimg.com/media/GpbFBhEXgAAMW6I.png" }
 				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			}
@@ -127,86 +124,92 @@
 		"embeds": [
 			{
 				"title":"<:d20:704040692946698361>10,000 - Bands of the Dullahan",
-				"description":"`                                                                     `\nThese magical bands allow a user to remove their body parts for a short time. Their limbs or neck are wreathed in mystical portals which connects the two parts, keeping the user alive, unharmed, and the removed body part able to be used as normal.\n\nThe removal causes no discomfort or disruption of the body's normal functions. Removed hands can still grip. Removed heads can still breathe, speak, suck, or swallow. Removed genitalia can still orgasm and ejaculate.\n\n*All of your characters may use the <@&766784018808700938>.*",
-				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1122350578358566923/oW6zMew.png" },
+				"description":"`                                                                     `\nThese magical bands allow a user to remove their body parts for a short time. Their limbs or neck are wreathed in mystical portals which connects the two parts, keeping the user alive, unharmed, and the removed body part able to be used as normal.\n\nThe removal causes no discomfort or disruption of the body's normal functions. Removed hands can still grip. Removed heads can still breathe, speak, suck, or swallow. Removed genitalia can still orgasm and ejaculate.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Bands of the Dullahan` to purchase\n-# `/item use name:Bands of the Dullahan` to apply the role\n-# *Once applied, all of your characters may use <@&766784018808700938>.*",
+				"image": { "url": "https://pbs.twimg.com/media/GpbFDDzXgAAGb8f.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Bracelet of Body Swapping",
-				"description":"`                                                                     `\nA contrasting set of paired bracelets, which two consenting individuals may activate. The bracelets transfer their consciousnesses to their partner's body. The effects last for the duration of the scene, or until dismissed by either party, at will.\n\nThe effect temporarily grants full voluntary control of the body in which their consciousness resides. It lasts only as long as both parties remain wiling, and both bracelets are worn within the same room as one another. The individuals' consciousnesses return to their own body upon the conclusion of the scene.\n\n*All of your characters may use the <@&913183689297526805>.*",
-				"image": { "url": "https://i.imgur.com/VrnHcCh.png" },
+				"description":"`                                                                     `\nA contrasting set of paired bracelets, which two consenting individuals may activate. The bracelets transfer their consciousnesses to their partner's body. The effects last for the duration of the scene, or until dismissed by either party, at will.\n\nThe effect temporarily grants full voluntary control of the body in which their consciousness resides. It lasts only as long as both parties remain wiling, and both bracelets are worn within the same room as one another. The individuals' consciousnesses return to their own body upon the conclusion of the scene.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Bracelet of Body Swapping` to purchase\n-# `/item use name:Bracelet of Body Swapping` to apply the role\n-# *Once applied, all of your characters may use <@&913183689297526805>.*",
+				"image": { "url": "https://pbs.twimg.com/media/GpbFEwfWsAA0k8T.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Choker of Chastity",
-				"description":"`                                                                     `\nThis simple choker bears a gem heart with a barely visible keyhole on the face. While worn by someone willing to accept the choker's effects it restricts the wearers ability to orgasm until allowed by their partner.\n\nThe wearer must first grant permission to control the collar, which may be revoked at any time with a thought. The controller may choose to suppress orgasms, building arousal until allowed to be released in a powerful climax, may choose to allow orgasms but magically ruin them, or simply prevent physical arousal in the first place.\n\n*All of your characters may use the <@&1023034504962642081>.*",
-				"image": { "url": "https://i.imgur.com/b3VA6FJ.png" },
+				"description":"`                                                                     `\nThis simple choker bears a gem heart with a barely visible keyhole on the face. While worn by someone willing to accept the choker's effects it restricts the wearers ability to orgasm until allowed by their partner.\n\nThe wearer must first grant permission to control the collar, which may be revoked at any time with a thought. The controller may choose to suppress orgasms, building arousal until allowed to be released in a powerful climax, may choose to allow orgasms but magically ruin them, or simply prevent physical arousal in the first place.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Choker of Chastity` to purchase\n-# `/item use name:Choker of Chastity` to apply the role\n-# *Once applied, all of your characters may use <@&1023034504962642081>.*",
+				"image": { "url": "https://pbs.twimg.com/media/GpbFGO3WIAA4-bH.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Circlet of Copious Cum",
-				"description":"`                                                                     `\nThis circlet, which may be as small as a piercing, as large as a necklace, or anywhere in between, magically stimulates production of ejaculatory fluid, causing the wearer produce a much larger volume of cum with each climax.\n\n*All of your characters may use the <@&912933754555756604>.*",
+				"description":"`                                                                     `\nThis circlet, which may be as small as a piercing, as large as a necklace, or anywhere in between, magically stimulates production of ejaculatory fluid, causing the wearer produce a much larger volume of cum with each climax.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Circlet of Copious Cum` to purchase\n-# `/item use name:Circlet of Copious Cum` to apply the role\n-# *Once applied, all of your characters may use <@&912933754555756604>.*",
 				"image": [
-					{ "url": "https://i.imgur.com/f92xZHI.png" },
-					{ "url": "https://i.imgur.com/yMDAvjj.png" },
-					{ "url": "https://i.imgur.com/c86wnwR.png" }					
+					{ "url": "https://pbs.twimg.com/media/GpbFKD1XoAAmaPx.png" },
+					{ "url": "https://pbs.twimg.com/media/GpbFLqpXEAAHdwK.png" },
+					{ "url": "https://pbs.twimg.com/media/GpbFIbZXsAAqlTP.png" }
 				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Collar of Compliance",
-				"description":"`                                                                     `\nCrafted with rune magic, the collar responds to the wearer's commands, or anyone to whom the wearer grants explicit permission to take control. It gives control over the sensitivity of the wearer, heightening their desire with every dominant act.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the collar, automatically revoking permission.\n\n*All of your characters may use the <@&912964244436295691>.*",
-				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1122360787663593503/UdfWzYV.png" },
+				"description":"`                                                                     `\nCrafted with rune magic, the collar responds to the wearer's commands, or anyone to whom the wearer grants explicit permission to take control. It gives control over the sensitivity of the wearer, heightening their desire with every dominant act.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the collar, automatically revoking permission.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Collar of Compliance` to purchase\n-# `/item use name:Collar of Compliance` to apply the role\n-# *Once applied, all of your characters may use <@&912964244436295691>.*",
+				"image": { "url": "https://pbs.twimg.com/media/GpbFN_2XgAAGd_J.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Harness of Binding",
-				"description":"`                                                                     `\nThis magical harness responds to the wearer's commands, or any to whom the wearer grants permission to take control. Straps may appear magically as long as the item is not damaged beyond repair. Comes in matte or shiny leather in assorted colors.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the harness, automatically revoking permission.\n\n*All of your characters may use the <@&870900187344818206>.*",
-				"image": { "url": "https://i.imgur.com/wduPJlk.png" },
+				"description":"`                                                                     `\nThis magical harness responds to the wearer's commands, or any to whom the wearer grants permission to take control. Straps may appear magically as long as the item is not damaged beyond repair. Comes in matte or shiny leather in assorted colors.\n\nEvery action against the will of the wearer, or their limits, breaks the magic of the harness, automatically revoking permission.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Harness of Binding` to purchase\n-# `/item use name:Harness of Binding` to apply the role\n-# *Once applied, all of your characters may use <@&870900187344818206>.*",
+				"image": [
+					{ "url": "https://pbs.twimg.com/media/GqDKM3gXYAAO_bM.png" },
+					{ "url": "https://pbs.twimg.com/media/GqDKIaIWEAE-aR1.png" }
+				],
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
 			{
 				"title":"<:d20:704040692946698361>10,000 - Lewd Armor Augmentation",
-				"description":"`                                                                     `\nThe Demiplane tends to warp and bend things towards the lustful and lewd. Given enough time and exposure, an adventurer's armor can take on a more revealing appearance, while offering just as much protection as its unaltered counterparts.\n\n*All of your characters may use the <@&1089422892296589372>.*",
-				"image": { "url": "https://i.imgur.com/I37Dl0j.png" },
+				"description":"`                                                                     `\nThe Demiplane tends to warp and bend things towards the lustful and lewd. Given enough time and exposure, an adventurer's armor can take on a more revealing appearance, while offering just as much protection as its unaltered counterparts.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Lewd Armor Augmentation` to purchase\n-# `/item use name:Lewd Armor Augmentation` to apply the role\n-# *Once applied, all of your characters may use <@&1089422892296589372>.*",
+				"image": { "url": "https://pbs.twimg.com/media/GpbFQywXoAA7fmW.png" },
 				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
-            {
-                "title":"<:d20:704040692946698361>10,000 - Navel Ring of Natality",
-                "description":"`                                                                     `\nA jeweled belly-button piercing that grants the wearer full control over their personal fertility, rendering them completely infertile or hyper-fertile. This has no effect on the fertility of any potential partners.\n\n*All of your characters may use the <@&754897126173048873>.*",
-                "image": { "url":"https://media.discordapp.net/attachments/1099734278025265192/1122365245466349738/image.png" },
-                "footer": { "text": "This is an RP only item and has no mechanical effect." }
+			{
+				"title":"<:d20:704040692946698361>10,000 - Navel Ring of Natality",
+				"description":"`                                                                     `\nA jeweled belly-button piercing that grants the wearer full control over their personal fertility, rendering them completely infertile or hyper-fertile. This has no effect on the fertility of any potential partners.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Navel Ring of Natality` to purchase\n-# `/item use name:Navel Ring of Natality` to apply the role\n-# *Once applied, all of your characters may use <@&754897126173048873>.*",
+				"image": { "url":"https://pbs.twimg.com/media/GpbFS3rWMAADqvF.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
 			},
-            {
-                "title":"<:d20:704040692946698361>10,000 - Nipple Rings of Lactation",
-                "description":"`                                                                     `\nThese nipple rings cause the wearer's breasts to enlarge and allow them to produce milk at will.\n\n*All of your characters may use the <@&754905851445248102>.*",
-                "image": { "url":"https://cdn.discordapp.com/attachments/1099734278025265192/1122365542272081920/guBh9Gl.png" },
-                "footer": { "text": "This is an RP only item and has no mechanical effect." }
-            },
-            {
-                "title":"<:d20:704040692946698361>10,000 - Pocket Pleasure Portal",
-                "description":"`                                                                     `\nFor lewders on the go, paired pleasure portals! Phallic objects, fingers, tongues pass through, allowing partners to pleasure one another regardless of distance. A partner's cock becomes your personal dildo, or their pussy your personal fleshlight.\n\nThis item provides one permanent portal for your use, and unlimited temporary portals to provide to your partners. Temporary portals last for the duration of one sexual encounter, before closing harmlessly at the conclusion. Some particularly promiscuous individuals have been known to leave such temporary portals simply lying around available for anyone to pick up and use...\n\n*All of your characters may use the <@&913168657205559377>.*",
-                "image": { "url":"https://i.imgur.com/UaYWUFG.png" },
-                "footer": { "text": "This is an RP only item and has no mechanical effect." }
-            },
-            {
-                "title":"<:d20:704040692946698361>10,000 - Prehensile Piercing",
-                "description":"`                                                                     `\nA tongue stud with mystical engravings, this magical piercing causes the wearer's tongue to grow longer and prehensile, allowing them to do all manner of lewd things with it that a normal humanoid's tongue might otherwise be unable to.\n\n*All of your characters may use the <@&754889785104924733>.*",
-                "image": { "url":"https://cdn.discordapp.com/attachments/1099734278025265192/1122366570195320832/image.png" },
-                "footer": { "text": "This is an RP only item and has no mechanical effect." }
-            },
-            {
-                "title":"<:d20:704040692946698361>10,000 - Undergarment of Holding",
-                "description":"`                                                                     `\nThese undergarments allow the wearer to contain their assets safely within an extradimensional space. They will only hold your own body parts, and cannot be used to contain items.\n\nConceal your massive tits or cock under your clothes when in public, to keep them from interfering in combat or ruining your careful disguise! Surprise your partners in the bedroom when you finally whip it out! One size fits all\n\n*All of your characters may use the <@&1122357065743089664>.*",
-                "image": { "url":"https://i.imgur.com/mUhyOex.png" },
-                "footer": { "text": "This is an RP only item and has no mechanical effect." }
-            },
-            {
-                "title":"<:d20:704040692946698361>100,000 - Lewd Tattoo",
-                "description":"`                                                                     `\nDeveloped by enterprising Adepts of the Arcanum Guild, the ink of these tattoos contains harnessed and distilled Demiplanar Essence and impart a number of lewd effects upon their recipients. The tattoos are capable of shifting according to the wishes (conscious or subconscious) of the bearer, taking on one of several configurations, each with their own effects. A tattoo can maintain up to three configurations simultaneously.\n\n*Once purchased, all of your characters have access to the <@&836453093994397696>. The various effects of each configuration can be found in the attached thread:\n<#1122621263177863289>*",
-                "footer": { "text": "This is an RP only item and has no mechanical effect." },
+			{
+				"title":"<:d20:704040692946698361>10,000 - Nipple Rings of Lactation",
+				"description":"`                                                                     `\nThese nipple rings cause the wearer's breasts to enlarge and allow them to produce milk at will.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Nipple Rings of Lactation` to purchase\n-# `/item use name:Nipple Rings of Lactation` to apply the role\n-# *Once applied, all of your characters may use <@&754905851445248102>.*",
+				"image": [
+					{ "url":"https://pbs.twimg.com/media/GqDOx7PWIAAT5Gx.png" },
+					{ "url":"https://pbs.twimg.com/media/GqDQbEDXcAAQU4m.png" }
+				],
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Prehensile Piercing",
+				"description":"`                                                                     `\nA tongue stud with mystical engravings, this magical piercing causes the wearer's tongue to grow longer and prehensile, allowing them to do all manner of lewd things with it that a normal humanoid's tongue might otherwise be unable to.\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Prehensile Piercing` to purchase\n-# `/item use name:Prehensile Piercing` to apply the role\n-# *Once applied, all of your characters may use <@&754889785104924733>.*",
+				"image": { "url":"https://pbs.twimg.com/media/GpbFZ11W0AA25Dn.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Pocket Pleasure Portal",
+				"description":"`                                                                     `\nFor lewders on the go, paired pleasure portals! Phallic objects, fingers, tongues pass through, allowing partners to pleasure one another regardless of distance. A partner's cock becomes your personal dildo, or their pussy your personal fleshlight.\n\nThis item provides one permanent portal for your use, and unlimited temporary portals to provide to your partners. Temporary portals last for the duration of one sexual encounter, before closing harmlessly at the conclusion. Some particularly promiscuous individuals have been known to leave such temporary portals simply lying around available for anyone to pick up and use...\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Pocket Pleasure Portal` to purchase\n-# `/item use name:Pocket Pleasure Portal` to apply the role\n-# *Once applied, all of your characters may use <@&913168657205559377>.*",
+				"image": { "url":"https://pbs.twimg.com/media/GpbFX9NXUAAooI0.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>10,000 - Undergarment of Holding",
+				"description":"`                                                                     `\nThese undergarments allow the wearer to contain their assets safely within an extradimensional space. They will only hold your own body parts, and cannot be used to contain items.\n\nConceal your massive tits or cock under your clothes when in public, to keep them from interfering in combat or ruining your careful disguise! Surprise your partners in the bedroom when you finally whip it out! One size fits all\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Undergarment of Holding` to purchase\n-# `/item use name:Undergarment of Holding` to apply the role\n-# *Once applied, all of your characters may use <@&1122357065743089664>.*",
+				"image": { "url":"https://pbs.twimg.com/media/GpbFa6OWcAAP6k1.png" },
+				"footer": { "text": "This is an RP only item and has no mechanical effect." }
+			},
+			{
+				"title":"<:d20:704040692946698361>100,000 - Lewd Tattoo",
+				"description":"`                                                                     `\nDeveloped by enterprising Adepts of the Arcanum Guild, the ink of these tattoos contains harnessed and distilled Demiplanar Essence and impart a number of lewd effects upon their recipients. The tattoos are capable of shifting according to the wishes (conscious or subconscious) of the bearer, taking on one of several configurations, each with their own effects. A tattoo can maintain up to three configurations simultaneously.\nThe various effects of each configuration can be found in the attached thread:\n<#1122621263177863289>\n\n-# Run commands in <#697620228703649892>\n-# `/item buy name:Lewd Tattoo` to purchase\n-# `/item use name:Lewd Tattoo` to apply the role\n-# *Once the role is applied, all of your characters have access to the <@&836453093994397696>.*",
+				"footer": { "text": "This is an RP only item and has no mechanical effect." },
 				"hiddenFields": { "name": "📌 Lewd Tattoos","content":"items/lewdTattoos.json"}
-            }
+			}
 		]
 	},
 	"Out of Character Items": {
@@ -215,37 +218,41 @@
 		"includeSectionBreak":true,
 		"embeds": [
 			{
+				"title":"<:d20:704040692946698361>10,000 - [Character Attribute Reroll]",
+				"description":"`                                                                     `\nEntitles you to one reroll of your base attributes (entire stat array) at the time of rolling. There is a limit one reroll for a given set of attributes. You may choose to use either of the two rolls or Point Buy, at your discretion.\n-# Run command in <#697620228703649892>\n-# `/item buy name:[Character Attribute Reroll]`"
+			},
+			{
 				"title":"<:d20:704040692946698361>10,000 - [Character Respec]",
-				"description":"`                                                                     `\nRebuild a character without retiring, allowing you to keep all earned exp, gold, & items. You are allowed one extra stat roll (and may buy a single reroll as normal)\n**READ BEFORE BUYING**: You must buy this a number of times equal to the level of the character to be respecced: `+buy <x> respec`"
+				"description":"`                                                                     `\nRebuild a character without retiring, allowing you to keep all earned exp, gold, & items. You are allowed one extra stat roll (and may buy a single reroll as normal)\n**READ BEFORE BUYING**: You must buy this a number of times equal to the level of the character to be respecced:\n-# Run command in <#697620228703649892>\n-# `/item buy name:[Character Respec] quantity:<level>`"
 			},
 			{
 				"title":"<:d20:704040692946698361> 10,000 - 100,000: Character Slots",
 				"description":"`                                                                     `\nEach player begins with one PC, and may buy additional slots up to a total of 5 PCs.",
 				"fields":[
-					{"name":"<:d20:704040692946698361> 10,000 - [Character Slot 2]","value":"A second PC slot - <@&734957138908151898>"},
-					{"name":"<:d20:704040692946698361> 25,000 - [Character Slot 3]","value":"A third PC slot - <@&734957366373515326>"},
-					{"name":"<:d20:704040692946698361> 50,000 - [Character Slot 4]","value":"A fourth PC slot - <@&734957415727890559>"},
-					{"name":"<:d20:704040692946698361>100,000 - [Character Slot 5]","value":"A fifth PC slot - <@&734957425815453766>"}
+					{"name":"<:d20:704040692946698361> 10,000 - [Character Slot 2]","value":"A second PC slot - <@&734957138908151898>\n-# `/item buy name:[Character Slot 2]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361> 25,000 - [Character Slot 3]","value":"A third PC slot - <@&734957366373515326>\n-# `/item buy name:[Character Slot 3]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361> 50,000 - [Character Slot 4]","value":"A fourth PC slot - <@&734957415727890559>\n-# `/item buy name:[Character Slot 4]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>100,000 - [Character Slot 5]","value":"A fifth PC slot - <@&734957425815453766>\n-# `/item buy name:[Character Slot 5]` in <#697620228703649892>"}
 				]
 			},
 			{
 				"title":"<:d20:704040692946698361> 150,000 - 350,000: NPC Slots",
 				"description":"`                                                                     `\nAn RP-only character slot in addition to your PC slots! PC race restrictions don't apply, but there are some restrictions:\n • These characters are for RP ONLY\n • They can NOT join or accompany onto tables\n • They can NOT fight in the arena\n • They can NOT gain any exp at all, ever, in any way\n • Mods reserve the right to refuse an NPC profile deemed unsuitable for any reason...\n\nBonus: Once an NPC slot has been purchased, any or all of your other empty character slots can be used as NPC profiles.",
 				"fields":[
-					{"name":"<:d20:704040692946698361>150,000 - [NPC Slot]","value":"A single <@&806915819128881152>"},
-					{"name":"<:d20:704040692946698361>200,000 - [NPC Slot 2]","value":"A second NPC Slot -  <@&973044953821364224>"},
-					{"name":"<:d20:704040692946698361>250,000 - [NPC Slot 3]","value":"A third NPC Slot -  <@&973045332344733877>"},
-					{"name":"<:d20:704040692946698361>300,000 - [NPC Slot 4]","value":"A fourth NPC Slot -  <@&973045455816626176>"},
-					{"name":"<:d20:704040692946698361>350,000 - [NPC Slot 5]","value":"A fifth NPC Slot -  <@&973045799913148426>"}
+					{"name":"<:d20:704040692946698361>150,000 - [NPC Slot]","value":"A single <@&806915819128881152>\n-# `/item buy name:[NPC Slot]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>200,000 - [NPC Slot 2]","value":"A second NPC Slot -  <@&973044953821364224>\n-# `/item buy name:[NPC Slot 2]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>250,000 - [NPC Slot 3]","value":"A third NPC Slot -  <@&973045332344733877>\n-# `/item buy name:[NPC Slot 3]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>300,000 - [NPC Slot 4]","value":"A fourth NPC Slot -  <@&973045455816626176>\n-# `/item buy name:[NPC Slot 4]` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>350,000 - [NPC Slot 5]","value":"A fifth NPC Slot -  <@&973045799913148426>\n-# `/item buy name:[NPC Slot 5]` in <#697620228703649892>"}
 				]
 			},
 			{
 				"title":"<:d20:704040692946698361> 200,000 - 250,000: RP Channel & Upgrades",
 				"description":"`                                                                     `\nNever able to find an open channel to RP in? Want one of your very own so you always have a place to go? A House in the Residential District? A Shop in the Mercantile Quarter? A Venue in the Entertainment District? A Shrine in the City Temple? Maybe a Ship in the Dockyard? Hut in the wilderness? Look no further! Purchase your own RP channel to always have a place to RP. \n *Note*: Discord limits servers in the number of channels available, so there IS a finite quantity of these, so a user cannot buy more than one.",
 				"fields":[
-					{"name":"<:d20:704040692946698361>200,000 - Player RP Channel","value":"*Must be a <@&911102281045393429> to purchase*\nPurchase of your own property and  claiming your domain will elevate you to a <@&909638596351385652>. Choose a location in the city of Ost in Edhil and stylize and describe your channel in a manner befitting your character(s)."},
-					{"name":"<:d20:704040692946698361>225,000 - Channel Exp Upgrade","value":"*Must be a <@&909638596351385652> to purchase*\nExpanding your personal domain will elevate you to the title of <@&911101458454310952>. Your investment in the Demiplane is acknowledged by the Archfey who rules over it. Leylines are altered to flow into your domain, allowing you to tap into a wellspring and grow stronger.\n*RP done in your personal channel will be eligible to earn exp via `/scene`*"},
-					{"name":"<:d20:704040692946698361>250,000 - Channel Thread Upgrade","value":"*Must be a <@&911101458454310952> to purchase*\nYour continued investment into the Demiplane's prosperity has earned further recognition, elevating your title to that of <@&1117807884852535316>, and adding up to five minor fiefdoms to expand your holdings.\n*Your channel will be enabled with the ability to start up to five threads via DM Secretary's `/rpthread` command.*"}
+					{"name":"<:d20:704040692946698361>200,000 - Player RP Channel","value":"Purchase of your own property and  claiming your domain will elevate you to a <@&909638596351385652>. Choose a location in the city of Ost in Edhil and stylize and describe your channel in a manner befitting your character(s).\n-# *Must be a <@&911102281045393429> to purchase*\n-# `/item buy name:Player RP Channel` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>225,000 - Channel Exp Upgrade","value":"Expanding your personal domain will elevate you to the title of <@&911101458454310952>. Your investment in the Demiplane is acknowledged by the Archfey who rules over it. Leylines are altered to flow into your domain, allowing you to tap into a wellspring and grow stronger.\n*RP done in your personal channel will be eligible to earn exp via `/scene`*\n-# *Must be a <@&909638596351385652> to purchase*\n-# `/item buy name:Channel Exp Upgrade` in <#697620228703649892>"},
+					{"name":"<:d20:704040692946698361>250,000 - Channel Thread Upgrade","value":"Your continued investment into the Demiplane's prosperity has earned further recognition, elevating your title to that of <@&1117807884852535316>, and adding up to five minor fiefdoms to expand your holdings.\n*Your channel will be enabled with the ability to start up to five threads via DM Secretary's `/rpthread` command.*\n-# *Must be a <@&911101458454310952> to purchase*\n-# `/item buy name:Channel Thread Upgrade` in <#697620228703649892>"}
 				]
 			}
 		]

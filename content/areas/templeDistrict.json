@@ -3,102 +3,129 @@
 	{
 		"waitTime":3000,
 		"includeIndex":false,
-		"embeds": 
+		"embeds":
 		[
 			{
 				"title":"Temple Courtyard",
 				"description":"<#748749699464429629>",
 				"image": [
-					{ "url": "https://i.imgur.com/fUzhiJJ.png" },
-					{ "url": "https://i.imgur.com/XRgXPBt.jpg" }
-				]
-			},			
+					{ "url": "https://i.imgur.com/XRgXPBt.jpg" },
+					{ "url": "https://i.imgur.com/fUzhiJJ.png" }
+				],
+				"footer":{"text":"https://artstation.com/zpz\nhttps://www.artstation.com/byzwa_dher"}
+			},
 			{
 				"title":"Arcana Domain Temple",
 				"image": [
+					{ "url": "https://i.imgur.com/hLGcSKJ.png" },
 					{ "url": "https://i.imgur.com/4GbnUNB.jpg" },
-					{ "url": "https://i.imgur.com/nh4dEqN.jpg" },
-					{ "url": "https://i.imgur.com/hLGcSKJ.png" }					
-				]
+					{ "url": "https://i.imgur.com/nh4dEqN.jpg" }
+				],
+				"footer":{"text":"https://www.artstation.com/patboiteux\nhttps://www.artstation.com/mj_kim\nhttps://www.artstation.com/jandrew"}
 			},
 			{
 				"title":"Death Domain Temple",
-				"image": { "url": "https://i.imgur.com/vg8O8U8.png" }
+				"image": { "url": "https://i.imgur.com/vg8O8U8.png" },
+				"footer":{"text":"https://www.artstation.com/pao"}
 			},
 			{
 				"title":"Forge Domain Temple",
-				"image": { "url": "https://i.imgur.com/OqUQUdJ.png" }
+				"image": { "url": "https://i.imgur.com/OqUQUdJ.png" },
+				"footer":{"text":"https://www.deviantart.com/gycinn"}
 			},
 			{
 				"title":"Grave Domain Temple",
-				"image": { "url": "https://i.imgur.com/KE5NgVl.jpg" }
+				"image": { "url": "https://i.imgur.com/KE5NgVl.jpg" },
+				"footer":{"text":"https://www.artstation.com/threedee"}
 			},
 			{
 				"title":"Knowledge Domain Temple",
-				"image": { "url": "https://i.imgur.com/JYk7jvN.jpg" }
+				"image": { "url": "https://i.imgur.com/JYk7jvN.jpg" },
+				"footer":{"text":"https://www.artstation.com/seriouscat"}
 			},
 			{
 				"title":"Life Domain Temple",
-				"image": { "url": "https://i.imgur.com/u36Rrjg.jpg" }
+				"image": { "url": "https://i.imgur.com/u36Rrjg.jpg" },
+				"footer":{"text":"https://www.artstation.com/villette"}
 			},
 			{
 				"title":"Light Domain Temple",
 				"image": [
 					{ "url": "https://i.imgur.com/piKm2cj.jpg" },
 					{ "url": "https://i.imgur.com/YqMCSbw.jpg" }
-				]
+				],
+				"footer":{"text":"https://www.artstation.com/dominikzdenkovic\nArtist Unknown"}
 			},
 			{
 				"title":"Nature Domain Temple",
-				"image": { "url": "https://i.imgur.com/ZfSDs4I.png" }
+				"image": { "url": "https://i.imgur.com/ZfSDs4I.png" },
+				"footer":{"text":"https://www.artstation.com/dimarinski"}
 			},
 			{
 				"title":"Order Domain Temple",
-				"image": { "url": "https://i.imgur.com/lxSCThU.png" }
+				"image": { "url": "https://i.imgur.com/jAx5MCT.jpeg" },
+				"footer":{"text":"https://www.artstation.com/danielpham"}
 			},
 			{
 				"title":"Peace Domain Temple",
-				"image": { "url": "https://i.imgur.com/gXRif5C.jpg" }
+				"image": { "url": "https://i.imgur.com/gXRif5C.jpg" },
+				"footer":{"text":"https://www.artstation.com/tvtrish"}
 			},
 			{
 				"title":"Protection Domain Temple",
-				"image": { "url": "https://i.imgur.com/23bAsdq.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/lxSCThU.png" },
+					{ "url": "https://i.imgur.com/KmqzG8v.jpeg" },
+					{ "url": "https://i.imgur.com/ufwrIkO.jpeg" }
+				],
+				"footer":{"text":"Unknown Artist\nhttps://www.artstation.com/lui_white"}
 			},
 			{
 				"title":"Tempest Domain Temple",
-				"image": { "url": "https://i.imgur.com/GvD0mpn.png" }
+				"image": { "url": "https://i.imgur.com/GvD0mpn.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
 				"title":"Trickery Domain Temple",
-				"image": { "url": "https://i.imgur.com/5g4VbrM.png" }
+				"image": [
+					{ "url":"https://i.imgur.com/d6Pssak.jpeg" },
+					{ "url": "https://i.imgur.com/5g4VbrM.png" }
+				],
+				"footer":{"text":"https://www.artstation.com/cedricdanneels"}
 			},
 			{
 				"title":"Twilight Domain Temple",
-				"image": { "url": "https://i.imgur.com/hP8DHdY.png" }
+				"image": { "url": "https://i.imgur.com/Hd27uUA.jpeg"},
+				"footer":{"text":"https://www.artstation.com/antoncheykin"}
 			},
 			{
 				"title":"War Domain Temple",
-				"image": { "url": "https://i.imgur.com/ly79U4v.png" }
+				"image": { "url": "https://i.imgur.com/23bAsdq.jpeg" },
+				"footer":{"text":"https://www.artstation.com/inshoo"}
 			},
 
 			{
-				"image": { "url": "https://i.imgur.com/ZUejdei.png" }
+				"image": { "url": "https://i.imgur.com/ZUejdei.png" },
+				"footer":{"text":"https://www.artstation.com/fajareka"}
 			},
 
 			{
 				"title":"Sleeping Cell",
 				"description":"<#766039136535707688>",
-				"image": { "url": "https://i.imgur.com/8fy80Tb.png" }
+				"image": { "url": "https://i.imgur.com/8fy80Tb.png" },
+				"footer":{"text":"Artist Unknown"}
 			},
 			{
 				"title":"Bath Chamber",
 				"description":"<#766039658777280532>",
-				"image": { "url": "https://i.imgur.com/jIBFye3.png" }
+				"image": { "url": "https://i.imgur.com/jIBFye3.png" },
+				"footer":{"text":"https://www.artstation.com/lewismarks"}
 			},
 			{
 				"title":"Hierophant's Chamber",
 				"description":"<#766038186756538388>",
-				"_image": { "url": "https://i.imgur.com/KXi78du.jpg" }
+				"_image": { "url": "https://i.imgur.com/KXi78du.jpg" },
+				"footer":{"text":"Artist Unknown"}
 			},
 
 			{
@@ -107,7 +134,8 @@
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Temple nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

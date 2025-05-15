@@ -41,7 +41,7 @@ function getCurrentChanMeta(channel, chanMeta, sync = false) {
 				chanMeta.locations.push(id)
 			console.log(`${locations[id]} (<@&${id}>):\n - ${val.allow.toArray()}\n - ${val.deny.toArray()}\n`)
 		}
-		else if (val.type == 1)	{
+		else if (val.type == 1) {
 			if (sync && val.allow.has(PermissionsBitField.Flags.ManageChannels))
 				owners.push(id)
 			console.log(`<@${id}>:\n - ${val.allow.toArray()}\n - ${val.deny.toArray()}\n`)
@@ -115,19 +115,16 @@ async function updateChannelTopic(channel, chanMeta) {
 	if (topic.includes(config.emoji.xp)) topic = topic.replaceAll(config.emoji.xp,``)
 	if (topic.includes(threadIcon)) topic = topic.replaceAll(threadIcon,``)
 	if (topic.includes(":thread:")) topic = topic.replaceAll(":thread:",``)
-	ChanUtils.locations.forEach( role =>
-	{
+	ChanUtils.locations.forEach( role => {
 		const value = `<@&${role.value}>`
 		if (topic.includes(value)) topic = topic.replaceAll(value,``)
 	})
-	ChanUtils.guildLocations.forEach( role =>
-	{
+	ChanUtils.guildLocations.forEach( role => {
 		const value = `<@&${role.value}>`
 		if (topic.includes(value)) topic = topic.replaceAll(value,``)
 	})
 
-	for (const [guild,data] of Object.entries(GuildUtils?.guildData))
-	{
+	for (const [guild,data] of Object.entries(GuildUtils?.guildData)) {
   		if (topic.includes(data.emoji)) topic = topic.replaceAll(data.emoji,'')
 	}
 	const guild      = chanMeta.guildHall
@@ -196,12 +193,11 @@ function generateMetaEmbed(chanMeta) {
 	return embed;
 }
 
-async function generateComponents(interaction, chanMeta, isBuilder, publicFlag = true)
-{
+async function generateComponents(interaction, chanMeta, isBuilder, publicFlag = true) {
 	const minLocations = isBuilder ? 0 : 1
 	const maxLocations = isBuilder ? 5 : 1
 
-	const useGuildLocations = (isBuilder && !publicFlag)
+	const useGuildLocations = (isBuilder && !publicFlag) //&& chanMeta.guildHall)
 	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
 		locations = locations.map( role => {
 			if (chanMeta.locations.includes(role.value)) role.default = true
@@ -311,14 +307,12 @@ async function execute(interaction, expOverride = null) {
 		if (expOverride && result)
 			await channel.send({embeds:[embed]})
 
-		if (owner)
-		{
+		if (owner) {
 			const result = await updateChannelPerms(channel, chanMeta)
 			console.log(result)
 			interaction.followUp({content:result.join("\n"), ephemeral:true})
 		}
 	}
-
 	await editReply(interaction, chanMeta)
 }
 
@@ -370,8 +364,6 @@ async function handleInteraction(interaction) {
 		case `toggleThread`:
 			if (!isBuilder) return;
 			chanMeta.threadMax = chanMeta.threadMax ? 0 : defaultThreadMax;
-			// chanMeta.threadMax = defaultThreadMax - chanMeta.threadMax;
-			// chanMeta.threadMax = Math.max(0, chanMeta.threadMax);
 			break;
 		case `clearOwner`:
 			if (!isBuilder) return;
@@ -454,11 +446,6 @@ async function handleInteraction(interaction) {
 	await editReply(interaction, chanMeta, publicFlag)
 }
 
-// 	//Update the channel topic with the exp icon if the bot has the right permissions
-// 	const chanPerms = channel.permissionsFor(interaction.client.user);
-// 	if (null != expIcon && chanPerms.has(PermissionsBitField.Flags.ManageChannels))
-// 		await updateTopic(target, channelMeta.awardsExp)
-
 const guildOption = new SlashCommandStringOption()
 	.setName('guild')
 	.setDescription('Add which guild owns this channel')
@@ -485,8 +472,7 @@ const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 							PermissionsBitField.Flags.SendMessages		];
 const whitelistRoles  = [	config.role.Builder	];
 
-module.exports =
-{
+module.exports = {
 	data: data,
 	whitelistRoles: whitelistRoles,
 	userPermissions: userPermissions,

@@ -7,36 +7,52 @@
 			{
 				"title":"Colosseum",
 				"description":"<#695712096322584607>",
-				"image": { "url": "https://i.imgur.com/fu3YZtZ.jpg" }
+				"image": { "url": "https://i.imgur.com/fu3YZtZ.jpg" },
+				"footer": { "text":"https://www.artstation.com/size80" }
 			},
 			{
 				"title":"Side Arena",
 				"description":"<#699332551071760525> <#740619253635612693>\n<#1120937969952493628>",
-				"image": { "url": "https://i.imgur.com/UB9ezjH.png" }
+				"image": [
+					{ "url": "https://i.imgur.com/UB9ezjH.png" },
+					{ "url": "https://i.imgur.com/Sn1cxyK.jpeg" },
+					{ "url": "https://i.imgur.com/TsTMHfb.jpg" }
+				],
+				"footer": { "text":"Artist Unknown\nhttps://www.artstation.com/lincoln\nhttps://artefantastico.com/portfolio/" }
+			},
+			{
+				"title":"Spectator Box",
+				"description":"<#699567315657949225><#1022626687403442206>",
+				"image": { "url": "https://i.imgur.com/aEpvO0t.jpeg" },
+				"footer": { "text":"https://www.kendrickszb.com/" }
 			},
 			{
 				"title":"Training Grounds",
 				"description":"<#1100616389410173039>",
-				"image": { "url": "https://i.imgur.com/TsTMHfb.jpg" }
+				"image": [
+					{ "url": "https://i.imgur.com/V0Ol4uq.jpeg" },
+					{ "url": "https://i.imgur.com/4iLPgiz.jpeg" }
+				],
+				"footer": { "text":"https://www.artstation.com/polish_farmer" }
 			},
 			{
 				"title":"Lockers & Baths",
 				"description":"<#833469470290083887> <#909641705299509268>\n<#833469756903653386>",
 				"image": [
+					{ "url": "https://i.imgur.com/0IokfUt.png" },
 					{ "url": "https://i.imgur.com/KMri3vF.png" },
-					{ "url": "https://i.imgur.com/9dnezg2.jpg" },
-					{ "url": "https://i.imgur.com/0IokfUt.png" }
-				]
+					{ "url": "https://i.imgur.com/9dnezg2.jpg" }
+				],
+				"footer": { "text":"https://hectormateopino.com/\nhttps://artstation.com/ian_hong\nhttps://www.artstation.com/vinchipotato" }
 			},
-		
-			
 			{
 				"title":"Travel",
 				"description": "`                                                                     `\n\n🏯 Exit the Colosseum to the Administrative District\n\n🎭 Exit the Colosseum to the Entertainment District\n\n⚔️ Enter the Guardian Guild Barracks\n(*Only members of the <@&702481674344071178> will succeed*)"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Colosseum nodm:True rr:True m:<last_id>`"
-			}	
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
 		]
 	}
 }

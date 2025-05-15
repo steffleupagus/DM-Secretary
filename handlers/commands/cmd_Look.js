@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonStyle, TextInputStyle,
-	   	PermissionsBitField, MessageFlags, MessageMentions } = require('discord.js')
+        PermissionsBitField, MessageFlags, MessageMentions } = require('discord.js')
+const sanitize = require('mongo-sanitize');
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
@@ -8,7 +9,7 @@ const ChannelUtil = require(`../../utilities/channelUtils.js`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 
-const customEmoji = /\<?\:[a-zA-Z0-9]*\:[0-9]*\>?/;
+const customEmoji = /\<?\:[a-zA-Z0-9_]*\:[0-9]*\>?/mg;
 const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/mg
 const editRoles  = [ config.role.Builder ];
 
@@ -18,7 +19,9 @@ async function accessDBRecord(channel) {
 	if (null == record) {
 		const title = getDefaultTitle(channel)
 		const desc = getDefaultDescription(channel)
-		record = { channelId, title, desc }
+		const name = ""
+		const value = ""
+		record = { channelId, title, desc, name, value }
 	}
 	return record
 }
@@ -52,13 +55,14 @@ function getDefaultTitle(channel) {
 function getDefaultDescription(channel) {
 	let desc;
 	if (!channel.topic && channel.isThread()) channel = channel.parent
-	desc = channel.topic || "*No description*"
+	desc = channel.topic || ""
 	desc = desc.replaceAll(new RegExp(MessageMentions.UsersPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.RolesPattern, `gim`), ``)
 				.replaceAll(new RegExp(MessageMentions.ChannelsPattern, `gim`), ``)
-				.replace(emojiRegex,"")
-				.replace(customEmoji,"")
+				.replaceAll(customEmoji,"")
+				.replaceAll(emojiRegex,"")
 				.normalize("NFKC").trim()
+	desc = desc || "*No description*"
 	return desc
 }
 async function getTitle(channel, chanLook = null) {
@@ -89,6 +93,11 @@ async function generateEmbed(interaction) {
 					.setDescription(desc);
 
 	const fields = [];
+	let value = chanLook?.value?.trim() || null
+	let name = chanLook?.name?.trim() || (value ? "** **" : null)
+	if (name && name.length > 0 && value && value.length > 0)
+		fields.push({name,value})
+
 	const chanMeta = await accessChanMeta(channel.id)
 	if (chanMeta) {
 		if (chanMeta.locations && chanMeta.locations.length > 0) {
@@ -106,6 +115,8 @@ async function generateEmbed(interaction) {
 		let image = Array.isArray(images) ? images[0] : images
 		embed.setImage(image)
 	}
+	if (chanLook?.footer && chanLook.footer.trim().length > 0)
+		embed.setFooter({text:chanLook.footer})
 
 	const embeds = [embed]
 
@@ -119,11 +130,14 @@ async function generateEmbed(interaction) {
 
 	return embeds
 }
-async function generateComponents(disabled = false) {
+async function generateComponents(isBuild, disabled = false) {
 	const buttons = [
 		{style:ButtonStyle.Secondary, emoji:'📝', label:'Edit', custom_id:`edit`, disabled},
 		{style:ButtonStyle.Secondary, emoji:'🖼️', label:'Images', custom_id:`images`, disabled}
 	];
+	if (isBuild)
+		buttons.push({style:ButtonStyle.Danger, emoji:'🔁', label:'Reset', custom_id:`reset`, disabled})
+
 	const components = Prompt.createButtonRow(buttons)
 	return [components]
 }
@@ -147,23 +161,22 @@ async function execute(interaction) {
 async function showChannelLook(interaction) {
 	const user  = interaction.member;
 	const channel = interaction.channel;
-	const chanMeta = accessChanMeta(channel.id);
+	const chanMeta = await accessChanMeta(channel.id);
 
 	// Check if the user is a moderator or the channel owner
 	const isOwner  = chanMeta?.userOwner?.includes( user.id );
 	const isBuild  = Utils.hasAnyRole(interaction.member, editRoles);
-	let components = (isOwner || isBuild) ? await generateComponents() : []
+	let components = (isOwner || isBuild) ? await generateComponents(isBuild) : []
 
 	const embeds = await generateEmbed(interaction);
 	const prompt = await interaction.editReply({embeds,components})
 	if (isOwner || isBuild) {
 		const update = await handleEdits(interaction, prompt)
 		if (update) {
-			return await showChannelLook(interaction);
-		}
-		else {
-			components = await generateComponents(true)
-			interaction.editReply({components})
+			await showChannelLook(interaction);
+		} else {
+			components = await generateComponents(isBuild, true)
+			await interaction.editReply({components})
 		}
 	}
 }
@@ -177,25 +190,37 @@ async function handleEdits(interaction, prompt) {
 	const buttonCallback = (interaction, args) => { return interaction.customId; }
 	const callbackMap = {
 		"edit": { func: _promptTextModal, args: sparseChan },
-		"images": {func: _promptImageModal, args: sparseChan }
+		"images": {func: _promptImageModal, args: sparseChan },
+		"reset": {func: _resetText, args:sparseChan}
 	}
-	response = await Prompt.collectComponents(prompt, {callbackMap})
-
+	const time = Prompt.Time.Extended
+	response = await Prompt.collectComponents(prompt, {callbackMap, time})
 	response = response?.values
-	if (response && Array.isArray(response))
-		response = response.values[0]
+	if (response && Array.isArray(response)) response = response[0]
 
 	return response;
 }
 
-/// Prompt the user for updated data
-async function _promptTextModal(interaction) {//, channel) {
+async function _resetText(interaction) {
 	const channel = interaction.channel
 	const look = await accessDBRecord(channel)
+	look.title = getDefaultTitle(channel);
+	look.desc = "";
+	look.name = look?.name?.trim() || ""
+	look.value = look?.value?.trim() || ""
+	await updateDBRecord(look)
+	await interaction.update({content:"Updated"})
+	return true
+}
 
+/// Prompt the user for updated data
+async function _promptTextModal(interaction) {
+	const channel = interaction.channel
+	const look = await accessDBRecord(channel)
+	const defaultDesc = getDefaultDescription(channel)
 	let title = await getTitle(channel, look)
 	const titleParams = { customId:"title", label:"Title", required:false,
-	  					  min:0, max:222, value:title }
+					  	  min:0, max:222, value:title }
 	const titleInput = Prompt.createTextInput(titleParams)
 
 	let desc = await getDescription(channel, look)
@@ -203,32 +228,47 @@ async function _promptTextModal(interaction) {//, channel) {
 						 required:false, min:0, max:4000, value:desc}
 	const descInput = Prompt.createTextInput(descParams)
 
+	let name = look?.name?.trim() || ""
+	const nameParams = {...titleParams, customId:"name", label:"Extra Field Title (optional)", value:name}
+	const nameInput = Prompt.createTextInput(nameParams)
+	let value = look?.value?.trim() || ""
+	const valueParams = {...descParams, customId:"value", label:"Extra Field Value (optional)", max:1024, value:value}
+	const valueInput = Prompt.createTextInput(valueParams)
 
-	const modal = await Prompt.promptModal(interaction, "Look Edit", "edit"+interaction.id, [titleInput, descInput]);
-	if (!modal) return false;
+	const customId = `edit_${interaction.id}`
+	const modal = await Prompt.promptModal(interaction, "Look Edit", customId, [titleInput, descInput,
+																				nameInput, valueInput]);
+
+	if (!modal) return false
+	if (modal.customId != customId) return true
 
 	const fields = modal.fields
-	title = fields.getTextInputValue("title") || null;
-	desc = fields.getTextInputValue("desc") || null;
+	title = fields.getTextInputValue("title") || "";
+	desc = fields.getTextInputValue("desc") || "";
+	value = fields.getTextInputValue("value") || "";
+	name = fields.getTextInputValue("name") || (value ? "** **" : "");
 
-	await modal.deferUpdate();
-	if (title != look.title || desc != look.desc) {
-		look.title = title
-		look.desc = desc
+	await modal.deferUpdate()
+	if (title != look.title || desc != look.desc || name != look.name || value != look.value) {
+		look.title = sanitize(title)
+		console.log(defaultDesc,desc,"\n",defaultDesc == desc)
+		look.desc = sanitize(desc)
+		look.name = sanitize(name)
+		look.value = sanitize(value)
 		await updateDBRecord(look)
-		await modal.update({content:"Updated"})
-		return true
+		await modal.editReply({content:"Updated"})
 	}
 
-	return false
+	return true
 }
 
 /// Prompt the user for updated data
-async function _promptImageModal(interaction) {//, channel) {
+async function _promptImageModal(interaction) {
 	const channel = interaction.channel
 	const look = await accessDBRecord(channel)
 
 	let images = await getImages(channel, look)
+	let footer = look?.footer?.trim() || ""
 
 	const inputs = []
 	const imageParams = { label:"Image URL", required:false, min:0, max:400 }
@@ -236,14 +276,22 @@ async function _promptImageModal(interaction) {//, channel) {
 	{
 		imageParams.label = `Image URL (${i+1})`
 		imageParams.customId = `image${i}`
-		imageParams.value = images[i]
+		imageParams.value = ""
+		if (images && Array.isArray(images) && i < images.length)
+			imageParams.value = images[i]
 		inputs.push( Prompt.createTextInput(imageParams) )
 	}
+	const footerParams = { label:"Image Credits (Footer)", customId:"footer", required:false,
+						   style: TextInputStyle.Paragraph, value: footer}
+	inputs.push( Prompt.createTextInput(footerParams) )
 
-	const modal = await Prompt.promptModal(interaction, "Edit Images", "edit"+interaction.id, inputs);
+	const customId = `edit_${interaction.id}`
+	const modal = await Prompt.promptModal(interaction, "Edit Images", customId, inputs);
+
 	if (!modal) return false
-	const fields = modal.fields
+	if (modal.customId != customId) return true
 
+	const fields = modal.fields
 	const newImages = []
 	for (let i=0; i < 4; ++i)
 	{
@@ -251,49 +299,31 @@ async function _promptImageModal(interaction) {//, channel) {
 		const image = fields.getTextInputValue(customId) || null
 		if (image) newImages.push(image)
 	}
+	const newFooter = fields.getTextInputValue(`footer`) || null
+	look.image = newImages;
+	look.footer = newFooter?.trim() || "";
 
-	await modal.deferUpdate();
-	if (JSON.stringify(images) !== JSON.stringify(newImages)) {
-		look.image = newImages;
+	await modal.deferUpdate()
+	if (JSON.stringify(images) !== JSON.stringify(look.image) ||
+	    footer !== look.footer) {
 		await updateDBRecord(look)
-		await modal.update({content:"Updated"})
+		await modal.editReply({content:"Updated"})
 		return true
 	}
 
 	return false
 }
 
+async function handleInteraction(){}
+
 const data = new SlashCommandBuilder()
 				.setName(`look${config.DEV ? "dev" : ""}`)
 				.setDescription('Look at the current location')
-//const userPermissions = [	PermissionsBitField.Flags.SendMessages		];
-module.exports =
-{
+//const userPermissions = [	PermissionsBitField.Flags.SendMessages	];
+module.exports = {
 	data: data,
 	execute: execute,
-	// button: handleInteraction,
-	// select: handleInteraction,
+	button: handleInteraction,
+	select: handleInteraction,
 	build:config.PRODUCTION || config.DEV
 };
-
-
-
-/*
-case `assignImage`:
-	const args = { label:"Image URL", min: null, value: null }
-	if (chanMeta.chanImage) args.value = chanMeta.chanImage;
-	const input = Prompt.createTextInput(args);
-	const modalTitle = "Enter Image";
-	const modalID = "image"+interaction.id;
-	modal = await Prompt.promptModal(interaction, modalTitle, modalID, [input]);
-	if (modal?.fields)
-	{
-		const prevImage = chanMeta.chanImage ?? null;
-		const image = modal.fields.getTextInputValue('input');
-		chanMeta.chanImage = image || null
-		if (chanMeta.chanImage != prevImage) {
-			dirty = true;
-			await modal.reply({content:`Image URL set to ${image} (previously \`${prevImage}\`)`, ephemeral: true})
-		}
-	}
-*/
