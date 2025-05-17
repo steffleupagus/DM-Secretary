@@ -7,17 +7,21 @@ const MsgUtils = require(`../../utilities/messageUtils.js`);
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
+const testRoles = {
+//	[config.role.Helper]:"Helper Attention Needed"
+}
+
 const logRoles = {
 	[config.role.Builder]:"Builder Attention Needed",
 	[config.role.Moderator]:"Mod Attention Needed",
-	[config.role.DMOnDuty]:"DM Attention Needed",
+	[config.role.Staff]:"DM Attention Needed",
+	[config.role.Helper]:"Helper Attention Needed",
 	[config.role.ItemTrade]:"Item Exchange Log"
 }
-const roleIDs = Object.keys(logRoles)
+const roleIDs = Object.keys(config.PRODUCTION ? logRoles : testRoles)
 
-async function shouldHandle(client, message)
-{
-	let handle = false;	
+async function shouldHandle(client, message) {
+	let handle = false;
 
 	const mentions = message.mentions.roles.filter( x => roleIDs.includes(x.id) )
 	if (mentions.size > 0)
@@ -25,15 +29,14 @@ async function shouldHandle(client, message)
 	return handle;
 }
 
-async function handleCreate(client, message, interaction=null, sendResult=true)
-{
+async function handleCreate(client, message, interaction=null, sendResult=true) {
 	const guild = message.guild
 	const msgChan = message.channel
 	const channel = await guild.channels.fetch(config.chan.dmPing)
 	if (!channel) return;
 	const mentions = message.mentions.roles.filter( x => roleIDs.includes(x.id) )
 	if (mentions.size == 0) return;
-	
+
 	const color = message.mentions.roles.filter(x => x.color).last()?.color || 0
 	const pings = Array.from(mentions.keys()).map(x=>`<@&${x}>`).join("")
 	const member = message.member
@@ -61,10 +64,10 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 module.exports = {
 	name: 'rolePingLogMsg',
-	user: true, 
+	user: true,
 	menu: false,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 
-	build: config.PRODUCTION //|| config.DEV
+	build: config.PRODUCTION || config.DEV
 };

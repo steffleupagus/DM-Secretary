@@ -677,7 +677,7 @@ async function sendApprovalMessage(duelData, guild)
 		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
 
 	const dmChan = guild.channels.resolve(dmPingChannel);
-	dmEmbed = await dmChan.send({content:`<@&${config.role.DMOnDuty}>`,embeds:[dmEmbed]})
+	dmEmbed = await dmChan.send({content:`<@&${config.role.Helper}>`,embeds:[dmEmbed]})
 	return dmEmbed;
 }
 
@@ -693,7 +693,7 @@ async function closeScene(duelData)
 	const loss 	   = getExpField(duelData.loser, false)
 	const playerEmbed = new EmbedBuilder()
 		.setTitle(DUELTITLE)
-		.setDescription(`***Please wait** for a [@DM](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.role.DMOnDuty}> immediately*`)	
+		.setDescription(`***Please wait** for a [@Helper](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.role.Helper}> immediately*`)
 		.addFields([
 			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, value:win},
 			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss},

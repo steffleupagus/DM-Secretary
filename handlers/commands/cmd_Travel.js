@@ -428,7 +428,7 @@ const data = new SlashCommandBuilder()
 			.setAutocomplete(true)
 		)
 
-const whitelistRoles = [ config.role.Builder, config.role.DMOnDuty, config.role.Moderator ]
+const whitelistRoles = [ config.role.Builder, config.role.Staff, config.role.Moderator ]
 const userPermissions = [ PermissionsBitField.Flags.SendMessages ];
 module.exports = {
 	data: data,

@@ -54,9 +54,7 @@ const xpLogChannel  = Debug ? config.debug.xpLog : config.chan.xpLog;
 const NPC = 0;
 const SKIP = -1;
 
-const dmRoles = [
-			config.role.DM, config.role.Moderator
-		];
+const dmRoles = [ config.role.Staff, config.role.Moderator ];
 
 const interactionTimer = {};
 
@@ -889,8 +887,8 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 		travel = travel?.components[0]
 	if (travel)
 		buttonRow.addComponents(travel)
-	
-	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.DMOnDuty}>`, //attachButtons);
+
+	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.Helper}>`,
 					 (message) => message.edit({ components:[buttonRow] }))
 }
 
@@ -967,7 +965,7 @@ async function awaitConfirmation(interaction, expData)
 	if (!confirm)
 	{
 		embed = new EmbedBuilder();
-		embed.setDescription(`If your level was incorrect:\n${inst}\nIf you need help, please ask a <@&${config.role.DMOnDuty}>`);
+		embed.setDescription(`If your level was incorrect:\n${inst}\nIf you need help, please ask a <@&${config.role.Helper}>`);
 		interaction.editReply({embeds:[embed],components:[]})
 	}
 	
