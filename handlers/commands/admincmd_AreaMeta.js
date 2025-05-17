@@ -10,8 +10,7 @@ const config = require(`../../config/${mod}_config.json`);
 
 const defaultAreaMeta = { }
 
-async function updateDBRecord(area, areaMeta)
-{
+async function updateDBRecord(area, areaMeta) {
 	if (!area) return;
 	let record;
 	let query = { name: area }
@@ -29,30 +28,32 @@ async function updateDBRecord(area, areaMeta)
 		update["$set"].icon = areaMeta.icon
 	if (areaMeta.guild)
 		update["$set"].guild = areaMeta.guild
+	if (areaMeta.hasOwnProperty('disable'))
+		update["$set"].disable = areaMeta.disable
 
-	if (update["$set"] != {})
-	{
-		record = await AreaMeta.findOneAndUpdate(query, update, options);		
+	if (update["$set"] != {}) {
+		record = await AreaMeta.findOneAndUpdate(query, update, options);
 	}
 	return record
 }
 
-async function execute(interaction)
-{
-	await interaction.deferReply({ephemeral:true})	
+async function execute(interaction) {
+	await interaction.deferReply({ephemeral:true})
 
 	const area 	   	= interaction.options.getString('area');
 	const category 	= interaction.options.getChannel('category') ?? null;
 	const role     	= interaction.options.getRole('role') ?? null;
 	const icon 		= interaction.options.getString('icon') ?? null;
 	const guild 	= interaction.options.getString('guild') ?? null;
-	
+	const disable	= interaction.options.getBoolean('disable') ?? false;
+
 	const areaMeta = {
 		name: 	area,
 		catId:	category?.id,
 		roleId:	role?.id,
 		icon:	icon,
-		guild:	guild
+		guild:	guild,
+		disable:disable
 	}
 	const record = await updateDBRecord(area, areaMeta)
 	console.log(record);
@@ -61,20 +62,18 @@ async function execute(interaction)
 	interaction.editReply({embeds:[embed]})
 }
 
-function generateMetaEmbed(areaMeta)
-{	
+function generateMetaEmbed(areaMeta) {
 	const embed = new EmbedBuilder().setTitle("Area Meta")
 	if (areaMeta)
 	{
 		const icon = areaMeta.icon || ""
 		const name = `${icon}  ${areaMeta.name}`.trim()
-		
+
 		embed.addFields([{name:name, value:`\`${"".padEnd(1000," ")}\``}]);
-		
 		embed.addFields([{name:"Category", value:`<#${areaMeta.catId}> (\`${areaMeta.catId}\`)`}]);
-		
+
 		const hasLocations = areaMeta.roleId.length > 0
-		const locationRoles = "<@&" + areaMeta.roleId.join(">\n<@&") + ">"			
+		const locationRoles = "<@&" + areaMeta.roleId.join(">\n<@&") + ">"
 		embed.addFields([{name:"Locations", value: hasLocations ? locationRoles : "*None*", inline: true}])
 
 		const guild      = areaMeta.guild
@@ -82,7 +81,10 @@ function generateMetaEmbed(areaMeta)
 		const guildValue = guild ? {name:"Guild",value:`${guildEmoji}${guild}`} : {name:"Guild",value:`*None*`,inline:true}
 		if (guildValue) embed.addFields([guildValue])
 
-		embed.setFooter({text:areaMeta.name})		
+		const disable	 = areaMeta.disable
+		if (disable) embed.addFields([{name:"Status", value:"**Disabled**",inline:true}])
+
+		embed.setFooter({text:areaMeta.name})
 	}
 	else embed.setDescription("No area meta data available")
 	return embed;
@@ -92,8 +94,6 @@ function generateMetaEmbed(areaMeta)
 async function handleInteraction(interaction)
 {
 }
-
-
 
 const guildOption = new SlashCommandStringOption()
 	.setName('guild')
@@ -114,19 +114,20 @@ const data = new SlashCommandBuilder()
 	.setDefaultPermission(false)
 
 	.addStringOption(option => option.setName('area').setDescription('Name of the area')
-									  .setRequired(true))
+									  .setRequired(true).setAutocomplete(true))
 	.addChannelOption(option => option.setName('category').setDescription('Channel Category')
 									  .setRequired(false).addChannelTypes(ChannelType.GuildCategory))
 	.addRoleOption(option => option.setName('role').setDescription('Location Role').setRequired(false))
 	.addStringOption(option => option.setName('icon').setDescription('Location Emoji').setRequired(false))
 	.addStringOption(guildOption)
+	.addBooleanOption(option => option.setName('disable').setDescription('Disable the location').setRequired(false))
 
 const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
-							PermissionsBitField.Flags.ViewChannel,						 
+							PermissionsBitField.Flags.ViewChannel,
 							PermissionsBitField.Flags.SendMessages		];
 const whitelistRoles  = [	config.role.Builder	];
 
-module.exports = 
+module.exports =
 {
 	data: data,
 	whitelistRoles: whitelistRoles,
@@ -135,221 +136,33 @@ module.exports =
 	execute: execute,
 	button: handleInteraction,
 	select: handleInteraction,
+	autoComplete: autoComplete,
 
 	build:config.PRODUCTION || config.DEV
 };
 
 
-/*
-async function generateComponents(interaction, chanMeta, isBuilder, publicFlag = null)
-{
-	const minLocations = 0
-	const maxLocations = 5
+let areaCache = null;
+async function refreshCache() {
+	areaCache = await AreaMeta.find({});
+}
 
-	const useGuildLocations = (isBuilder && chanMeta.guildHall && !publicFlag)	
-	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
-		locations = locations.map( role => {
-			if (chanMeta.locations.includes(role.value)) role.default = true
-			return role;
-		})
-	if (!useGuildLocations) locations.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
-	const location = Prompt.createSelectRow(`${data.name}.location`,locations,
-											minLocations,maxLocations,"Locations (None Selected)");
-	
-	let guilds = JSON.parse(JSON.stringify(guildOption.choices));
-		guilds = guilds.map( guild => {
-			guild.default = (guild.value == chanMeta.guildHall)
-			guild.label = guild.name
-			delete guild.name;		
-			return guild
-		})
-		guilds = [{label:"None",value:"none"},...guilds]
-	const guildHall = Prompt.createSelectRow(`${data.name}.guild`,guilds,1,1,"Guild Hall (None selected)");
+////// Handle autocomplete options for the location field
+async function autoComplete(interaction) {
+	if (null == areaCache) await refreshCache()
 
-	///Owners selection box
-	// const select  = new UserSelectMenuBuilder().setCustomId('user-select')
-	// 									 	   .setPlaceholder('Select a user')
-	// 										   .setMinValues(1).setMaxValues(5)
- 	// const row = new ActionRowBuilder().addComponents(select);
-    const users = await Promise.all( chanMeta?.userOwner?.map(async (id) => {
+	const focusedOption = interaction.options.getFocused(true);
+	if (focusedOption.name === 'area') {
+		const value = focusedOption.value.toLowerCase();
+		let response = [];
+		response = areaCache.filter(x => x.catId == interaction.channel.parent.id ||
+										 (value.length > 0 && x.name.toLowerCase().includes(value)));
+		response = response.map(x => ({name:x.name, value:x.name}))
+
 		try {
-			const user = await interaction.client.users.fetch(id);
-			return user;
-		} catch (error) {
-			console.error(`Error fetching user with ID ${id}: ${error}`);
-			return null;
-		}		
-	}) );
-    // Filter out any null values that may have been returned due to errors
-    const validUsers = users.filter((user) => user !== null);
-    // Do something with the fetched users, e.g. send their usernames in a message
-    const owners = validUsers.map((user) => { return { label: user.username, value: user.id, default:true } });	
-	console.log(owners)
-	const ownerSelect = Prompt.createSelectRow(`${data.name}.modifyOwners`,owners,0,owners.length,"Owners")
-	const buttons = [
-		{style:ButtonStyle.Secondary, emoji:config.emoji.xp, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
-		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➖', custom_id:`${data.name}.decThread`},
-		// {style:ButtonStyle.Secondary, emoji:threadIcon, label:'➕', custom_id:`${data.name}.incThread`},	
-		{style:ButtonStyle.Secondary, emoji:threadIcon, label:'Threads', custom_id:`${data.name}.toggleThread`},
-		{style:ButtonStyle.Secondary, emoji:"📍", label:'Activity', custom_id:`${data.name}.toggleTrack`},
-		{style:ButtonStyle.Secondary, emoji:'👤', label:'Owner', custom_id:`${data.name}.assignOwner`},
-		{style:ButtonStyle.Secondary, label:'Log Perms', custom_id:`${data.name}.permDebug`}		
-	]
-	const locationPub = {style:ButtonStyle.Secondary,
-						 label:`Location: ${useGuildLocations?"Guilds":"Public"}`, 
-						 custom_id:`${data.name}.publicLocation.${useGuildLocations}`}
-	const revertPerms = {style:ButtonStyle.Secondary,emoji:"⏮️", label:'Reset Perm', custom_id:`${data.name}.syncPerms`}	
-	const topicButton = {style:ButtonStyle.Secondary,emoji:"🔄", label:'Refresh Topic', custom_id:`${data.name}.refreshTopic`}
-
-	const components = [];
-	if (isBuilder) components.push(Prompt.createButtonRow(buttons))			//Row 1 - Buttons (Builder Only)
-	components.push(location);												//Row 2 - Location Select (Visible to owner)
-	if (isBuilder) components.push(guildHall);								//Row 3 - Guild Hall (Builder Only)
-	if (isBuilder && chanMeta.userOwner.length) components.push(ownerSelect)//Row 4 - Owner Edit (Builder Only)
-	
-	const miscButtons = [];										
-	if (isBuilder && chanMeta.guildHall) miscButtons.push(locationPub)		//		- Public/Guild Hall Loc Toggle (Builder Only)	
-	if (isBuilder) miscButtons.push(revertPerms)							//		- Revert permissions to current
-	//if (isBuilder) miscButtons.push(permDebug)							//		- Log the permissions to the console.
-	miscButtons.push(topicButton)											//		- Topic Button (Visible to owner)
-	components.push(Prompt.createButtonRow(miscButtons));					//Row 5 - Misc Buttons
-
-	return components
-}
-
-
-
-
-
-
-
-
-/*
-
-
-
-
-
-
-async function editReply(interaction, chanMeta, publicFlag = null)
-{
-	const user     = interaction.user;
-	// Check if the user is a moderator or the channel owner
-    const isOwner  = chanMeta.userOwner.includes( user.id );
-	const isBuild  = Utils.hasAnyRole(interaction.member, whitelistRoles);	
-	const components = (isOwner || isBuild) ? await generateComponents(interaction, chanMeta, isBuild, publicFlag) : []
-	const embed = generateMetaEmbed(chanMeta)
-	await interaction.editReply({embeds:[embed], components:components});	
-}
-
-async function handleInteraction(interaction)
-{
-	const isBuilder= Utils.hasAnyRole(interaction.member, whitelistRoles);	
-	const customId = interaction.customId;
-	const message  = interaction.message || null;
-	const embed    = message?.embeds?.[0] || null;
-	let   channel  = embed?.footer?.text || "";
-	if (!message || !embed || !channel) return;
-	if (`${data.name}.assignOwner` != customId)
-		await interaction.deferUpdate();
-	
-	let chanMeta   = await ChannelMeta.findOne({channelId:channel});
-		  channel  = await interaction.guild.channels.fetch(channel);	
-	let dirty      = true;
-	let permsDirty = false;
-	let publicFlag = false;
-	console.log(`HandleSelect: ${customId} for ${chanMeta?.channelId}`)
-	if (!chanMeta) return;		
-	chanMeta.threadMax = chanMeta.threadMax ?? 0;
-	chanMeta.name = channel.name;	
-	switch(customId)
-	{
-		case `${data.name}.incThread`:
-			if (!isBuilder) return;
-			chanMeta.threadMax++;
-			break;			
-		case `${data.name}.decThread`:			
-			if (!isBuilder) return;
-			chanMeta.threadMax--;
-			chanMeta.threadMax = Math.max(0, chanMeta.threadMax);
-			break;
-		case `${data.name}.toggleThread`: 			
-			if (!isBuilder) return;
-			chanMeta.threadMax = chanMeta.threadMax ? 0 : defaultThreadMax;
-			// chanMeta.threadMax = defaultThreadMax - chanMeta.threadMax;
-			// chanMeta.threadMax = Math.max(0, chanMeta.threadMax);
-			break;			
-		case `${data.name}.clearOwner`:
-			if (!isBuilder) return;
-			chanMeta.userOwner = [];
-			permsDirty = true;
-			break;
-		case `${data.name}.assignOwner`:
-			const modal = await Prompt.promptModal(interaction, "Enter user ID", "owner"+interaction.id);
-			if (modal?.fields)
-			{
-				const newOwner = modal.fields.getTextInputValue('input');
-				let user = null
-				try { 
-					user = await interaction.client.users.fetch(newOwner) 
-					if (!user) throw "Invalid User"
-					if (!chanMeta.userOwner.includes(newOwner))
-					{
-						await modal.reply({content:`${user} added as a channel owner`, ephemeral: true})
-						chanMeta.userOwner.push(newOwner)
-						permsDirty = true;
-					} else await modal.reply({content:`${user} was already a channel owner`, ephemeral: true})
-				} catch {}
-				if (!user) await modal.reply({content:`${newOwner} is not a valid user`,ephemeral: true});
-			}
-			break;
-		case `${data.name}.modifyOwners`:
-			chanMeta.userOwner = interaction.values
-			permsDirty = true;
-			break;
-		case `${data.name}.location`:
-			chanMeta.locations = interaction.values
-			permsDirty = true;
-			break;
-		case `${data.name}.toggleTrack`:
-			if (!isBuilder) return;
-			chanMeta.trackActivity = !chanMeta.trackActivity;
-			break;
-		case `${data.name}.toggleExp`:
-			if (!isBuilder) return;
-			chanMeta.awardsExp = !chanMeta.awardsExp;
-			break;
-		case `${data.name}.guild`:
-			if (!isBuilder) return;
-			chanMeta.guildHall = interaction.values[0];			
-			if (chanMeta.guildHall == "none") chanMeta.guildHall = ""
-			break;			
-		case `${data.name}.publicLocation.true`:
-			publicFlag = true;
-		case `${data.name}.publicLocation.false`:
-			dirty = false;
-			break;			
-		case `${data.name}.permDebug`:
-			getCurrentChanMeta(channel, chanMeta)
-			dirty = false;
-			break;			
-		case `${data.name}.syncPerms`:
-			chanMeta = getCurrentChanMeta(channel, chanMeta, true)
-			break;			
-		case `${data.name}.refreshTopic`:
-			try { await updateChannelTopic(channel, chanMeta) } 
-			catch(e) { interaction.followUp({content:e, ephemeral:true}) }
-		default: dirty = false;
-	}	
-	if (dirty)
-		await updateDBRecord(chanMeta);
-	if (permsDirty)
-	{
-		const result = await updateChannelPerms(channel, chanMeta)
-		console.log(result)
-		interaction.followUp({content:result.join("\n"), ephemeral:true})
+			response = response.length <= 25 ? response : response.splice(0,25)
+			interaction.respond(response);
+		}
+		catch (e) {}
 	}
-	await editReply(interaction, chanMeta, publicFlag)	
 }
-
-*/

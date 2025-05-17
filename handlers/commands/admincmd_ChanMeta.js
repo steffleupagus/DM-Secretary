@@ -20,8 +20,8 @@ function getDefaultChanMeta(channel) {
 
 function getCurrentChanMeta(channel, chanMeta, sync = false) {
 	const locations = {}
-	ChanUtils.locations.forEach(role => { locations[role.value] = role.label; })
-	ChanUtils.guildLocations.forEach(role => { locations[role.value] = role.label; })
+	ChanUtils.LocationRoles.public.forEach(role => { locations[role.value] = role.label; })
+	ChanUtils.LocationRoles.guild.forEach(role => { locations[role.value] = role.label; })
 	const ids = Object.keys(locations)
 	const owners = [];
 	if (null === chanMeta) {
@@ -63,8 +63,8 @@ function getCurrentChanMeta(channel, chanMeta, sync = false) {
 
 async function updateChannelPerms(channel, chanMeta) {
 	const locations = {}
-	ChanUtils.locations.forEach(role => { locations[role.value] = role.label; })
-	ChanUtils.guildLocations.forEach(role => { locations[role.value] = role.label; })
+	ChanUtils.LocationRoles.public.forEach(role => { locations[role.value] = role.label; })
+	ChanUtils.LocationRoles.guild.forEach(role => { locations[role.value] = role.label; })
 	const ids = Object.keys(locations)
 	const owners = [];
 	const output = [];
@@ -117,11 +117,11 @@ async function updateChannelTopic(channel, chanMeta) {
 	if (topic.includes(config.emoji.xp)) topic = topic.replaceAll(config.emoji.xp,``)
 	if (topic.includes(threadIcon)) topic = topic.replaceAll(threadIcon,``)
 	if (topic.includes(":thread:")) topic = topic.replaceAll(":thread:",``)
-	ChanUtils.locations.forEach( role => {
+	ChanUtils.LocationRoles.public.forEach( role => {
 		const value = `<@&${role.value}>`
 		if (topic.includes(value)) topic = topic.replaceAll(value,``)
 	})
-	ChanUtils.guildLocations.forEach( role => {
+	ChanUtils.LocationRoles.guild.forEach( role => {
 		const value = `<@&${role.value}>`
 		if (topic.includes(value)) topic = topic.replaceAll(value,``)
 	})
@@ -201,7 +201,8 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
 	const maxLocations = isBuilder ? 5 : 1
 
 	const useGuildLocations = (isBuilder && !publicFlag) //&& chanMeta.guildHall)
-	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.guildLocations : ChanUtils.locations));
+	let locations = JSON.parse(JSON.stringify(useGuildLocations ? ChanUtils.LocationRoles.guild :
+											  					  ChanUtils.LocationRoles.public));
 		locations = locations.map( role => {
 			if (chanMeta.locations.includes(role.value)) role.default = true
 			return role;
@@ -343,7 +344,7 @@ async function handleInteraction(interaction) {
 		  channel  = await interaction.guild.channels.fetch(channel);
 	let dirty      = true;
 	let permsDirty = false;
-	let publicFlag = false;
+	let publicFlag = true;
 	console.log(`HandleSelect: ${customId} for ${chanMeta?.channelId}`)
 	if (!chanMeta) return;
 	chanMeta.threadMax = chanMeta.threadMax ?? 0;
@@ -413,9 +414,9 @@ async function handleInteraction(interaction) {
 			chanMeta.guildHall = interaction.values[0];
 			if (chanMeta.guildHall == "none") chanMeta.guildHall = ""
 			break;
-		case `publicLocation.true`:
-			publicFlag = true;
 		case `publicLocation.false`:
+			publicFlag = false;
+		case `publicLocation.true`:
 			dirty = false;
 			break;
 		case `permDebug`:
