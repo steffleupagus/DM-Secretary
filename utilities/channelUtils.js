@@ -2,7 +2,8 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const ChannelMeta = require(`../database/chanMetaSchema.js`)
 const TableMeta = require(`../database/tableSchema.js`)
-const AreaMeta = require(`../database/chanMetaSchema.js`)
+const AreaMeta = require(`../database/areaMetaSchema.js`)
+const Utils   = require(`../utilities/utilFuncs.js`)
 
 /// Identify if a channel is an RP channel
 function isRoleplayChannel(channel) {
@@ -83,50 +84,41 @@ async function fetchThreads(channel) {
 	return {active:activeThreads, archive:archivedThreads, all:allThreads};
 }
 
-//Put these in a centralized location so we don't copy/paste them in multiple places
-const locations = [
-	{value:"1001640103841632306",label:"OpenRP"},
-	{value:"694854069684142101",label:"City Square"},
-	{value:"695642023037763664",label:"City Administrative District"},
-	{value:"695641905811292240",label:"City Entertainment District"},
-	{value:"695641963642224750",label:"City Residential Quarter"},
-	{value:"696534005671133224",label:"City Inn"},
-	{value:"696533919075401788",label:"City Tavern"},
-	{value:"699065480165589003",label:"City Gardens"},
-	{value:"695641819094188042",label:"City Mercantile Quarter"},
-	{value:"713002635267145758",label:"City Dock"},
-	{value:"695238063517073461",label:"Outside City Blessed Gate"},
-	{value:"697174243556982816",label:"Outside City Cursed Gate"},
 
-	{value:"695808294945816586", label:"City Colosseum"},
-	{value:"709376645521342464", label:"City Slum"},
-	{value:"699203153274601491", label:"Arcanum Tower Guild Hall"},
-	{value:"699205524960313424", label:"Temple District"},
-	{value:"833787998150590481", label:"Wilderness"},
-	{value:"696807848117534820", label:"Silver Thorn Brothel"},
-	{value:"699064641950842880", label:"Silver Thorn Suites"}
-]
 
-const guildLocations = [
-	{value:"699203153274601491", emoji:"🔮", label:"Arcanum Tower Guild Hall"},
-	{value:"742107921835360376", emoji:"🔮", label:"Arcanum Inner Sanctum"},
 
-	{value:"709376645521342464", emoji:"🧤", label:"City Slum"},
-	{value:"742107953577984110", emoji:"🧤", label:"Black Hand Guild Hall"},
+const LocationRoles = {
+	public:[],
+	guild:[]
+}
 
-	{value:"699205524960313424", emoji:"🕯️", label:"Temple District"},
-	{value:"766031999864668191", emoji:"🕯️", label:"Temple Sanctuary"},
+async function refreshLocationRoles(guild) {
+	const openRP = {value:"1001640103841632306",label:"OpenRP"}
 
-	{value:"695808294945816586", emoji:"⚔️", label:"Colosseum"},
-	{value:"742107924255735849", emoji:"⚔️", label:"Guardian Guild Barracks	"},
+	LocationRoles.public = [openRP]
+	LocationRoles.guild = []
 
-	{value:"833787998150590481", emoji:"🍃", label:"Wilderness"},
-	{value:"853362003691438101", emoji:"🍃", label:"Outrider's Lodge Guild Hall"},
+	let areas = await AreaMeta.find({});
+	await Utils.asyncArrayForEach( areas, async (area, i) => {
+		let cat = guild.channels.resolve(area.catId) || await guild.channels.fetch(area.catId)
+		area.pos = cat.position
+	})
+	areas.sort((a,b) => a.pos - b.pos)
 
-	{value:"696807848117534820", emoji:"699470814356963418", label:"Silver Thorn Brothel"},
-	{value:"699064641950842880", emoji:"699470814356963418", label:"Silver Thorn Suites"},
-	{value:"768307340625575977", emoji:"699470814356963418", label:"Brothel Blindfold Room"}
-]
+	areas.forEach(area => {
+		const isGuild = (area.guild && area.guild != "")
+
+		area.roleId.forEach(role => {
+			role = guild.roles.resolve(role)
+			role = {value:role.id, label:role.name}//, emoji:area.icon}
+
+			if (isGuild)
+				LocationRoles.guild.push(role)
+			else
+				LocationRoles.public.push(role)
+		})
+	})
+}
 
 module.exports =
 {
@@ -141,6 +133,9 @@ module.exports =
 	isDuelRPChannel,
 	getDuelChannelPair,
 	fetchThreads,
-	locations,
-	guildLocations
+	// locations,
+	// guildLocations,
+
+	LocationRoles,
+	refreshLocationRoles
 }
