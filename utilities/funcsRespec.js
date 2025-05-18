@@ -27,15 +27,13 @@ Run all commands in this channel
 
 **Note**: A maximum of 10 rolls will be tracked on a character, after which you will be unable to roll additional stats`;
 
-async function shouldHandle(client, message)
-{
+async function shouldHandle(client, message) {
 	let meta = verifyMessageMeta(client, message)
 	let content = verifyMessageContent(client, message)
 	return meta && content
 }
 
-function verifyMessageMeta(client, message)
-{
+function verifyMessageMeta(client, message) {
 	let author  = message.author.id;
 	author = author == client.config.bots.unbelievaboat;
 
@@ -47,8 +45,7 @@ function verifyMessageMeta(client, message)
 	return author && channel;
 }
 
-function verifyMessageContent(client, message)
-{
+function verifyMessageContent(client, message) {
 	if (!message || !message.embeds || !message.embeds[0])
 		return false;
 
@@ -57,35 +54,30 @@ function verifyMessageContent(client, message)
 	var title = embed.title
 	let desc = embed.description;
 
-	if (!desc)
-		return false
+	if (!desc) return false
 
 	let match = desc.match(regex)
-	if (!match)
-		return false
+	if (!match) return false
 
 	return true;
 }
 
-async function handleRespec(client, message)
-{
+async function handleRespec(client, message) {
 	let embed = message.embeds[0];
 	let name = embed.author.name
 	let desc = embed.description;
 
 	let match = desc.match(regex)
-	if (match)
-	{
+	if (match) {
 		let level = match[1]
 		let userId = false;
 		let mention = name;
 			name = name.toLowerCase();
-		
-		let members = message.guild.members.cache;		
+
+		let members = message.guild.members.cache;
 		let member = members.find(m => name === `${m.user.username.toLowerCase()}#${m.user.discriminator}` ||
 									   name === `${m.user.username.toLowerCase()}`)
-		if (!member)
-		{
+		if (!member) {
 			members = await message.guild.members.fetch();
 			members.sort((a,b) => {
 				a = a.user.username
@@ -94,23 +86,16 @@ async function handleRespec(client, message)
 			})
 			member = members.find(m => name === `${m.user.username.toLowerCase()}#${m.user.discriminator}` ||
 									   name === `${m.user.username.toLowerCase()}`)
-			// let member = members.find(m => {
-			// 	//name === `${m.user.username}#${m.user.discriminator || 0}` ||
-			// 	console.log(`${name} | ${m.user.username} (${m.user.discriminator})`)
-			// 	return name === `${m.user.username}`
-			// });
 		}
 
-		if (member)
-		{
+		if (member) {
 			name = member.displayName
 			mention = `<@${member.user.id}>`;
 			userId = member.user.id
 		}
 		desc = match[0].replace(`You have`, `✅ ${mention}`);
 
-		if (!member)
-		{
+		if (!member) {
 			message.reply(`<@${client.config.OWNERID}> - something went wrong`)
 			return
 		}
@@ -123,7 +108,8 @@ async function handleRespec(client, message)
 		let channel = message.guild.channels.cache.get(channelId);
 
 		//Roles
-		const dmOnDuty = client.config.role.DMOnDuty
+		const helper = client.config.role.Helper
+		const staff = client.config.role.Staff
 		const moderator= client.config.role.Moderator
 		const avrae = client.config.bots.avrae
 		const yagpdb = client.config.bots.yagpdb
@@ -137,24 +123,24 @@ async function handleRespec(client, message)
 			embed.setFooter({text: name + ": " + userId})
 
 		msg = await channel.send({embeds:[embed]})
-		
+
 		//Create a thread off the initial message and join it
 		const thread = await msg.startThread({ name: name });
 		if (thread.joinable) await thread.join();
-		
+
 		//Add the bots we'll need
 		await thread.members.add(avrae);
 		await thread.members.add(yagpdb);
 
 		//Send the message to the user
 		embed = new EmbedBuilder()
-		embed.addFields({name:"Next Steps",value:steps})			
+		embed.addFields({name:"Next Steps",value:steps})
 		msg = await thread.send({
-									content:`<@${userId}><@&${dmOnDuty}><@&${moderator}>`, 
+									content:`<@${userId}><@&${helper}><@&${staff}><@&${moderator}>`, 
 									embeds:[embed]
 								});
 		msg.pin();
-		
+
 		//Send a message directing user to the thread
 		embed = new EmbedBuilder()
 		embed.setDescription(`To complete your respec, go to [the thread](${msg.url}) in <#${client.config.chan.respec}>`)

@@ -3,44 +3,36 @@ const SceneUtils = require(`../../utilities/funcsScene.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
 
-async function execute(interaction, message=null)
-{
+async function execute(interaction, message=null) {
 	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV || message != null})
-	try
-	{	
-		const response = await SceneUtils.processScene(interaction, message);	
+	try {
+		const response = await SceneUtils.processScene(interaction, message);
 		if (response !== true)
 			await interaction.editReply({content:`${response}`, embeds:[], components:[]});
 		else
 			await interaction.editReply({content:"",components:[]});
-	}
-	catch (error)
-	{		
+	} catch (error) {
 		console.log(error, error.stack, Error().stack)
 		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
 		throw error.message
 	}
 }
 
-async function autoClose(message)
-{
+async function autoClose(message) {
 	await SceneUtils.autoCloseScene(message)
 }
 
-async function run(client, message, command, args)
-{
+async function run(client, message, command, args) {
 	const reply = await message.reply("*This command has been disabled. Please use `/scene` going forward.*")
 	message.delete()
 	return
 }
 
-async function button(interaction)
-{
+async function button(interaction) {
 	const subCommand = interaction.customId;
-	console.log(subCommand)	
+	console.log(subCommand)
 
-	switch(subCommand)
-	{
+	switch(subCommand) {
 		case "scene.approve":
 			await SceneUtils.handleApprove(interaction);
 			return;
@@ -49,19 +41,18 @@ async function button(interaction)
 			return;
 		case "scene.npc":
 			await SceneUtils.handleNPC(interaction);
-			return;			
+			return;
 		case "scene.edit":
 			await SceneUtils.handleEdit(interaction);
 			return;
 		case "scene.undo":
 			await SceneUtils.handleUndo(interaction);
-			return;			
-	}		
+			return;
+	}
 	return;
 }
 
-async function select(interaction)
-{
+async function select(interaction) {
 	const subCommand = interaction.customId;
 	const values = interaction.values.join(", ")
 	return;
@@ -70,11 +61,8 @@ async function select(interaction)
 const data = new SlashCommandBuilder()
 	.setName(`scene${config.DEV ? "dev" : ""}`)
 	.setDescription('Conclude a scene')
-if (config.DEV)
-	data.setDefaultPermission(false)
 
-module.exports = 
-{
+module.exports = {
 	data: data,
 	execute: execute,
 	message: run,
@@ -84,10 +72,8 @@ module.exports =
 	build:config.PRODUCTION||config.DEV
 };
 
-const requiredRoles = [ //config.role.Builder, 
-					    config.role.DM	]
-if (config.DEV)
-{
+const requiredRoles = [ config.role.Builder, config.role.Staff, config.role.Helper, config.role.OffDutyHelper ]
+if (config.DEV) {
 	module.exports.aliases = ["scene"]
 	module.exports.whitelistRoles = requiredRoles
 }

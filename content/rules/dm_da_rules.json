@@ -3,19 +3,19 @@
 	{
 		"embeds": [
 			{
-				"title":"▶️ Application",
-				"description": "Players active in the server for at least 1 week may submit an application to be a DA in: <#703373885009297518>"
-			},
-			{
-				"title":"▶️ Acceptance",
-				"description": "Accepted DAs will be assigned a table & paired with a DM who will monitor said table, though any DM may monitor at their discretion."
+				"title":"▶️ DM Apprentice (DA) Application",
+				"description": "Players active in the server for at least 1 month may submit an application to be a DA in: <#703373885009297518>."
 			},
 			{
 				"title":"▶️ Before posting a table",
 				"fields": [
 					{
 						"name": "🔹 Synopsis",
-						"value": "DAs and DMs are required to give a synopsis of their planned session, including encounters and potential rewards, which must be reviewed/approved by two DMs (at least one of which must not be a participant in said table) to ensure exp and loot awards are suitable for the level of the party and the difficulty of the encounter."
+						"value": "DAs and DMs are required to give a synopsis of their planned session, including encounters and potential rewards, which must be reviewed/approved by two DMs or Staff members to ensure exp and loot awards are suitable for the level of the party and the difficulty of the encounter. At least one of those approvals must come from someone not participating in said table."
+					},
+					{
+						"name": "🔹 Lethality",
+						"value": "DAs are limited to running non-lethal arenas and tables for their first few postings, to provide them with experience in both Avrae, and encounter-balancing before they attempt to run a more complex or potentially lethal table, and accidentally TPK."
 					},
 					{
 						"name": "🔹 Kinks & Limits",
@@ -23,17 +23,17 @@
 					},
 					{
 						"name": "🔹 Time Zone",
-						"value": "Don't forget to set your time zone with `-settimezone` before posting your table to ensure players will be able to properly gauge your intended schedule."
+						"value": "Don't forget to set your time zone with `-settimezone` before posting your table to ensure players will be able to properly gauge your intended schedule. You may also use [Discord time stamps](https://sesh.fyi/timestamp/) to aid with scheduling."
 					}
 				]
 			},
 			{
-				"title":"▶️ Magic Items",
-				"description": "Some magic items may be deemed too powerful or disruptive to be allowed, so all magic items must be presented to the DM staff for approval before distribution.",
+				"title":"▶️ Magic Item Rewards",
+				"description": "Magic items distributed as awards should reflect both the level of involvement and danger of the table in question. Some magic items may be deemed too powerful or disruptive to be allowed. **All** magic items must be presented to the Staff for approval prior to distribution.",
 				"fields":[
 					{
 						"name":"🔹 DA Restrictions",
-						"value":"DAs may distribute magic items in their table only with approval of the DM staff. Under no circumstances may DA's distribute Legendary items."
+						"value":"DAs may distribute magic items in their table only with approval of the DM staff. Under no circumstances may a DA distribute Legendary items."
 					},
 					{
 						"name":"🔹 DM Restrictions",
@@ -45,22 +45,7 @@
 					},
 					{
 						"name":"🔹 Level Restrictions",
-						"value":"The items distributed in your table should adhere to the following level restrictions from the DMG"
-					},
-					{
-						"name":"Rarity",
-						"value":"Common\nUncommon\nRare\nVery Rare\nLegendary\nArtifacts",
-						"inline":true
-					},
-					{
-						"name":"Level",
-						"value":">= 1st level\n>= 1st level\n>= 5th level\n>= 11th level\n>= 17th level (approval)\nDo not distribute",
-						"inline":true
-					},
-					{
-						"name":"** **",
-						"value":"** **",
-						"inline":true
+						"value":"The items distributed in your table should adhere to the following level restrictions from the DMG\n```╔═══════════╤═══════════════════╗\n║ RARITY    │ LEVEL REQUIRED    ║\n╠═══════════╪═══════════════════╣\n║ Common    │ >= Level 1        ║\n║ Uncommon  │ >= Level 1        ║\n║ Rare      │ >= Level 5        ║\n║ Very Rare │ >= Level 11       ║\n║ Legendary │ >= Level 17 (*)   ║\n║ Artifacts │ Do Not Distribute ║\n╚═══════════╧═══════════════════╝```"
 					}
 				]
 			},
@@ -70,21 +55,21 @@
 				"fields":[
 					{
 						"name":"🔹 Reflavoring",
-						"value":"Reflavoring existing elements is fine - you can take an existing monster or item and call it something else for the purposes of your table. Reskinning existing monsters is acceptable, but even minor changes to a monster's statblock can drastically alter their difficulty, so use of homebrew monsters is tightly restricted."
+						"value":"Reflavoring existing elements is fine - you can take an existing monster or item and call it something else for the purposes of your table. Reskinning existing monsters is acceptable, but even minor changes to a monster's statblock can drastically alter their difficulty, so use of homebrewed monsters is prohibited."
 					},
 					{
 						"name":"🔹 Lewd Applications",
 						"value":"Existing magic items given lewd applications while keeping the same base mechanics is fine."
 					},
 					{
-						"name":"🔹 RP Items vs. Mechanical Items",
-						"value":"As with other elements of the server, we are more flexible with the homebrew of strictly RP items, provided they have zero mechanical affect. Anything homebrew in this manner requires approval from the DM staff."
+						"name":"🔹 RP Items & Effects vs. Mechanics",
+						"value":"As with other elements of the server, we are more flexible with the homebrew of strictly RP items, provided they have zero mechanical impact. Magical plot-specific items, mcguffins, or effects which are strictly limited to the table and will not impact anything outside the table **may** be permissible, but requires prior approval from the DM staff."
 					}
 				]
 			},
 			{
 				"title":"▶️ During the Table",
-				"description":"Should a question of ruling or inter-player conflict arise during a session, and it cannot be immediately resolved peaceably by those participating in the session, a non-participant DM should be called in to help resolve the issue. If no resolution can be reached after a short discussion, the DA/DM running the session must make a final ruling without further discussion in order to move the session forward.\nKeep it civil. This goes for all players, DAs, and DMs."
+				"description":"Should a question of ruling or inter-player conflict arise during a session, and it cannot be immediately resolved peaceably by those participating in the session, a non-participant DM or Staff member should be called in to help resolve the issue. If no resolution can be reached after a short discussion, the DA/DM running the session must make a final ruling without further discussion in order to move the session forward.\nKeep it civil. This goes for all players, DAs, and DMs."
 			},
 			{
 				"title":"▶️ After the Table",
@@ -92,36 +77,25 @@
 				"fields":[
 					{
 						"name":"🔹 RP Tables",
-						"value":"For RP-focused tables (that is, tables which are centered primarily around RP, eRP or otherwise, rather than combat encounters), you may award set stipend of exp to each character. The exact amount each player receives would vary per person, based on the character's level tier. The amount listed may be awarded per real-life day of active RP and table participation."
-					},
-					{
-						"name":"Level",
-						"value":"3-4\n5-10\n11-16\n17-20",
-						"inline":true
-					},
-					{
-						"name":"Maximum Exp Per Day",
-						"value":"500\n1000\n1500\n2000",
-						"inline":true
-					},
-					{
-						"name":"** **",
-						"value":"** **",
-						"inline":true
+						"value":"For RP-focused tables (that is, tables which are centered primarily around RP, eRP or otherwise, rather than combat encounters), you may award set stipend of exp to each character. The exact amount each player receives would vary per person, based on the character's level tier. The amount listed may be awarded per real-life day of active RP and table participation.\n```╔═════════╤════════════╗\n║  LEVEL  │ MAX XP/DAY ║\n╠═════════╪════════════╣\n║   3-4   │    500xp   ║\n║   5-10  │  1,000xp   ║\n║  11-16  │  1,500xp   ║\n║  17-20  │  2,000xp   ║\n╚═════════╧════════════╝```"
 					},
 					{
 						"name":"🔹 Review",
 						"value":"Tables may be reviewed by the DM staff for mechanical accuracy and balance of risk/reward, as well as any issues or complaints that arise. Admin & DM staff will take necessary measures to rectify any consequences of said conflict. A table's results, be it character death or rewards, may be overturned or adjusted as needed."
-					}					
+					},
+					{
+						"name":"🔹 DM Awards",
+						"value":"Following the successful conclusion of an arena or table, a DM may use the `!dmreward arena` or `!dmreward table` alias as appropriate to earn an exp/gold reward for one of their characters. The amount of the reward is determined by the level of the receiving character and the complexity (arena or table) of what was run."
+					}
 				]
 			},
 			{
 				"title":"▶️ Lore",
-				"description":"You have creative leeway in your table (within reason), but any lore or effects must remain confined to that table.\n**No server-wide lore may be affected without staff approval.** If you would like to write more wide-impacting lore for the server, the mods will be happy to review it."
+				"description":"You have creative leeway in your table (within reason), but any lore or effects must remain confined to that table.\n**__No__ server-wide lore may be affected without Mod Staff approval.** If you would like to write more wide-impacting lore for the server, it must be reviewed and approved by the Mod Staff __in advance__."
 			},
 			{
 				"title":"▶️ Pomotion",
-				"description":"DA promotion to DM will be at the discretion of the admins and existing DM staff. At minimum, a DA must run a number of successful tables, demonstrate a good sense of the mechanics and balance of the game."
+				"description":"DA promotion to DM will be at the discretion of the admins and existing DM staff. At minimum, a DA must run a number of successful tables, demonstrate a good sense of the mechanics and balance of the game, and remain in good standing."
 			},
 			{
 				"title":"▶️ Grounds for Demotion / Removal",
