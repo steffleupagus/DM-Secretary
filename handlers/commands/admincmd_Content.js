@@ -53,18 +53,31 @@ async function publishContent(channel, content) {
 		} else {
 			let lastMessage = null;
 			await Utils.asyncArrayForEach(value.embeds, async (embed)=> {
-				if (embed?.description?.includes("<last_id>"))
-					embed.description = embed.description.replace("<last_id>",lastMessage)
-
+				if (embed?.content?.includes("<last_id>"))
+					embed.content = embed.content.replace("<last_id>",lastMessage)
 				const content = embed.content ?? null;
 				delete embed.content;
+
+				const isEmpty = Object.keys(embed).length === 0;
+				if (isEmpty) {
+					let item = await channel.send(content)
+					lastMessage = item.id
+					//Stall so we don't hit ratelimit
+					const waitTime = value.waitTime ?? 1200
+					await wait(waitTime);
+					return
+				}
+
+				if (embed?.description?.includes("<last_id>"))
+					embed.description = embed.description.replace("<last_id>",lastMessage)
 				//Prep the prefix & cleanup
 				const prefix = embed.prefix ?? "";
 				delete embed.prefix;
 				//Prep the title with the prefix & cleanup
 				const title = embed.title || embed.Title || "";
 				delete embed.Title;
-				embed.title = `${prefix}${title}`.trim()
+				delete embed.title;
+				if (title) embed.title = `${prefix}${title}`.trim()
 				//Prep the thread and cleanup
 				let thread = embed.thread || null;
 				if (thread && !isObject(thread)) thread = {name:thread, content:null}
@@ -83,6 +96,7 @@ async function publishContent(channel, content) {
 				if (images && Array.isArray(images))
 					embed.image = images[0];
 				const embeds = [embed];
+
 				//Send the embed and (if we have attachments) send those as a separate message
 				let item;
 				if (content)

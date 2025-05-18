@@ -1,0 +1,24 @@
+{
+	"Table Select":
+	{
+		"embeds": [
+			{ "content":"1️⃣ <@&694692604964503622> House of Sin [<@!658201358247264257> (DM)]" },
+			{ "content":"2️⃣ <@&695327411021021215> Tales from Gaia Forinia & Beyond [<@!767205173889597490> (DM)]" },
+			{ "content":"3️⃣ <@&696159197372612648> Ignis' Inferno [<@!651215505146904597> (DM)]" },
+			{ "content":"4️⃣ <@&697533485270958171> Bel's Boot(y) Camp 🥾 [<@!656333794344828928> (DM)]" },
+			{ "content":"5️⃣ <@&696481645754187796> Empty Table []" },
+			{ "content":"6️⃣ <@&697256648217198702> Oubliettes and Oozes [<@!162733012025475073> (DM)]" },
+			{ "content":"7️⃣ <@&697533248812744785> Faebles from the Otherworld [<@!564424546300723220> (DM)]" },
+			{ "content":"8️⃣ <@&697533301891530822> Wardawg's War Room [<@!1344414190307119246> (DM)]" },
+			{ "content":"9️⃣ <@&697533374969020607> Empty Table [[]]" },
+			{ "content":"🔟 <@&699065404240166995> Squirrel's Secret Sanctuary [<@!308780196654219266> (DM)]" },
+			{ "content":"⏸️ <@&715528235919736883> Deimon's Bonfire [<@!207285153138081793> (DM)]" },
+			{ "content":"🕛 <@&715528282610597920> I can't Believe It's Not DnD [<@!685894970632437785> (DM)]" },
+			{ "content":"<:tentacleheart:862074708114538576> <@&715528543047647293> <:tentacle:862074701684932691>Tabula Tentacular [<@!659069077872181248> (DM)]" },
+			{ "content":"🇦 <@&787804317213523988> Cathy's Crispy Crits [<@!925632612939206657> (DM)]" },
+			{ "content":"🇧 <@&787804550378553374> Catsby's Crusade Cavalcade [<@!368938506195828747> (DM)]" },
+			{ "content":"``` ```\nSelect a table from the menu below. Players can only have one table role at a time. Selecting a table will hide <#695306420148633750>."},
+			{ "content":"`/rolemenu create group:Tables nodm:True rr:True m:<last_id>`"}
+		]
+	}
+}

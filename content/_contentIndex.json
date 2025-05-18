@@ -32,10 +32,13 @@
 	"1105303752702959726":{"data":"rules/rules_tables.json"},
 	"1122642616324984924":{"data":"rules/rules_map_options.json"},
 	"729038636074401842":{"data":"rules/dm_da_rules.json"},
+	"1373459769255268453":{"data":"rules/rules_guide_helper.json"},
+	"1373459977179500686":{"data":"rules/rules_guide_da.json"},
+
+	"789526779693629480": { "data":"tableSelect.json"},
 
 	"709733574810533929" :{ "data":"items/itemReference.json"},
 	"1122621263177863289":{ "data":"items/lewdTattoos.json"},
-
 
 	"guildItemReference" :{ "data":"items/guildItems.json"},
 	"985935929149624370" :{ "data":"items/guildItems_Arcanum.json"},
