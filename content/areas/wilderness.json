@@ -67,8 +67,11 @@
 			{
 				"title":"Baal's Deep",
 				"description":"<#840453499870642196>",
-				"image": { "url": "https://i.imgur.com/a69zMvs.jpg" },
-				"footer":{"text":"https://www.artstation.com/summerpudding"}
+				"image": [
+					{ "url": "https://i.imgur.com/a69zMvs.jpg" },
+					{ "url": "https://i.imgur.com/2P0WMnF.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/summerpudding\nhttps://www.artstation.com/nelediel"}
 			},
 			{
 				"title":"Island off the Coast",

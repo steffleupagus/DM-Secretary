@@ -1,0 +1,78 @@
+{
+	"farReaches":
+	{
+		"includeIndex":false,
+		"embeds":
+		[
+			{
+				"title":"Farthest Reaches",
+				"description":"<#1372044357867409448>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Seaman's Cove",
+				"description":"<#1372276759357165801>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Slime Swamps",
+				"description":"<#1372277238669639752>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Gropevine Grove",
+				"description":"<#1372738381796081675>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Tribal Camp",
+				"description":"<#1372276888332009563>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Breeding Grounds",
+				"description":"<#1372729730599751730>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Traveling Town",
+				"description":"<#1372277099154509844>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Dreaming Desert",
+				"description":"<#1372276842609774592>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Crystaline Caverns",
+				"description":"<#1372277134562820127>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+			{
+				"title":"Feydark Underground Tunnels",
+				"description":"<#1372277777444900934>",
+				"image": { "url":"" },
+				"footer":{"text":"" }
+			},
+
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏔️ - Return to the wilderness outside of Ost"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Wilderness skip:2 nodm:True rr:True m:<last_id>`"
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
+		]
+	}
+}
