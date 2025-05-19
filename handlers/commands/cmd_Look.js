@@ -161,7 +161,9 @@ async function execute(interaction) {
 
 async function showChannelLook(interaction) {
 	const user  = interaction.member;
-	const channel = interaction.channel;
+	let channel = interaction.channel;
+
+	if (channel.isThread()) channel = channel.parent;
 	const chanMeta = await accessChanMeta(channel.id);
 
 	// Check if the user is a moderator or the channel owner

@@ -58,6 +58,8 @@ async function execute(interaction) {
 	const record = await updateDBRecord(area, areaMeta)
 	console.log(record);
 
+	ChanUtils.refreshLocationRoles(interaction.guild)
+
 	let embed = generateMetaEmbed(record)
 	interaction.editReply({embeds:[embed]})
 }
