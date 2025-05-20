@@ -1,9 +1,28 @@
 {
-	"cityInn":
+	"cityTavern":
 	{
 		"includeIndex":false,
 		"embeds": 
 		[
+			{
+				"title":"Manticore's Dream Tavern",
+				"description":"<#696536603778089001>",
+				"image": { "url":"https://i.imgur.com/7vBkFfb.jpeg" },
+				"footer":{"text":"https://www.artstation.com/asaneesrikijvilaikul"}
+			},
+			{
+				"title":"Manticore's Dream Tavern",
+				"description":"<#696536671302320188>\n<#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/MdCNueY.png" },
+				"footer":{"text":"https://www.artstation.com/earl3163389"}
+			},
+			{
+				"title":"Tavern Loft",
+				"description":"<#697832426432626762> <#737326955191599304>",
+				"image": { "url": "https://i.imgur.com/zNz6nsW.png" },
+				"footer":{"text":"https://www.artstation.com/gurayemen"}
+			},
+
 			{
 				"title":"Ample Ogre Inn",
 				"description":"<#696553906045714492>",
@@ -29,17 +48,17 @@
 				"footer":{"text":"Artist Unknown"}
 			},
 			{
-				"title":"Proprietors",
+				"title":"Ample Ogre Proprietors",
 				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099734450004295710/unknown.png" },
 				"footer":{"text":"https://www.hentai-foundry.com/user/curanto"}
 			},
 
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n🚪 Leave the Ample Ogre and return to the Residential Quarter"
+				"description": "`                                                                     `\n\n🏘️ Leave the Hospitality District for the Residential Quarter\n\n🏚️ Leave the Hospitality District for the the Slums\n\n💰 Leave the Hospitality District for the Mercantile Quarter"
 			},
 			{
-				"description":"`/rolemenu create group:Loc:Inn nodm:True rr:True m:<last_id>`"
+				"description":"`/rolemenu create group:Loc:Hospitality nodm:True rr:True m:<last_id>`"
 				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
 			}
 		]

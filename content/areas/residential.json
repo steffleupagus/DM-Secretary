@@ -37,7 +37,7 @@
 			},
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n⛲ Leave the Residential Quarter and travel to the City Square\n\n🍻 Enter the Manticore's Dream Tavern\n\n🛏️ Enter the Ample Ogre Inn\n\n🏞️ Enter the Veluthe-Oro Gardens\n\n🏚️ Enter the slums"
+				"description": "`                                                                     `\n\n⛲ Leave the Residential Quarter and travel to the City Square\n\n🍻 Travel to the Hospitality District\n\n🏞️ Travel to the Veluthe-Oro Gardens\n\n🏚️ Travel to the slums"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Residential nodm:True rr:True m:<last_id>`"

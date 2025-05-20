@@ -56,7 +56,7 @@
 			},
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n⛲ Return to the City Square\n\n⚓ Travel to the Dockyard"
+				"description": "`                                                                     `\n\n⛲ Return to the City Square\n\n🍻 Travel to the Hospitality District\n\n⚓ Travel to the Dockyard"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Mercantile nodm:True rr:True m:<last_id>`"

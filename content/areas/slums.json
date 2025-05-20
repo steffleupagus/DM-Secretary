@@ -71,7 +71,7 @@
 
 			{
 				"title":"Travel",
-				"description": "`                                                                     `\n\n🏡 Travel to the Residential Quarter\n\n🍻 Enter the Manticore Dream Tavern\n\n⛵ Walk to the City Docks\n\n💰 Head to the Mercantile District\n\n🧤 Pass through the secret door and enter a Den of Iniquity\n(*Only members of the <@&697848468986921030> will be successful*)"
+				"description": "`                                                                     `\n\n🏡 Travel to the Residential Quarter\n\n🍻 Travel to the Hospitality District\n\n⛵ Walk to the City Docks\n\n💰 Head to the Mercantile District\n\n🧤 Pass through the secret door and enter a Den of Iniquity\n(*Only members of the <@&697848468986921030> will be successful*)"
 			},
 			{
 				"description":"`/rolemenu create group:Loc:Slum nodm:True rr:True m:<last_id>`"
