@@ -1,0 +1,91 @@
+{
+	"Helper Guide":
+	{
+		"includeTOC":true,
+		"includeIndex":true,
+		"includeSectionBreak":true,
+		"embeds": [
+			{
+				"title":"▶️ ",
+				"description": "",
+				"fields": [
+					{
+						"name": "If not sure, __**ASK**__",
+						"value": "Its OK to not have the answer to someone's question, and we would rather you ask for confirmation or clarification than inadvertently spreading misinformation - its easier to address issues beforehand than to correct them after the fact. When in doubt, ask for a second opinion."
+					}
+				]
+			},
+			{
+				"title":"⛩️ Intro Gate",
+				"description": "Everyone steps through the intro gate on their way into the server, and is the first impression people get - not only of the server, but us of them. You might see questions in <#695253154438184982>, which you may answer as needed. One of the most common questions is \"What do I do?\", for which there is a canned answer in the form of `-entryguide`.\n\nOnce they have input their RP response in <#705795359619940352>, which you may judge accordingly. We aren't looking for perfection, just an honest effort - a response to the prompt provided, in complete sentences, with at least some description. Low-effort responses can be asked to revise. The bot will automatically add react icons which you may use to approve or deny their entry. In addition to the ones the bot added, there are a couple of secret reacts that you can add for specific effects:",
+				"fields": [
+					{
+						"name": "▶️ Standard Approval",
+						"value": "This will approve them into the server and post the welcome message."
+					},
+					{
+						"name": "🔁 Revise",
+						"value": "This will not approve them into the server, and post a message asking them to revise their entry."
+					},
+					{
+						"name": "⛔ Flat Reject",
+						"value": "Realistically this is seldom used, as anyone earning this one is usually just yeeted from the server instead. Inform the mods if you feel like an entry warrants this."
+					},
+					{
+						"name": "❓ Follow the Prompt",
+						"value": "The first secret emoji is essentially a \"what the fuck\" for when the RP response does not follow the prompt provided. It will ask them to revise their response and refer them to the prompt."
+					},
+					{
+						"name": "🥷 Stealth Approve",
+						"value": "For use when someone gives a multi-post response to the prompt, give the standard approval to the first post and this to all other posts. It will log those responses without re-posting the approved/welcome message."
+					},
+					{
+						"name": "<:alledge:887849778547925034> `:alledge:`",
+						"value": "When someone chooses violence against the queen or otherwise demonstrates a powertrip... but their response is well-written enough to earn them approval. This will approve them and post the alternate execution welcome message."
+					}
+				]
+			},
+			{
+				"title":"👤 RP Profile",
+				"description": "Profiles are required to participate in the server, and there tends to be a lot of character churn, so there are frequently profiles to approve. `✅` will approve them, `❌` will flag them. You can also use the `-note <your note here>` command to add additional information about the reason for the flag.\nHere are some details to be mindful of:",
+				"fields":[
+					{ "name":"Race", "value":"Characters need to follow one of the playable races in <#911129455345405992>. Anything beyond that might work as a Custom Lineage, but even that has its limits. Anything beyond that should be an NPC." },
+					{ "name":"Reference Images", "value":"Reflavoring is a slippery slope, so their reference image should match the race as closely as possible. AI images are not permitted - if something looks obviously AI, flag it or ask them to link to the artist." },
+					{ "name":"Background", "value":"They start at level 3 characters, even if they don't make a sheet so trying to make them ultrapowerful is comical. They should also pay attention to the lore: no one experiences childhood in the demiplane, for instance." }
+				]
+			},
+			{
+				"title":"🎲 Stat Rolls",
+				"description": "When creating sheets, the first step is statrolls. The bot does most of the work, but a Helper's responsibility is to just oversee the rolls and ensure people:\n- Have enough character slots for a new character\n- use the right `!statroll` command\n- Use the free reroll for first character\n- Purchase a reroll with RPP if it is not their first character.\n- Finish setting up a character before rolling for another.\n\nThere are a few roll-related aliases that might come in handy:",
+				"fields":[
+					{ "name":"`!viewroll`", "value":"This will show the user if they have any pending stat rolls already."},
+					{ "name":"`!invalidateroll`", "value":"This will clear their pending rolls and allow them to reroll. This should be used sparingly."}
+				]
+			},
+			{
+				"title":"📜 Character Sheet",
+				"description": "Sheets are optional, but take some of the most attention to review. As with Profiles, `✅` will approve them, `❌` will flag them.",
+				"fields":[
+					{ "name":"Validate", "value":"Make sure they run the `!validate` command - it will save you time and make reviewing much easier. That said, it isn't perfect and it does have a few gotchas.\n- Its HP calculation can be thrown off by certain races/classes." },
+					{ "name":"2014 vs 20214", "value":"This is mostly an issue with Beyond. When checking their shee, ensure the Race / Class / Feat selections come from the 2014 ruleset and not the 2024 free rules." },
+					{ "name":"Ability Scores", "value":"`!validate` will flag anything wrong, but sometimes fails to calculate some permutations, so red-text flags may need to be checked manually." },
+					{ "name":"Skills", "value":"Double check skill proficiencies and expertise, being mindful of bonus proficiencies from races, classes, and subclasses. The exact proficiencies aren't important, but confirm the count." },
+					{ "name":"Feats", "value":"Ensure they don't have any feats they shouldn't, such as any included from a background that isn't approved." },
+					{ "name":"Spells", "value":"Confirm their spells are set up correctly and the spell counts are valid. Clerics and Druids occasionally show unrecognized / homebrew spells due to a bug with Beyond. Wizards occasionally have the wrong number of spells." },
+					{ "name":"Inventory", "value":"Double check that they have their armor and weapons equipped for AC and actions added to the bot. Ensure they do not have magical items they shouldn't (Artificers are an exception)." }
+				]
+			},
+			{
+				"title":"<:xp:858887927899226112> Scene Approvals",
+				"description": "",
+				"fields":[]
+			},
+			{
+				"title":"⚔️ Duel Approvals",
+				"description": "",
+				"fields":[]
+			}
+
+		]
+	}
+}
