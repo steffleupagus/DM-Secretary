@@ -31,10 +31,11 @@ async function RefreshLocationData(guild, force = false)
 	if (LOCATION_DATA.length == 0 || force)
 	{
 		const areas = await AreaMeta.find({});
-		areas.forEach(area => 
+		areas.forEach(area =>
 		{
 			area.roleId.forEach(role => {
 				  	  role = guild.roles.resolve(role)
+				if (!role) return
 				const name = role.name
 				const desc = area.guild || null
 				const opt  = {emoji:area.icon,label:name,value:role.id}
