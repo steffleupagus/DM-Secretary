@@ -3,6 +3,7 @@ const util = require("util");
 const cli = require("cli-color");
 const purple = cli.xterm(93);
 const orange = cli.xterm(208);
+const fs = require('fs');
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -115,6 +116,17 @@ class Logger
 		}
 
 		await channel?.send({content:`<@${config.OWNERID}>`,embeds:[embed]})
+	}
+
+	FILE(filePath, data) {
+		data = JSON.stringify(data, null, 2);
+		fs.writeFile(filePath, data, (err) => {
+		  if (err) {
+			console.error('An error occurred:', err);
+		  } else {
+			console.log('File written successfully!');
+		  }
+		});
 	}
 }
 
