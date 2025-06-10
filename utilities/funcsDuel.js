@@ -162,6 +162,7 @@ const DEBUG = config.DEV ? {
 	TRACESTEP: false,	//Include button components to step through each stage
 } : false
 const BREAKSTEP = null//STEP.APPROVE_PEND;
+const DEBUGLOG = true
 
 /// Convert the provided data into embed fields & strings
 const charStrFormat = { team:true, user:true, xp:true, gp:true, hp:true, defeat:true, calc:false, string:true, data:false, shownull:true }
@@ -252,7 +253,7 @@ function _teamToString(t, data, includeList) {
 	const args = {team:false, xp: false, gp: false}
 	//Find all characters of this group
 	const users = t.users.map(u => {
-		let chars = data.characters.filter(c => c.user == u);
+		let chars = data.chars.filter(c => c.user == u);
 		let names = chars.map(c => `\`${c.name}\``)
 		team.push(...names)
 		return chars.map(c => `${_charToString(c,chars,args)}`).join('\n');
@@ -295,9 +296,9 @@ function DebugFn(args=debugStr) {
 			players = players.map(u => `- <@${u.user}>: ${u.chars.map(c=>`\`${c}\``).join(',')}`).join('\n')
 			if (players.length > 0) return {name:`${config.emoji.blueok} Players`,value:players}
 		},
-		characters: (characters) => {
-			characters = characters.map(c => _charToString(c, characters, args)).join('\n')
-			if (characters.length > 0) return {name:`${config.emoji.blueok} Characters`,value:characters}
+		chars: (chars) => {
+			chars = chars.map(c => _charToString(c, chars, args)).join('\n')
+			if (chars.length > 0) return {name:`${config.emoji.blueok} Characters`,value:chars}
 		},
 		errors: (errors) => { return _errorsToFields(errors) }
 	}
@@ -525,6 +526,8 @@ await trackProgress(interaction, duelData, STEP.DUEL_SUMMARY);
 	}
 await trackProgress(interaction, duelData, STEP.APPROVE_PEND);
 	{
+		if (DEBUGLOG) Log.FILE("duelData_before.txt", duelData)
+
 		const dmEmbed = await _sendApprovalMessage(duelData, interaction);
 		duelData.dmMsg = dmEmbed.url;
 	}
@@ -568,7 +571,7 @@ async function _getDuelData(mechChan, message=null) {
 		message = duel.messages[0];
 		duelData.message = message.id;
 		duelData.urls.duel = message.url;
-		duelData.characters.forEach((x,i) => { duelData.characters[i] =
+		duelData.chars.forEach((x,i) => { duelData.chars[i] =
 			{name:x.name, user:x.user, hpMax:(x.hpMax??0), hpCur:(x.hpCur??0), level:(x.level??INVALID_LEVEL)}
 		})
 	}
@@ -585,7 +588,7 @@ function _parseInitiative(message) {
 						message:null,
 						logDate:logDate,
 						rounds:0,
-						characters:[],
+						chars:[],
 						players:[],
 						events:[],
 						urls:{roleplay:"",duel:"",transcript:""}
@@ -607,7 +610,7 @@ function _parseInitiative(message) {
 		const hpCur = parseInt(match[3]) || 0;
 		const hpMax = parseInt(match[4]) || 0;
 		const condition = match[5] ?? null;
-		duelData.characters.push({ name, init, hpCur, hpMax, user, level });
+		duelData.chars.push({ name, init, hpCur, hpMax, user, level });
 	});
 
 	return duelData;
@@ -629,13 +632,13 @@ function _parseEventEmbed(duelData, event, embed) {
 	}
 
 	// Check for actors in the event title
-	const actor = duelData.characters.find(x => embed?.title?.includes(x.name)) ||
-				  duelData.characters.find(x => embed?.description?.includes(x.name));
+	const actor = duelData.chars.find(x => embed?.title?.includes(x.name)) ||
+				  duelData.chars.find(x => embed?.description?.includes(x.name));
 
 	// Check for targets in the fields and use to track aggressors for later grouping
 	targets = []
 	embed?.fields?.forEach(field => {
-		const char = duelData.characters.find(x => field?.name == x.name);
+		const char = duelData.chars.find(x => field?.name == x.name);
 		if (char)
 		{
 			let act = {mod:0,type:null}
@@ -689,12 +692,12 @@ function _parseEventInitGroupAdd(duelData, message) {
 		const char = {name,user:0}
 		if (group) char.group = group
 
-		const cIdx = duelData.characters.findIndex(x => x.name == name)
+		const cIdx = duelData.chars.findIndex(x => x.name == name)
 		if (cIdx >= 0) {
-			if (group) duelData.characters[cIdx].group = group;
-			else delete duelData.characters[cIdx].group;
+			if (group) duelData.chars[cIdx].group = group;
+			else delete duelData.chars[cIdx].group;
 		}
-		else duelData.characters.push(char)
+		else duelData.chas.push(char)
 	}
 
 	return duelData
@@ -714,12 +717,12 @@ function _parseEventPlayer(duelData, message) {
 		const id	= match[0][5].trim();
 
 		// See if we have a character by this name in init with no user and set it
-		let cIdx = duelData.characters.findIndex(x => (x.name == name||x.group == name) &&
+		let cIdx = duelData.chars.findIndex(x => (x.name == name||x.group == name) &&
 													  (x.user == 0||x.user == id));
-		if (cIdx < 0) duelData.characters.push({name,user:id});
-		duelData.characters.forEach((x,cIdx) => {
+		if (cIdx < 0) duelData.chars.push({name,user:id});
+		duelData.chars.forEach((x,cIdx) => {
 			if ((x.name == name||x.group == name) && (x.user == 0||x.user == id))
-				duelData.characters[cIdx].user = id;
+				duelData.chars[cIdx].user = id;
 		});
 	}
 
@@ -790,15 +793,15 @@ function _parseDuel(messages) {
 /// Fetch the levels from the database and set the exp Cap for each character we've found
 /// @duelData		- Extant data gathered from the initiative
 async function _fetchLevelData(duelData) {
-	await Utils.asyncArrayForEach(duelData.characters, async (char,i) => {
+	await Utils.asyncArrayForEach(duelData.chars, async (char,i) => {
 		//Prep a query and get the level data to identify the levels of the character
 		const query = {name:char.name, user:char.user};
 		const charData = await LevelUtils.getLevelData(query);
 		//Use the charData to populate fields
 		const xpCap = ExpUtils.getDuelExpCap(charData?.level || 0);
-		duelData.characters[i].user = char?.user || charData?.user || null;
-		duelData.characters[i].level = charData?.level || INVALID_LEVEL;
-		duelData.characters[i].xpCap = (xpCap || 0);
+		duelData.chars[i].user = char?.user || charData?.user || null;
+		duelData.chars[i].level = charData?.level || INVALID_LEVEL;
+		duelData.chars[i].xpCap = (xpCap || 0);
 	});
 	return duelData;
 }
@@ -807,10 +810,10 @@ async function _fetchLevelData(duelData) {
 /// @duelData		- Extant data gathered from the initiative
 function _collateData(duelData, rpData) {
 	const players = []
-	duelData.characters.forEach( c => { if (c.user && !players.includes(c.user)) players.push(c.user) });
+	duelData.chars.forEach( c => { if (c.user && !players.includes(c.user)) players.push(c.user) });
 	//Process the RP data into something usable
 	duelData.players = players.map( user => {
-		const chars = duelData.characters.filter( c => c.user == user ).map( c => c.name );
+		const chars = duelData.chars.filter( c => c.user == user ).map( c => c.name );
 		const {posts,length} = (rpData?.[user] || {posts:0,length:0})
 		return {user, chars, rp:{posts,length}}
 	})
@@ -826,8 +829,8 @@ function _verifyParticipation(duelData, skipRP = false, forceClose = false) {
 	const invalidChars = [];
 
 	//Determine valid characters and log as error anything else.
-	if (duelData.characters.length < 2) errors.push({reason: "CHAR_PARTICIPANTS"})
-	let validChars = duelData.characters.filter(char => {
+	if (duelData.chars.length < 2) errors.push({reason: "CHAR_PARTICIPANTS"})
+	let validChars = duelData.chars.filter(char => {
 		let error = null;
 		//Confirm the character has a valid player associated with it
 		if (!char.user) error = "NO_PLAYER"
@@ -877,7 +880,7 @@ function _verifyParticipation(duelData, skipRP = false, forceClose = false) {
 
 	//Log.DEBUG({GroupedErrors:groupedErrors});
 
-	duelData.characters = validChars;
+	duelData.chars = validChars;
 	duelData.players = validUsers;
 	duelData.errors = groupedErrors;
 
@@ -909,7 +912,7 @@ function _aggregateTeams(duelData) {
 	duelData.teams = duelData.teams.map((users,i) => {
 		users = users.users ?? users
 		//Find all characters of this group
-		const chars = duelData.characters.filter(x => users.includes(x.user));
+		const chars = duelData.chars.filter(x => users.includes(x.user));
 		if (chars.length > 1)
 			duelData.errors.USER_GROUP = ERROR.USER_GROUP.value
 		chars.sort((a,b) => b.level - a.level);
@@ -926,11 +929,11 @@ function _aggregateTeams(duelData) {
 	.filter(t => t.users.length > 0 && t.chars.length > 0 && t.xpCap > 0)
 	duelData.teams.sort((a,b) => b.totalHP - a.totalHP)
 
-	duelData.characters.map(c => {
+	duelData.chars.map(c => {
 		c.team = duelData.teams.findIndex(t => t.users.includes(c.user))
 	})
 	const sortKeys = {team:SortOrder.ASC,level:SortOrder.DESC,hp:SortOrder.DESC}
-	duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+	duelData.chars.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
 
 	return duelData;
 }
@@ -941,7 +944,7 @@ function _aggregateTeams(duelData) {
 function _getTeamsEmbed(duelData, debug = null) {
 	const {d20} = config.emoji
 	const fields = duelData.teams.map(team => {
-		const chars = duelData.characters.filter(c => team.users.includes(c.user))
+		const chars = duelData.chars.filter(c => team.users.includes(c.user))
 		const list	= ` [${chars.map(c => `\`${c.name}\``).join(' | ')}]`
 		const name	= `${d20} ${team.teamName} ${(chars.length > 1 ? list : ``)}`
 		const value	= `${_teamToString(team, duelData)}`
@@ -973,7 +976,7 @@ function _getTeamsComponents(duelData, _edit = null) {
 	const components = [buttonRow];
 
 	//Create a select dropdown of each character showing their current team
-	const charOpts = duelData.characters.map(char => {
+	const charOpts = duelData.chars.map(char => {
 		const team	= duelData.teams[char.team]?.chars ?? ``
 		const desc	= "Team: " + (team.length > 1 ? team?.join(' | ') : `solo`);
 		//Omit any characters if they are the only one on their team and moving them would leave only one team
@@ -985,15 +988,15 @@ function _getTeamsComponents(duelData, _edit = null) {
 
 	//Create a select dropdown of destination teams and the embed fields
 	const teamOpts = duelData.teams.map(team => {
-		const chars = duelData.characters.filter(c => team.users.includes(c.user))
+		const chars = duelData.chars.filter(c => team.users.includes(c.user))
 		const {teamName}= team
 		const teamDesc	= _teamToOption(chars)
 		return Prompt.createSelectOption(teamName, teamDesc, teamName);
 	});
 	//Add a "solo" option if the player isn't already solo
 	if (_edit?.char) {
-		const char = duelData.characters.find(c => c.name == _edit.char)
-		const team = duelData.characters.filter(c => c.team == char.team)
+		const char = duelData.chars.find(c => c.name == _edit.char)
+		const team = duelData.chars.filter(c => c.team == char.team)
 		if (team.length > 1) teamOpts.unshift(Prompt.createSelectOption("Solo", char.name, char.name))
 	}
 	const teamSelect = (_edit?.char) ? Prompt.createSelectRow("team", teamOpts, null, null, "Select destination team") : null
@@ -1024,13 +1027,13 @@ async function _editParticipantGroups(duelData, interaction, forceEdit = null) {
 		else if (input == "edit") edit = edit ? null : { char: false }
 		else if (input == "reset") {
 			duelData = _resetTeams(duelData)
-			duelData.characters.map(c => delete c.win)
+			duelData.chars.map(c => delete c.win)
 			duelData = _aggregateTeams(duelData)
 			edit = null
 		}
 		else if (edit && edit.char) {
 			edit.team = input
-			edit.char = duelData.characters.find(u => u.name == edit.char)
+			edit.char = duelData.chars.find(u => u.name == edit.char)
 			edit.user = edit.char.user
 			edit.oldTeam = duelData.teams.findIndex(t => t.users.includes(edit.user))
 			edit.newTeam = duelData.teams.findIndex(t => t.teamName == edit.team)
@@ -1042,7 +1045,7 @@ async function _editParticipantGroups(duelData, interaction, forceEdit = null) {
 
 			duelData.errors.MANUAL_GROUP = ERROR.MANUAL_GROUP.value
 			Log.WARNING(`${ERROR.MANUAL_GROUP.name}: ${ERROR.MANUAL_GROUP.value}`)
-			duelData.characters.map(c => delete c.win)
+			duelData.chars.map(c => delete c.win)
 			duelData = _aggregateTeams(duelData)
 			edit = null
 		}
@@ -1085,8 +1088,8 @@ function _autoDetectOutcome(duelData) {
 
 async function _determineOutcome(duelData, interaction, edit = false, forceSelect = false) {
 	let {victors, defeats, totalCap, valid} = _autoDetectOutcome(duelData)
-	const {characters,players,teams} = duelData
-	const debugData = {characters,players,teams}
+	const {chars,players,teams} = duelData
+	const debugData = {chars,players,teams}
 
 	// Ideal case: clearly defined victors/defeats - One (or more) victors and one (or more) defeats
 	// Ideal case: clearly defined victors/defeats - One (or more) victors and one (or more) defeats
@@ -1115,7 +1118,7 @@ async function _determineOutcome(duelData, interaction, edit = false, forceSelec
 	outcome = {victors, defeats};
 
 	const v = victors.map(x => x.users).flat()
-	duelData.characters.forEach(c => c.win = v.includes(c.user) ? 1 : 0)
+	duelData.chars.forEach(c => c.win = v.includes(c.user) ? 1 : 0)
 
 	duelData.outcome = outcome;
 	return duelData;
@@ -1140,7 +1143,7 @@ async function _promptWinners(duelData, interaction, victors = [], edit = false,
 		const value = `${_teamToString(team, duelData)}\n${type}`
 		fields.push({name, value})
 
-		const charList = duelData.characters.filter(c => team.users.includes(c.user))
+		const charList = duelData.chars.filter(c => team.users.includes(c.user))
 		const optName = `${icon} ${team.teamName}`
 		const optDesc = _teamToOption(charList)
 		opts.push(Prompt.createSelectOption(optName, optDesc, team.teamName));
@@ -1198,12 +1201,12 @@ function _teamToOption(charList) {
 /// @duelData		- Extant data gathered from the initiative
 function _calculateExp(duelData) {
 	const {victors, defeats} = duelData.outcome
-	const testV = duelData.characters.filter(c => c.win)
-	const testD = duelData.characters.filter(c => !c.win)
+	const testV = duelData.chars.filter(c => c.win)
+	const testD = duelData.chars.filter(c => !c.win)
 
 	//Total up any victors the defeated team managed to reduce to zero HP to award that exp
 	//Comment this out if it's being abused
-	const partVictorTotal = duelData.characters.reduce((total,c) =>
+	const partVictorTotal = duelData.chars.reduce((total,c) =>
 		(total += (c.win && c.hpCur == 0 && c.hpMax > 0) ? c.xpCap : 0), 0)
 
 	const victorCapTotal = victors.reduce((total,team) => total + team.xpCap, 0)
@@ -1214,7 +1217,7 @@ function _calculateExp(duelData) {
 	// const partDefeatPool = Math.ceil(defeatCapTotal * PARTIAL_XP)
 	// const xpData = {victorCapTotal, victorExpPool, defeatCapTotal, defeatExpPool, partVictorPool}
 
-	duelData.characters.map(c => {
+	duelData.chars.map(c => {
 		const partial = (c.win ? c.hpCur == 0 : partVictorTotal >= defeatCapTotal) ? 1 : 0
 
 		//Determine the total pool
@@ -1246,12 +1249,12 @@ function _calculateGold(duelData) {
 	//			 Level :  0, 1, 2, 3,  4,  5,  6,  7,  8,  9, 10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20
 	const goldPerLevel = [0, 0, 0, 4,  8, 16, 24, 32, 40, 48, 56,  72,  88, 104, 120, 136, 152, 184, 216, 248, 280];
 
-	const { characters } = duelData
-	const victorTotal = characters.reduce((t, c) => t += (c.win ? goldPerLevel[c.level] : 0), 0)
-	const partialTotal = characters.reduce((t,c) => t += ((c.win && c.hpCur == 0) ? goldPerLevel[c.level] : 0), 0)
-	const defeatTotal = characters.reduce((t, c) => t += (c.win ? 0 : goldPerLevel[c.level]), 0)
+	const { chars } = duelData
+	const victorTotal = chars.reduce((t, c) => t += (c.win ? goldPerLevel[c.level] : 0), 0)
+	const partialTotal = chars.reduce((t,c) => t += ((c.win && c.hpCur == 0) ? goldPerLevel[c.level] : 0), 0)
+	const defeatTotal = chars.reduce((t, c) => t += (c.win ? 0 : goldPerLevel[c.level]), 0)
 
-	duelData.characters.map(c => {
+	duelData.chars.map(c => {
 		const { partial } = c.xpData;
 
 		//Determine the purse amount
@@ -1276,16 +1279,16 @@ function _calculateGold(duelData) {
 /// @duelData		- Extant data gathered from the initiative
 /// @interaction	- Original interaction, needed for player input
 async function _awaitConfirmation(duelData, interaction, isEdit = false) {
-	const users = duelData.characters.map(c => c.user)
+	const users = duelData.chars.map(c => c.user)
 
-	duelData.characters.sort((a,b) => {
+	duelData.chars.sort((a,b) => {
 		if (b.win   != a.win  ) return b.win   - a.win
 		if (b.team  != a.team ) return b.team  - a.team
 		if (b.level != a.level) return b.level - a.level
 		if (b.hpCur != a.hpCur) return b.hpCur - a.hpCur
 	})
 
-	const fields = duelData.characters.map(c => _charToString(c, duelData.characters, {string:false, xp:false, gp:false}));
+	const fields = duelData.chars.map(c => _charToString(c, duelData.chars, {string:false, xp:false, gp:false}));
 	fields.push(..._errorsToFields(duelData.errors,!isEdit))
 
 	Log.TODO("Move confirmation code into its own utility")
@@ -1359,12 +1362,12 @@ async function _sendApprovalMessage(duelData, interaction, components = null, ca
 	const format	= `dd LLLL yyyy [ hh:mma ]`	//`DD [ hh:mma ]`
 	const fullDate	= date.toFormat(format)
 	const footer	= `Logged at:`;
-	const {errors, urls, channel, message, characters, comments, logField, ...encodeData} = duelData;
+	const {errors, urls, channel, message, chars, comments, logField, ...encodeData} = duelData;
 	const {roleplay, duel, transcript} = urls;
 	const charFieldArgs = {string:false, calc, data:true};
-	const fields 	= characters.map(c => _charToString(c, characters, charFieldArgs));
+	const fields 	= chars.map(c => _charToString(c, chars, charFieldArgs));
 	const data		= _encodeDataURL(encodeData);
-	const disabled	= characters.filter(c => !c.xpData?.totalPool && !c.xpData?.unCapExp).length > 0
+	const disabled	= chars.filter(c => !c.xpData?.totalPool && !c.xpData?.unCapExp).length > 0
 
 	const errorFields = _errorsToFields(duelData.errors);
 	fields.push(...errorFields);
@@ -1390,6 +1393,7 @@ async function _sendApprovalMessage(duelData, interaction, components = null, ca
 		{style:ButtonStyle.Secondary, emoji:"📱", label:"Calcs", custom_id:`duel.calc_${!calc}`, disabled},
 		{style:ButtonStyle.Secondary, emoji:edit, label:"Edit", custom_id:"duel.edit"}
 	])]
+	if (DEBUGLOG) Log.FILE("duelData_embed.txt", dmEmbed)
 
 	if (interaction.channel.id == dmPingChannel) {
 		dmEmbed = await interaction.editReply({content:`${DM_PING}`,embeds:[dmEmbed], components})
@@ -1410,7 +1414,7 @@ async function _closeScene(duelData) {
 	const fullDate	= date.toFormat(format)
 	const footer	= `Logged at:`;
 
-	const fields = duelData.characters.map(c => _charToString(c, duelData.characters, {xp:false,gp:false,string:false}));
+	const fields = duelData.chars.map(c => _charToString(c, duelData.chars, {xp:false,gp:false,string:false}));
 	fields.push(..._errorsToFields(duelData.errors))
 	const embed		= new EmbedBuilder().setTitle(DUELTITLE).setThumbnail(DUELTHUMB)
 										.setDescription(INSTRUCT.PENDING_APPROVAL(duelData.dmMsg))
@@ -1451,7 +1455,7 @@ function _getEncodedData(message, reconstruct = true) {
 		f = [...f.value.matchAll(linksRegex)].map(l => urls[l[1].toLowerCase()] = l[2])
 	})
 
-	const characters = fields?.filter(f => MessageMentions.UsersPattern.test(f.value)).map(char => {
+	const chars = fields?.filter(f => MessageMentions.UsersPattern.test(f.value)).map(char => {
 		char = char.value.replace(JSONURL,``)
 		char = char.match(linkRegex)?.[1]
 		char = char ? decodeURIComponent(char) : null
@@ -1459,11 +1463,11 @@ function _getEncodedData(message, reconstruct = true) {
 		return char
 	}).filter(c => c)
 	//Reconstruct some of the character data we'll need
-	characters.map(c => c.xpCap = ExpUtils.getDuelExpCap(c.level || 0))
+	chars.map(c => c.xpCap = ExpUtils.getDuelExpCap(c.level || 0))
 
 	const comments = fields?.filter(f => f.name.includes("DM Comment"))
 
-	data = {...(data || []), characters, errors, comments, urls}
+	data = {...(data || []), chars, errors, comments, urls}
 	if (reconstruct) data = _reconstructData(data)	//Reconstruct data into the complete version
 
 	return data;
@@ -1474,14 +1478,14 @@ function _getEncodedData(message, reconstruct = true) {
 function _reconstructData(duelData) {
 	//Rebuild the Players list from the characters
 	const players = [];
-	duelData.characters.forEach(c => {
+	duelData.chars.forEach(c => {
 		const idx = players.findIndex(p => p.user == c.user);
 		if (idx < 0) players.push({user:c.user, chars:[c.name]})
 		else players[idx].chars.push(c.name);
 	})
 
 	let teams = {};
-	duelData.characters.forEach(c => {
+	duelData.chars.forEach(c => {
 		const team = teams[c.team] ?? {teamName: c.name, users:[], chars:[], totalHP: 0, xpCap: 0};
 		if (!team.users.includes(c.user)) team.users.push(c.user);
 		if (!team.chars.includes(c.name)) team.chars.push(c.name);
@@ -1612,7 +1616,7 @@ async function editDuel(interaction) {
 		}
 		else if (input == "clearraw") {
 			const deleteKeys = ["xpAmt","xpSet","gpAmt","gpSet"]
-			duelData.characters.map(c => deleteKeys.forEach(k => delete c[k]))
+			duelData.chars.map(c => deleteKeys.forEach(k => delete c[k]))
 			duelData = _reconstructData(duelData);
 			duelData = await _editTeams(duelData, interaction);
 		}
@@ -1632,10 +1636,10 @@ async function editDuel(interaction) {
 		const dmEmbed = await _sendApprovalMessage(duelData, interaction)
 
 		const sortKeys = {name:SortOrder.ASC,level:SortOrder.DESC}
-		duelData.characters.forEach(c => { delete c.xpData; delete c.xpCap; delete c.gpData })
-		duelDiff.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
-		duelData.characters.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
-		duelDiff = Utils.deepDiff(duelDiff.characters,duelData.characters,[], ["name"])
+		duelData.chars.forEach(c => { delete c.xpData; delete c.xpCap; delete c.gpData })
+		duelDiff.chars.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+		duelData.chars.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+		duelDiff = Utils.deepDiff(duelDiff.chars, duelData.chars, [], ["name"])
 		const dataFn = {
 			json: (data) => ({name:"Data JSON", value:`\`\`\`json\n${JSON.stringify(data,null,2)}\n\`\`\``}),
 			diff: (data) => ({name:"Data Diff", value:`\`\`\`diff\n${data}\n\`\`\``})
@@ -1695,7 +1699,7 @@ async function _editDuelDataRaw(duelData, interaction) {
 			//Create a select dropdown of each character
 			const charStrFormat = { team:false, user:false, xp:false, gp:false, hp:true, defeat:false,
 									calc: false, string: true, data: false }
-			const charOpts = duelData.characters.map(char => {
+			const charOpts = duelData.chars.map(char => {
 				let desc = _charToString(char, [], charStrFormat).replaceAll(/[\`\*]/g,``)
 				return Prompt.createSelectOption(char.name, desc, char.name)
 			})
@@ -1723,8 +1727,8 @@ async function _editDuelDataRaw(duelData, interaction) {
 		else {
 			const name = Object.keys(input)[0]
 			const value = input[name]
-			if (name == "undefinedchar") duelData.characters.push(value)
-			duelData.characters = duelData.characters.map(c => (c.name == name) ? value : c).filter(c => c)
+			if (name == "undefinedchar") duelData.chars.push(value)
+			duelData.chars = duelData.chars.map(c => (c.name == name) ? value : c).filter(c => c)
 		}
 	}
 
@@ -1738,7 +1742,7 @@ async function _editDuelDataRaw(duelData, interaction) {
 /// @duelData		- The duel data to populate the current value of the data modal
 async function _promptDataModal(interaction, duelData) {
 	const name = interaction.values[0]
-	const data = duelData.characters.find(c => c.name == name)
+	const data = duelData.chars.find(c => c.name == name)
 	const jsonStr = JSON.stringify(data, null, `\t`)?.toString() ?? ''
 
 	const textInputParams = { customId:name, label:"Data", style:TextInputStyle.Paragraph, required:false,
@@ -1797,7 +1801,7 @@ async function _resetDaily(duelData, interaction) {
 			//Create a select dropdown of each character
 			const charStrFormat = { team:false, user:false, xp:false, gp:false, hp:true, defeat:false,
 									calc: false, string: true, data: false }
-			const charOpts = duelData.characters.map(char => {
+			const charOpts = duelData.chars.map(char => {
 				let desc = _charToString(char, [], charStrFormat).replaceAll(/[\`\*]/g,``)
 				return Prompt.createSelectOption(char.name, desc, char.name)
 			})
@@ -1811,11 +1815,11 @@ async function _resetDaily(duelData, interaction) {
 		const reset = []
 		if (!input || input == "done") done = true
 		else if (input == "all") {
-			reset.push(...(duelData.characters.map(c => ({name:c.name, user:c.user, xpAmt: 0, xpCap: 0}))))
+			reset.push(...(duelData.chars.map(c => ({name:c.name, user:c.user, xpAmt: 0, xpCap: 0}))))
 			done = true;
 		}
 		else {
-			const c = duelData.characters.find(c => c.name == input)
+			const c = duelData.chars.find(c => c.name == input)
 			if (c) reset.push({name:c.name, user: c.user, xpAmt: 0, xpCap: 0})
 		}
 
@@ -1874,11 +1878,11 @@ async function _handleDuelResult(interaction, approved) {
 		duelData = _getEncodedData(interaction?.message,false)
 		duelData.reset = DateTime.fromSeconds(duelData.logDate).plus({days:1}).startOf('day').toUnixInteger()
 		//Update each character's exp mod
-		await Utils.asyncArrayForEach(duelData.characters, async (char,i) => {
+		await Utils.asyncArrayForEach(duelData.chars, async (char,i) => {
 			if (approved)	char = await ExpUtils.applyDuelExp(char, duelData.logDate, duelData.reset);
 			else			char = {...char, xpMod: 0, gpMod: 0}
 			if (char.xpMod == 0 && char.capped) char.gpMod = 0;
-			duelData.characters[i] = char;
+			duelData.chars[i] = char;
 		})
 
 		//Post the award to the exp log channel
@@ -1924,10 +1928,10 @@ async function undoResult(interaction) {
 		await MsgUtils.reactToMessageURL(interaction.guild, duelData.urls.duel, null);
 
 		//Update each character's exp mod
-		await Utils.asyncArrayForEach(duelData.characters, async (char,i) => {
+		await Utils.asyncArrayForEach(duelData.chars, async (char,i) => {
 			if (char.xpMod) char = await ExpUtils.undoDuelExp(char);
 			(["xpMod","xpCum","capped","gpMod"]).forEach(k => delete char[k]);
-			duelData.characters[i] = char
+			duelData.chars[i] = char
 		})
 
 		//Re-post the approval message
@@ -1953,13 +1957,13 @@ async function _postDuelResultLog(interaction, duelData, approved) {
 
 	const {yes, no} = config.emoji
 	const icon = approved ? yes : no;
-	const {urls, characters, comments} = duelData;
+	const {urls, chars, comments} = duelData;
 	const {roleplay, duel, transcript} = urls;
 	const charFieldArgs = { string:false, hp:false, defeat:false };
 
 	const desc		= `${icon} **Duel ${approved ? 'Approved' : 'Rejected'}**${BR}`
 	const instruct	= approved ? INSTRUCT.LOG_FOOTER : ``
-	const fields 	= characters.map(c => _charToString(c, characters, charFieldArgs));
+	const fields 	= chars.map(c => _charToString(c, chars, charFieldArgs));
 	if (comments) fields.push(...comments);
 
 	fields.push({name:"** **", value:`-# [Roleplay](${roleplay}) / [Duel](${duel}) / [Transcript](${transcript})\n${instruct}-# Next Daily Exp Reset (from time of duel) <t:${duelData.reset}:R>\n-# <t:${duelData.reset}:F>`})
@@ -1971,7 +1975,7 @@ async function _postDuelResultLog(interaction, duelData, approved) {
 										.setFields(fields)
 
 	const players	= []
-	characters.forEach(c => { if (c.xpMod > 0 && !players.includes(c.user)) players.push(c.user) })
+	chars.forEach(c => { if (c.xpMod > 0 && !players.includes(c.user)) players.push(c.user) })
 	const content	= players.map(p => `<${PING_PREFIX}${p}>`).join('');
 
 	const logChan = await guild?.channels?.resolve(xpLogChannel)
