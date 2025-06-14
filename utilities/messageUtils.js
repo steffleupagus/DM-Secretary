@@ -39,6 +39,7 @@ async function deleteMessages(messages)
 	let delayCount = 0;
 	await Utils.asyncArrayForEach(messages, async (message) =>
 	{
+		if (message.system) return;
 		await message.delete();
 		await Utils.slowdown(500);
 		if (++delayCount >= 5)
