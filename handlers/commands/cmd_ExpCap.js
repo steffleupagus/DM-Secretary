@@ -7,6 +7,7 @@ const config = require(`../../config/${mod}_config.json`);
 const Utils = require(`../../utilities/utilFuncs.js`)
 const Prompt = require(`../../utilities/promptUtils.js`)
 const expUtils = require(`../../utilities/expUtils.js`)
+const charUtils = require(`../../utilities/charUtils.js`)
 const levelUtils = require(`../../utilities/levelUtils.js`)
 const Daily = require(`../../database/dailyExpSchema.js`)
 const Level = require(`../../database/levelSchema.js`)
@@ -144,6 +145,7 @@ async function handleInteraction(interaction) {
 			char = { user, name:interaction.values[0] }
 			await levelUtils.PurgeChar(char)
 			await updateEmbed(interaction, user, staff)
+			charUtils.RefreshCache();
 			break;
 		case `resetchar`:
 			char = { user, name:interaction.values[0] }
