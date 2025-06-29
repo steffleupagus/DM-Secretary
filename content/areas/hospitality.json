@@ -11,12 +11,18 @@
 				"footer":{"text":"https://www.artstation.com/asaneesrikijvilaikul"}
 			},
 			{
-				"title":"Manticore's Dream Tavern",
+				"title":"Manticore's Dream Public House",
 				"description":"<#696536671302320188>\n<#742484118146777118> <#821267837284122634>",
-				"image": { "url": "https://i.imgur.com/MdCNueY.png" },
-				"footer":{"text":"https://www.artstation.com/earl3163389"}
+				"image": { "url": "https://i.imgur.com/ms5Oa1w.jpeg" }
+				"footer":{"text":"https://www.artstation.com/nathanbierset"}
 			},
 			{
+				"title":"Manticore's Dream Taproom",
+				"description":"<#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/MdCNueY.png" }
+				"footer":{"text":"https://www.artstation.com/earl3163389"}
+			},
+{
 				"title":"Tavern Loft",
 				"description":"<#697832426432626762> <#737326955191599304>",
 				"image": { "url": "https://i.imgur.com/zNz6nsW.png" },
