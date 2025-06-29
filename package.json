@@ -23,6 +23,7 @@
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^8.9.5",
     "string-similarity": "^4.0.4",
-    "unb-api": "^1.4.0"
+    "unb-api": "^1.4.0",
+    "utilities": "^1.0.6"
   }
 }
