@@ -47,7 +47,7 @@ function parseTupperLog(client, message, silent = true)
 function isTupperProxyMessage(message)
 {
 	if (!message) return false;
-	const isBot = message.author.bot;
+	const isBot = message.author?.bot;
 	const isTupper = message.applicationId == config.bots.tupper;
 	const isWebhook = message.webhookId;
 	return (isBot && isTupper && isWebhook);
@@ -56,8 +56,8 @@ function isTupperProxyMessage(message)
 function isTupperLogMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author.id == config.bots.tupper;
-	const channel = message.channel.id == config.chan.tupperLog;
+	const author  = message.author?.id == config.bots.tupper;
+	const channel = message.channel?.id == config.chan.tupperLog;
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
