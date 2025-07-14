@@ -1,89 +1,164 @@
 {
 	"Helper Guide":
 	{
-		"includeTOC":true,
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
 		"includeIndex":true,
-		"includeSectionBreak":true,
 		"embeds": [
 			{
-				"title":"▶️ ",
-				"description": "",
+				"title":"▶️ General Guidance",
+				"description": "Below you will find the areas that Helpers may be called upon to assist. Things may be added or edited for clarity.",
 				"fields": [
 					{
-						"name": "If not sure, __**ASK**__",
-						"value": "Its OK to not have the answer to someone's question, and we would rather you ask for confirmation or clarification than inadvertently spreading misinformation - its easier to address issues beforehand than to correct them after the fact. When in doubt, ask for a second opinion."
+						"name": "If you're not sure, __**ASK**__",
+						"value": "Its OK to not have the answer to someone's question, and we would rather you ask for confirmation or clarification than inadvertently spreading misinformation. Its easier to make someone wait to give them a correct answer than to correct a mistake after the fact. When in doubt, ask for a second opinion."
 					}
 				]
-			},
+			}
+		]
+	},
+	"⛩️ Intro Gate":
+	{
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
+		"includeIndex":true,
+		"embeds": [
 			{
 				"title":"⛩️ Intro Gate",
-				"description": "Everyone steps through the intro gate on their way into the server, and is the first impression people get - not only of the server, but us of them. You might see questions in <#695253154438184982>, which you may answer as needed. One of the most common questions is \"What do I do?\", for which there is a canned answer in the form of `-entryguide`.\n\nOnce they have input their RP response in <#705795359619940352>, which you may judge accordingly. We aren't looking for perfection, just an honest effort - a response to the prompt provided, in complete sentences, with at least some description. Low-effort responses can be asked to revise. The bot will automatically add react icons which you may use to approve or deny their entry. In addition to the ones the bot added, there are a couple of secret reacts that you can add for specific effects:",
+				"description": "Everyone comes through the intro gate on their way into the server, and is the first impression people get - not only of the server, but us of them. You might see questions in <#695253154438184982>, which you may answer as needed. One of the most common questions is \"What do I do?\", for which there is a canned answer in the form of `-entryguide` guiding them to read and accept the rules, and enter their RP response in <#705795359619940352>.\n\nOnce they have done so, you may judge accordingly. We aren't looking for perfection, just an honest effort - a response to the prompt provided, in complete sentences, with at least some description. The bot will automatically add react icons which you may use to approve or deny their entry. In addition to the ones the bot added, there are a couple of secret reacts that you can add for specific effects:",
 				"fields": [
 					{
 						"name": "▶️ Standard Approval",
-						"value": "This will approve them into the server and post the welcome message."
+						"value": "For adequate responses, this will approve them into the server and post the welcome message."
 					},
 					{
 						"name": "🔁 Revise",
-						"value": "This will not approve them into the server, and post a message asking them to revise their entry."
+						"value": "This will not approve them into the server, and post a message asking them to revise their entry. This is intended for use with low-effort responses, those who dictate the reaction of the queen or the other courtiers in their response, or those who otherwise ignore the few instructions in the RP channel."
 					},
 					{
 						"name": "⛔ Flat Reject",
-						"value": "Realistically this is seldom used, as anyone earning this one is usually just yeeted from the server instead. Inform the mods if you feel like an entry warrants this."
+						"value": "Realistically this is seldom used, as anyone earning this one is usually just yeeted from the server instead. __Inform the mods if you feel like an entry warrants this.__"
 					},
 					{
 						"name": "❓ Follow the Prompt",
-						"value": "The first secret emoji is essentially a \"what the fuck\" for when the RP response does not follow the prompt provided. It will ask them to revise their response and refer them to the prompt."
+						"value": "A secret react (not added by the bot), essentially a \"*what the fuck?*\". This is intended to be used when the RP response does not follow the prompt provided. It will ask them to revise their response and refer them to the prompt."
 					},
 					{
-						"name": "🥷 Stealth Approve",
-						"value": "For use when someone gives a multi-post response to the prompt, give the standard approval to the first post and this to all other posts. It will log those responses without re-posting the approved/welcome message."
+						"name": "🥷 Stealthy Ninja Approve",
+						"value": "A secret react, intended for use when approving someone who has given a multi-post response to the prompt. Give the standard approval to the first post and this to all their other posts. It will log those responses without re-posting the approved/welcome message."
 					},
 					{
-						"name": "<:alledge:887849778547925034> `:alledge:`",
-						"value": "When someone chooses violence against the queen or otherwise demonstrates a powertrip... but their response is well-written enough to earn them approval. This will approve them and post the alternate execution welcome message."
+						"name": "<:alledge:887849778547925034> (`:alledge:`)",
+						"value": "A secret react which will approve them and post an alternate welcome message of them being executed in the throne room. Intended for use when someone chooses violence against the queen or otherwise demonstrates a powertrip... but their response is well-written enough to earn them approval."
 					}
 				]
-			},
+			}
+		]
+	},
+	"👤 Roleplay Profiles":
+	{
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
+		"includeIndex":true,
+		"embeds": [
 			{
-				"title":"👤 RP Profile",
-				"description": "Profiles are required to participate in the server, and there tends to be a lot of character churn, so there are frequently profiles to approve. `✅` will approve them, `❌` will flag them. You can also use the `-note <your note here>` command to add additional information about the reason for the flag.\nHere are some details to be mindful of:",
+				"title":"👤 PC Roleplay Profile",
+				"description": "There are frequently profiles to approve - every new member is required to submit an RP Profile in order to fully participate in the server, and there tends to be a lot of character churn from existing members. Approving or rejecting a profile can be done with reacts: `✅` will approve them, `❌` will flag them. When rejecting a profile, it is recommended to use the `-note <your note here>` command to add additional information about the reason for the flag.\nHere are some details to be mindful of when reviewing:",
 				"fields":[
-					{ "name":"Race", "value":"Characters need to follow one of the playable races in <#911129455345405992>. Anything beyond that might work as a Custom Lineage, but even that has its limits. Anything beyond that should be an NPC." },
-					{ "name":"Reference Images", "value":"Reflavoring is a slippery slope, so their reference image should match the race as closely as possible. AI images are not permitted - if something looks obviously AI, flag it or ask them to link to the artist." },
-					{ "name":"Background", "value":"They start at level 3 characters, even if they don't make a sheet so trying to make them ultrapowerful is comical. They should also pay attention to the lore: no one experiences childhood in the demiplane, for instance." }
+					{ "name":"Race", "value":"PC Profiles need to follow one of the playable races in <#911129455345405992>. Anything beyond that **might** work as a Custom Lineage, but even that has its limits (again, when in doubt, ask). Anything beyond that should be an NPC." },
+					{ "name":"Age", "value":"Double check that their character is at least 18 (or 100 for Elves)" },
+					{ "name":"Reference Images", "value":"Reflavoring is a slippery slope, so their reference image should match the race as closely as possible. AI images are not permitted - if something looks obviously AI, flag it or ask them to link to the artist. Any image which appears too young should likely also be flagged." },
+					{ "name":"Background", "value":"They start at level 3 characters, even if they don't make a sheet so trying to make them ultrapowerful is comical. They should also pay attention to the lore: no one experiences childhood in the demiplane, for instance." },
+					{ "name":"Number of Profiles", "value":"Before approval, check the total number of profiles from that player (both <#694861975896719450> and <#806934695245119508>) against their total number of slots to verify they still have slots free. If a new profile would put them over their alotted slots, direct them to buy a new slot or remove an old one." }
 				]
 			},
 			{
+				"title":"🚩 Common Profile Flags",
+				"description": "A few common issues that arise that may need to be flagged. I have tried to make these generic, so feel free to customize them according to the circumstances. Others may be added to this list as they become apparent.",
+				"fields":[
+					{ "name":"Elves under 100", "value":"`Elves aren't considered adults until 100 years of age. Therefore, all elf characters must be at least that old.`" },
+					{ "name":"Reference image appears underaged", "value":"`There is a concern regarding the apparent age of the reference art used as appearing too young. As explained in <#709941516818448384> rule 1️⃣, we will reject any characters that are, or appear to be, underage to maintain a cautious compliance with Discord's Community Guidelines. We respectfully ask that you choose reference art more suitable for the adult nature of this server and the content within.`" },
+					{ "name":"Reference doesn't match race", "value":"`There is a concern that the image reference(s) provided in your profile do not appear to match the chosen race, and lack the traits that are hallmarks of that races' appearance. We respectfully ask that you choose reference art more befitting the selected race, or adjusting your chosen race to better match the selected reference art. Please refer to the <#699930213093474315> for more information on reflavoring.`" },
+					{ "name":"Reference image appears to be AI", "value":"`There is a concern that the image reference(s) provided in your profile are AI generated, which are not permitted for use on the server. If this image has been flagged in error and a link to the artist can be provided, it will be reviewed.`" },
+					{ "name":"Missing Kinks/Limits", "value":"`We ask that people include a few specific kinks, as just saying \"find out in RP\" or \"to be discovered\" doesn't really help people in figuring out if they'd be a good potential fit as a partner. While the list doesn't need to be exhaustive, including a few of your favorites will go a long way to letting people know what they might expect in a scene with your character. Being vague with limits can also lead to misunderstandings and people getting uncomfortable, so it is best to be specific.`" }
+				]
+			},
+			{
+				"title":"👤 NPC Roleplay Profile",
+				"description": "NPC profiles are far less frequent and, by the time people have the slot(s) for them, they usually know what is and is not acceptable. Also unlike PC profiles, which must be explicitly approved before use, NPC profiles are considered approved unless there are glaring issues with it.\nThe aforementioned age and reference image restrictions still apply as server rules, as well as the number of profiles, but the playable race restrictions are no longer enforced on NPC profiles. A few additional things to confirm when checking over NPC profiles:",
+				"fields":[
+					{ "name":"Theme", "value":"While races aren't restricted, the NPC should adhere thematically to the server's fantasy setting." },
+					{ "name":"Lore", "value":"Anything that alters or subverts the lore of the demiplane is strictly prohibited. Integrating directly with the lore in any material manner may be acceptable, but warrants closer examination - please bring it to the attention of the mods if you are concerned that it oversteps" },
+					{ "name":"Mechanics", "value":"NPCs do not have mechanics or monster stat blocks at this time." },
+					{ "name":"Power Level", "value":"It is understood that some people will make their NPCs as stupidly powerful as possible, we draw a hard line against creating gods / deities / warlock patrons. Any NPC responsible for another character's powers or abilities, or with direct influence over another character's ability to progress or play, is not permitted." }
+				]
+			}
+		]
+	},
+	"🎲 Stat Rolls":
+	{
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
+		"includeIndex":true,
+		"embeds": [
+			{
 				"title":"🎲 Stat Rolls",
-				"description": "When creating sheets, the first step is statrolls. The bot does most of the work, but a Helper's responsibility is to just oversee the rolls and ensure people:\n- Have enough character slots for a new character\n- use the right `!statroll` command\n- Use the free reroll for first character\n- Purchase a reroll with RPP if it is not their first character.\n- Finish setting up a character before rolling for another.\n\nThere are a few roll-related aliases that might come in handy:",
+				"description": "When creating sheets, the first step is statrolls. The bot does most of the work, but a Helper's responsibility is to just oversee the rolls and ensure people:\n- Have enough character slots for a new character\n- Use the right `!statroll` command\n- Use the free reroll for first character\n- Purchase a reroll with RPP if it is not their first character.\n- Finish setting up a character before rolling for another.\n\nThere are a few roll-related aliases that might come in handy:",
 				"fields":[
 					{ "name":"`!viewroll`", "value":"This will show the user if they have any pending stat rolls already."},
-					{ "name":"`!invalidateroll`", "value":"This will clear their pending rolls and allow them to reroll. This should be used sparingly."}
+					{ "name":"`!invalidateroll`", "value":"This will clear their pending rolls and allow them to reroll.\n*Players should be permitted to use this VERY sparingly.*"}
 				]
 			},
 			{
 				"title":"📜 Character Sheet",
-				"description": "Sheets are optional, but take some of the most attention to review. As with Profiles, `✅` will approve them, `❌` will flag them.",
+				"description": "Sheets are __optional__, but take some of the most attention to review.\nAs with Profiles, `✅` will approve them, `❌` will flag them.",
 				"fields":[
-					{ "name":"Validate", "value":"Make sure they run the `!validate` command - it will save you time and make reviewing much easier. That said, it isn't perfect and it does have a few gotchas.\n- Its HP calculation can be thrown off by certain races/classes." },
-					{ "name":"2014 vs 20214", "value":"This is mostly an issue with Beyond. When checking their shee, ensure the Race / Class / Feat selections come from the 2014 ruleset and not the 2024 free rules." },
+					{ "name":"`!validate`", "value":"Make sure they run the `!validate` command - it will save you time and make reviewing much easier. That said, it isn't perfect and it does have a few gotchas.\n- Its HP calculation can be thrown off by certain races/classes." },
+					{ "name":"2014 vs 2024", "value":"This is mostly an issue with Beyond. When checking their sheet, ensure the Race / Class / Feat selections come from the 2014 ruleset and not the 2024 free rules." },
 					{ "name":"Ability Scores", "value":"`!validate` will flag anything wrong, but sometimes fails to calculate some permutations, so red-text flags may need to be checked manually." },
 					{ "name":"Skills", "value":"Double check skill proficiencies and expertise, being mindful of bonus proficiencies from races, classes, and subclasses. The exact proficiencies aren't important, but confirm the count." },
 					{ "name":"Feats", "value":"Ensure they don't have any feats they shouldn't, such as any included from a background that isn't approved." },
-					{ "name":"Spells", "value":"Confirm their spells are set up correctly and the spell counts are valid. Clerics and Druids occasionally show unrecognized / homebrew spells due to a bug with Beyond. Wizards occasionally have the wrong number of spells." },
-					{ "name":"Inventory", "value":"Double check that they have their armor and weapons equipped for AC and actions added to the bot. Ensure they do not have magical items they shouldn't (Artificers are an exception)." }
+					{ "name":"Spells", "value":"Confirm their spells are set up correctly and the spell counts are valid. Clerics and Druids occasionally show unrecognized / homebrew spells due to a bug with Beyond and may sometimes be ignored. Wizards occasionally have the wrong number of spells." },
+					{ "name":"Inventory", "value":"Double check that they have their armor and weapons equipped for AC and actions added to the bot. Ensure they do not have magical items they shouldn't (Artificers may have some due to their Infusions)." }
 				]
-			},
+			}
+		]
+	},
+	"<:xp:858887927899226112> Scene Approvals":
+	{
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
+		"includeIndex":true,
+		"embeds": [
 			{
 				"title":"<:xp:858887927899226112> Scene Approvals",
-				"description": "",
-				"fields":[]
-			},
+				"thumbnail": { "url": "https://i.imgur.com/pz8sI6M.png" },
+				"description": "Closed scenes require approval before exp is awarded. It is largely a rubber-stamp approval, but there are some situations which may require a scene to be more closely evaluated. Here are some things to look for when reviewing a scene for approval:",
+				"fields":[
+					{ "name":"Players", "value":"Verify that there is more than one player involved in a scene and do not approve any scene in which only one player is listed. The exception is Glory Hole posts." },
+					{ "name":"Glory Holes", "value":"When approving a glory hole post, go to the other linked channel and make sure that scene was closed as well, just to keep them in sync. (At some point in the future, I may fix that to do it automatically)" },
+					{ "name":"Posts", "value":"Check the `Posts` count in the Scene Complete, and reject a scene in which only one or two posts were made by the participants. That isn't enough to qualify as a scene. Be aware that one-off posts (such as asking if a channel is free) may still be picked up by the bot, so do not reject based on that alone." },
+					{ "name":"Characters", "value":"Take a look at the participants and character names in the scene complete post and compare them. Some people have different tuppers for the same character and SHOULD NOT be counted separately. The scene should be Edited to combine those characters so the player isn't double-dipping the exp for them. **BE CAREFUL** when doing this, as the data cannot be easily separated once merged." },
+					{ "name":"Ask if you aren't sure", "value":"The bot isn't perfect and sometimes does some weird things that may not be intuitive or obvious. If you aren't sure of something, I would rather you ask first." }
+				]
+			}
+		]
+	},
+	"⚔️ Duel Approvals":
+	{
+		"_includeSectionBreak":true,
+		"_includeTOC":true,
+		"includeIndex":true,
+		"embeds": [
 			{
 				"title":"⚔️ Duel Approvals",
-				"description": "",
-				"fields":[]
+				"thumbnail": { "url": "https://i.imgur.com/2U90DwW.png" },
+				"description": "Like Scenes, completed duels require approval before exp is awarded. It is also largely a rubber-stamp approval, though it can be a little more involved than scene approval.",
+				"fields":[
+					{ "name":"Players", "value":"Confirm the participants are not played by the same player - the bot should prevent it, but check just in case." },
+					{ "name":"Character Levels", "value":"Double check that the levels are comparable. If a level 5 beats a level 15, for example, it warrants a closer look." },
+					{ "name":"Transcript", "value":"Each duel links to an automatically-generated transcript of the duel events. Spot-check the transcript to make sure no party threw the duel or rage-quit." }
+				]
 			}
 
 		]
