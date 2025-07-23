@@ -7,62 +7,104 @@
 			{
 				"title":"Farthest Reaches",
 				"description":"<#1372044357867409448>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/Oym8MTk.jpeg" },
+					{ "url":"https://i.imgur.com/UXLfWZM.jpeg" },
+					{ "url":"https://i.imgur.com/3jATEnE.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/samkeiser\nhttps://www.artstation.com/exphrasis\nhttps://www.artstation.com/threedee" }
 			},
 			{
 				"title":"Seaman's Cove",
 				"description":"<#1372276759357165801>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/5D7lwgg.jpeg" },
+					{ "url":"https://i.imgur.com/Jpq6QPW.jpeg" },
+					{ "url":"https://i.imgur.com/rjDynVf.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/duckymakura\nhttps://www.deviantart.com/narandel\nhttps://www.artstation.com/joblyn" }
 			},
 			{
 				"title":"Slime Swamps",
 				"description":"<#1372277238669639752>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/RNLEGl1.jpeg" },
+					{ "url":"https://i.imgur.com/4psuY0f.jpeg" },
+					{ "url":"https://i.imgur.com/10LC5gd.jpeg" },
+					{ "url":"https://i.imgur.com/GJ8yPzJ.jpeg" }
+				],
+				"footer":{"text":"https://www.deviantart.com/gycinn/\nhttps://www.artstation.com/serjio\nhttps://jamesrpgart.com\nhttps://www.artstation.com/nelediel" }
 			},
 			{
 				"title":"Gropevine Grove",
 				"description":"<#1372738381796081675>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/84HFfji.jpeg" },
+					{ "url":"https://pictures.hentai-foundry.com/o/Orkbrah/985188/Orkbrah-985188-Dryad_VII.jpg" },
+					{ "url":"https://pictures.hentai-foundry.com/j/JustSomeNoob/784797/JustSomeNoob-784797-oc_commission.jpg" }
+				],
+				"footer":{"text":"https://www.deviantart.com/hidetheinsanity\nhttps://www.hentai-foundry.com/user/Orkbrah/profile\nhttps://www.hentai-foundry.com/user/JustSomeNoob/profile" }
 			},
 			{
 				"title":"Tribal Camp",
 				"description":"<#1372276888332009563>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/Jq7oazq.png" },
+					{ "url":"https://i.imgur.com/vsY8t3d.jpeg" },
+					{ "url":"https://i.imgur.com/FlTyjwv.jpeg" },
+					{ "url":"https://i.imgur.com/fYjHnUW.jpeg" }
+				],
+				"footer":{"text":"https://jamesrpgart.com\nhttps://www.artstation.com/nelediel\nhttps://www.artstation.com/stoica_alexandru_silviu" }
 			},
 			{
 				"title":"Breeding Grounds",
 				"description":"<#1372729730599751730>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/sOegt5n.jpeg" },
+					{ "url":"https://i.imgur.com/4xFGooS.jpeg" },
+					{ "url":"https://i.imgur.com/d1G6ZJx.jpeg" },
+					{ "url":"https://i.imgur.com/k3wx5RX.jpeg" }
+				],
+				"footer":{"text":"https://www.kevincatalan.com/\nhttps://www.artstation.com/ferdinandladera\nhttps://www.artstation.com/manowa\nhttps://www.artstation.com/ferdinandladera" }
 			},
 			{
 				"title":"Traveling Town",
 				"description":"<#1372277099154509844>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": { "url":"https://i.imgur.com/4YcgiJK.jpeg" },
+				"footer":{"text":"https://www.artstation.com/samkeiser" }
 			},
 			{
 				"title":"Dreaming Desert",
 				"description":"<#1372276842609774592>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/oFk4fQP.jpeg" },
+					{ "url":"https://i.imgur.com/SEsIzLi.jpeg" },
+					{ "url":"https://i.imgur.com/MVTyhze.jpeg" },
+					{ "url":"https://i.imgur.com/AGLiFdK.jpeg" }
+				],
+				"footer":{"text":"https://www.deviantart.com/bisbiswas\nhttps://www.artstation.com/jeremy_adams\nhttps://www.artstation.com/zarrs_rain\nhttps://www.artstation.com/ranarh" }
 			},
 			{
 				"title":"Crystaline Caverns",
 				"description":"<#1372277134562820127>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/i3RXYxh.jpeg" },
+					{ "url":"https://i.imgur.com/rhVdNqh.jpeg" },
+					{ "url":"https://i.imgur.com/POjOGso.jpeg" },
+					{ "url":"https://i.imgur.com/CoVp8sf.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/nelediel\nhttps://www.artstation.com/chaodart\nhttps://www.artstation.com/threedee" }
 			},
 			{
 				"title":"Feydark Underground Tunnels",
 				"description":"<#1372277777444900934>",
-				"image": { "url":"" },
-				"footer":{"text":"" }
+				"image": [
+					{ "url":"https://i.imgur.com/kkNg7qR.jpeg" },
+					{ "url":"https://i.imgur.com/tVhSGEV.jpeg" },
+					{ "url":"https://i.imgur.com/HxRQjBk.jpeg" },
+					{ "url":"https://i.imgur.com/yK3lUwi.jpeg" }
+				],
+				"footer":{"text":"https://www.artstation.com/nelediel\nhttps://www.artstation.com/arvart\nhttps://www.artstation.com/acidify" }
 			},
 
 			{
