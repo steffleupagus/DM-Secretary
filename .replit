@@ -109,3 +109,12 @@ author = 3559563
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run deploy -- dev"
+
+[[workflows.workflow]]
+name = "Dev Test"
+mode = "sequential"
+author = 3559563
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run start -- test"
