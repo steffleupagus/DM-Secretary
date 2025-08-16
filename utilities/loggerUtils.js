@@ -24,7 +24,11 @@ class Logger
 		this.errorLogDefaultArgs = errorLogDefaultArgs
 	}
 
-	TODO(text){ console.log(orange(text)); }
+	TODO(text, offset=2){
+		console.log(orange(text), text?"-":"",
+					purple(Error().stack.split("\n")[offset].trim()))
+		//console.log(orange(text));
+	}
 
 	NOTE(text="", offset=2){ console.log(text,text?"-":"",purple(Error().stack.split("\n")[offset].trim())) }
 
