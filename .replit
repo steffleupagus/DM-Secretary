@@ -84,37 +84,3 @@ pattern = "**/{*.js,*.jsx,*.ts,*.tsx}"
 
 [languages.javascript.languageServer]
 start = "typescript-language-server --stdio"
-
-[deployment]
-run = ["sh", "-c", "node bot.js"]
-deploymentTarget = "gce"
-ignorePorts = true
-
-[workflows]
-
-[[workflows.workflow]]
-name = "Deploy Prod"
-mode = "sequential"
-author = 3559563
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run deploy -- prod"
-
-[[workflows.workflow]]
-name = "Deploy Dev"
-mode = "sequential"
-author = 3559563
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run deploy -- dev"
-
-[[workflows.workflow]]
-name = "Dev Test"
-mode = "sequential"
-author = 3559563
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run start -- test"
