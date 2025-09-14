@@ -42,7 +42,8 @@ const REFRESH_INSTRUCTIONS = `• Go to <#${config.chan.xpLog}> and run \`!xp\`\
 const CONFIRM_FOOTER = `👍 confirm (all players) / 👎 cancel (any player).\nWill auto-confirm after 30 seconds.`
 
 //const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
-const JSONURL = "https://d.jsonx.repl.co?x="
+const OLDJSONURL = "https://d.jsonx.repl.co?x="
+const JSONURL = "http://tinyurl.com/tjson?input="
 const SCENEURL = "https://discord.com/channels/";
 
 const Debug = config.DEV;
@@ -351,14 +352,17 @@ function retrieveData(source)
 	const url = JSONURL.replace(sanitize,"\\$1") + "\(.*\)\\)"
 	const regex = new RegExp(url)
 
+	const oldUrl = OLDJSONURL.replace(sanitize,"\\$1") + "\(.*\)\\)"
+	const oldRegex = new RegExp(oldUrl)
+
 	const data  = []
 
 	const message = source?.message || source;
 	const embed  = message?.embeds?.[0] || message;
 	const fields = embed?.fields || embed;
 	if (!Array.isArray(fields)) return data;
-	
-	fields.forEach(field => 
+
+	fields.forEach(field =>
 	{
 		let match = regex.exec(field.value || "");
 		if (match)
@@ -367,6 +371,17 @@ function retrieveData(source)
 			match = decodeURIComponent(match)
 			match = JSON.parse(match)
 			data.push(match)
+		}
+		else
+		{
+			match = oldRegex.exec(field.value || "");
+			if (match)
+			{
+				match = match[1]
+				match = decodeURIComponent(match)
+				match = JSON.parse(match)
+				data.push(match)
+			}
 		}
 	});
 	return data;

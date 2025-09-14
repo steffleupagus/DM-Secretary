@@ -20,7 +20,7 @@ const MIN_POSTS = DEBUG ? 0 : 3;
 const PROMPT_REACTS = false;
 const DUELTITLE = `${config.emoji.xp} Duel Complete`;
 const DUELXPTITLE = `${config.emoji.xp} Duel`
-const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
+const JSONURL = "http://tinyurl.com/tjson?input=";
 
 /// Error Messages
 const ERROR_WRONG_CHANNEL = "Cannot process duels in this channel."
