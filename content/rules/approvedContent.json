@@ -861,12 +861,12 @@
 					{
 						"inline": true,
 						"name": "Subclasses",
-						"value": "✅ [Aberrant](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-aberrant-mind-tce=b1)\n✅ [Clockwork](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-clockwork-soul-tce=b1)\n✅ [Divine](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-divine-soul-xge=b1)\n✅ [Draconic](https://www.dndbeyond.com/classes/sorcerer#DraconicBloodline)\n✅ [Giant (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-giant-soul-ua-uagiantsoulsorcerer=b1)\n✅ [Lunar](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-lunar-dsotdq=b1)\n✅ [Phoenix (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-phoenix-ua-uasorcerer=b1)\n✅ [Shadow](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-shadow-xge=b1)\n✅ [Stone (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-stone-ua-uasorcerer=b1)\n✅ [Storm](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-storm-xge=b1)\n✅ [Wild Magic](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-wild-phb=b1)"
+						"value": "✅ [Aberrant](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-aberrant-mind-tce=b1)\n✅ [Clockwork](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-clockwork-soul-tce=b1)\n✅ [Divine](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-divine-soul-xge=b1)\n✅ [Draconic](https://www.dndbeyond.com/classes/sorcerer#DraconicBloodline)\n✅ [Giant (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-giant-soul-ua-uagiantsoulsorcerer=b1)\n✅ [Lunar](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-lunar-dsotdq=b1)\n✅ [Phoenix (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-phoenix-ua-uasorcerer=b1)\n✅ [Sea (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub_sea%20(ua)_uasorcerer=b1)\n✅ [Shadow](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-shadow-xge=b1)\n✅ [Stone (UA)](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-stone-ua-uasorcerer=b1)\n✅ [Storm](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-storm-xge=b1)"
 					},
 					{
 						"inline": true,
 						"name": "** **",
-						"value": "🚫 Crimson (tCM)\n🚫 Desert (GSB)\n🚫 Favored (UA) - *Divine Soul*\n🚫 Light Weaver (BoET)\n🚫 Oni (OTTG)\n🚫 Psionic (UA) - *Aberrant Mind*\n🚫 Pyromancer (PSK)\n🚫 Runechild (TDCSR)\n🚫 Sea (UA)"
+						"value": "✅ [Wild Magic](https://2014.5e.tools/classes.html#sorcerer_phb,state:sub-wild-phb=b1)\n🚫 Crimson (tCM)\n🚫 Desert (GSB)\n🚫 Favored (UA) - *Divine Soul*\n🚫 Light Weaver (BoET)\n🚫 Oni (OTTG)\n🚫 Psionic (UA) - *Aberrant Mind*\n🚫 Pyromancer (PSK)\n🚫 Runechild (TDCSR)"
 					},
 					{
 						"name":"⚠️ Note",
