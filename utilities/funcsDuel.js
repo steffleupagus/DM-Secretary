@@ -31,75 +31,8 @@ const dmRoles = [config.role.DM, config.role.DMOnDuty, config.role.Moderator, co
 const BR = `\n\`${' '.repeat(69)}\``
 const DM_PING = `<${PING_PREFIX}&${config.role.DMOnDuty}>`
 const CONTACT = `*If you need help, contact ${DM_PING} for assistance.*\n${BR}\n`
+const {INSTRUCT,ERROR,STEP} = require(`./constants.js`)
 
-/// Execution Stages & grouped variables
-const STEP = {
-	CONFIRM_CHAN: "Verifying channels & threads.",
-	GET_ROLEPLAY: "Gathering RP posts and compiling roleplay data.",
-	EXTRACT_INIT: "Parsing duel events and compiling character data & transcript.",
-	FETCH_LEVELS: "Fetching level data from database and calculating exp caps.",
-	COLLATE_DATA: "Processing & combining data from duel and RP.",
-	CONFIRM_DATA: "Validating and confirming participant data.",
-	TEAMS_GROUPS: "Grouping participants into teams.",
-	FIND_OUTCOME: "Determining duel outcome.",
-	CALC_WIN_EXP: "Calculating particpant experience.",
-	CONFIRMATION: "Awaiting player confirmation.",
-	DUEL_SUMMARY: "Generating duel transcript.",
-	APPROVE_PEND: "Sending to DMs for approval.",
-	CLOSING_DUEL: "Closing duel & scene."
-}
-const INSTRUCT = {
-//
-	CLOSE_DUEL: `**The previous duel is still active.**\nPlease close it with \`!i end\` before continuing.\n${CONTACT}`,
-//Team Confirmation
-	CONFIRM_TEAM: `${CONTACT}`,
-	CONFIRM_TEAM_FOOTER: `${config.emoji.yes} Accept teams | ${config.emoji.no} Cancel command\n`+
-						 `${config.emoji.edit} Move participant to team | ${config.emoji.undo} Reset all participants`,
-//Winner confirmation
-	SELECTWIN: `Select the winner(s), or \`${config.emoji.no} Cancel\`.`,
-	SETUP: `*If your level is incorrect or your character is missing, you may need to run \`!setup\` in <#${config.chan.xpSpam}>*`,
-//Confirmation screen
-	CONFIRM: (yes,no) => `Review the information below.\n\`${yes} Approve\` if it looks correct.\n\`${no} Cancel\` if anything looks wrong.`,
-	REFRESH: `- Go to <#${config.chan.xpSpam}> and run \`!xp\`\n- Come back and run the command again.\n- `,
-	CONFIRM_FOOTER: (yes,no) => `${yes} approve (all particpants) / ${no} cancel (any participant).\nWill auto-confirm after 30 seconds.`,
-//DM Approval Screen
-	APPROVE_FOOTER: `${config.emoji.yes}  Approve | ${config.emoji.no} Reject (no exp) | ${config.emoji.edit} Comment | Toggle Exp Calc | Edit`,
-	PENDING_APPROVAL: (msg) => `***Please wait** a [@Helper](${msg}) will review your duel as soon as possible. Awards will be posted in <#${xpLogChannel}> once the duel has been reviewed.*\n*If anything looks incorrect, contact ${DM_PING} for assistance.*\n${BR}\n`,
-//Duel Approved
-	LOG_FOOTER: `-# Log your gains in <#${config.chan.xpSpam}>\n-# - ${config.emoji.xp} \`!xp <#>\`\n-# - ${config.emoji.gp} \`!coins <#>\`\n`
-}
-const ERROR = {
-	//Data acquisition & state flow errors
-	WRONG_CHANNEL: `Cannot process duels in this channel.\n${BR}`,
-	PROCESSING_DUEL: `Already processing this duel\n${CONTACT}`,
-	ACTIVE_DUEL: `**Duel Active**\nEnd the duel with \`!i end\` and run this command again.\n${CONTACT}`,
-	NO_MECH_CHAN: (chan) => `**No duel found**\n*No mechanics thread found. (<#${chan}>)*\n${CONTACT}`,
-	NO_DUEL_DATA: `**No duel found**\nThe most recent duel may have already been processed.\n${CONTACT}`,
-	IN_RP_CHAN: (chan) => `**No duel found**\n*You must run this command in the Mechanics thread (<#${chan}>)*`,
-	NO_RP_CHAN: (chan) => `**No roleplay found**\n*No roleplay channel found. (<#${chan}>)*\n${CONTACT}`,
-	NO_RP_DATA: `**No roleplay found**\nThere is no RP found for the current duel.\n${CONTACT}`,
-	PARTICIPATE: `Could not confirm sufficient participation to process this duel.\n${INSTRUCT.SETUP}\n${CONTACT}`,
-	NO_OUTCOME: `Could not determine the duel outcome.\n${INSTRUCT.SELECTWIN}\n${CONTACT}`,
-	CANCELLED: `Command cancelled.`,
-	ABORTED: `Duel aborted.`,
-
-	//DM Alerts
-	USER_GROUP: {name:"Auto Group", value:`Characters played by the same user are auto-grouped.`},
-	MANUAL_GROUP: {name:"Manual Groups", value:`Groups manually modified.`},
-	INVALID_OUTCOME: {name:"Invalid Outcome", invalid:`Duel ended without clear conclusion.`, manual:`Outcome manually modified.`},
-
-
-	//Data validation warnings
-	NO_PLAYER: { name:"No Player", value:(err) => `Was not able to identify player for \`${err.name}\``},
-	NO_VALID_USER: {name:"Invalid Player", value:(err) => `Player flagged <@${err.user}> (\`${err.name}\`)`},
-	NO_LEVEL: { name:"No Level", value:(err) => `\`${err.name}\` (<@${err.user}>)`, msg:`${INSTRUCT.SETUP} *Monsters added as companions, summons, or shapeshifting should not be counted and can be safely ignored.*` },
-	NO_HITPOINTS: { name:"No HP", value:(err) => `\`${err.name}\` had no HP value.`},
-	NEED_MORE_RP: {name:"Insufficient RP", value:(err) => `<@${err.user.user}> (||*${err.user.rp.length} chars|${err.user.rp.posts} posts*||)`, msg:"*Roleplay was insufficient.\nAdd additional roleplay and run the command again.*"},
-	NO_VALID_CHAR: {name:"No Character", value:(err) => `<@${err.user.user}>`, msg:"*Has no valid character in this duel.*"},
-	USER_PARTICIPANTS: {name:"Participants", value: (err) => `Requires at least two players.`},
-	CHAR_PARTICIPANTS: {name:"Participants", value: (err) => `Requires two or more characters.`},
-	INVALID_CHARS: {name:"Invalid Chars", value: (err) => `Found invalid characters.`}
-}
 const EVENT_REGEX = (() => {
 	/// REGEX
 	const ROLLED_DICE_PATTERN = `\\((~*(\\**\\d+\\**( -> )?)+~*(, )?)+\\)`
@@ -219,9 +152,8 @@ function _charTeamString(char, charList) {
 }
 function _charExpDetails(char) {
 	if (!char?.xpData) return null
-	let { capTotal, totalPool, poolPct, unCapExp, partial } = char.xpData
+	let { capTotal, totalPool, poolPct, xpMult, unCapExp, partial } = char.xpData
 	type = partial ? "partial victory" : (char.win ? "victor" : "defeat")
-	xpMult = partial ? PARTIAL_XP : (char.win ? VICTOR_XP : DEFEAT_XP)
 	xpMult = Utils.precise(100 * xpMult,1)
 	poolPct = Utils.precise(100 * poolPct,1)
 	unCapExp = Math.round(unCapExp)
@@ -429,7 +361,7 @@ await trackProgress(interaction, duelData, STEP.CONFIRM_CHAN);
 	{
 		//Confirm that the command is being executed in a valid channel and mutex lock it
 		const channelPair = ChanUtils.getDuelChannelPair(channel)
-		if (!channelPair) throw new Error(ERROR.WRONG_CHANNEL)
+		if (!channelPair) throw new Error(ERROR.WRONG_CHANNEL_DUEL)
 
 		//Resolve the RP/Mech pair into actual channels
 		rpChan = guild.channels.resolve(channelPair.RP);
@@ -492,7 +424,7 @@ await trackProgress(interaction, duelData, STEP.FIND_OUTCOME);
 		if (null == duelData) {
 			mechChan.send("``` ```")
 			await resetDuelButton(rpChan)
-			throw Error("Duel Aborted")
+			throw Error(ERROR.DUEL_ABORTED)
 		}
 	}
 await trackProgress(interaction, duelData, STEP.CALC_WIN_EXP);
@@ -526,8 +458,7 @@ await trackProgress(interaction, duelData, STEP.DUEL_SUMMARY);
 	}
 await trackProgress(interaction, duelData, STEP.APPROVE_PEND);
 	{
-		if (DEBUGFILE) Log.FILE("duelData_before.txt", duelData)
-
+		if (DEBUGFILE) Log.FILE("./data/test/duelData.json", duelData)
 		const dmEmbed = await _sendApprovalMessage(duelData, interaction);
 		duelData.dmMsg = dmEmbed.url;
 	}
@@ -583,15 +514,19 @@ async function _getDuelData(mechChan, message=null) {
 /// @message		- The initiative message to parse
 function _parseInitiative(message) {
 	const logDate = DateTime.now().toUnixInteger();
+	const startDate = DateTime.fromJSDate(message.createdAt).toUnixInteger();
 	const duelData = {
-						channel:message.channel.id,
-						message:null,
-						logDate:logDate,
-						rounds:0,
-						chars:[],
-						players:[],
-						events:[],
-						urls:{roleplay:"",duel:"",transcript:""}
+		type:"duel",
+		matchup:null,
+		rounds:0,
+		channel:message.channel.id,
+		message:null,
+		startDate,
+		logDate,
+		chars:[],
+		players:[],
+		events:[],
+		urls:{roleplay:"",duel:"",transcript:""}
 	};
 	//Test to see if the initiative message matches what we expect form an initiative post
 	if (!INIT_REGEX.END_MATCH.test(message.content)) return null;
@@ -977,10 +912,10 @@ function _getTeamsComponents(duelData, _edit = null) {
 
 	//Create a select dropdown of each character showing their current team
 	const charOpts = duelData.chars.map(c => {
-		const team	= duelData.teams[char.team]?.chars ?? ``
+		const team	= duelData.teams[c.team]?.chars ?? ``
 		const desc	= "Team: " + (team.length > 1 ? team?.join(' | ') : `solo`);
 		//Omit any characters if they are the only one on their team and moving them would leave only one team
-		const users = duelData.teams[char.team]?.users ?? []
+		const users = duelData.teams[c.team]?.users ?? []
 		const valid = users.length > 1 || duelData.teams.length > 2
 		return valid ? Prompt.createSelectOption(c.char, desc, c.char) : null
 	}).filter(x => x);
@@ -1211,22 +1146,17 @@ function _calculateExp(duelData) {
 
 	const victorCapTotal = victors.reduce((total,team) => total + team.xpCap, 0)
 	const defeatCapTotal = defeats.reduce((total,team) => total + team.xpCap, 0)
-	// const victorExpPool = Math.ceil(defeatCapTotal * VICTOR_XP)
-	// const defeatExpPool = Math.floor(defeatCapTotal * DEFEAT_XP)
-	// const partVictorPool = Math.ceil(partVictorTotal * PARTIAL_XP)
-	// const partDefeatPool = Math.ceil(defeatCapTotal * PARTIAL_XP)
-	// const xpData = {victorCapTotal, victorExpPool, defeatCapTotal, defeatExpPool, partVictorPool}
 
+	//Determine exp award for each participant
 	duelData.chars.map(c => {
 		const partial = (c.win ? c.hpCur == 0 : partVictorTotal >= defeatCapTotal) ? 1 : 0
 
-		//Determine the total pool
+		//Determine the total pool -
+		//if the loser took out one of the winners, give them the partial win if it's higher
 		const totalPool = (partial && !c.win) ? partVictorTotal : defeatCapTotal
-		//Determine the group's percentage of the total purse
+		//Determine the group's percentage of the totalPool, lower if individual went down
 		const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
-		const grpPool = totalPool * grpPoolPct;
-		// const grpPool = (c.win ? (partial ? partDefeatPool : victorExpPool)	//Victor
-		// 	   				   : (partial ? partVictorPool : defeatExpPool))//Defeat
+		const xpMult = grpPoolPct;
 		//Determine the individual's percentage of their group's pool
 		const capTotal = (c.win ? victorCapTotal : defeatCapTotal);
 		const poolPct = Math.min(1, c.xpCap / capTotal);
@@ -1237,7 +1167,7 @@ function _calculateExp(duelData) {
 		console.log(totalPool, grpPoolPct, poolPct)
 
 		c.team = duelData.teams.findIndex(t => t.users.includes(c.user))
-		c.xpData = { capTotal, totalPool, poolPct, unCapExp, partial }
+		c.xpData = { totalPool, xpMult, capTotal, poolPct, unCapExp, partial, cap:c.xpCap }
 	})
 
 	return duelData;
@@ -1258,18 +1188,20 @@ function _calculateGold(duelData) {
 		const { partial } = c.xpData;
 
 		//Determine the purse amount
+		//if the loser took out one of the winners, give them the partial win if it's higher
 		const totalPurse = (partial && !c.win) ? partialTotal : defeatTotal
 		//Determine the group's percentage of the total purse
 		const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
+		const gpMult = grpPoolPct
 		//Determine the individual's percentage of their group's pool
 		const goldCap = goldPerLevel[c.level];
 		const capTotal = (c.win ? victorTotal : defeatTotal);
 		const poolPct = Math.min(1, goldCap / capTotal);
 		//Calculate the individual's total gold award
-		const uncapGold = totalPurse * grpPoolPct * poolPct
+		const uncapGold = Utils.precise(totalPurse * grpPoolPct * poolPct)
 
 		c.gpAmt = Math.min(goldCap, Math.round(uncapGold))
-		c.gpData = { cap:goldCap, capTotal, totalPurse, poolPct, uncapGold }
+		c.gpData = { totalPurse, gpMult, capTotal, poolPct, uncapGold, cap:goldCap }
 	})
 
 	return duelData;
@@ -1325,7 +1257,7 @@ function _cleanData(duelData) {
 	if (duelData.teams) duelData.matchup = duelData.teams.map(t => t.chars.length).join(' v ');
 	delete duelData.teams;
 
-	//We can teconstruct the outcome data from character / team fields
+	//We can reconstruct the outcome data from character / team fields
 	delete duelData.outcome;
 
 	return duelData;
@@ -1384,7 +1316,7 @@ async function _sendApprovalMessage(duelData, interaction, components = null, ca
 									.addFields(fields)
 									.setFooter({text:footer})
 									.setTimestamp(date.toMillis())
-	if (errorFields.length > 0) dmEmbed.setColor(0xff6900);
+	if (errorFields.length > 0) dmEmbed.setColor(0xff6900);	//FFCC4D
 	const {yes,no,edit,xp} = config.emoji;
 	components = components ?? [ Prompt.createButtonRow([
 		{style:ButtonStyle.Success, emoji:yes, label:"Approve", custom_id:"duel.approve", disabled},
@@ -1393,7 +1325,7 @@ async function _sendApprovalMessage(duelData, interaction, components = null, ca
 		{style:ButtonStyle.Secondary, emoji:"📱", label:"Calcs", custom_id:`duel.calc_${!calc}`, disabled},
 		{style:ButtonStyle.Secondary, emoji:edit, label:"Edit", custom_id:"duel.edit"}
 	])]
-	if (DEBUGFILE) Log.FILE("duelData_embed.txt", dmEmbed)
+	if (DEBUGFILE) Log.FILE("./data/duelData_embed.json", dmEmbed)
 
 	if (interaction.channel.id == dmPingChannel) {
 		dmEmbed = await interaction.editReply({content:`${DM_PING}`,embeds:[dmEmbed], components})
@@ -1939,7 +1871,7 @@ async function undoResult(interaction) {
 		duelData = _calculateExp(duelData)
 		duelData = _calculateGold(duelData)
 		duelData = _cleanData(duelData)
-		duelData = _cleanData(duelData)
+
 		const approveMsg = await _sendApprovalMessage(duelData, interaction);
 	} catch (error) {
 		await _handleComponentError({interaction, restoreEmbeds, restoreComponents, duelData, error})
