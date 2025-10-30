@@ -1,4 +1,4 @@
-const { ChannelType, EmbedBuilder, InteractionType } = require('discord.js')
+const { ChannelType, EmbedBuilder, InteractionType, ButtonStyle } = require('discord.js')
 const util = require("util");
 const cli = require("cli-color");
 const purple = cli.xterm(93);
@@ -7,6 +7,9 @@ const fs = require('fs');
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
+const {STEP,ERROR} = require(`./constants.js`)
+const Prompt = require(`./promptUtils.js`)
+const BR = `\n\`${' '.repeat(69)}\``
 
 const isString = (value) => typeof value === 'string';
 const errorLogDefaultArgs = {
@@ -132,6 +135,53 @@ class Logger
 		  }
 		});
 	}
+
+	async TRACE (interaction, data, newStage, DEBUG) {
+		/// Finish up the previous stage output
+		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
+		const { ...debugData } = (data ?? {});
+		const cause = data ? {cause:data} : {}
+
+		if (DEBUG.BREAKSTEP && DEBUG.BREAKSTEP == data.stage) {
+			this.DEBUG([data, STEPKEY, DEBUG.BREAKSTEP])
+			throw new Error(`Break step reached`, cause)
+		}
+		else if (DEBUG?.WATCHDATA && debugData) this.DEBUG(debugData)
+
+		/// Process the next stage output
+		data.stage = newStage;
+		STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
+		this.STEP(STEPKEY, newStage)
+		if (newStage.includes("TODO")) this.TODO(newStage)
+		const embed = new EmbedBuilder().setTitle("Processing").setThumbnail(DEBUG.THUMB)
+										.setDescription(`${newStage}\n${BR}`)
+										.setFooter({text:"Please Be Patient"})
+		const components = [];
+		const buttons = [
+			{style:ButtonStyle.Primary, emoji:config.emoji.play, label:"Run", custom_id:"run"},
+			{style:ButtonStyle.Primary, emoji:config.emoji.next, label:"Step", custom_id:"step"},
+			{style:ButtonStyle.Primary, emoji:config.emoji.next, label:"Step & Log", custom_id:"steplog"},
+			{style:ButtonStyle.Primary, emoji:config.emoji.pause, label: "Pause", custom_id:"pause"},
+			{style:ButtonStyle.Secondary, emoji:config.emoji.no, label:"Cancel", custom_id:"cancel"},
+		]
+		if (DEBUG?.EMBEDDATA) {
+			let fields = (DEBUG?.EMBEDDATA && data) ? this.DEBUGFIELDS(data) : [];
+			console.log(this.VAR(fields))
+			if (fields.length > 0) embed.addFields(fields)
+		}
+		if (DEBUG?.TRACESTEP) components.push(Prompt.createButtonRow(buttons))
+		const prompt = await interaction?.editReply({content:"",embeds:[embed],components})
+		if (DEBUG?.TRACESTEP) {
+			let input = await Prompt.collectComponents(prompt, {default:"step"});
+			while (input.values[0] == "pause")
+				input = await Prompt.collectComponents(prompt, {default:"pause",time:Prompt.Time.Extended})
+			if (input.values[0] == "run") DEBUG.TRACESTEP = false;
+			if (input.values[0] == "cancel") throw Error(ERROR.CANCELLED, cause)
+			if (input.values[0] == "steplog") await interaction?.channel?.send({embeds:[embed]})
+		}
+		await interaction?.editReply({components:[]})
+	}
+
 }
 
 module.exports = new Logger();
