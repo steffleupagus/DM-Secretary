@@ -1,16 +1,15 @@
 const { SlashCommandBuilder, ChannelType, PermissionsBitField } = require('discord.js')
-
-const mod = process.env.mod || "";
-const config = require(`../../config/${mod}_config.json`);
-const Embed = require(`../../utilities/EmbedPaginator.js`);
-const Utils = require(`../../utilities/utilFuncs.js`)
+const mod		= process.env.mod || "";
+const config	= require(`../../config/${mod}_config.json`);
+const Embed		= require(`../../utilities/EmbedPaginator.js`);
+const Utils		= require(`../../utilities/utilFuncs.js`)
 
 async function execute(interaction)
 {
-	const user  = interaction.user;
-	const client = interaction.client;
-	const guild = interaction.guild;
-	const ephemeral = true;
+	const user		= interaction.user;
+	const client	= interaction.client;
+	const guild		= interaction.guild;
+	const ephemeral	= true;
 
 	await interaction.deferReply({ephemeral: ephemeral});
 
