@@ -21,7 +21,7 @@ async function readGvar(gvar)
 }
 
 async function readSpreadsheet(file,sheet)
-{	
+{
 	var request = `https://sheets.googleapis.com/v4/spreadsheets/${file}/values/${sheet}?key=${google_token}`
 	var auth = { 'Authorization': google_token };
 	let res = await axios.get(request, { headers: auth });
