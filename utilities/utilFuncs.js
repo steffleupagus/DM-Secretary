@@ -156,12 +156,12 @@ module.exports =
 
 	//Given an array and a callback that tests each item in the array for matching values
 	//returns an array of indexes into the first array that match the callback
-	findAllIndexes(arr, callback)  {
-    	var indexes = [], i;
-    	for(i = 0; i < arr.length; i++)
-        	if (callback(arr[i]))
-            	indexes.push(i);
-    	return indexes;
+	findAllIndexes(arr, callback) {
+		var indexes = [], i;
+		for(i = 0; i < arr.length; i++)
+			if (callback(arr[i]))
+				indexes.push(i);
+		return indexes;
 	},
 
 	// `data` is an array of objects, `key` is the key (or property accessor) to group by
@@ -173,12 +173,12 @@ module.exports =
 			var group = item[key];
 			// set `storage` for this instance of group to the outer scope
 			// (if not empty) or initialize it
-		    storage[group] = storage[group] || [];
-		    // add this item to its group within `storage`
-		    storage[group].push(item);
-		    // return the updated storage to the reduce function,
+			storage[group] = storage[group] || [];
+			// add this item to its group within `storage`
+			storage[group].push(item);
+			// return the updated storage to the reduce function,
 			// which will then loop through the next 
-		    return storage;
+			return storage;
 		}, {}); // {} is the initial value of the storage
 	},
 
@@ -337,7 +337,7 @@ module.exports =
 		const date = d.getDate() 				//DD
 
 		const hour24 = d.getHours() 			//24-hour
-		const pm     = hour24 < 12 ? 'am':'pm';	//
+		const pm	 = hour24 < 12 ? 'am':'pm';	//
 		const hour12 = hour24 % 12 || 12;
 		var	  min  	 = d.getMinutes();
 			  min	 = (min < 10 ? "0" : "") + min;
