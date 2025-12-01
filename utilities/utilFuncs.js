@@ -336,11 +336,11 @@ module.exports =
 
 		const date = d.getDate() 				//DD
 
-		const hour24 = d.getHours() 			//24-hour
-		const pm	 = hour24 < 12 ? 'am':'pm';	//
-		const hour12 = hour24 % 12 || 12;
-		var	  min  	 = d.getMinutes();
-			  min	 = (min < 10 ? "0" : "") + min;
+		const	hour24	= d.getHours() 			//24-hour
+		const	pm		= hour24 < 12 ? 'am':'pm';	//
+		const	hour12	= hour24 % 12 || 12;
+		var		min		= d.getMinutes();
+				min		= (min < 10 ? "0" : "") + min;
 
 		format = format.replace("YYYY", year);
 		format = format.replace("MMMM", monthFull);

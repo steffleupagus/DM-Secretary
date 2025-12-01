@@ -63,7 +63,7 @@
 				]
 			},
 			{
-				"title":"3️ Determine Ability Scores",
+				"title":"3️⃣ Determine Ability Scores",
 				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion.\n",
 				"fields":
 				[
@@ -90,7 +90,6 @@
 			{
 				"title":"5️⃣ Create Sheet",
 				"description":"Once you've made all your choices, it's time to put your character together and register it with the bot. The bot supports sheets from Beyond, DiceCloud, and GSheet. We have a separate walkthrough for each of them.\nRegardless of sheet:\n🔸Characters start at level 3 (which may be multiclassed, provided all multiclass requirements are met)\n🔸Take the default/average Hit Points, not rolled or manual.",
-
 				"fields":
 				[
 					{
