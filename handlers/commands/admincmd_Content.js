@@ -276,7 +276,7 @@ async function execute(interaction) {
 	await interaction.editReply(`Writing contents to <#${channel.id}>`);
 	const result = await publishContent(channel, content);
 	if (result)
-		await interaction.followUp({ content: 'Write success!', ...ephemeral  });
+		await interaction.followUp({ content: 'Write success!', ...ephemeral });
 	else
 		await interaction.followUp({ content: 'Write failure!', ...ephemeral });
 

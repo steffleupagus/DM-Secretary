@@ -1,12 +1,16 @@
-const { SlashCommandBuilder } = require('discord.js');
-const DuelUtils = require(`../../utilities/funcsDuel.js`)
-const mod = process.env.mod || "";
-const config = require(`../../config/${mod}_config.json`);
+const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js');
+const DuelUtils	= require(`../../utilities/funcsDuel.js`)
+const Utils		= require(`../../utilities/utilFuncs.js`)
+const Log		= require(`../../utilities/loggerUtils.js`)
+const mod		= process.env.mod || "";
+const config	= require(`../../config/${mod}_config.json`);
+const util		= require('util')
 
 async function execute(interaction, message=null) {
-	const channel = interaction.channel;
-	const user  = interaction.user;
-	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV})
+	const ephemeral	= (message || config.DEV) ? {flags:MessageFlags.Ephemeral} : {}
+	const channel	= interaction.channel;
+	const user		= interaction.user;
+	const reply		= await interaction.deferReply({fetchReply:true, ...ephemeral})
 
 	try {
 		const response = await DuelUtils.processDuel(channel, user, message);
