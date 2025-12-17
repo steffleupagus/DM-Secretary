@@ -2,15 +2,17 @@ const { SlashCommandBuilder } = require('discord.js');
 const SceneUtils = require(`../../utilities/funcsScene.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
+const Activity  = require(`../../utilities/activityUtils.js`)
 
 async function execute(interaction, message=null) {
-	const reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV || message != null})
+	let reply = await interaction.deferReply({fetchReply:true, ephemeral: config.DEV || message != null})
 	try {
 		const response = await SceneUtils.processScene(interaction, message);
 		if (response !== true)
-			await interaction.editReply({content:`${response}`, embeds:[], components:[]});
+			reply = await interaction.editReply({content:`${response}`, embeds:[], components:[]});
 		else
-			await interaction.editReply({content:"",components:[]});
+			reply = await interaction.editReply({content:"",components:[]});
+		Activity.updateActivity(reply);
 	} catch (error) {
 		console.log(error, error.stack, Error().stack)
 		await interaction.editReply({content:`${error.message}`, embeds:[], components:[]});
