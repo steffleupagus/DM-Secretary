@@ -18,9 +18,9 @@ const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d
 
 async function shouldHandle(client, message) {
 	let handle = false;
+	if (!message.content) return handle;
 	if (message?.mentions?.channels?.size > 0)
 		handle = true;
-
 	// Make sure the content will always be a discord link.
 	const links = [...message.content.matchAll(discordLinkReg)];
 	if (links.length)

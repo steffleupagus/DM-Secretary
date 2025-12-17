@@ -7,7 +7,7 @@
 			{
 				"title":"▶️ Getting Started",
 				"description":"The character walkthrough is intended to be useful for D&D newbies, as well as experienced players who just need to know how we do things in the server. The main description block of each step is aimed towards explaining the facets of a character sheet to newbies to D&D while server-specific instructions and information have been broken out into separate fields so experienced players can find them easily."
-			},			
+			},
 			{
 				"indexBreak":true,
 				"title":"▶️ Create an RP Profile",
@@ -22,7 +22,7 @@
 						"name":"Reference Image",
 						"value":"An image reference for your character is not strictly required, but is recommended. AI art is heavily discouraged. If you do not have the artistic talent to make your own, or funds to commission one, found art is acceptable. Please note that the staff may flag any art that we deem inappropriate at our discretion."
 					},
-					{						
+					{
 						"name":"Kinks & Limits",
 						"value":"You *must* enter something for your kinks and limits, and we heavily encourage you to actually give this some thought and put something in besides \n`Kinks: Everything / Limits: None`\nMore often than not people find out the hard way that they aren't actually into *everything*. Even if you are actually limitless, this vagueness is *extremely* unhelpful for people who might want to roleplay with you. Give them some idea of what kind of thing they might be getting into when they play with you.\nIf your list is truly extensive, fill out your biggest ones.\nYou can also use a [kink list generator](https://steffleupagus.github.io/kinklist/) to help you out.\nIf you're not sure what you're into, that's fine too. A [kink test](https://www.kinktest.org/test) may help you.\n\nIt's not uncommon for a person's sexuality to constantly evolve. Feel free to edit your kinks and limits as you discover new things that you enjoy (or not)!"
 					}
@@ -63,7 +63,7 @@
 				]
 			},
 			{
-				"title":"3️ Determine Ability Scores",
+				"title":"3️⃣ Determine Ability Scores",
 				"description":"Much of what your character does in the game depends on his or her six abilities, which provide a quick description of every creature's physical and mental characteristics:\n<:d20:704040692946698361> **Strength**, measuring physical power.\nMost often applies to Athletics, such as climbing or grappling\n<:d20:704040692946698361> **Dexterity**, measuring agility.\nMost often applies to Acrobatics, Sleight of Hand, and Stealth\n<:d20:704040692946698361> **Constitution**, measuring endurance.\nDetermines your hardiness, including your Hit Points\n<:d20:704040692946698361> **Intelligence**, measuring reasoning & memory.\nApplies to knowledge of Arcana, History, Investigation, Nature, & Religion\n<:d20:704040692946698361> **Wisdom**, measuring perception and insight\nApplies to skills of Animal Handling, Medicine, and Survival\n<:d20:704040692946698361> **Charisma**, measuring force of personality\nApplies to Deception, Intimidation, Performance, and Persuasion.\n",
 				"fields":
 				[
@@ -90,7 +90,6 @@
 			{
 				"title":"5️⃣ Create Sheet",
 				"description":"Once you've made all your choices, it's time to put your character together and register it with the bot. The bot supports sheets from Beyond, DiceCloud, and GSheet. We have a separate walkthrough for each of them.\nRegardless of sheet:\n🔸Characters start at level 3 (which may be multiclassed, provided all multiclass requirements are met)\n🔸Take the default/average Hit Points, not rolled or manual.",
-
 				"fields":
 				[
 					{
@@ -131,7 +130,7 @@
 					{
 						"name":"🇩 __**Setup (Exp & Gold)**__: `!setup`",
 						"value":"- Once approved, run the `!setup` command in <#704307298407022622>\nThis will automatically set your exp to level 3 (`900xp`) and your Gold to `150gp` and set up a few other server-specific things"
-					}					
+					}
 				]
 			},
 			{
@@ -166,7 +165,7 @@
 					{
 						"name":"**Prepared Spells**",
 						"value":"*(only relevant for Artificers, Druids, Clerics, Wizards or Paladins)*\n`!prep always <X>` where X is the number of spells your class has always prepared (do not include cantrips)\n`!prep add <spell>` for each of your prepared spells."
-					}					
+					}
 				]
 			}
 		]

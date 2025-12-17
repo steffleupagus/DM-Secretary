@@ -16,7 +16,7 @@ async function GenerateEditMenu(message)
 	if (message.content)
 	{
 		const content = message.content.length > 100 ? message.content.substr(0, 97) + '...' : message.content
-		menu.addFields({name:`Content`, value:`*${message.content.length} Characters*\n\`${content}\`}`})		
+		menu.addFields({name:`Content`, value:`*${message.content.length} Characters*\n\`${content}\`}`})
 	}
 
 	if (message.embeds)
@@ -27,7 +27,6 @@ async function GenerateEditMenu(message)
 			menu.addFields({name,value})
 		})
 	}
-	
 	return {embeds:[menu],ephemeral:true}
 }
 
@@ -53,33 +52,37 @@ async function execute(interaction)
 	const message = interaction.targetMessage; //await channel?.messages.fetch(messageId);
 	const customId = module.exports.data.name+messageId
 	if (message?.author?.id != interaction.client.user.id) throw "Cannot edit this message"
-	
+
 	console.log(customId);
 	// const menu = await GenerateEditMenu(message)
 	// await interaction.reply(menu)
-	
+
+	let content = message.content
 	const modal  = new ModalBuilder().setCustomId(customId).setTitle(messageId)
 	const inputs = []
+	inputs.push(createTextInputRow("content","Content",content))
 	message.embeds.forEach((embed, i) => {
 		i = i.toString()
 		const json  = JSON.stringify(embed.toJSON(),null,"\t").toString()
 		const input = createTextInputRow(i, i, json)
 		inputs.push(input)
 	})
-	const modalInteraction = await Prompt.promptModal(interaction, messageId, customId, 
+	const modalInteraction = await Prompt.promptModal(interaction, messageId, customId,
 													  inputs, Prompt.Time.Extended)
-	
-	modalInteraction.reply({content:message.url,ephemeral:true})	
+
+	modalInteraction.reply({content:message.url,ephemeral:true})
 
 	const embeds = []
 	modalInteraction.fields.fields.forEach( (field, i) => {
-		embeds.push(EmbedBuilder.from(JSON.parse(field.value)))
+		if ("content" == field.customId)
+			content = field.value
+		else
+			embeds.push(EmbedBuilder.from(JSON.parse(field.value)))
 	})
-	console.log(embeds)
-	await message.edit({embeds:embeds})	
+	await message.edit({content, embeds})
 }
 
-module.exports = 
+module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Update Content')

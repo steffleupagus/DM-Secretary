@@ -19,9 +19,9 @@ function parseProfileFields(message)
 	if (!message || 0 == message.length)
 		return null
 
-	const profile = 
+	const profile =
 	{
-		name:null,		
+		name:null,
 		user:message.author.id,
 		profileId:message.id,
 		url:message.url
@@ -55,7 +55,7 @@ function fallbackParse(message)
 	else
 	{
 		message.content = `name: ${message.content}`
-		const profile = parseProfile(message)		
+		const profile = parseProfile(message)
 		if (!profile.name) return {}
 		return profile
 	}
@@ -66,13 +66,13 @@ function fallbackParse(message)
 ///
 function parseProfile(message, fallback = true) {
 	const pcProfile = message.channel.id == config.chan.pcProfile
-	
+
 	message.content = message?.content ?? "";
 	message.content = message.content.replace(breakRegex,"")
-					 				 .replace(emojiRegex,"")					 
+					 				 .replace(emojiRegex,"")
 									 .replace(customEmoji,"")
 					 				 .normalize(normalize).trim();
-	
+
 	//Parse the profile
 	const profile = parseProfileFields(message);
 	if (profile)

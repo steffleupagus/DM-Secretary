@@ -19,7 +19,6 @@ let cache = {};
 /// Run the slash command
 async function execute(interaction) {
 	console.log('\n'.repeat(69))
-	
 	await interaction.deferReply({ephemeral: true})
 	return await processBatchProfiles(interaction);
 }
@@ -43,7 +42,7 @@ async function processBatchProfiles(interaction) {
 	//Loop through the profile channels
 	const channels = [config.chan.pcProfile, config.chan.npcProfile];
 	await Utils.asyncArrayForEach(channels, async channel => {
-		//Fetch the channel object from the ID & collect all the profiles in it		
+		//Fetch the channel object from the ID & collect all the profiles in it
 		channel     = await interaction.guild.channels.fetch(channel);
 		if (cache[channel])
 		{
@@ -73,8 +72,8 @@ async function processBatchProfiles(interaction) {
 			const type = message.channel.id == config.chan.pcProfile ? "PC" : "NPC"
 			const followup = last?.user == message.author.id
 			//Parse the profile
-			const profile = Profile.parseProfile(message, !followup);	
-			
+			const profile = Profile.parseProfile(message, !followup);
+
 			//If we have a name, push it
 			if (profile?.name)
 			{
@@ -105,7 +104,7 @@ async function processBatchProfiles(interaction) {
 	const total = charRecords.length + chaffPosts.length
 	console.log(`${charRecords.length} chars + ${chaffPosts.length} chaff = ${total} posts (expected ${totalPosts})`)
 
-	//Output the data. 
+	//Output the data.
 	const userCount = Object.keys(charsByUser).length
 	console.log(`Profiles: ${charRecords.length} chars across ${userCount} users`)
 	await processProfiles(interaction, charRecords, charsByUser, charErrors)
@@ -123,7 +122,7 @@ async function processProfiles(interaction, charRecords, charsByUser, charErrors
 	const showProfiles = interaction.options.getBoolean('profiles') ?? true;
 	const showErrors   = interaction.options.getBoolean('errors') ?? true;
 
-	await Utils.asyncArrayForEach(userList, async user => 
+	await Utils.asyncArrayForEach(userList, async user =>
 	{
 		let member = await interaction.guild.members.fetch(user).catch(x=>console.log(`Unknown Member: ${user}`))
 		const memberID   = member?.user?.id || user;
@@ -148,7 +147,7 @@ async function processProfiles(interaction, charRecords, charsByUser, charErrors
 		let content = (showErrors && errors.length) ? "** **\n\n\n** **" : null;
 		let embed = new EmbedBuilder().setTitle(`Character Data: ${memberName}`).setDescription(desc);
 		const msg = {}
-		const totalFields = 1 + (showSheets ? sheetRecords.length : 0) + 
+		const totalFields = 1 + (showSheets ? sheetRecords.length : 0) +
 							1 + (showProfiles ? profileRecords.length : 0)
 		//Generate a map of sheets -> profiles
 		if (showSheets && sheetEmbed)	//&& sheetRecords && sheetRecords.length > 0
@@ -175,7 +174,7 @@ async function processProfiles(interaction, charRecords, charsByUser, charErrors
 				embed.addFields({name:"Profiles",value:profEmbed.data.description})
 				if (profEmbed.data.fields) embed.addFields(profEmbed.data.fields)
 				embed.setFooter(profEmbed.data.footer)
-			}				
+			}
 		}
 
 		if (totalFields <= 25 && totalFields > 0)
@@ -185,9 +184,9 @@ async function processProfiles(interaction, charRecords, charsByUser, charErrors
 		if (showErrors && errors && errors.length > 0)
 		{
 			console.log(errors)
-			errors = errors.map(error => 
-			{ 				
-				return {name:error.name || "**[Unnamed Profile]**",value:error.note||error.url||"** **\n"} 
+			errors = errors.map(error =>
+			{
+				return {name:error.name || "**[Unnamed Profile]**",value:error.note||error.url||"** **\n"}
 			})
 			title = `Error Data: ${memberName}`
 			desc  = `<@${memberID}>\n\`                                                                     \`\n`
@@ -216,7 +215,7 @@ function generateDBRecords(interaction, sheetRecords, profileRecords)
 		name: char.name,
 		profile: char.id,
 		level: __NPC,
-		update: Date.now()		
+		update: Date.now()
 	}));
 		//		dbRecords.add(record)
 	const bulkOps = profileRecords.map(char => ({
@@ -226,7 +225,7 @@ function generateDBRecords(interaction, sheetRecords, profileRecords)
 			upsert: true
 		}
 	}));
-	const result = CharMeta.collection.bulkWrite(bulkOps);	
+	const result = CharMeta.collection.bulkWrite(bulkOps);
 	// throw "DONE"
 
 // The objects in each list contain different fields, but both contain a name field. Items from list P should be added to the destination list. Items from list S should only be added if the name field is similar to a name in list P and its data merged with that object in the destination list. Please present simple pseudocode for this function
@@ -249,14 +248,14 @@ function generateRecordEmbed(member, records, compareRecords, isSheet, includeDe
 	let desc  = //`\`                                                                     \`\n`+
 				  `${((records.length > slotCount) ? `⚠️`:``)}`+
 				  `${records.length} / ${slotCount} ${dataType}s`
-		desc = `\`${desc}${' '.repeat(69-desc.length)}\`${redFlags}\n`	
+		desc = `\`${desc}${' '.repeat(69-desc.length)}\`${redFlags}\n`
 	embed = new EmbedBuilder().setTitle(title).setDescription(desc).setFooter({text:title});
 	records.forEach(char => {
 		const type  = ((char.type ?? '') + " " + dataType).trim()
 		const name  = `[${type}] ${char.name}`
 		let {icon, match, value} = outputMatches(char, compareRecords, isSheet)
 		let multiMatch = ""
-		if (match) 
+		if (match)
 		{
 			matches[match] = [...(matches[match] || []), char.name]
 			if (matches[match].length > 1)
@@ -265,19 +264,19 @@ function generateRecordEmbed(member, records, compareRecords, isSheet, includeDe
 				errors.push({name:match, note:multiMatch})
 			}
 		}
-		if (value.includes("❌")) 
+		if (value.includes("❌"))
 		{
 			if (isSheet) char = {name:char.name, user:char.user}
 			char.name = `[${isSheet ? "Sheet" : "Profile"}] ${char.name}`
 			char.note = value
 			errors.push(char)
-		}		
+		}
 		embed.addFields({name,value:(value + multiMatch)})
 		//'✅','⚠️','❌'
 	});
 
 	console.log(matches)
-	
+
 	return {embed,errors}
 }
 
@@ -305,13 +304,13 @@ function generateMatches(char, records, isSheet) {
 	const matType = isSheet ? "Profile" : "Sheet"
 	const type    = isNPC ? "NPC" : "RP"
 	let icon  = ""
-	let value = ""	
+	let value = ""
 	let error = ""
 	let match = null
 	let matchList = ""
 
 	//If we have no character name to match, early exit
-	if (!char || !char.name) return {error: `This ${recType} has no name. How did we get here?`}	
+	if (!char || !char.name) return {error: `This ${recType} has no name. How did we get here?`}
 	//If we have no names to match against, early exit
 	if (!records || records.length == 0)
 	{
@@ -323,10 +322,10 @@ function generateMatches(char, records, isSheet) {
 
 	const names = records.map(item => item.name);
 	const simpleNames = names.map(name => name.replace(/\(.*\)/,''))
-			char.name = char.name.replace(/\(.*\)/,'')	
+			char.name = char.name.replace(/\(.*\)/,'')
 
 	//Find the best match or log some info as to why it faled
-	const matches = StrComp.findBestMatch(char.name, simpleNames) 
+	const matches = StrComp.findBestMatch(char.name, simpleNames)
 	// catch(e) { console.log(char.name, names); return `Match Failed: ${char.name}\n${names.join("\n")}` }
 	//Process the results into something more usable
 	let best      = matches.bestMatch ?? null;
@@ -346,35 +345,35 @@ function generateMatches(char, records, isSheet) {
 			icon = '❌'
 			error = "NPC profile has a matching sheet record - Delete!"
 		}
-		//value = `\`*Best ${matType} Match:* \`${match.target} [${Math.floor(match.rating * 1000)/10}%]`			
-	}	
+		//value = `\`*Best ${matType} Match:* \`${match.target} [${Math.floor(match.rating * 1000)/10}%]`
+	}
 	else
 	{
-		//Check for false negatives. Not 100% accurate, so flag with a question mark		
+		//Check for false negatives. Not 100% accurate, so flag with a question mark
 		const commonWords = ["the"]
 		const charParts = char.name.toLowerCase().split(/\s/g).filter(x => !commonWords.includes(x))
-		ratings.forEach(opt => 
+		ratings.forEach(opt =>
 		{
 			const optName = opt.target.toLowerCase()
 			const optParts = optName.toLowerCase().split(/\s/g).filter(x => !commonWords.includes(x))
 			const partialMatches = [...optParts.map(part => char.name.toLowerCase().includes(part) ? part : ""),
 								    ...charParts.map(part => optName.includes(part) ? part : "")].filter(n => n)
 			const parts = [...new Set(partialMatches)];
-			let flag = "";			
+			let flag = "";
 			const contains = optName.includes(char.name) || char.name.includes(optName) || partialMatches.length > 0
 			if (contains)
 			{
 				icon = '❓'
 				flag = "[**(False Negative\`❓\`)**]"
-				match = {target:opt.target, rating:0.69, partial:partialMatches.length > 0} 
+				match = {target:opt.target, rating:0.69, partial:partialMatches.length > 0}
 				value = `⚠️ Partial Match` + (partialMatches.length > 0 ? ` [${parts.join(",")}]` : ``)
 			}
 			if (!isNPC || flag)
-				matchList += `- ${opt.target} [${Math.floor(opt.rating * 1000)/10}%]${flag}\n`			
+				matchList += `- ${opt.target} [${Math.floor(opt.rating * 1000)/10}%]${flag}\n`
 		})
 		//We don't have a good match, output that status
 		if (!match)
-		{	
+		{
 			icon = isSheet ? '❌' : isNPC ? '✅' : '⚠️'
 			if (isSheet)
 				error = `Sheet has insufficient profile match - Delete?`
@@ -413,7 +412,7 @@ function countMemberProfiles(member, profiles, slotInfo) {
 /// Calculate the slot info for a member based on their roles
 function getMemberSlotInfo(member) {
 	const pcRoles = config.role.pcRoles
-	const npcRoles = config.role.npcRoles	
+	const npcRoles = config.role.npcRoles
 	let pcSlots = 1
 	let npcSlots= 0
 	let pcRole = "";
@@ -422,7 +421,7 @@ function getMemberSlotInfo(member) {
 	{
 		const roles = member.roles.cache.filter(x => pcRoles.includes(x.id) || npcRoles.includes(x.id))
 		roles.forEach(role => {
-			pcSlots  += pcRoles.findIndex(e => e == role.id) + 1 
+			pcSlots  += pcRoles.findIndex(e => e == role.id) + 1
 			npcSlots += npcRoles.findIndex(e => e == role.id) + 1
 		})
 		pcRole = pcRoles.filter(id => roles.some(role => role.id === id)).map(id => `<@&${id}>`).join("")
@@ -458,11 +457,11 @@ const data = new SlashCommandBuilder()
 		.setDescription('Show errors')
 	)
 
-const userPermissions = [	PermissionsBitField.Flags.ViewChannel,						 
+const userPermissions = [	PermissionsBitField.Flags.ViewChannel,
 							PermissionsBitField.Flags.SendMessages		];
 const whitelistRoles  = [	config.role.Builder	];
 
-module.exports = 
+module.exports =
 {
 	data: data,
 	whitelistRoles: whitelistRoles,
@@ -523,10 +522,10 @@ module.exports =
 // }
 
 // ///
-// /// 
+// ///
 // ///
 // async function outputCharDataByUser(interaction, charRecords, charsByUser, charErrors)
-// {	
+// {
 // //	console.log(util.inspect(charsByUser, false, null, true))
 
 // 	const debugChan = await interaction.guild.channels.fetch(config.debug.profile);
@@ -547,7 +546,7 @@ module.exports =
 
 // 	//// Generate the embed output with every user in its own field
 // 	// const embed = new Embed()
-// 	// await Utils.asyncArrayForEach(users, async user => 
+// 	// await Utils.asyncArrayForEach(users, async user =>
 // 	// {
 // 	// 	const profiles = charsByUser[user.user].map(profile => getProfileDataOutput(profile))
 // 	// 	let member = await interaction.guild.members.fetch(user.user).catch(x=>console.log(`Unknown Member: ${user.user}`))
@@ -560,14 +559,14 @@ module.exports =
 // 	// catch(e){ console.log(embed, e) }
 
 // 	// Generate the embed output with every user with their own embed. This might be a lot.
-// 	await Utils.asyncArrayForEach(users, async user => 
+// 	await Utils.asyncArrayForEach(users, async user =>
 // 	{
 // 		const profiles = charsByUser[user.user]
 // 		if (profiles.length > 0)
 // 		{
 // 			profiles.sort((a,b) => a.name.localeCompare(b.name))
 // 			const  pcs  = profiles.filter(p => p.type == "PC").map(p => `\`${p.name}\``)
-// 			const npcs  = profiles.filter(p => p.type == "NPC").map(p => `\`${p.name}\``)			
+// 			const npcs  = profiles.filter(p => p.type == "NPC").map(p => `\`${p.name}\``)
 
 // 			let slots   = 1
 // 			let roles   = []
@@ -583,14 +582,14 @@ module.exports =
 // 				npcSlot = npcSlot.filter(id => roles.some(role => role.id === id)).map(id => `<@&${id}>`).join("")
 // 			}
 // 			else
-// 				pcSlot = npcSlot = ""		
+// 				pcSlot = npcSlot = ""
 // 			member = member?.displayName || member?.user?.username || user.user
-// 			const title = `${member} [${profiles.length} Profiles]`			
+// 			const title = `${member} [${profiles.length} Profiles]`
 // 			const embed = new EmbedBuilder()
 // 			embed.setTitle(title)
 // 			embed.setDescription(`${slots} total slots [${roles.map(x => `<@&${x.id}>`).join("")}]\n`+
 // 								 `${pcSlot}${pcs.length}x PCs: ${pcs.join(", ")}\n`+
-// 								 `${npcSlot}${npcs.length}x NPCs: ${npcs.join(", ")}\n`+								 
+// 								 `${npcSlot}${npcs.length}x NPCs: ${npcs.join(", ")}\n`+
 // 								 `\`                                                                     \``)
 
 // 			const total = pcs.length + npcs.length
@@ -628,17 +627,17 @@ module.exports =
 // 	if (!profile.name && !profile.match)
 // 		return `<@${profile.user}> ${profile.url} ${profile.tags}\n`
 
-// 	profile = `<@${profile.user}> ${profile.url}\n- ${profile.type} Profile: ${profile.name}` + 
-// 			  (profile.match ? `\n- ${profile.match}` : "")	
+// 	profile = `<@${profile.user}> ${profile.url}\n- ${profile.type} Profile: ${profile.name}` +
+// 			  (profile.match ? `\n- ${profile.match}` : "")
 // 	return profile
 // }
 
 // ///
-// /// 
+// ///
 // ///
 // async function outputErrors(interaction, charErrors)
 // {
-// 	const debugChan = await interaction.guild.channels.fetch(config.debug.profile);	
+// 	const debugChan = await interaction.guild.channels.fetch(config.debug.profile);
 // 	const profiles = charErrors.map(prof => getProfileDataOutput(prof))
 
 // 	console.log(charErrors)
@@ -654,13 +653,13 @@ module.exports =
 // 	catch(e){ console.log(embed, e) }
 
 // 	// let content = "";
-// 	// await Utils.asyncArrayForEach(profiles, async profile => 
+// 	// await Utils.asyncArrayForEach(profiles, async profile =>
 // 	// {
 // 	// 	if (content.length + profile.length > 2000)
 // 	// 	{
 // 	// 		await debugChan.send(content)
 // 	// 		content = "";
-// 	// 	}			
+// 	// 	}
 // 	// 	content += profile;
 // 	// })
 // 	// if (content.length > 0)
@@ -685,8 +684,8 @@ module.exports =
 // 	let idx = 0;
 // 	let last = null
 // 	const includeMatch = interaction.channel.id == config.profileChannel
-// //	await allMessages.each( async (message) => 
-// 	await Utils.asyncCollectionForEach(allMessages, async (message) => 
+// //	await allMessages.each( async (message) =>
+// 	await Utils.asyncCollectionForEach(allMessages, async (message) =>
 // 	{
 // 		const followup = last?.author?.id == message.author.id
 // 		const profile = await processProfile(message, includeMatch);	//followup);
@@ -698,7 +697,7 @@ module.exports =
 // 			charsByUser[profile.user].push(profile);
 // 		}
 // 		else if (!followup)
-// 		{	
+// 		{
 // 			profile.tags = message.content.split('\n')[0].trim();
 // 			charErrors.push(profile);
 // 		}

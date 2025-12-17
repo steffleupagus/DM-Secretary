@@ -18,23 +18,23 @@ class EmbedPaginator
 			DESC:  EMBED_DESC_MAX,
 			TITLE: EMBED_TITLE_MAX
 		}
-				
-        this._current_field_name = '';
-        this._current_field_inline = false;
-        this._current_field = [];
-        this._field_count = 0;
-        this._embed_count = 0;
 
-        this._footer_url = null;
-        this._footer_text = null;
+		this._current_field_name = '';
+		this._current_field_inline = false;
+		this._current_field = [];
+		this._field_count = 0;
+		this._embed_count = 0;
+
+		this._footer_url = null;
+		this._footer_text = null;
 
 		this._color = null;
 
-        this._default_embed_options = embed_options;
-        this._embeds = [new EmbedBuilder(embed_options)];
+		this._default_embed_options = embed_options;
+		this._embeds = [new EmbedBuilder(embed_options)];
 		this._total_fields = 0;
 		this._current_fields = 0;
-	}	
+	}
 
 	countEmbeds()
 	{
@@ -46,173 +46,181 @@ class EmbedPaginator
 		return this._current_fields;
 	}
 
-	/// Adds a title to the embed. 
+	/// Adds a title to the embed.
 	/// Appears before any fields. Will throw if the current embed can't fit the value.
-    setTitle(value)
+	setTitle(value)
 	{
-        if (value.length > EMBED_TITLE_MAX || value.length + this._embed_count > EMBED_MAX)
-            throw "The current embed cannot fit this title.";
-        this._embeds[this._embeds.length-1].setTitle(value)
-        this._embed_count += value.length
+		if (value.length > EMBED_TITLE_MAX || value.length + this._embed_count > EMBED_MAX)
+			throw "The current embed cannot fit this title.";
+		this._embeds[this._embeds.length-1].setTitle(value)
+		this._embed_count += value.length
+		return this;
 	}
 
 	setUrl(value)
 	{
 		if (value.length + this._embed_count > EMBED_MAX)
 			throw "The current embed cannot fit this url.";
-        this._embeds[this._embeds.length-1].url = value
-        this._embed_count += value.length
+		this._embeds[this._embeds.length-1].url = value
+		this._embed_count += value.length
+		return this;
 	}
 
 	setColor(value)
 	{
 		this._embeds[this._embeds.length-1].setColor(value);
+		return this;
 	}
-	
-	/// Adds a description to the embed. 
-	/// Appears before any fields. Will throw if the current embed can't fit the value.
-    setDescription(value)
-	{
-        if (value.length > EMBED_DESC_MAX || value.length + this._embed_count > EMBED_MAX)
-            throw "The current embed cannot fit this description.";
 
-        this._embeds[this._embeds.length-1].setDescription(value)
-        this._embed_count += value.length
+	/// Adds a description to the embed.
+	/// Appears before any fields. Will throw if the current embed can't fit the value.
+	setDescription(value)
+	{
+		if (value.length > EMBED_DESC_MAX || value.length + this._embed_count > EMBED_MAX)
+			throw "The current embed cannot fit this description.";
+
+		this._embeds[this._embeds.length-1].setDescription(value)
+		this._embed_count += value.length
+		return this;
 	}
 
 	setThumbnail(value)
 	{
-        if (value.length + this._embed_count > EMBED_MAX)
-            throw "The current embed cannot fit this thumbnail URL.";
-        this._embeds[this._embeds.length-1].setThumbnail(value);
-        this._embed_count += value.length
+		if (value.length + this._embed_count > EMBED_MAX)
+			throw "The current embed cannot fit this thumbnail URL.";
+		this._embeds[this._embeds.length-1].setThumbnail(value);
+		this._embed_count += value.length
+		return this;
 	}
 
 	setImage(value)
 	{
-        if (value.length + this._embed_count > EMBED_MAX)
-            throw "The current embed cannot fit this image URL.";
-        this._embeds[this._embeds.length-1].setImage(value);
-        this._embed_count += value.length
+		if (value.length + this._embed_count > EMBED_MAX)
+			throw "The current embed cannot fit this image URL.";
+		this._embeds[this._embeds.length-1].setImage(value);
+		this._embed_count += value.length
+		return this;
 	}
 
 
 	canSafelyAddField(name, value)
 	{
-        if (value.length > EMBED_FIELD_MAX || 
+		if (value.length > EMBED_FIELD_MAX ||
 			name.length > EMBED_TITLE_MAX)
 			return false;
-		return true;		
+		return true;
 	}
 
 	/// Add a new field to the help embed.
-    addField(name='', value='', inline=false)
+	addField(name='', value='', inline=false)
 	{
-        if (value.length > EMBED_FIELD_MAX || name.length > EMBED_TITLE_MAX)
+		if (value.length > EMBED_FIELD_MAX || name.length > EMBED_TITLE_MAX)
 		{
 			console.log(name, "\n", value);
-            throw "This value is too large to store in an embed field.";
+			throw "This value is too large to store in an embed field.";
 		}
 
-        if (this._current_field.length > 0)
-            this.close_field()
+		if (this._current_field.length > 0)
+			this.close_field()
 
 		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
 			this.close_embed()
-			
+
 		this._total_fields++;
 		this._current_fields++;
-        this._field_count += value.length + 1
+		this._field_count += value.length + 1
 
-        this._current_field_name = name
-        this._current_field_inline = inline
-        this._current_field.push(value)
+		this._current_field_name = name
+		this._current_field_inline = inline
+		this._current_field.push(value)
+		return this;
 	}
 
 	/// Add a line of text to the last field in the embed.
-    extendField(value, rolloverTitle="** **", inline=false)
+	extendField(value, rolloverTitle="** **", inline=false)
 	{
-        if (value.length > EMBED_FIELD_MAX)
-            throw "This value is too large to store in an embed field.";
+		if (value.length > EMBED_FIELD_MAX)
+			throw "This value is too large to store in an embed field.";
 
-        if (this._field_count + value.length + 1 > EMBED_FIELD_MAX)
+		if (this._field_count + value.length + 1 > EMBED_FIELD_MAX)
 		{
-            this.close_field();
-            this.addField(rolloverTitle, value, inline);  //create field with no title to look ~seamless
+			this.close_field();
+			this.addField(rolloverTitle, value, inline);  //create field with no title to look ~seamless
 		}
-        else
+		else
 		{
-            this._field_count += value.length + 1;
-            this._current_field.push(value);
+			this._field_count += value.length + 1;
+			this._current_field.push(value);
 		}
+		return this;
 	}
 
 	/// Terminate the current field and write it to the last embed.
-    close_field()
+	close_field()
 	{
-        var value = this._current_field.join('\n');
+		var value = this._current_field.join('\n');
 
-        if (this._embed_count + value.length + this._current_field_name.length > EMBED_MAX)
-            this.close_embed();
+		if (this._embed_count + value.length + this._current_field_name.length > EMBED_MAX)
+			this.close_embed();
 
 		if (this.countCurrentFields() >= EMBED_FIELD_COUNT_MAX)
 			this.close_embed();
-		
-        this._embeds[this._embeds.length-1].addFields([{name:this._current_field_name, 
+
+		this._embeds[this._embeds.length-1].addFields([{name:this._current_field_name,
 														value:value,
 													  	inline:this._current_field_inline}]);
-        this._embed_count += value.length + this._current_field_name.length;
+		this._embed_count += value.length + this._current_field_name.length;
 
-        this._current_field_name = '';
-        this._current_field_inline = false;
-        this._current_field = [];
-        this._field_count = 0;
+		this._current_field_name = '';
+		this._current_field_inline = false;
+		this._current_field = [];
+		this._field_count = 0;
 	}
 
 	calcFieldLength(name='', value='', inline=false)
 	{
 		return name.length + value.length
 	}
-	
+
 	closeField()
 	{
 		this.close_field()
 	}
 
-
 	/// Sets the footer on the final embed.
-    setFooter(value=null, icon_url=null)
+	setFooter(value=null, icon_url=null)
 	{
 		this._footer_text = value.text || value
-        this._footer_url = icon_url
+		this._footer_url = icon_url
+		return this;
 	}
 
 	/// Write the footer to the last embed."""
-    close_footer()
+	close_footer()
 	{
-        var current_count = this._embed_count;
-        var kwargs = {}
-        if (this._footer_url)
+		var current_count = this._embed_count;
+		var kwargs = {}
+		if (this._footer_url)
 		{
-            current_count += this._footer_url.length;
-            kwargs['icon_url'] = this._footer_url;
+			current_count += this._footer_url.length;
+			kwargs['icon_url'] = this._footer_url;
 		}
-        if (this._footer_text)
-		{
-            current_count += this._footer_text.length;
-            kwargs['text'] = this._footer_text;
-		}
-        if (current_count > EMBED_MAX)
-            this.close_embed()
 		if (this._footer_text)
-        	this._embeds[this._embeds.length-1].setFooter(kwargs);		
+		{
+			current_count += this._footer_text.length;
+			kwargs['text'] = this._footer_text;
+		}
+		if (current_count > EMBED_MAX)
+			this.close_embed()
+		if (this._footer_text)
+			this._embeds[this._embeds.length-1].setFooter(kwargs);
 	}
 
 	//Terminate the current embed and create a new one.
-    close_embed()
+	close_embed()
 	{
-        this._embeds.push(new EmbedBuilder(this._default_embed_options));
-        this._embed_count = 0;
+		this._embeds.push(new EmbedBuilder(this._default_embed_options));
+		this._embed_count = 0;
 		this._current_fields = 0;
 	}
 
@@ -224,23 +232,23 @@ class EmbedPaginator
 			this.close_embed();
 	}
 
-    length()
+	length()
 	{
 		var total = 0;
 		return total + this._embed_count;
-	
+
 		// this._embeds.forEach(e => {
 		// 	total += e.length;
 		// });
 	}
 
 	/// Returns the rendered list of embeds.
-    embeds()
+	embeds()
 	{
 		if (this._field_count)
-            this.close_field();
-        this.close_footer();
-        return this._embeds;
+			this.close_field();
+		this.close_footer();
+		return this._embeds;
 	}
 
 	async send(channel, message=null, callback=null, completedCallback=null)
@@ -281,7 +289,7 @@ class EmbedPaginator
 	}
 }
 
-EmbedPaginator.prototype.toString = function EmbedPaginatorToString() 
+EmbedPaginator.prototype.toString = function EmbedPaginatorToString()
 {
 	var output = "<EmbedPaginator\n";
 		output+= `\t_current_field_name=${this._current_field_name}\n`
@@ -292,10 +300,8 @@ EmbedPaginator.prototype.toString = function EmbedPaginatorToString()
 
 	for (let e=0; e<this._embed_count; ++e)
 	{
-		const embed = this._embeds[e];	
-
-//		console.log(e, embed)
-		if (!embed) continue;		
+		const embed = this._embeds[e];
+		if (!embed) continue;
 		output+= `\tEmbed ${e}: ${embed.fields.length} fields | ${embed.length} total length\n`
 	}
 

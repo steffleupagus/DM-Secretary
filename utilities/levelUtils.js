@@ -11,7 +11,7 @@ const dailyExpSchema = require(`../database/dailyExpSchema.js`)
 function isLevelMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author.id == client.config.bots.avrae;
+	const author  = message.author?.id == client.config.bots.avrae;
 	const channel = ((message.channel.id == client.config.chan.xpSpam)||
 					 (message.channel.id == client.config.chan.dmSpam)||
 					 (message.channel.id == client.config.chan.retire));
@@ -19,7 +19,7 @@ function isLevelMessage(client, message)
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
-
+[ \t]\r?\n
 async function logLevelMessage(client, message, interaction=null, sendResult=true)
 {
 	const updated = await updateDataFromMessage(client, message)
@@ -343,7 +343,7 @@ function parseDMAwardMessage(title,desc)
 		data.name = tMatches[0][1];
 
 	var dPattern = "You advance to Level ([0-9]+)!"
-	var dRegex = new RegExp(dPattern,"gi");	
+	var dRegex = new RegExp(dPattern,"gi");
 	var dMatches = [...title.matchAll(dRegex)];
 	if (dMatches.length > 0)
 	{
@@ -351,7 +351,7 @@ function parseDMAwardMessage(title,desc)
 	}
 
 	dPattern = "(.*) gains [0-9,xp]* \(([0-9,])xp total)"
-	dRegex = new RegExp(dPattern,"gi");	
+	dRegex = new RegExp(dPattern,"gi");
 	dMatches = [...title.matchAll(dRegex)];
 	if (dMatches.length > 0)
 	{
@@ -385,7 +385,7 @@ function parseAuthor(guild, author)
 	var displayName = author.name.toLowerCase();
 	let serverMembers = guild.members
 
-	let matchedMember = serverMembers.cache.find(m => ((m.displayName.toLowerCase() === displayName) || 
+	let matchedMember = serverMembers.cache.find(m => ((m.displayName.toLowerCase() === displayName) ||
 													   (m.user.username.toLowerCase() === displayName)));
 	if (matchedMember)
 	{
