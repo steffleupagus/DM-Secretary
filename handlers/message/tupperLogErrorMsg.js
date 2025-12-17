@@ -9,8 +9,8 @@ const error = "Warning: There is a log channel configured but I do not have perm
 async function shouldHandle(client, message)
 {
 	if (!message) return false;
-	const isBot = message.author.bot;
-	const isTupper = message.author.id == config.bots.tupper;
+	const isBot = message?.author?.bot;
+	const isTupper = message?.author?.id == config.bots.tupper;
 	const isError = message.content == error;
 	return isBot && isTupper && isError
 }

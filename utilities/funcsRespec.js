@@ -34,7 +34,7 @@ async function shouldHandle(client, message) {
 }
 
 function verifyMessageMeta(client, message) {
-	let author  = message.author.id;
+	let author  = message?.author?.id || null;
 	author = author == client.config.bots.unbelievaboat;
 
 	let channel = message.channel.id;
@@ -136,7 +136,7 @@ async function handleRespec(client, message) {
 		embed = new EmbedBuilder()
 		embed.addFields({name:"Next Steps",value:steps})
 		msg = await thread.send({
-									content:`<@${userId}><@&${helper}><@&${staff}><@&${moderator}>`, 
+									content:`<@${userId}><@&${helper}><@&${staff}><@&${moderator}>`,
 									embeds:[embed]
 								});
 		msg.pin();

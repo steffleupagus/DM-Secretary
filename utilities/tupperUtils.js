@@ -47,17 +47,17 @@ function parseTupperLog(client, message, silent = true)
 function isTupperProxyMessage(message)
 {
 	if (!message) return false;
-	const isBot = message.author.bot;
+	const isBot = message?.author?.bot;
 	const isTupper = message.applicationId == config.bots.tupper;
 	const isWebhook = message.webhookId;
-	return (isBot && isTupper && isWebhook);	
+	return (isBot && isTupper && isWebhook);
 }
 
 function isTupperLogMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author.id == client.config.bots.tupper;
-	const channel = message.channel.id == client.config.chan.tupperLog;
+	const author  = message?.author?.id == client.config.bots.tupper;
+	const channel = message?.channel?.id == client.config.chan.tupperLog;
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
@@ -71,7 +71,7 @@ async function logTupperMessage(client, message)
 		{
 			if (process.env.mod == "dev")
 				return tupperData;
-			
+
 			const channel = message.guild.channels.resolve(tupperData.cId);
 			if (channel && (chanUtils.isRoleplayChannel(channel) ||
 							chanUtils.isRoleplayThread(channel)))
@@ -107,14 +107,12 @@ async function getTupperLogLegacy(search)
 {
 	const legacyLog = require(`../config/tupperMap.json`);
 	const result = legacyLog[search.mId];
-	result.aId = result.uid;	
+	result.aId = result.uid;
 	return result;
 }
 
 async function getTupperLog(search)
 {
-//	return getTupperLogLegacy(search);
-	
 	const result = await tupperSchema.findOne(search)
 	return result;
 }
@@ -123,13 +121,13 @@ async function getTupperData(message)
 {
 	const query = {mId:message.id};
 	const result = await getTupperLog(query);
-	return result;	
+	return result;
 }
 
 async function cleanTupperData()
 {
 	const offset = 360 * 25 * 60 * 60 * 1000
-	const timestamp = Date.now() - offset	
+	const timestamp = Date.now() - offset
 	const query = {time:{$lt:timestamp}};	//1672531200000}};
 	const result = await tupperSchema.find(query);
 	const deleted = await tupperSchema.deleteMany(query);
