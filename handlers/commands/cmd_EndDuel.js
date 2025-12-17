@@ -1,7 +1,7 @@
 const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js');
 const DuelUtils	= require(`../../utilities/funcsDuel.js`)
 const Utils		= require(`../../utilities/utilFuncs.js`)
-const Log		= require(`../../utilities/loggerUtils.js`)
+//const Log		= require(`../../utilities/loggerUtils.js`)
 const mod		= process.env.mod || "";
 const config	= require(`../../config/${mod}_config.json`);
 const util		= require('util')
