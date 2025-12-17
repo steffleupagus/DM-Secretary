@@ -1,27 +1,24 @@
-const { SlashCommandBuilder,
-	    ChannelType,
-	    PermissionsBitField } = require('discord.js')
-
-const mod = process.env.mod || "";
-const config = require(`../../config/${mod}_config.json`);
-const Embed = require(`../../utilities/EmbedPaginator.js`);
-const Utils = require(`../../utilities/utilFuncs.js`)
+const { SlashCommandBuilder, ChannelType, PermissionsBitField } = require('discord.js')
+const mod		= process.env.mod || "";
+const config	= require(`../../config/${mod}_config.json`);
+const Embed		= require(`../../utilities/EmbedPaginator.js`);
+const Utils		= require(`../../utilities/utilFuncs.js`)
 
 async function execute(interaction)
 {
-	const user  = interaction.user;
-	const client = interaction.client;
-	const guild = interaction.guild;
-	const ephemeral = true;
+	const user		= interaction.user;
+	const client	= interaction.client;
+	const guild		= interaction.guild;
+	const ephemeral	= true;
 
 	await interaction.deferReply({ephemeral: ephemeral});
 
 	//Generate the output
 	let embed = new Embed();
 	embed.setTitle(`Threads`)
-	
+
 	let channels = await guild.channels.fetch();
-	channels = channels.sort((chanA, chanB) => 
+	channels = channels.sort((chanA, chanB) =>
 	{
 		const chanA_pos = chanA.parent?.position * 1000 + chanA.position;
 		const chanB_pos = chanB.parent?.position * 1000 + chanB.position;
@@ -40,7 +37,7 @@ async function execute(interaction)
 			if (activeThreads.threads.size || archivedThreads.threads.size)
 			{
 //TODO: Add commands to filter out what is displayed: active, archived, both
-//TODO: Add option to unarchive pinned threads or delete cleanup threads				
+//TODO: Add option to unarchive pinned threads or delete cleanup threads
 				embed.addField(`${channel.name}`, `<#${channel.id}>`);
 				activeThreads.threads.each(thread =>
 				{
@@ -59,11 +56,7 @@ async function execute(interaction)
 	await interaction.editReply({embeds:[embed], ephemeral: true})
 	Utils.asyncArrayForEach(embeds, async embed => {
 		await interaction.followUp({embeds:[embed], ephemeral: true})
-	})	
-}
-
-async function run(client, message, command, args)
-{
+	})
 }
 
 const data = new SlashCommandBuilder()
@@ -72,7 +65,7 @@ const data = new SlashCommandBuilder()
 	.setDefaultPermission(false)
 
 const userPermissions = [	PermissionsBitField.Flags.ManageGuild	];
-module.exports = 
+module.exports =
 {
 	data: data,
 	whitelistRoles: [
@@ -80,8 +73,6 @@ module.exports =
 	],
 	userPermissions: userPermissions,
 	execute: execute,
-	message: run,
-//	button: button,
 
 	build: config.PRODUCTION || config.DEV
 };

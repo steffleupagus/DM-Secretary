@@ -20,9 +20,9 @@
 				"fields": [
 					{
 						"name": "General Ranks",	"inline": true,
-						"value": "`5:` <@&1004079923234865273> \n`4:` <@&1003019879953215548> \n`3:` <@&1003019881928724633> \n`2:` <@&1003019883145076896> \n`1:` <@&1003019884785041570>"				  	
+						"value": "`5:` <@&1004079923234865273> \n`4:` <@&1003019879953215548> \n`3:` <@&1003019881928724633> \n`2:` <@&1003019883145076896> \n`1:` <@&1003019884785041570>"
 					},
-					{						
+					{
 						"name": "Arcanum",			"inline": true,
 						"value": "`5:` <@&699245661295738891> \n`4:` <@&833505842178293790> \n`3:` <@&1002797852868739133> \n`2:` <@&717312140821790752> \n`1:` <@&1002797861211218051> \n<@&702348143752118372>"
 					},
@@ -71,7 +71,7 @@
 				"title":"Common Guild Benefits",
 				"description": "Each of the guilds will have some common benefits, and a few unique to them. Many will be tied into the (pending) downtime system, so it might be some time before they are implemented.\n\nTo balance these, I'm considering a Renown system (which would grant benefits to people as they increase their guild Rank), and guild dues (a fee that is charged during downtimes for each Guild you're in that would not restrict the number of guilds you're in but would make joining multiples more costly).\nMost come from Group Patrons, Factions, and inspiration from the Ravnica guilds."
 			},
-			{			
+			{
 				"title":"Accommodations",
 				"description":"Each guild has some manner of accommodations to offer their members. Higher-ranked members enjoy greater comfort. <@&1003019884785041570>, who have yet to prove themselves, get no free accommodations.\n(Planning to automate Lifestyle expenses with the downtimes. A guild would cover it.)"
 			},
@@ -85,7 +85,7 @@
 					},
 					{
 						"name":"TODO",
-						"value":"- Determine how Guild Rankings work into this.\nAllow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?"						
+						"value":"- Determine how Guild Rankings work into this.\nAllow higher ranked members more options in learning, greater reductions in time/cost, limit the Expertise to certain ranks?"
 					}
 				]
 			},

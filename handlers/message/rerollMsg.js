@@ -4,10 +4,10 @@ const config = require(`../../config/${mod}_config.json`)
 const pattern = /.* : (.*) has purchased a single reroll \(limit 1\) of their character's beginning attributes./gi
 
 async function shouldHandle(client, message)
-{	
-	if (!message.author.bot) return false
+{
+	if (!message?.author?.bot) return false
 	if ((message.channel.id != config.chan.botSpam)&&
-		(message.channel.id != config.chan.gameSpam)) 
+		(message.channel.id != config.chan.gameSpam))
 		return false
 
 	if (message.content.match(pattern))
@@ -19,7 +19,7 @@ async function shouldHandle(client, message)
 async function handleCreate(client, message, interaction=null, sendResult=true)
 {
 	console.log(message.content)
-	
+
 	let result = [...message.content.matchAll(pattern)]?.[0];
 	console.log(result)
 	result = result?.[1] || null;
