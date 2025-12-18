@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder,
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags,
 	    PermissionsBitField, ButtonStyle } = require('discord.js')
 const mod = process.env.mod || "";
 const Utils = require(`../../utilities/utilFuncs.js`);
@@ -439,6 +439,7 @@ module.exports = {
 	select: handleInteraction,
 	attach:{
 		chanMention:chanMentionButton,
+		selectMenu:getLocationSelectRow,
 		activity:activityButton,
 		dmPing:dmPingButton
 	},

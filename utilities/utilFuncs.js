@@ -110,7 +110,7 @@ module.exports =
 		if ((str===null) || (str==='')) return false;
 		str = str.toString();
 
-		if (stripPrefix) str = str.split("│")[1]
+		if (stripPrefix && str.includes("│")) str = str.split("│")[1]
 		str = str.replace(/[\|\-]/g," ")
 		str = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 		str = str.replace(/ i*/ig, function(txt){return txt.toUpperCase()});
