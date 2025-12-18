@@ -1,6 +1,9 @@
 const ChanActivity = require(`../database/chanActivitySchema.js`)
 const MsgUtils  = require(`../utilities/messageUtils.js`);
 const Utils = require(`../utilities/utilFuncs.js`)
+const mod = process.env.mod || "";
+const config = require(`../config/${mod}_config.json`);
+
 const minute=60      	//seconds per Minute
 const hour=60*minute  	//Seconds per Hour
 const day=24*hour  		//Seconds per Day
@@ -15,10 +18,12 @@ function getRecordFromMessage(message) {
 	const author  = getAuthorData(message);
 	const time    = message.createdTimestamp;
 	const thread  = channel.isThread() ? channel.parentId : null;
+	const userId  = message.author?.bot ? null : message.author?.id
 
 	return {
 		chan:	channel.id,
 		user:	author,
+		userId: userId,
 		thread: thread,
 		time:	time,
 		scene: 	scene,
@@ -53,8 +58,8 @@ async function updateActivityRecord(record) {
 	// If scene, clear out users
 	if (record.scene)
 		update["$set"].users = [];
-	else
-		update["$addToSet"] = { users: record.user }
+	else if (record.userId)
+		update["$addToSet"] = { users: record.userId }
 
 	const options = { new: true, upsert: true }
 
@@ -62,6 +67,13 @@ async function updateActivityRecord(record) {
 
 	console.log(`Update: <#${record.chan}> - ${record.user}`);
 	return record;
+}
+
+///
+/// Get a list of all scene records for which set of users contains the user in question
+///
+async function getActiveScenes(user) {
+	return await ChanActivity.find({ users:user })
 }
 
 ///
@@ -155,7 +167,7 @@ function getChannelStatusFromMessageData(channel, messageData) {
 		elapsed = `<t:${Math.round(created / msps)}:R>`
 
 		//Figure out what status icon to apply to it.
-		if (channel.name.includes(openRP)) {
+		if (channel?.name?.includes(openRP)) {
 			status  = openRP
 			lastMsg = `Open RP Channel`
 			elapsed = ''
@@ -184,6 +196,7 @@ function getChannelStatusFromMessageData(channel, messageData) {
 module.exports = {
 	getAuthorData,
 	updateActivity,
+	getActiveScenes,
 	getChannelStatus,
 	getAllThreadsStatus
 };
