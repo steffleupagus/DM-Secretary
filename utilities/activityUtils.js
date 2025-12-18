@@ -76,6 +76,14 @@ async function getActiveScenes(user) {
 	return await ChanActivity.find({ users:user })
 }
 
+async function untrackScene(chan, user) {
+	const query = { chan }
+	const update = {
+		$pull: { users: user }
+	}
+	return await ChanActivity.findOneAndUpdate(query,update);
+}
+
 ///
 /// Get the author data from a message
 ///
@@ -197,6 +205,7 @@ module.exports = {
 	getAuthorData,
 	updateActivity,
 	getActiveScenes,
+	untrackScene,
 	getChannelStatus,
 	getAllThreadsStatus
 };

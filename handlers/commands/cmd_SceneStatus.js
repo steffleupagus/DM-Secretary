@@ -21,7 +21,7 @@ async function execute(interaction) {
 	await updateEmbed(interaction, user)
 }
 
-async function updateEmbed(interaction, user, sort = SortOrder.ASC)
+async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack = false)
 {
 	const channelManager = interaction.guild.channels
 	// Get the list of scenes
@@ -29,11 +29,13 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC)
 	const keys = { "time":sort }
 	scenes.sort((a,b) => Utils.priorityCompare(a,b,keys))
 	scenes = scenes.slice(0, 25)
-	console.log(scenes)
+
+	//console.log(scenes)
 
 	//Generate fields and select options from data
 	const fields = []
 	let  options = []
+	let  delOpts = []
 	const components = []
 	await Utils.asyncArrayForEach( scenes, async sceneData => {
 		const channel = channelManager.resolve(sceneData.chan)
@@ -54,18 +56,41 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC)
 		value += `-# Participants: ${users}`
 		fields.push({name,value})
 		options.push( ...locations )
+		delOpts.push( Prompt.createSelectOption(chanName, null, channel.id) )
 	})
 	options = [...new Set(options)]
+	options = options.slice(0,25)
 
 	const button = (sort == SortOrder.ASC) ?
 		{style:ButtonStyle.Primary, emoji:"🔀",label:"Sort: New to Old", custom_id:`${data.name}.descend`} :
 		{style:ButtonStyle.Primary, emoji:"🔀",label:"Sort: Old to New", custom_id:`${data.name}.ascend`}
-	if (scenes.length > 0) components.push(Prompt.createButtonRow([button]))
+	const buttons = [button]
+
+	// Attach a method to untrack a given scene
+	if (scenes.length)
+	{
+		const sortArg = sort == SortOrder.ASC ? "asc" : "desc"
+		const id = `${data.name}.untrack.${sortArg}`
+		const untrackSelect = Prompt.createSelectRow(id, delOpts, 0, 1, "Select scene to untrack")
+		buttons.push({style:ButtonStyle.Danger, emoji:"✖️",label:"Untrack",custom_id:id})
+		const cancel = {style:ButtonStyle.Secondary, emoji:"✖️",label:"Cancel",custom_id:`${data.name}.cancel`}
+		if (showUntrack)
+		{
+			components.push(untrackSelect)
+			components.push(Prompt.createButtonRow([cancel]))
+		}
+	}
+
+	// Attach a button to reorder
+	if (scenes.length > 0 && !showUntrack) components.push(Prompt.createButtonRow(buttons))
 
 	//Handle the travel attachment
 	const travel = interaction.client.commands.get(`travel${config.DEV ? "dev" : ""}`)
-	const select = await travel?.attach?.selectMenu?.(interaction, options)
-	if (select && (scenes.length > 0) ) components.push(select)
+	if (scenes.length > 0 && !showUntrack)
+	{
+		const select = await travel?.attach?.selectMenu?.(interaction, options)
+		components.push(select)
+	}
 
 	//console.log(util.inspect(select, false, null, true /* enable colors */))
 	const curSort = sort == SortOrder.ASC ? "oldest to newest" : "newest to oldest"
@@ -82,15 +107,34 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC)
 
 async function handleInteraction(interaction) {
 	const travel = interaction.client.commands.get(`travel${config.DEV ? "dev" : ""}`)
-	if (interaction.isAnySelectMenu() && travel.select)
-		await travel.select(interaction);
+	if (interaction.isAnySelectMenu())
+	{
+		if (interaction.customId.startsWith("travel") && travel.select)
+		{
+			await travel.select(interaction)
+		}
+		else if (interaction.customId.includes("untrack"))
+		{
+			await interaction.deferUpdate({ephemeral:true})
+			const ascend = interaction.customId.includes("asc")
+			const sortDir = ascend ? SortOrder.ASC : SortOrder.DESC
+			const user = interaction.message?.embeds?.[0]?.footer?.text || interaction.user.id
+
+			let scenes = interaction.values
+			await Utils.asyncArrayForEach( scenes, async scene => {
+				await Activity.untrackScene(scene, user)
+			});
+			await updateEmbed(interaction, user, sortDir)
+		}
+	}
 	else if (interaction.isButton())
 	{
 		await interaction.deferUpdate({ephemeral:true})
-		const user = interaction.message?.embeds?.[0]?.footer?.text || interaction.user.id
 		const ascend = interaction.customId.includes("asc")
 		const sortDir = ascend ? SortOrder.ASC : SortOrder.DESC
-		await updateEmbed(interaction, user, sortDir)
+		const user = interaction.message?.embeds?.[0]?.footer?.text || interaction.user.id
+		const showUntrack = interaction.customId.includes("untrack")
+		await updateEmbed(interaction, user, sortDir, showUntrack)
 	}
 }
 
