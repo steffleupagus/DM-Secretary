@@ -19,7 +19,7 @@ function isLevelMessage(client, message)
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
-[ \t]\r?\n
+
 async function logLevelMessage(client, message, interaction=null, sendResult=true)
 {
 	const updated = await updateDataFromMessage(client, message)

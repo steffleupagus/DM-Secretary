@@ -120,6 +120,12 @@ async function refreshLocationRoles(guild) {
 	})
 }
 
+async function getChannelLocationRoles(channel) {
+	if (channel.isThread()) channel = channel.parent;
+	const result = await ChannelMeta.findOne({ channelId: channel.id });
+	return result?.locations
+}
+
 module.exports =
 {
 	isRoleplayChannel,
@@ -137,5 +143,6 @@ module.exports =
 	// guildLocations,
 
 	LocationRoles,
-	refreshLocationRoles
+	refreshLocationRoles,
+	getChannelLocationRoles
 }
