@@ -34,7 +34,7 @@ class Bot
 		this.loadConfig();
 		await this.loadEvents();
 		await this.loadMessageHandlers();
-		this.client.on("ready", async () =>
+		this.client.on("clientReady", async () =>
 		{
 			await this.loadCommands();
 			await this.loadDatabase();
