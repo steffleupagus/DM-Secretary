@@ -40,19 +40,18 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack 
 	await Utils.asyncArrayForEach( scenes, async sceneData => {
 		const channel = channelManager.resolve(sceneData.chan)
 		const chanName = Utils.toSentenceCase(channel.name,true);
-		const locations = await ChanUtils.getChannelLocationRoles(channel)
 		const awardsExp = await ChanUtils.isRPExpEligible(channel)
 		const xpEmoji = awardsExp ? config.emoji.xp : ""
-
+		const locations = await ChanUtils.getChannelLocationRoles(channel) || []
+		const roles = locations?.map(x => `<@&${x}>`).join(" | ") || null
 		const sceneStatus = await Activity.getChannelStatus(channel)
 		const {status,lastMsg,elapsed,author} = sceneStatus
 		const users = sceneData.users.map(x => `<@${x}>`).join(" | ")
-		const roles = locations.map(x => `<@&${x}>`).join(" | ")
 		const name  = `**${chanName}** (<#${channel.id}>)`;
 		const msg =`${lastMsg} ${elapsed} ${author}`.trim()
 		let   value = '';
 		value += `-# ${xpEmoji}${status} - *${msg}*\n`
-		value += `-# Location: ${roles}\n`
+		if (roles) value += `-# Location: ${roles}\n`
 		value += `-# Participants: ${users}`
 		fields.push({name,value})
 		options.push( ...locations )
@@ -94,9 +93,8 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack 
 
 	//console.log(util.inspect(select, false, null, true /* enable colors */))
 	const curSort = sort == SortOrder.ASC ? "oldest to newest" : "newest to oldest"
-	const desc = scenes.length == 0 ?
-							`-# *No scenes found - replying to scenes will track them here.*` :
-							`-# *Showing a maximum of 25 scenes sorted ${curSort}.*`
+	const desc = scenes.length == 0 ? `-# *No scenes found - reply to scenes to track them here.*` :
+					`-# *Showing ${fields.length} of ${scenes.length} scenes sorted ${curSort}.*`
 	const embed = new EmbedBuilder().setTitle("Scene Status")
 									.setDescription(desc)
 									.addFields(fields)
