@@ -1,5 +1,5 @@
-const { ApplicationCommandType, MessageFlags } = require(`../../utilities/enums.js`)
-const { ContextMenuCommandBuilder } = require('discord.js')
+const { ApplicationCommandType } = require(`../../utilities/enums.js`)
+const { ContextMenuCommandBuilder, MessageFlags } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 const Utils = require(`../../utilities/utilFuncs.js`)
@@ -18,7 +18,10 @@ async function execute(interaction)
 	if (!message)
 		return interaction.reply({ 	content: 'No message found', ...ephemeral });
 
-	const author = await interaction.guild.members.fetch(message.author)
+	if (!message.author.bot)
+	{
+		const author = await interaction.guild.members.fetch(message.author)
+	}
 
 	let reply = `Processing [message](${message.url})\n`
 	await interaction.reply({ content: reply, ...ephemeral });
