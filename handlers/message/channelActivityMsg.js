@@ -26,9 +26,10 @@ module.exports = {
 	name: 'chanActivityMsg',
 	bot: true,
 	user: true,
-	menu: false,
+	menu: true,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
+	
 	
 	build: config.PRODUCTION //|| config.DEV	//
 };
