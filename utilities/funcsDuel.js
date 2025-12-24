@@ -7,7 +7,7 @@ const Prompt = require(`./promptUtils.js`);
 const MsgUtils = require(`./messageUtils.js`);
 const ChanUtils = require(`./channelUtils.js`);
 const LevelUtils = require(`./levelUtils.js`);
-const ExpUtils = require(`./expUtils.js`)
+const ExpUtils = require(`./expUtils.js`);
 
 const Mutex = require(`./mutexUtils.js`);
 const Embed = require(`./EmbedPaginator.js`)
