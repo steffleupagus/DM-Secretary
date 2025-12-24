@@ -10,7 +10,7 @@ const ChanUtils = require(`../../utilities/channelUtils.js`);
 async function shouldHandle(client, message)
 {
 	let tracked = false;
-	
+
 	if (ChanUtils.isRoleplayChannel(message.channel) || ChanUtils.isRoleplayThread(message.channel))
 		tracked = true;	//await ChanUtils.isTrackedChannel(message.channel);
 
@@ -29,7 +29,6 @@ module.exports = {
 	menu: true,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
-	
-	
+
 	build: config.PRODUCTION //|| config.DEV	//
 };
