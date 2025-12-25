@@ -57,9 +57,15 @@ async function updateActivityRecord(record) {
 	};
 	// If scene, clear out users
 	if (record.scene)
+	{
 		update["$set"].users = [];
+		update["$set"].last = null;
+	}
 	else if (record.userId)
+	{
 		update["$addToSet"] = { users: record.userId }
+		update["$set"].lastUser = record.userId
+	}
 
 	const options = { new: true, upsert: true }
 
@@ -167,6 +173,7 @@ function getChannelStatusFromMessageData(channel, messageData) {
 	let author  = ""
 	let elapsed = ""
 	let scene   = false
+	let lastUser = null
 	if (messageData) {
 		//Time data
 		let created = messageData.time;
@@ -197,8 +204,9 @@ function getChannelStatusFromMessageData(channel, messageData) {
 			status = "🧵"+status
 		if (messageData.fetch)
 			status += '.'
+		lastUser = messageData.lastUser
 	}
-	return {status,lastMsg,elapsed,author,scene};
+	return {status,lastMsg,elapsed,author,scene,lastUser};
 }
 
 module.exports = {
