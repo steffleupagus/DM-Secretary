@@ -21,7 +21,7 @@ async function execute(interaction) {
 	await updateEmbed(interaction, user)
 }
 
-async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack = false)
+async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPending = false, showUntrack = false)
 {
 	const channelManager = interaction.guild.channels
 	// Get the list of scenes
@@ -46,7 +46,7 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack 
 		const locations = await ChanUtils.getChannelLocationRoles(channel) || []
 		const roles = locations?.map(x => `<@&${x}>`).join(" | ") || null
 		const sceneStatus = await Activity.getChannelStatus(channel)
-		const {status,lastMsg,elapsed,author} = sceneStatus
+		const {status,lastMsg,elapsed,author,lastUser} = sceneStatus
 		const users = sceneData.users.map(x => `<@${x}>`).join(" | ")
 		const name  = `**${chanName}** (<#${channel.id}>)`;
 		const msg =`${lastMsg} ${elapsed} ${author}`.trim()
@@ -54,17 +54,26 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, showUntrack 
 		value += `-# ${xpEmoji}${status} - *${msg}*\n`
 		if (roles) value += `-# Location: ${roles}\n`
 		value += `-# Participants: ${users}`
-		fields.push({name,value})
-		options.push( ...locations )
-		delOpts.push( Prompt.createSelectOption(chanName, null, channel.id) )
+
+		const isLast = user == lastUser || `<@${user}>` == author
+		const showScene = filterPending ? !isLast : true
+		if (showScene)
+		{
+			fields.push({name,value})
+			options.push( ...locations )
+			delOpts.push( Prompt.createSelectOption(chanName, null, channel.id) )
+		}
 	})
 	options = [...new Set(options)]
 	options = options.slice(0,25)
 
-	const button = (sort == SortOrder.ASC) ?
+	const sortButton = (sort == SortOrder.ASC) ?
 		{style:ButtonStyle.Primary, emoji:"🔀",label:"Sort: New to Old", custom_id:`${data.name}.descend`} :
 		{style:ButtonStyle.Primary, emoji:"🔀",label:"Sort: Old to New", custom_id:`${data.name}.ascend`}
-	const buttons = [button]
+	const filterButton = filterPending ?
+		{style:ButtonStyle.Secondary, label:"Show: All", custom_id:`${data.name}.showAll`} :
+		{style:ButtonStyle.Secondary, label:"Show: Your Turn", custom_id:`${data.name}.filterPend`}
+	const buttons = [sortButton, filterButton]
 
 	// Attach a method to untrack a given scene
 	if (scenes.length)
@@ -133,7 +142,8 @@ async function handleInteraction(interaction) {
 		const sortDir = ascend ? SortOrder.ASC : SortOrder.DESC
 		const user = interaction.message?.embeds?.[0]?.footer?.text || interaction.user.id
 		const showUntrack = interaction.customId.includes("untrack")
-		await updateEmbed(interaction, user, sortDir, showUntrack)
+		const filterPend = interaction.customId.includes("filter")
+		await updateEmbed(interaction, user, sortDir, filterPend, showUntrack)
 	}
 }
 

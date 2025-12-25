@@ -118,14 +118,14 @@ function constructLevelQuery(charRPData, showPctMatch=true, npcAssign=false)
 
 
 
-	// 
-	// 
+	//
+	//
 	// const ChannelMeta = require(`../database/chanMetaSchema.js`)
-	// const ExpUtils = require(`../utilities/ExpUtils.js`) 
-	// 
+	// const ExpUtils = require(`../utilities/expUtils.js`)
+	//
 	// const Embed = require(`../utilities/EmbedPaginator.js`)
 	// const Mutex = require(`../utilities/mutexUtils.js`)
-	// 
+	//
 	// const unbapi = require("unb-api")
 	// const unbClient = new unbapi.Client(process.env.UBTOKEN)
 
