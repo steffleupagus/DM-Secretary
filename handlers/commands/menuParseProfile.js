@@ -1,21 +1,21 @@
 const { ApplicationCommandType } = require(`../../utilities/enums.js`)
 const { ContextMenuCommandBuilder, EmbedBuilder } = require('discord.js')
-const mod				= process.env.mod || "";
+const mod			= process.env.mod || "";
 const config		= require(`../../config/${mod}_config.json`)
 const Utils			= require(`../../utilities/utilFuncs.js`)
 const Embed			= require(`../../utilities/EmbedPaginator.js`)
 const Profile		= require(`../../utilities/profileUtils.js`)
-const MsgUtils	= require(`../../utilities/messageUtils.js`)
-const CharUtils	= require(`../../utilities/charUtils.js`)
-const CharMeta	= require(`../../database/charMetaSchema.js`)
+const MsgUtils		= require(`../../utilities/messageUtils.js`)
+const CharUtils		= require(`../../utilities/charUtils.js`)
+const CharMeta		= require(`../../database/charMetaSchema.js`)
 const StrComp		= require("string-similarity");
 const util			= require("util")
-const URLRegex	= /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
+const URLRegex		= /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
 
-const requiredRoles = [ config.role.Builder	];
+const requiredRoles = [ config.role.Builder ];
 const batch = true;
 
-async function execute(interaction) {	
+async function execute(interaction) {
 	const message = interaction.targetMessage;
 	if (!message) return interaction.reply({ content: 'No message found', ephemeral: true });
 	await interaction.deferReply({ephemeral: true})
@@ -65,7 +65,7 @@ async function findMatchingSheet(profile)
 }
 
 
-module.exports = 
+module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Parse Profile')

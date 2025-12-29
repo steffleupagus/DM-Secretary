@@ -1,126 +1,46 @@
-const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require('discord.js')
-const mod			= process.env.mod || "";
-const config		= require(`../../config/${mod}_config.json`)
-const Utils			= require(`../../utilities/utilFuncs.js`)
-const Embed			= require(`../../utilities/EmbedPaginator.js`)
-const Profile		= require(`../../utilities/profileUtils.js`)
-const MsgUtils		= require(`../../utilities/messageUtils.js`)
-const CharMeta		= require(`../../database/charMetaSchema.js`)
-const CharUtils		= require(`../../utilities/charUtils.js`)
-const Prompt		= require(`../../utilities/promptUtils.js`)
-const StrComp		= require("string-similarity");
-const util			= require("util")
-const URLRegex		= /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
+const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder, MessageFlags } = require('discord.js')
+const mod		= process.env.mod || "";
+const config	= require(`../../config/${mod}_config.json`)
+const Utils		= require(`../../utilities/utilFuncs.js`)
+const Embed		= require(`../../utilities/EmbedPaginator.js`)
+const Profile	= require(`../../utilities/profileUtils.js`)
+const MsgUtils	= require(`../../utilities/messageUtils.js`)
+const CharMeta	= require(`../../database/charMetaSchema.js`)
+const CharUtils	= require(`../../utilities/charUtils.js`)
+const Prompt	= require(`../../utilities/promptUtils.js`)
+const StrComp	= require("string-similarity");
+const util		= require("util")
+const URLRegex	= /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
 
 const __NPC = 0
-
-let cache = {};
 
 /// Run the slash command
 async function execute(interaction) {
 	console.log('\n'.repeat(69))
 	await interaction.deferReply({ephemeral: true})
-	return await processBatchProfiles(interaction);
-}
 
-/// Process all profiles in a batch and post the results into a debug channel
-async function processBatchProfiles(interaction) {
-	const charRecords = []
-	const charErrors  = []
-	const charsByUser = {}
-	const chaffPosts  = []
+	const batch = await Profile.batchProfiles(interaction);
+	const {charRecords, charsByUser, charErrors} = batch;
 
-	const allowAll     = interaction.options.getBoolean('batch') ?? false;
-	const targetMember = allowAll ? null : (interaction.options.getMember('user') ?? interaction.member);
-	const content = (allowAll?"Batch ":"") + "Processing" + (targetMember?` <@${targetMember.id}>`:"")
-	await interaction.editReply({content: content, ephemeral: true})
+	console.log(charRecords)
 
-	let last = null;
-	let pcProfile = null;
-	let allMessages = null;
-	let totalPosts = 0
-	//Loop through the profile channels
-	const channels = [config.chan.pcProfile, config.chan.npcProfile];
-	await Utils.asyncArrayForEach(channels, async channel => {
-		//Fetch the channel object from the ID & collect all the profiles in it
-		channel     = await interaction.guild.channels.fetch(channel);
-		if (cache[channel])
-		{
-			const messages = await channel.messages.fetch({limit: 1})
-			if (messages.first().id == cache[channel].last().id)
-				allMessages = cache[channel]
-		}
-		if (!allMessages)
-			allMessages = await MsgUtils.fetchAll(channel, { reverseArray: true, userOnly: true });
-		cache[channel] = allMessages
-
-		const count = allMessages.size;
-		totalPosts += count;
-		const output= `${channel}: ${count} messages.\n${allMessages.first().url}\n${allMessages.last().url}`
-		await interaction.followUp({ content: output, ephemeral: true });
-
-		last = null;
-		//Loop over all the profiles and process them
-		await Utils.asyncCollectionForEach(allMessages, async (message) => {
-			if (targetMember && targetMember.id != message.author.id)
-			{
-				last = null;
-				chaffPosts.push(message.id);
-				return;
-			}
-
-			const type = message.channel.id == config.chan.pcProfile ? "PC" : "NPC"
-			const followup = last?.user == message.author.id
-			//Parse the profile
-			const profile = Profile.parseProfile(message, !followup);
-
-			//If we have a name, push it
-			if (profile?.name)
-			{
-				charRecords.push(profile);
-				charsByUser[profile.user] = charsByUser[profile.user] || [];
-				charsByUser[profile.user].push(profile);
-			}
-			else
-			{
-				chaffPosts.push(message.id);
-				if (profile)
-				{
-					const lastIndex = charsByUser[profile.user].length - 1;
-					const lastType  = charsByUser[profile.user][lastIndex].type || ""
-					const lastUrl = charsByUser[profile.user][lastIndex].url || ""
-					// console.log("\n\n\n",profile,"\n",followup," | ",type," == ",lastType)
-					if (profile?.url && followup && type == lastType)
-						charsByUser[profile.user][lastIndex].url = (lastUrl + "\n" + profile.url).trim()
-					else if (!followup) charErrors.push(profile)
-				}
-			}
-			last = profile
-		});
-
-		allMessages = null;
-	});
-
-	const total = charRecords.length + chaffPosts.length
-	console.log(`${charRecords.length} chars + ${chaffPosts.length} chaff = ${total} posts (expected ${totalPosts})`)
-
-	//Output the data.
-	const userCount = Object.keys(charsByUser).length
-	console.log(`Profiles: ${charRecords.length} chars across ${userCount} users`)
-	await processProfiles(interaction, charRecords, charsByUser, charErrors)
+	//return await processProfiles(interaction,charRecords,charsByUser,charErrors);
 }
 
 ///
 async function processProfiles(interaction, charRecords, charsByUser, charErrors) {
-	const debugChan    = await interaction.guild.channels.fetch(config.debug.profile);
+	const debugChan		= await interaction.guild.channels.fetch(config.debug.profile);
 
-	const allowAll     = interaction.options.getBoolean('batch') ?? false;
-	const targetMember = allowAll ? null : (interaction.options.getMember('user') ?? interaction.member);
-	const userList     = allowAll ? Object.keys(charsByUser) : (targetMember ? [targetMember.user.id] : [])
+	const targetUserArg	= interaction.options.getMember('user') || null
+	const allowAll		= targetUserArg ? false : (interaction.options.getBoolean('batch') ?? true);
+	const targetMember	= allowAll ? null : (targetUserArg ?? interaction.member);
 
-	const showSheets   = interaction.options.getBoolean('sheets') ?? true;
-	const showProfiles = interaction.options.getBoolean('profiles') ?? true;
-	const showErrors   = interaction.options.getBoolean('errors') ?? true;
+	const userList		= allowAll ? Object.keys(charsByUser) : (targetMember ? [targetMember.user.id] : [])
+
+	const showSheets	= interaction.options.getBoolean('sheets') ?? true;
+	const showProfiles	= interaction.options.getBoolean('profiles') ?? true;
+	const showErrors	= interaction.options.getBoolean('errors') ?? true;
+	const showParams	= { showSheets, showProfiles, showErrors, channel:debugChan }
 
 	await Utils.asyncArrayForEach(userList, async user =>
 	{
@@ -350,7 +270,7 @@ function generateMatches(char, records, isSheet) {
 	else
 	{
 		//Check for false negatives. Not 100% accurate, so flag with a question mark
-		const commonWords = ["the"]
+		const commonWords = ["the","in"]
 		const charParts = char.name.toLowerCase().split(/\s/g).filter(x => !commonWords.includes(x))
 		ratings.forEach(opt =>
 		{
@@ -687,8 +607,8 @@ module.exports =
 // //	await allMessages.each( async (message) =>
 // 	await Utils.asyncCollectionForEach(allMessages, async (message) =>
 // 	{
-// 		const followup = last?.author?.id == message.author.id
-// 		const profile = await processProfile(message, includeMatch);	//followup);
+// 		const followUp = last?.author?.id == message.author.id
+// 		const profile = await processProfile(message, includeMatch);	//followUp);
 
 // 		if (profile.name)
 // 		{
@@ -696,7 +616,7 @@ module.exports =
 // 			charsByUser[profile.user] = charsByUser[profile.user] || [];
 // 			charsByUser[profile.user].push(profile);
 // 		}
-// 		else if (!followup)
+// 		else if (!followUp)
 // 		{
 // 			profile.tags = message.content.split('\n')[0].trim();
 // 			charErrors.push(profile);
