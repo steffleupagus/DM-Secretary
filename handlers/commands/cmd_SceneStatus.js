@@ -56,9 +56,12 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPendin
 		value += `-# Participants: ${users}`
 
 		const isLast = user == lastUser || `<@${user}>` == author
-		const showScene = filterPending ? !isLast : true
+		let showScene = filterPending ? !isLast : true
+		if (channel.id == config.chan.rpTest) showScene = false
 		if (showScene)
 		{
+			if (name.length + value.length > 1024)
+				value = value.substring(0, 1024-name.length);
 			fields.push({name,value})
 			options.push( ...locations )
 			delOpts.push( Prompt.createSelectOption(chanName, null, channel.id) )
