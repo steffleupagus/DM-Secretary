@@ -110,3 +110,7 @@ author = 3559563
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run deploy -- dev"
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 120000
