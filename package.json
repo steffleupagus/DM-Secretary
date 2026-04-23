@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "node": "^20.20.2"
+    "node": "^22.22.2"
   },
   "name": "DM-Secretary",
   "version": "1.0.0",

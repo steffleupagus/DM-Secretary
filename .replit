@@ -1,7 +1,7 @@
 entrypoint = "bot.js"
 
 hidden = [".config", "package-lock.json"]
-modules = ["nodejs-20"]
+modules = ["nodejs-22"]
 
 [interpreter]
 command = [
