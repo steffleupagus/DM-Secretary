@@ -1,14 +1,14 @@
-const { 
+const {
 		SlashCommandBuilder,
-		PermissionsBitField, 
-		EmbedBuilder, 
+		PermissionsBitField,
+		EmbedBuilder,
 		ChannelType,
 		ThreadAutoArchiveDuration,
 		ButtonStyle,
 		ActionRowBuilder,
 		TextInputBuilder,
-		TextInputStyle  
-	  } = require('discord.js')
+		TextInputStyle
+	} = require('discord.js')
 const mongoose = require('mongoose');
 const Prompt = require(`../../utilities/promptUtils.js`)
 const Tables = require(`../../database/tableSchema.js`)
@@ -31,7 +31,7 @@ const GOALS = `Goals:
 - NOT intended for simple RP - we have RP channels for that
 - ONE character per player. Run \`!vsheet\` in the OOC thread
 `
-const REQUIREMENTS = `Requirements: 
+const REQUIREMENTS = `Requirements:
 - ~~Interface consists of an embed and two buttons~~
  - ~~Embed lists existing tables & the DM~~
   - ~~Limit of 25 max tables to display in a single embed~~
@@ -69,7 +69,7 @@ const OOC_MSG = (user) => `This is the OOC and Mechanics/rolling channel.\n\n- \
 const RP_MSG = (user) => `This is the RP channel\n- \`Adding Bot(s)\`: <@${config.bots.tupper}>\n- <@${user}>: *@ping your players in this channel to get started!*`
 
 const TABLE_CREATE_DESC = `
-	Ping your players in your \`OOC\` and \`RP\` threads. 
+	Ping your players in your \`OOC\` and \`RP\` threads.
 	\`DM Screen\` is a private thread for you to use for monster lookup & hidden rolling.`
 const TABLE_UPDATE_DESC = TABLE_CREATE_DESC
 const TABLE_ARCHIVE_DESC = `
@@ -102,7 +102,7 @@ async function blindRefresh(channel)
 	const messages = await channel.messages.fetch({limit:1})
 	const message = messages.first();
 	console.log(message.id)
-	
+
 	const embed = await getTableListEmbed()
 	await message.edit({embeds:[embed]})
 }
@@ -114,7 +114,7 @@ async function execute(interaction){
 	{
 		//TODO - Handle using this command to close or delete a thread
 		await interaction.deferReply({ephemeral:true})
-		const embed = new EmbedBuilder().setDescription(REQUIREMENTS);          
+		const embed = new EmbedBuilder().setDescription(REQUIREMENTS);
 		const tables = await getTableListEmbed();
 		const buttons = getTableMenuButtons();
 		await interaction.channel.send({embeds:[embed]})
@@ -133,7 +133,7 @@ async function handleInteraction(interaction){
 	const member = interaction.member;
 	const prefix = `${data.name}.`
 	if (!customId.startsWith(prefix))
-		throw new Error("Interaction routed to incorrect command")      
+		throw new Error("Interaction routed to incorrect command")
 	const command = customId.replace(prefix,"");
 	let update = false;
 	let error = false;
@@ -160,9 +160,9 @@ async function handleInteraction(interaction){
 				operation = "Archive"
 				opDesc = TABLE_ARCHIVE_DESC;
 				//Don't defer since we may send a reply or update depending
-				try { 
-					table = await closeTable(interaction) 
-					if (table?.deleted) 
+				try {
+					table = await closeTable(interaction)
+					if (table?.deleted)
 					{
 						operation = "Delete"
 						opDesc = TABLE_DELETE_DESC;
@@ -183,16 +183,16 @@ async function handleInteraction(interaction){
 	}
 
 	if (update) {}
-	else if (table) update = getTableReplyEmbed(table,operation,opDesc)             
+	else if (table) update = getTableReplyEmbed(table,operation,opDesc)
 	else if (!error) error = "No table to perform operation"
-	if (error){             
+	if (error) {
 		update = new EmbedBuilder().setTitle("Cannot Complete Command").setDescription(error.toString());
-	}else{  //Don't update if we're throwing an error.
+	} else { //Don't update if we're throwing an error.
 		if (!interaction.deferred && !interaction.replied)
 			await interaction.deferUpdate({ephemeral:true});
 		const embed = await getTableListEmbed()
 		await interaction.message.edit({embeds:[embed]})
-		//      await interaction.editReply({embeds:[embed]})
+		// await interaction.editReply({embeds:[embed]})
 	}
 	if (update) {
 		if (!interaction.deferred && !interaction.replied)
@@ -200,10 +200,10 @@ async function handleInteraction(interaction){
 		else
 			await interaction.followUp({content:customId,embeds:[update], ephemeral: true})
 	}
-	if (debug){             
+	if (debug){
 		debug.addFields({name:"User",value:`<@${interaction.member.id}>`})
 		if (update)
-		{               
+		{
 			update = update.data
 			if (update.title) debug.setTitle(update.title)
 			if (update.fields) debug.addFields(update.fields)
@@ -211,12 +211,11 @@ async function handleInteraction(interaction){
 		}
 		if (error && error.stack) debug.setDescription("```\n"+error.stack+"\n```")
 		//console.log("Debug",debug,table)
-		debug.setFooter({text:`${customId} | ${(table ? table._id?.toString() : "")}`}) 
+		debug.setFooter({text:`${customId} | ${(table ? table._id?.toString() : "")}`})
 		const debugChanId = config.debug.table
 		const debugChan = await interaction.guild?.channels?.fetch(debugChanId);
 		if (debugChan) await debugChan.send({embeds:[debug]});
 	}
-	
 	return;
 }
 
@@ -225,12 +224,11 @@ const data = new SlashCommandBuilder()
 	.setDescription('Open a temporary table')
 
 const userPermissions = [       PermissionsBitField.Flags.ManageChannels,
-							PermissionsBitField.Flags.ViewChannel,                                           
-							PermissionsBitField.Flags.SendMessages          ];
+								PermissionsBitField.Flags.ViewChannel,
+								PermissionsBitField.Flags.SendMessages          ];
 const whitelistRoles  = [       config.role.Builder, config.role.Moderator      ];
 
-module.exports = 
-{
+module.exports = {
 	data: data,
 //      whitelistRoles: { [InteractionType.ApplicationCommand] : whitelistRoles },
 //      userPermissions: { [InteractionType.ApplicationCommand] : userPermissions },
@@ -246,25 +244,25 @@ module.exports =
 /// Menu interaction buttons for the main table embed
 function getTableMenuButtons() {
 	const options = [
-		{style:ButtonStyle.Success,             emoji:"🗺️", label:"Create Table",       custom_id:`${data.name}.createTable`},
-		{style:ButtonStyle.Secondary,   emoji:"📝", label:"Edit Table",  custom_id:`${data.name}.updateTable`},
-		{style:ButtonStyle.Danger,              emoji:"✖️", label:"Close Table",        custom_id:`${data.name}.closeTable`     },
-		{style:ButtonStyle.Primary,             emoji:"🔄", label:"Refresh List",        custom_id:`${data.name}.refreshList`}
+		{style:ButtonStyle.Success,		emoji:"🗺️", label:"Create Table",	custom_id:`${data.name}.createTable`},
+		{style:ButtonStyle.Secondary,	emoji:"📝", label:"Edit Table",		custom_id:`${data.name}.updateTable`},
+		{style:ButtonStyle.Danger,		emoji:"✖️", label:"Close Table",	custom_id:`${data.name}.closeTable`     },
+		{style:ButtonStyle.Primary,		emoji:"🔄", label:"Refresh List",	custom_id:`${data.name}.refreshList`}
 	]
-	return Prompt.createButtonRow(options)  
+	return Prompt.createButtonRow(options)
 }
 
 /// Generate a field containing a single table's details
 function getTableField(table, cap = null) {
 	const threads = `<#${table.oocThread}> <#${table.rpThread}>`
-	const datestamp = table.archived ?      `*archive* <t:${table.archived}:R>` : 
-										`*created* <t:${table.created}:R>`      
+	const datestamp = table.archived ?      `*archive* <t:${table.archived}:R>` :
+										`*created* <t:${table.created}:R>`
 	let value = `**DM**: <@${table.user}>\n${threads} ${datestamp}`
-	cap = cap ?? (1024 - value.length - 6)  
+	cap = cap ?? (1024 - value.length - 6)
 	let desc = table.desc.substring(0,cap) || ""
 	if (desc.length < table.desc.length) desc += "..."
 	if (table.archived) desc = ""
-	if (desc) desc = `*${desc}*\n`  
+	if (desc) desc = `*${desc}*\n`
 	value = `${desc}${value}`.trim()
 	return {name:table.title, value:value}
 }
@@ -275,7 +273,7 @@ async function getTableListEmbed() {
 	let tables = await getAllTables();
 	const archived = tables.filter(t=>t.archived);
 	const footer = `Archived: ${archived.length}`
-	tables = tables.filter(t=>(0 == t.archived));   
+	tables = tables.filter(t=>(0 == t.archived));
 
 	let totalLen = TABLE_MENU_TITLE.length + TABLE_MENU_DESC.length + SPACER.length + footer.length;
 	let count = 0
@@ -303,10 +301,10 @@ async function getTableListEmbed() {
 
 	const embed = new EmbedBuilder().setTitle(TABLE_MENU_TITLE)
 	embed.setDescription(TABLE_MENU_DESC+"\n"+SPACER);
-	if (cap < DESC_LEN) embed.setDescription(SPACER)        
+	if (cap < DESC_LEN) embed.setDescription(SPACER)
 	if (fields.length) embed.addFields(fields);
 	if (archived.length > 0) embed.setFooter({text:footer})
-	return embed;   
+	return embed;
 }
 
 /// Get the standardized reply to a single table operation
@@ -331,10 +329,10 @@ async function getSelectableTables(archived) {
 	let tables = await getAllTables();
 	tables = tables.filter(t => archived == (t.archived > 0))
 	//Cap the number of tables displayed at 25 (limit of field & select count)
-	if (archived) 
+	if (archived)
 		tables.sort((a,b) => a.archived - b.archived)
 	else
-		tables.sort((a,b) => a.created - b.created)     
+		tables.sort((a,b) => a.created - b.created)
 	tables = tables.slice(0,25)
 	return tables
 }
@@ -343,7 +341,7 @@ async function getSelectableTables(archived) {
 function getTableSelectMenu(tables, customId, hint) {
 	if (tables.length > 0)
 	{
-		tables = tables.map( t => 
+		tables = tables.map( t =>
 			{
 			let archivedStr = ""
 			if (t.archived)
@@ -399,7 +397,7 @@ async function promptSelectTable(interaction, callbacks = null) {
 	if (archivedTables.length > 0)
 	{
 		archivedTables = getTableSelectMenu(archivedTables, "archivedTables"+id, "Select archived table...")
-		components.push(archivedTables)         
+		components.push(archivedTables)
 	}
 
 	//Bail if the menu would be empty
@@ -409,7 +407,7 @@ async function promptSelectTable(interaction, callbacks = null) {
 	//Show the prompt, gather and return the response.
 	const prompt = await interaction.followUp({embeds:[menu],components:components,ephemeral:true})
 	let response = await Prompt.collectAllInteractions(prompt, callbacks || {}, null, Prompt.Time.Std)
-							   .catch(console.error)
+								.catch(console.error)
 	if (callbacks) return response;
 
 	//If we don't have a callback to process the response, convert the table ID into a record and return it
@@ -461,7 +459,7 @@ async function promptTableDetails(interaction, tables, table=null) {
 					.setLabel("Description").setPlaceholder("(Optional) A short description for your table.")
 		if (table) desc.setValue(table.desc.substring(0,DESC_LEN))
 		desc = new ActionRowBuilder().addComponents(desc)
-		inputs.push(desc)               
+		inputs.push(desc)
 	}
 
 	const id = "tableSelect_"+interaction.id
@@ -474,7 +472,7 @@ async function promptTableDetails(interaction, tables, table=null) {
 	//Defer update on the main menu embed before returning control
 	await modal.deferUpdate({ephemeral:true});
 	title = modal.fields.getTextInputValue('title') || table?.title || defaultTitle;
-	name = table ? table.name : (modal.fields.getTextInputValue('name') || defaultName);    
+	name = table ? table.name : (modal.fields.getTextInputValue('name') || defaultName);
 	desc = modal.fields.getTextInputValue('desc') || "";
 	return {modal, title, name, desc}
 }
@@ -504,14 +502,14 @@ async function promptCloseConfirm(interaction, table) {
 		{style:ButtonStyle.Secondary,                           label:`Cancel ${op}`,   custom_id:`cancel`      }
 	]
 	const isBuilder = Utils.hasAnyRole(interaction.member, whitelistRoles);
-	//if (isBuilder || debugUserAwardButton) 
-		options.push({style:ButtonStyle.Primary, emoji:config.emoji.xp, label:`Rewards`, custom_id:`rewards` })         
+	//if (isBuilder || debugUserAwardButton)
+		options.push({style:ButtonStyle.Primary, emoji:config.emoji.xp, label:`Rewards`, custom_id:`rewards` })
 	const buttons = Prompt.createButtonRow(options);
 	let prompts = await interaction.editReply({embeds:[embed],components:[buttons],ephemeral:true})
 	const confirm = await Prompt.collectAllInteractions(prompts, {}, null, Prompt.Time.Std);
 
 	await interaction.deleteReply();
-	//If the confirmation is a cancel or timeout, cancel the result 
+	//If the confirmation is a cancel or timeout, cancel the result
 	if (!confirm || confirm == "cancel")
 		return false;
 	return confirm;
@@ -529,7 +527,7 @@ async function canCreateTable(member, tables) {
 
 	const isBuilder = Utils.hasAnyRole(member, whitelistRoles);
 	if (TEST_MODE && isBuilder)
-		return true     
+		return true
 
 	//Check user's roles for a permissive or preventative one?
 	const permitted = ALLOWED_ROLES.length == 0 || Utils.hasAnyRole(member, ALLOWED_ROLES);
@@ -545,7 +543,7 @@ async function canCreateTable(member, tables) {
 }
 
 /// Attempt to create a table
-async function createTable(interaction) {       
+async function createTable(interaction) {
 	//Check if this user can create a table
 	const tables = await getAllTables(true);
 	let create = await canCreateTable(interaction.member, tables)
@@ -560,7 +558,7 @@ async function createTable(interaction) {
 	//Generate the table record
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
-		user:           table.user || interaction.user.id, 
+		user:           table.user || interaction.user.id,
 		title:          details.title,
 		name:           details.name,
 		desc:           details.desc || "",
@@ -568,7 +566,7 @@ async function createTable(interaction) {
 		oocThread:      table.oocThread,
 		rpThread:       table.rpThread,
 		created:        timestamp,
-		updated:        timestamp,              
+		updated:        timestamp,
 		players:        {},
 		archived:       0
 	}
@@ -580,12 +578,12 @@ async function createTable(interaction) {
 /// Attempt to update a table
 async function updateTable(interaction) {
 	let table = null
-	const isBuildMod = Utils.hasAnyRole(interaction.member, whitelistRoles);        
+	const isBuildMod = Utils.hasAnyRole(interaction.member, whitelistRoles);
 	if (isBuildMod)
-	{               
-		//For a normal user, we go right into the modal. 
+	{
+		//For a normal user, we go right into the modal.
 		//For a builder, we need to ask which table to edit first
-		await interaction.deferReply({ephemeral:true});         
+		await interaction.deferReply({ephemeral:true});
 		let processSelectedTable = async function(selectInteraction, args)
 		{
 			const values  = selectInteraction.values
@@ -594,7 +592,7 @@ async function updateTable(interaction) {
 			return await promptModal(selectInteraction, null, table)
 		}
 		let timeout= async function(selectInteraction, args)
-		{                       
+		{
 			await interaction.deleteReply()
 			return null
 		}
@@ -618,7 +616,7 @@ async function updateTable(interaction) {
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
 		_id:            table._id,
-		user:           table.user, 
+		user:           table.user,
 		title:          details.title || table.title,
 		name:           details.name || table.name,
 		desc:           details.desc || "",
@@ -626,7 +624,7 @@ async function updateTable(interaction) {
 		oocThread:      table.oocThread,
 		rpThread:       table.rpThread,
 		created:        table.created,
-		updated:        timestamp,              
+		updated:        timestamp,
 		players:        table.players,
 		archived:       0
 	}
@@ -642,24 +640,24 @@ async function closeTable(interaction) {
 	let table = null
 	let error = null
 	let confirm = false
-	const isBuildMod = Utils.hasAnyRole(interaction.member, whitelistRoles);        
+	const isBuildMod = Utils.hasAnyRole(interaction.member, whitelistRoles);
 	if (isBuildMod)
-	{               
-		//For a normal user, we go right into the modal. 
+	{
+		//For a normal user, we go right into the modal.
 		//For a builder, we need to ask which table to edit first
-		let processSelectedTable = async function(selectInteraction, args) {                    
+		let processSelectedTable = async function(selectInteraction, args) {
 			const values  = selectInteraction.values
 			const tableId = (Array.isArray(values)) ? values[0] : values;
-			table = await getTableById(tableId)                                     
-			if (table) 
+			table = await getTableById(tableId)
+			if (table)
 			{
-				await selectInteraction.deferReply({ephemeral:true})            
+				await selectInteraction.deferReply({ephemeral:true})
 				confirm = await promptCloseConfirm(selectInteraction, table)
 			}
 			await interaction.deleteReply()
 			return table
 		}
-		let timeout= async function(selectInteraction, args) {                  
+		let timeout= async function(selectInteraction, args) {
 			await interaction.deleteReply()
 			return null
 		}
@@ -668,11 +666,11 @@ async function closeTable(interaction) {
 		table = await getTableArg(interaction, isBuildMod, callbacks)
 	}
 	else
-	{               
+	{
 		table = await getTableArg(interaction, isBuildMod)
 		confirm = await promptCloseConfirm(interaction, table)
 	}
-	
+
 	if (table && confirm)
 	{
 		let reply;
@@ -686,7 +684,7 @@ async function closeTable(interaction) {
 		else if (isBuildMod && table.archived)
 		{
 			reply = await deleteTable(interaction, table);
-			table.deleted = true    
+			table.deleted = true
 		}
 		else //Else, archive it
 			reply = await archiveTable(interaction, table);
@@ -713,9 +711,9 @@ async function createTableThreads(interaction, name, desc = null) {
 		"dmThread":     {name:`⚙│DM Screen`,    type: ChannelType.PrivateThread,        startMsg:DM_MSG }
 	};
 
-	const table = { };      
+	const table = { };
 	const channel = interaction.channel;
-	await Utils.asyncObjectForEach(threads, async (thread, key) => 
+	await Utils.asyncObjectForEach(threads, async (thread, key) =>
 	{
 		//Create the thread
 		const startMsg = thread.startMsg
@@ -723,7 +721,7 @@ async function createTableThreads(interaction, name, desc = null) {
 		thread.autoArchiveDuration = ThreadAutoArchiveDuration.OneHour //.OneWeek;
 		thread = await channel.threads.create(thread)
 		table[key] = thread.id
-		
+
 		//Clean up the extraneous Start Message cluttering the table channel
 		if (thread.type == ChannelType.PublicThread)
 			thread?.fetchStarterMessage().then(msg => msg.delete());
@@ -738,11 +736,11 @@ async function createTableThreads(interaction, name, desc = null) {
 
 async function _archiveTableInternal(channel, table, timestamp, archived = true)
 {
-	if (!table) throw "Attempted to archive invalid table." 
+	if (!table) throw "Attempted to archive invalid table."
 
 	table.archived = archived ? (table.archived || timestamp) : 0;
 
-	//Archive all threads (for future review to avoid abuse) 
+	//Archive all threads (for future review to avoid abuse)
 	channel = channel.isThread() ? channel.parent : channel
 	const chanThreads = channel.threads;
 	const tableThreads = [table.dmThread, table.rpThread, table.oocThread];
@@ -751,9 +749,9 @@ async function _archiveTableInternal(channel, table, timestamp, archived = true)
 		const thread = await chanThreads.fetch(threadId)
 		if (thread)
 		{
-			if (thread.archived && !archived) 
+			if (thread.archived && !archived)
 				await thread.setArchived(archived)
-			if (!thread.archived) 
+			if (!thread.archived)
 			{
 				await thread.setLocked(archived)
 				if (archived) await thread.setArchived(archived)
@@ -769,11 +767,11 @@ async function _archiveTableInternal(channel, table, timestamp, archived = true)
 async function archiveTable(interaction, table, archived = true) {
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const channel = interaction.channel;
-	
+
 	////threadUpdate event will award Exp from the RP thread when the thread is archived
 	//const thread = await chanThreads.fetch(table.rpThread)
 	//awardTable(thread, table, interaction)
-	
+
 	table = await _archiveTableInternal(channel, table, timestamp, archived)
 	return table
 }
@@ -782,7 +780,7 @@ async function autoClose(thread, table, interaction = null){
 	const timestamp = Math.floor(thread.archiveTimestamp/1000)
 	const channel = thread.parent
 
-	await _archiveTableInternal(channel, table, timestamp, true);   
+	await _archiveTableInternal(channel, table, timestamp, true);
 	await awardTable(thread, table, interaction)
 	await blindRefresh(channel)
 }
@@ -797,7 +795,7 @@ async function deleteTable(interaction, table) {
 
 	//Delete the database record
 	try
-	{       
+	{
 		let oldTable = await deleteTableRecord(table)
 		table = oldTable
 	}
@@ -808,7 +806,7 @@ async function deleteTable(interaction, table) {
 
 	//Delete the threads
 	try
-	{       
+	{
 		const chanThreads = interaction.channel.threads;
 		const threads = [table.dmThread, table.rpThread, table.oocThread];
 		Utils.asyncArrayForEach(threads, async (threadId)=>
@@ -832,7 +830,7 @@ async function deleteTable(interaction, table) {
 /// Handle updating the table database and showing the response
 async function updateTableDB(table, newTable=true) {
 	//Create or Update the table in the database
-	const record = {...table, archived: 0}          
+	const record = {...table, archived: 0}
 	if (newTable)
 		return await createTableRecord(record);
 	else
@@ -850,7 +848,7 @@ async function updateTableRecord(table) {
 		delete table["_id"]
 	}
 	const update = table;
-	const options = { new: true }//, upsert: true } 
+	const options = { new: true }//, upsert: true }
 	const record = await Tables.findOneAndUpdate(query, update, options);
 	return record;
 }
@@ -865,7 +863,7 @@ async function deleteTableRecord(table) {
 	return record;
 }
 
-async function getTableByUser(user, active = true) {    
+async function getTableByUser(user, active = true) {
 	const query = {user:user.id}
 	if (active) query.archived = 0
 	return getTable(query)
