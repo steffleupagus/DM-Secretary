@@ -223,15 +223,13 @@ const data = new SlashCommandBuilder()
 	.setName(`table${config.DEV ? "dev" : ""}`)
 	.setDescription('Open a temporary table')
 
-const userPermissions = [       PermissionsBitField.Flags.ManageChannels,
-								PermissionsBitField.Flags.ViewChannel,
-								PermissionsBitField.Flags.SendMessages          ];
-const whitelistRoles  = [       config.role.Builder, config.role.Moderator      ];
+const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
+							PermissionsBitField.Flags.ViewChannel,
+							PermissionsBitField.Flags.SendMessages		];
+const whitelistRoles  = [	config.role.Builder, config.role.Moderator	];
 
 module.exports = {
 	data: data,
-//      whitelistRoles: { [InteractionType.ApplicationCommand] : whitelistRoles },
-//      userPermissions: { [InteractionType.ApplicationCommand] : userPermissions },
 	botPermissions: userPermissions,
 	execute: execute,
 	button: handleInteraction,
@@ -246,7 +244,7 @@ function getTableMenuButtons() {
 	const options = [
 		{style:ButtonStyle.Success,		emoji:"🗺️", label:"Create Table",	custom_id:`${data.name}.createTable`},
 		{style:ButtonStyle.Secondary,	emoji:"📝", label:"Edit Table",		custom_id:`${data.name}.updateTable`},
-		{style:ButtonStyle.Danger,		emoji:"✖️", label:"Close Table",	custom_id:`${data.name}.closeTable`     },
+		{style:ButtonStyle.Danger,		emoji:"✖️", label:"Close Table",	custom_id:`${data.name}.closeTable`	},
 		{style:ButtonStyle.Primary,		emoji:"🔄", label:"Refresh List",	custom_id:`${data.name}.refreshList`}
 	]
 	return Prompt.createButtonRow(options)
@@ -255,7 +253,7 @@ function getTableMenuButtons() {
 /// Generate a field containing a single table's details
 function getTableField(table, cap = null) {
 	const threads = `<#${table.oocThread}> <#${table.rpThread}>`
-	const datestamp = table.archived ?      `*archive* <t:${table.archived}:R>` :
+	const datestamp = table.archived ?	`*archive* <t:${table.archived}:R>` :
 										`*created* <t:${table.created}:R>`
 	let value = `**DM**: <@${table.user}>\n${threads} ${datestamp}`
 	cap = cap ?? (1024 - value.length - 6)
@@ -498,8 +496,8 @@ async function promptCloseConfirm(interaction, table) {
 	const opDesc = table.archived ? DELETE_CONFIRM : ARCHIVE_CONFIRM
 	let embed  = getTableReplyEmbed(table,`${op} Confirmation`,opDesc)
 	const options = [
-		{style:ButtonStyle.Danger,              emoji:"✖️", label:`Confirm ${op}`,      custom_id:`confirm`     },
-		{style:ButtonStyle.Secondary,                           label:`Cancel ${op}`,   custom_id:`cancel`      }
+		{style:ButtonStyle.Danger,		emoji:"✖️", label:`Confirm ${op}`,	custom_id:`confirm`	},
+		{style:ButtonStyle.Secondary,				label:`Cancel ${op}`,   custom_id:`cancel`	}
 	]
 	const isBuilder = Utils.hasAnyRole(interaction.member, whitelistRoles);
 	//if (isBuilder || debugUserAwardButton)
@@ -558,17 +556,17 @@ async function createTable(interaction) {
 	//Generate the table record
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
-		user:           table.user || interaction.user.id,
-		title:          details.title,
-		name:           details.name,
-		desc:           details.desc || "",
-		dmThread:       table.dmThread,
-		oocThread:      table.oocThread,
-		rpThread:       table.rpThread,
-		created:        timestamp,
-		updated:        timestamp,
-		players:        {},
-		archived:       0
+		user:		table.user || interaction.user.id,
+		title:		details.title,
+		name:		details.name,
+		desc:		details.desc || "",
+		dmThread:	table.dmThread,
+		oocThread:	table.oocThread,
+		rpThread:	table.rpThread,
+		created:	timestamp,
+		updated:	timestamp,
+		players:	{},
+		archived:	0
 	}
 
 	const reply = await updateTableDB(tableRecord)
@@ -615,18 +613,18 @@ async function updateTable(interaction) {
 	//Generate the updated table record
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
-		_id:            table._id,
-		user:           table.user,
-		title:          details.title || table.title,
-		name:           details.name || table.name,
-		desc:           details.desc || "",
-		dmThread:       table.dmThread,
-		oocThread:      table.oocThread,
-		rpThread:       table.rpThread,
-		created:        table.created,
-		updated:        timestamp,
-		players:        table.players,
-		archived:       0
+		_id:		table._id,
+		user:		table.user,
+		title:		details.title || table.title,
+		name:		details.name || table.name,
+		desc:		details.desc || "",
+		dmThread:	table.dmThread,
+		oocThread:	table.oocThread,
+		rpThread:	table.rpThread,
+		created:	table.created,
+		updated:	timestamp,
+		players:	table.players,
+		archived:	0
 	}
 
 	//Update the database with the new record and edit the reply
@@ -706,9 +704,9 @@ async function closeTable(interaction) {
 async function createTableThreads(interaction, name, desc = null) {
 	//Define the threads we will create
 	const threads = {
-		"rpThread":     {name:`🗣│RP ${name}`,   type: ChannelType.PublicThread,         startMsg:RP_MSG},
-		"oocThread":{name:`🎲│OOC ${name}`,      type: ChannelType.PublicThread,         startMsg:OOC_MSG},
-		"dmThread":     {name:`⚙│DM Screen`,    type: ChannelType.PrivateThread,        startMsg:DM_MSG }
+		"rpThread":	{name:`🗣│RP ${name}`,	type: ChannelType.PublicThread,		startMsg:RP_MSG},
+		"oocThread":{name:`🎲│OOC ${name}`,	type: ChannelType.PublicThread,		startMsg:OOC_MSG},
+		"dmThread":	{name:`⚙│DM Screen`,	type: ChannelType.PrivateThread,	startMsg:DM_MSG }
 	};
 
 	const table = { };
