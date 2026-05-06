@@ -30,13 +30,16 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPendin
 	scenes.sort((a,b) => Utils.priorityCompare(a,b,keys))
 	scenes = scenes.slice(0, 25)
 
+	const filterChans = [config.chan.rpTest,config.chan.rpEvent];
 	//console.log(scenes)
 
 	//Generate fields and select options from data
 	const fields = []
+	const fieldsShort = []
 	let  options = []
 	let  delOpts = []
 	const components = []
+	let  totalLength = 0;
 	await Utils.asyncArrayForEach( scenes, async sceneData => {
 		let channel = channelManager.resolve(sceneData.chan)
 		if (!channel) channel = await channelManager.fetch(sceneData.chan)
@@ -47,22 +50,27 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPendin
 		const roles = locations?.map(x => `<@&${x}>`).join(" | ") || null
 		const sceneStatus = await Activity.getChannelStatus(channel)
 		const {status,lastMsg,elapsed,author,lastUser} = sceneStatus
-		const users = sceneData.users.map(x => `<@${x}>`).join(" | ")
+		const users = sceneData.users.filter(x => x != user.id).map(x => `<@${x}>`).join(" | ")
 		const name  = `**${chanName}** (<#${channel.id}>)`;
 		const msg =`${lastMsg} ${elapsed} ${author}`.trim()
-		let   value = '';
-		value += `-# ${xpEmoji}${status} - *${msg}*\n`
-		if (roles) value += `-# Location: ${roles}\n`
-		value += `-# Participants: ${users}`
+
+		const valueStatus = `-# ${xpEmoji}${status} - *${msg}*\n`;
+		const valueLocation = roles ? `-# Location: ${roles}\n` : ``;
+		const valueUsers = `-# Participants: ${users}`;
+
+		const value = valueStatus + valueLocation + valueUsers;
+		const valueShort = valueStatus + valueLocation;
 
 		const isLast = user == lastUser || `<@${user}>` == author
 		let showScene = filterPending ? !isLast : true
-		if (channel.id == config.chan.rpTest) showScene = false
+		if (filterChans.includes(channel.id) || filterChans.includes(channel.parent?.id)) showScene = false
 		if (showScene)
 		{
 			if (name.length + value.length > 1024)
 				value = value.substring(0, 1024-name.length);
 			fields.push({name,value})
+			fieldsShort.push({name,value:valueShort})
+			totalLength += name.length + value.length;
 			options.push( ...locations )
 			delOpts.push( Prompt.createSelectOption(chanName, null, channel.id) )
 		}
@@ -108,9 +116,10 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPendin
 	const curSort = sort == SortOrder.ASC ? "oldest to newest" : "newest to oldest"
 	const desc = scenes.length == 0 ? `-# *No scenes found - reply to scenes to track them here.*` :
 					`-# *Showing ${fields.length} of ${scenes.length} scenes sorted ${curSort}.*`
+	totalLength += desc.length
 	const embed = new EmbedBuilder().setTitle("Scene Status")
 									.setDescription(desc)
-									.addFields(fields)
+									.addFields((totalLength < 6000) ? fields : fieldsShort)
 									.setFooter({text:user})
 	await interaction.editReply({embeds:[embed], components})
 }
