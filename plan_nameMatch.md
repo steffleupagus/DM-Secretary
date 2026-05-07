@@ -193,8 +193,178 @@ function findBestNameMatch(input, nameList, opts = {}) { … }
  */
 function rankNameMatches(input, nameList, opts = {}) { … }
 
-module.exports = { findBestNameMatch, rankNameMatches, ACCEPT_THRESHOLD, CONFIDENT_THRESHOLD };
+/**
+ * Find the best one-to-one pairing between two lists of names.
+ * See "List Pair Matching" section below for full algorithm details.
+ *
+ * @param {string[]} listA  - First list of names (e.g. sheet names).
+ * @param {string[]} listB  - Second list of names (e.g. profile names).
+ * @param {object}   [opts] - Optional overrides (same shape as findBestNameMatch opts).
+ * @returns {{
+ *   pairs:      Array<{ a: string, b: string, score: number, confident: boolean }>,
+ *   unmatchedA: string[],
+ *   unmatchedB: string[],
+ *   conflicts:  Array<{ winner: string, loser: string, contested: string, scores: object }>
+ * }}
+ */
+function pairNameLists(listA, listB, opts = {}) { … }
+
+module.exports = {
+  findBestNameMatch,
+  rankNameMatches,
+  pairNameLists,
+  ACCEPT_THRESHOLD,
+  CONFIDENT_THRESHOLD
+};
 ```
+
+---
+
+## List Pair Matching
+
+`pairNameLists(listA, listB)` solves the problem of finding the best **one-to-one**
+assignment between two sets of names — for example, matching a user's sheet records
+against their profile records, or mapping tupper names to character names across the
+whole server.
+
+The naive approach of calling `findBestNameMatch` once per entry in A fails here: two
+entries in A can independently claim the same entry in B as their best match, producing
+duplicated pairings and leaving other entries unmatched. The algorithm below prevents
+this using a score matrix and a greedy conflict-resolution pass.
+
+---
+
+### Phase 1 — Build the Score Matrix
+
+Score every (A, B) pair using the same composite scoring pipeline defined in Steps 1–3.
+This produces an `|A| × |B|` matrix where `matrix[i][j]` is the composite score for
+pairing `listA[i]` with `listB[j]`.
+
+```
+          B0      B1      B2      B3
+A0      0.91    0.12    0.08    0.03
+A1      0.10    0.87    0.55    0.04
+A2      0.06    0.61    0.89    0.07
+A3      0.04    0.08    0.11    0.72
+```
+
+Because the scoring pipeline already normalises strings and is commutative in its signals,
+the matrix is computed once and reused in both directions.
+
+**Complexity:** `O(|A| × |B|)` scoring calls. For typical list sizes in this codebase
+(< 100 names per user) this is negligible.
+
+---
+
+### Phase 2 — Greedy Assignment with Conflict Resolution
+
+Sort all `|A| × |B|` candidate pairs by composite score descending into a flat list.
+Walk the list in order, greedily claiming each pair if and only if neither participant
+has already been assigned:
+
+```
+for each (i, j, score) in sortedPairs:
+    if score < ACCEPT_THRESHOLD  →  stop (remaining pairs are all worse)
+    if assignedA[i] or assignedB[j]  →  skip (conflict)
+    record pair (listA[i], listB[j], score)
+    mark assignedA[i] = true, assignedB[j] = true
+```
+
+This guarantees:
+- Every name appears in at most one pair.
+- The highest-scoring eligible pair is always claimed first.
+- No pair below `ACCEPT_THRESHOLD` is ever accepted.
+
+**Why greedy and not the Hungarian algorithm?**  
+The Hungarian algorithm finds the globally optimal assignment but is O(n³) and complex
+to implement correctly in pure JS. For the list sizes in this codebase the greedy result
+is identical in the vast majority of cases. If two names in A are nearly identical and
+both want the same B entry, the conflict log (Phase 3) surfaces this for manual review
+rather than silently forcing a suboptimal assignment.
+
+---
+
+### Phase 3 — Conflict Log
+
+A conflict occurs when a lower-scoring A entry wanted the same B entry that a
+higher-scoring A entry already claimed. Each conflict is recorded as:
+
+```js
+{
+  winner:    "Aria Silverwind",   // the A entry that was assigned
+  loser:     "Aria",             // the A entry that lost the contest
+  contested: "Aria Silverwind",  // the B entry both wanted
+  scores: {
+    winner: 0.91,
+    loser:  0.74
+  }
+}
+```
+
+Conflicts are included in the return value and can be surfaced in debug embeds with a
+`⚠️` flag, replacing the current ad-hoc `multiMatch` tracking in `generateRecordEmbed`.
+
+---
+
+### Phase 4 — Unmatched Collection
+
+After the assignment pass, any entry in A or B that was never assigned is collected into
+`unmatchedA` / `unmatchedB`. These replace the existing `❌` / `⚠️` icon logic in
+`generateMatches` with a structured, inspectable output.
+
+---
+
+### Return Value
+
+```js
+{
+  pairs: [
+    { a: "Aria Silverwind", b: "Aria Silverwind", score: 0.91, confident: true },
+    { a: "Brynn",           b: "Brynn Ashveil",   score: 0.78, confident: false },
+  ],
+  unmatchedA: ["OldChar (Retired)"],   // A entries with no acceptable B match
+  unmatchedB: ["Ghost Profile"],       // B entries no A entry claimed
+  conflicts: [
+    {
+      winner: "Aria Silverwind",
+      loser:  "Aria",
+      contested: "Aria Silverwind",
+      scores: { winner: 0.91, loser: 0.74 }
+    }
+  ]
+}
+```
+
+---
+
+### Optimisation: Pre-filter with a Fast Pass
+
+Before building the full score matrix, run a fast substring pre-filter to skip obviously
+zero-score pairs and avoid running the full pipeline on every combination:
+
+```
+for each (A_i, B_j):
+    if no token in A_i appears anywhere in B_j AND
+       no token in B_j appears anywhere in A_i AND
+       Dice(A_i, B_j) < 0.1:
+         matrix[i][j] = 0  (skip full pipeline)
+```
+
+This reduces the number of full pipeline calls dramatically when lists are large and
+most cross-pairs are unrelated.
+
+---
+
+### Use in `admincmd_ParseProfiles.js`
+
+`pairNameLists` directly replaces the dual calls to `generateRecordEmbed` (once for
+sheets→profiles and once for profiles→sheets). A single `pairNameLists(sheetNames,
+profileNames)` call returns the complete picture:
+
+- `pairs` → rendered as `✅` with score percentage
+- `conflicts` → rendered as `⚠️ multiple matches` 
+- `unmatchedA` (unmatched sheets) → rendered as `❌ insufficient match`
+- `unmatchedB` (unmatched profiles) → rendered as `⚠️ no sheet match`
 
 ---
 
