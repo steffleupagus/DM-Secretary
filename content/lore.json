@@ -2,17 +2,21 @@
 	"Lore":
 	{
 		"includeIndex":true,
-		"embeds": 
+		"inlineIndex":false,
+		"fieldsIndex":false,
+		"embeds":
 		[
 			{
-				"title": "History of Ost in Edhil",
-				"description": "If one believes the legends told by Queen Sel’ani Suma’tril the Fair (and few in Ost in Edhil would refute it, at least publicly), the city of Ost in Edhil was once the center of a vast Elven kingdom on the continent of Faerûn. The pride of the city, a stone fertility obelisk gifted to them by the gods (or so the Queen claimed) helped her kingdom thrive.\n\nThat is until the Queen spurned the affections of an Archmage, her closest advisor and the founder of the Arcanum Guild within the city. In jealousy and rage, the Archmage - whose name has been stricken from all records within the city - turned to dark arts of necromancy in pursuit of lichdom. To further his diabolical goals, the Archmage shattered the obelisk to harness its magical power and deliver a crushing blow to the Queen’s empire.\n\nA pink mist spilled forth from the shattered stone, surrounding the city and transporting it, and all inhabitants, to its present location within the Demiplane of Lust.\n\nOf course… that’s the Queen’s official version of events, and the truth is quite different indeed. All that is known for certain is that a number of years ago (i.e. at the time the server was created), a great upheaval befell the city that transported it from Faerûn to the Demiplane in which it currently resides.",
+				"title": "History",
+				"description": "If one believes the legends told by Queen Sel’ani Suma’tril the Fair (and few in Ost in Edhil would refute it, at least publicly), the city of Ost in Edhil was once the center of a vast Elven kingdom on the continent of Faerûn. The pride of the city, a stone fertility obelisk gifted to them by the gods (or so the Queen claimed) helped her kingdom thrive.\n\nThat is until the Queen spurned the affections of an Archmage, her closest advisor and the founder of the Arcanum Guild within the city. In jealousy and rage, the Archmage - whose name has been stricken from all records within the city - turned to dark arts of necromancy in pursuit of lichdom. To further his diabolical goals, the Archmage shattered the obelisk to harness its magical power and deliver a crushing blow to the Queen’s empire.\n\nA pink mist spilled forth from the shattered stone, surrounding the city and transporting it, and all inhabitants, to its present location within the Demiplane.\n\nOf course… that’s the Queen’s official version of events, and the truth is quite different indeed. All that is known for certain is that a number of years ago (i.e. at the time the server was created), a great upheaval befell the city that transported it from Faerûn to the Demiplane in which it currently resides.",
 				"fields":[
-				{"name":"Shards of the Obelisk","value":"Three years after the cataclysm, adventurers in Ost uncovered some of the hidden truth of the cataclysm. Shards of the obelisk had begun siphoning lustful energy from the plane, weakening and unweaving it - and threatening to doom all who reside within. Contact with the shards revealed more of the history of the Demiplane's origins through dreamlike memories etched into the shards themselves.\n\nAdventurers learned that the Obelisk had not been a gift from the gods, but rather a prison in which Queen Sel'ani and her Archmage accomplice had bound her twin sister, Lady Aoife. Aoife bided her time within her prison, gathering motes of emotion and sparks of lust from her sister's kingdom, and using them to reshape her very prison into her domain. When the Obelisk finally shattered, Aoife was freed, and Ost in Edhil transported to the Domain of Delight she had built."}
+				{"name":"Shards of the Obelisk","value":"Years after the cataclysm, adventurers uncovered hidden truths surrounding it. Shards of the obelisk began siphoning lustful energy from the plane, weakening and unweaving it - threatening all who reside within. Contact with the shards revealed more of the history of the Demiplane's origins through dreamlike memories etched into them.\nThey learned that the Obelisk had not been a gift from the gods, but a prison in which Queen Sel'ani and her Archmage accomplice had bound her twin sister, Lady Aoife. Aoife bided her time within her prison, gathering motes of emotion and sparks of lust from her sister's kingdom, and using them to reshape her very prison into her domain. When the Obelisk finally shattered, Aoife was freed, and Ost in Edhil transported to the Domain of Delight she had built."},
+				{"name":"Far Reaches","value":"Years later, adventurers were called upon once again. The mysterious mists surrounding Ost receded, revealing more of the demiplane than had previously been discovered - but this coincided with uphevals throuhgout the city and the surrounding lands.\nThe adventurers learned of the presence of nodes of power at places where leylines intersected, anchoring the demiplane in the Feywild. Enemies of the Queen, once again assembled by her rival, the Archmage, had corrupted these nodes to weaken and bring chaos to her empire. Only by defeating these rivals and freeing the nodes from their influence could peace be restored to the demiplane.\nIn the aftermath, the far reaches of the demiplane remained accessible."}
 				]
 			},
 			{
-				"title": "Cosmology of the Demiplane",
+				"_indexBreak":"Cosmology",
+				"title": "Cosmology",
 				"description": "If the Feywild itself is born of dreams, then the Demiplane of Lust is born of __wet__ dreams. A Domain of Delight in the truest sense of the phrase, it is a place of pleasure made manifest, shaped from the raw emotion of desire and carnal hunger. It is not the source of lust, but instead its destination; drawing it into itself to sate the insatiable.\n\nTo that end, it manifests portals absolutely anywhere, in any realm, and most often in places of extreme sexual energy, such as orgies or those in the throes of passion, drawing in those whose lustful behavior fuels the Demiplane’s existence. Such portals usually appear as banks of a pinkish-white mist or fog, not unlike that which surrounds the city. They exist only briefly - the duration of an orgasm - and fade just as quickly. \n\nConversely, and somewhat paradoxically, it also tends to draw in particularly chaste individuals, leading some among the guild to speculate that it draws power from corrupting such pure souls into lust.\n\nOther portals occasionally open into other places, but even those taking excursions from the Demiplane of Lust often find their way back... eventually."
 			},
 			{
@@ -25,7 +29,7 @@
 					},
 					{
 						"name": "🔹 Suggestiveness",
-						"value": "Anything on the Demiplane that **could** be suggestive **is**. The very terrain often resembles a nude body; rolling hills akin to large breasts or the curve of a hip or thigh, and valleys invoke the image of cleavage. Caves remind one of bodily orifices, and stone pillars are firmly phallic. Springs spurt and gush instead of bubble. Trees look like entwined naked bodies (and, thanks to the dryad population, often are), their fruit and flowers resemble sexual organs, dripping with juices. Even the clouds cast suggestive images across the sky that could make a whore blush. The night sky is likewise filled to every horizon with suggestive constellations of stars. Twin moons occupy the sky, frequently aligning to resemble round and shapely breasts or buttocks. Even the clothes and armor of the inhabitants tend to alter over time to present the wearer in a more alluring (and exposed) fashion.\nIf there is the slightest opportunity for something to take on an even partial sexual connotation, it will."
+						"value": "Anything on the Demiplane that **could** be suggestive **is**. The very terrain often resembles a nude body; rolling hills akin to large breasts or the curve of a hip or thigh, and valleys invoke the image of cleavage. Caves remind one of bodily orifices, and stone pillars are firmly phallic. Springs spurt and gush instead of bubble. Trees look like entwined naked bodies (and, thanks to the dryad population, often are), their fruit and flowers resemble sexual organs, dripping with juices. Even the clouds cast suggestive images across the sky that could make a whore blush. The night sky is likewise filled to every horizon with suggestive constellations of stars. Multiple moons occupy the sky, occasionally aligning to resemble round and shapely breasts or buttocks. Even the clothes and armor of the inhabitants tend to alter over time to present the wearer in a more alluring (and exposed) fashion.\nIf there is the slightest opportunity for something to take on an even partial sexual connotation, it will."
 					},
 					{
 						"name": "🔹 ~~Erratic~~ Erotic Time",
@@ -34,45 +38,8 @@
 				]
 			},
 			{
-				"title": "Geographical Features",
-				"fields": [
-					{
-						"name": "🔹 _Civilization_",
-						"value": "Scattered throught the Demiplane lie smaller towns and villages. Small villages or encampments of nomadic fey native to the domain dot the landscape, while others grow from small farming or mining communities of Ost's citizens, or meager scout or trading outposts braving the wilder expanses of the Demiplane.\nThere exists one such town beyond the outskirts of the city, but no one can agree on its precise location. If rumor is to be believed, the entire town is a single Mimic colony which moves from place to place. If such a thing is true, other such colonies throughout the Demiplane are a very real possibility..."
-					},
-					{
-						"name": "🔹 _Coasts & Waters_",
-						"value": "Springs full of clear, cool water, or natural pools around hot springs. Popular and well-used ones become permanent features of the plane. The water of the plane, from the springs, streams, or rains, much like the mists themselves, have a mild aphrodisiac effect on those exposed to them. It is also refreshing and rejuvinating, keeping denizens in good health and restoring stamina.\nRain, when it falls, is light and warm, just enough to make clothes and hair cling to the body in interesting ways (for those who still wear clothes, anyway).\nStreams are followed along their course by laughing water sprites as they wind their way down to the lakes and pools which are awash with orgiastic creatures linked in unending revelry of lust and desire.\nNymphs, merfolk, and tritons play in the shallows of the Sapphire Lake, while the deepest reaches of Baal's Deep are occupied by many-tentacled things that delight in enjoying those who would delve into their forbidden domain."
-					},
-					{
-						"name": "🔹 _Forests_",
-						"value": "Great forests cover vast areas of the plane, full of game animals and replete with nymphs, dryads, satyrs, and other lustful fey creatures. Every tree hangs with its branches low, laden with fruit and blossom. Every glade home to a forest nymph or satyr, and every tree a dryad, all extremely pleased to greet guests and  welcome wanderers. The thickest and densest such forest, the Moaning Wood, is named for the haunting (and arousing) sounds of moaning which echo through the perpetual twilight of the trees.\nDeeper into the forests, they take on a darker, more bestial aspect. The thick canopy blocking out the light and casting the interior in perpetual shadow. Tangling vines and tripping tree roots hinder passage. In some cases, such plants and vines move of their own accord. The animals and fey native to these woods hunt tresspassers like lustful prey, revelling in the chase before satisfying their carnal and animalistic desires."
-					},
-					{
-						"name": "🔹 _Mountains_",
-						"value": "Gently rolling foothills in the demiplane resemble the sensuous curves of a body, breasts, hips, thighs. Mountains suggestively capped with pure white snow which seems to flow down the valleys and crevasses between the peaks. Caves and openings in the stone resemble bodily orifices, often moist and possessing an unusual warmth, which may lead into the depths of the Feydark (see below).\nThe mountains and hills are home to Giants, among other things. While seldom hostile, affected as they are by the demiplane's influence, their sheer size makes them potentially dangerous to those who often seek them out (often for just that reason)."
-					},
-					{
-						"name": "🔹 _Swamps_",
-						"value": "In distant, isolated reaches of the plane lie wetlands, marshes, and swamps. But, rather than stagnant, fetid water, the swampy terrain is filled with colonies of sentient slimes, oozes, and plasmoids. Content to remain in their liquid state until someone wanders into their territory, they often leave such interlopers much messier and stickier than when they arrived."
-					},
-					{
-						"name": "🔹 _Underdark_ (_Feydark_)",
-						"value": "Deep inside the Demiplane lies a subterranean world. Like its counterpart on the material plane, the Underdark, the Feydark consists of vast caverns, interconnected by a network of labyrnthine tunnels. The walls of such caverns and tunnels are warm and slick, and lined with bioluminescent lichen, revealing the ever-present mist which hangs thick. Phallic mushrooms with aphrodisiac spores grow in abundance, and strange monsters with unspeakable appetites roam beneath.\nDrow & drider, myconids, many-tentacled things, and even a few colonies of Illithids occupy the depths of the Demiplane. Though all touched and influenced by the Demiplane's nature, they are no less dangerous for it. Some who lose their way beneath are never seen again..."
-					}
-				]				
-			},
-			{
-				"title": "Pregnancy and Children",
-				"description": "Everyone knows that sex can lead to pregnancy, and this fact remains immutable even in the Demiplane of Lust. There are areas of the Demiplane dedicated to fertility but, outside of such areas, copulation is no more or less fruitful than it is on the material plane.\n\nSome enterprising individuals have developed means to encourage, prevent, hasten, terminate, or any other myriad of effects on an individual's fertility and any resulting pregnancies, essentially allowing the denizens of the Demiplane complete control over their reproductive responsibilities.\n\nDespite the irrefutable cause-and-effect relationship of sex and pregnancy, there is a notable absence of ANY children in the Demiplane. Rumors say that fey bargains were struck during the creation of the Demiplane, promising firstborn children to each of the fey courts. During the orgy that followed the signing of the contract, however, the word 'first' was smeared with cum and the resulting bargain promised **all** of the Demiplane's children to the courts, instead.\n\nNearly the instant they're born, the Demiplane whisks children away to a destination elsewhere in the Feywild as easily as it draws in others. Through a peculiarity of the interaction between these realms, a portion of the parents' energy is sometimes sent with the child, and given form by fey magic. The child can grow to adulthood with their parents' care and guidance.\n\nIn many cases, due the latent influence their origin has on such progeny, they often find their way back to the Demiplane once they've matured. However long it takes for them to mature, usually only a few short weeks or months might have passed in the Demiplane, thanks to the odd movement of time in the demiplane and the feywild at large."
-			},
-			{
-				"title": "Other Health Concerns",
-				"description": "Another common risk inherent in indiscriminate sexual promiscuity is the spread of sexually transmitted infections. Common, that is, outside of the Demiplane of Lust. Denizens of the demiplane seem to be untouched by such infections, and any who might have been infected prior to their arrival will quickly find such things magically cured. Other illnesses seem likewise affected, though to a lesser degree - it seems that the demiplane is invested in removing impediments to its inhabitants enjoying a good fucking.\nSexual injuries, however, are fairly common. While the demiplane's nature will speed the natural healing process, many afflicted by such injuries are far too impatient to wait and are eager to visit a medical professional ~~or just play doctor~~"
-			},
-			{
-				"title": "Magic and the Weave",
-				"description": "Spellcasters occasionally (when used in an eRP context) find their spells empowered by the Demiplane as their carnal acts fuel the Demiplane in turn. For example, a spellcaster might find their spells being used for lewd activities easier (or even unnecessary) to concentrate on, the effects enhanced, the duration extended to the length of the sexual encounter, or material components unconsumed.\n(Note: this is to allow people to flavor their spells within eRP, and will have __**no** mechanical impact__).",
+				"title": "Magic & the Weave",
+				"description": "Spellcasters occasionally (when used in an eRP context) find their spells empowered by the Demiplane as their carnal acts fuel the Demiplane in turn. For example, a spellcaster might find they need not concentrate on spells being used for lewd activities easier, the effects enhanced, the duration extended to the duration of the sexual encounter, or material components unconsumed.\n(Note: this is to allow people to flavor their spells within eRP, and provides\n__**no** mechanical benefit or impact__).",
 				"fields": [
 					{
 						"name":"<:abjuration:1082762165322272880> Abjuration",
@@ -109,16 +76,90 @@
 					{
 						"name":"Pantheons & Divine Magic",
 						"value":"Due to the nature of the Demiplane drawing energy into itself from people fucking literally anywhere in the multiverse, this has similarly drawn the attention of a plethora of deities. Clerics of all devotions find their power unaffected by their new plane of existence. Naturally, though, certain deities - such as those whose portfolios include related concepts - have a stronger foothold in the Demiplane, and might empower their adherents’ prayers as described above."
-					}					
-				]				
+					}
+				]
 			},
 			{
-				"title": "Politics of the Demiplane",
-				"description": "The Archfey who lays claim to the Domain of Delight known as the Demiplane of Lust, is aligned to neither the Seelie nor Unseelie, nor beholden to any court or queen. Lady Aoife has gone to great lengths to remain on good (or at least neutral) terms with the courts. Though the Seelie and Unseelie queens aren't foolish enough to underestimate the hedonistic Archfey, they afford her a begrudging respect.\nAs a result, the other courts acknowledge her domain as neutral ground from all hostilities. Similar bargains have been struck with all manner of other powerful beings across many planes, allowing normally-hostile creatures a place to vacation from their millennia-long feuds and indulge in their carnal natures for a time.",
+				"_indexBreak": "Time & Space",
+				"title": "Sky & Calendar",
+				"fields":[
+					{"name":"☀️ The Bound Sun","value":"There is no *sun* in the Demiplane, precisely - at least not as one might normally understand it. There is, of course, a light that rises each day; casting a gorgeous array of sunrise hues all throughout the day as its light filters through the everpresent pink-tinged haze of lust and suggestively-shaped clouds. Rather than a mere ball of burning plasma, however, it's been suggested that it is, in fact, a massive flaming Celestial with praise, exhibitionism, and bondage kinks in equal measure. Too bright to look upon directly, he is none-the-less bound on full display before the entire assembled denizens of the Demiplane."},
+					{"name":"🌕 The Selenic Court: Moons","value":"Three moons 'orbit' the Demiplane, known collectively as the Selenic Court: The Queen, the Minister, and the Advisor. None of the moons are tide locked, meaning they show different faces as they move through their orbit, each ascribed a different astrological meaning."},
+					{"name":"🔹 The Queen","value":"The largest of the three moons, The Queen defines the seasons of the Demiplane, completing one full cycle only once every 90 days. While useful in a broad sense for defining seasons, such large undivided blocks of time aren't convenient for general use by the denizens of the Demiplane. During each season, it is said the Queen is attending that season's court. The Queen's faces are:\nthe Princess (Whore), the Benevolent (Mother), and the Tyrant (Mistress)"},
+					{"name":"🔹 The Minister","value":"The Minister provides a somewhat more useful and accessable division of time. Breaking the year into 8 months of 45 days per complete cycle, or two per season, the months defined by the Minister are more applicable to ritual and sees more use by the Fey court than by the common people. The Minister's months are perfectly aligned to those of the Queen, meeting at a Full Moon at the solstices and equinoxes of each season.The minister's faces are:\nthe Herald, Seneschal, Consort, Ambassador, Marshal, Judge, Chamberlain"},
+					{"name":"🔹 The Advisor","value":"The last and smallest moon is The Advisor, which orbits the Queen as a sub-moon. Completing 13 cycles of 28 days each, the Advisor defines the months and days most applicable to daily life in the Demiplane. However, its months do not align with either of the others, perfectly aligning with them only twice per year during Convergence. The Advisor's faces are:\nthe Servant, Brat, Pet, Bound, Sycophant, and Fool"},
+					{"name":"🔹 Convergences","value":"Twice per year, the moons of the Selenic Court are in perfect convergence and share the same phase. On the first day of each new year, known as FeyTithe, all three moons are full, and remain so for 6 days following. This weeklong celebration is known as the Celestial Orgy.\nThe second time is on the eve of Samhain, during which time all three moons are dark, leaving the Demiplane in its darkest night of the year.\nTwo additional convergences are celebrated. The first when the Queen is dark with her back to the world, and the other two full; the effect in the night sky appearing as a shapely buttocks. This event is known as the Fullest Moon. The second, a rare occurrence when the Queen is full and the other two are new, they appear as round breasts with dark nipples. This event has given rise to the idiom, \"Once in a boob moon\""},
+					{"name":"Seasons & Months","value":"**Seasons (Queen)**\n🌱 Renewal (Spring Court)\n☀️ Vitality (Summer Court)\n🍂 Release (Autumn Court)\n❄️ Endurance (Winter Court)\n\n**Months (Minister)**\nPlow (Early Spring)\nSeed (Late Spring)\nFlourish (Early Summer)\nRevel (Late Summer)\nReap (Early Autumn)\nRut (Late Autumn)\nDeny (Early Winter)\nRest (Late Winter)","inline":"true"},
+					{"name":"** **","value":"**Months (Advisor)**\nDawning (Spring Equinox)\nQuickening (Mid Spring, Beltane)\nGreening (Late Spring)\nHighsummer (Summer Solstice)\nRipening (Midsummer, Lughnasadh) \nFirstyield (Late summer)\nTurning (Autumn Equinox)\nHarvest (Mid Autumn, Samhain)\nWildhunt (Late Autumn)\nFrostwatch (Winter Solstice, Yule)\nDeepwinter (Midwinter)\nRekindling (Late Winter)\nBreakfrost (Transition)","inline":"true"},
+					{"name":"Days of the Week","value":"The common Demiplanar week is divided into seven days (Moanday, Twatsday, Wanksday, Thirstday, Fapday, Titsday, Subday), and each month of the Advisor contains exactly 4 weeks. Queen Sel'ani's court, however, prefers to use the more formal Minister months, which does not divide neatly into seven days. Finding this unacceptable, the Queen has decreed two additional days be added for use by her court (naturally, she reasons, nobility is entitled to a greater share of time), thus making each Minister month exactly 5 weeks of 9 days.\nShe further insists that they remain synchronized with the 7-day week in use by the commoners. No one is really sure how that's supposed to work, but the year remains 365 days, regardless."},
+					{"name":"Calendar & Orrery","value":"An orrery of the movement and phases of the moon can be found here:\nhttps://steffleupagus.github.io/orrery/\nThe current date, moon phases, and constellations can be viewed using the `!date` command."}
+				]
+			},
+			{
+				"image":{"url":"https://cdn.discordapp.com/attachments/1099734278025265192/1461214030155747460/Calendar.png"}
+			},
+			{
+				"title": "Astrology & Stars",
+				"description":"The night sky of the demiplane is filled with the glowing light of stars. Unlike the firmament of the prime material plane, the stars of the demiplane change almost constantly, forming new shapes and constellations on a nightly basis - most of them suggestive in nature. A few shapes, however, are constant, and given significant astrological weight by those who care about such things.",
+				"fields": [
+					{"name":"🌕 Queen (Seasonal) Constellations","value":"**The Key**\nProminent during transitions from winter to spring, the Key frees the Demiplane from the bondage of winter and grants consent to unlock a new year.\n**The Crown**\nDominating the night sky, the Crown reflects the Queen's dominance and authority as the Demiplane flourishes from spring into summer.\n**The Chain**\nBinding to discipline the excesses of summer into the restraints of autumn.\n**The Candle**\nThe Candle lights the darkest months, representing the Queen's warmth, guidance, and tender care after a hard and punishing year."},
+					{"name":"🌓 Minister (Ritual) Constellations","value":"**Leaf**\nGrowth, recovery, new beginnings. Leaf adapts and flourishes after hardship.\n**Chalice**\nChalice nurtures shared trust and intimacy; being open and receptive.\n**Fan**\nEncouraging movement and avoiding stagnation.\nFan promotes diplomacy by cooling hot tempers.\n**Rose**\nRose is desire and attraction, but risks pain if grasped without caution.\n**Mask**\nChange, chosen roles & identity.\nMask encourages the pursuit of self discovery, at the risk of losing oneself.\n**Coins**\nThe Coins reflect not only material wealth, but the weight of debts and obligation.\n**Sword**\nConfrontation, enforcing boundaries, and cutting away harmful elements.\n**Tome**\nRecalling knowledge & reflecting upon the past for wisdom to benefit the future."},
+					{"name":"🌒 Advisor (Common) Constellations","value":"** **"},
+					{"name":"Rabbit","value":"Representing fertility and impulse, Rabbit is quick to action, and has the instinct to flee rather than confront."},
+					{"name":"Minotaur","value":"Marked by stubborn brute force, Minotaur struggles to find a way through a labyrinth, to emerge enlightened."},
+					{"name":"Unicorn","value":"Pure and idealistic, Unicorn finds meaning through devotion and guarding something rare and precious."},
+					{"name":"Dragon","value":"Dragon hoards not only wealth, but ambition, power, and authority."},
+					{"name":"Butterfly","value":"Butterfly sheds its old life to grow, flourishing through change and reinvention."},
+					{"name":"Succubus","value":"Tempting and subtle, Succubus thrives on forbidden desires and consequences."},
+					{"name":"Illithid","value":"Domination through intellect, Illithid reflects control and manipulation."},
+					{"name":"Drider","value":"Drider gives everything for devotion, becoming the feared embodiment of taboo."},
+					{"name":"Mimic","value":"Adaptation & deception, Mimic conceals its nature to surprise the unwary."},
+					{"name":"Stag","value":"Strength & virility, Stag stands as a proud and noble challenger, giving itself so the herd may thrive."},
+					{"name":"Centaur","value":"Centaur balances animal instinct with rational thought, thriving when body and mind are equals."},
+					{"name":"The Deep","value":"Fathomless in its appetites, the Deep governs secrets, pressure, and things too vast to comprehend."},
+					{"name":"Wolf","value":"Wolf favors loyalty, cooperation, & ferocity in the primal hunt or pack's defense."}
+				]
+			},
+			{
+				"image":{"url":"https://cdn.discordapp.com/attachments/1099734278025265192/1469568612057743371/Zodiac_Shifted.png"}
+			},
+			{
+				"_indexBreak":"Kingdom & Surroundings",
+				"title": "Geographical Features",
+				"fields": [
+					{
+						"name": "🔹 _Civilization_",
+						"value": "Scattered throught the Demiplane lie smaller towns and villages. Small villages or encampments of nomadic fey native to the domain dot the landscape, while others grow from small farming or mining communities of Ost's citizens, or meager scout or trading outposts braving the wilder expanses of the Demiplane.\nThere exists one such town beyond the outskirts of the city, but no one can agree on its precise location. If rumor is to be believed, the entire town is a single Mimic colony which moves from place to place. If such a thing is true, other such colonies throughout the Demiplane are a very real possibility..."
+					},
+					{
+						"name": "🔹 _Coasts & Waters_",
+						"value": "Springs full of clear, cool water, or natural pools around hot springs. Popular and well-used ones become permanent features of the plane. The water of the plane, from the springs, streams, or rains, much like the mists themselves, have a mild aphrodisiac effect on those exposed to them. It is also refreshing and rejuvinating, keeping denizens in good health and restoring stamina.\nRain, when it falls, is light and warm, just enough to make clothes and hair cling to the body in interesting ways (for those who still wear clothes, anyway).\nStreams are followed along their course by laughing water sprites as they wind their way down to the lakes and pools which are awash with orgiastic creatures linked in unending revelry of lust and desire.\nNymphs, merfolk, and tritons play in the shallows of the Sapphire Lake, while the deepest reaches of Baal's Deep are occupied by many-tentacled things that delight in enjoying those who would delve into their forbidden domain."
+					},
+					{
+						"name": "🔹 _Forests_",
+						"value": "Great forests cover vast areas of the plane, full of game animals and replete with nymphs, dryads, satyrs, and other lustful fey creatures. Tree branches hang low, laden with fruit and blossom. Every glade home to a forest nymph or satyr, and every tree a dryad, all extremely pleased to greet guests and  welcome wanderers. The most well-known such forest, the Moaning Wood, is named for the haunting (and arousing) sounds of moaning which echo through the perpetual twilight of the trees.\nDeeper into the forests, they take on a darker, more bestial aspect, filled with carnalvorous (feeding off sex) flora and fauna. The thick canopy blocking out the light and casting the interior in perpetual shadow. Tangling vines and tripping tree roots move of their own accord to hinder passage. The animals, plants, and fey native to these woods hunt tresspassers like lustful prey, revelling in the chase before satisfying their carnal and animalistic desires."
+					},
+					{
+						"name": "🔹 _Mountains_",
+						"value": "Gently rolling foothills in the demiplane resemble the sensuous curves of a body, breasts, hips, thighs. Mountains suggestively capped with pure white snow which seems to flow down the valleys and crevasses between the peaks. Caves and openings in the stone resemble bodily orifices, often moist and possessing an unusual warmth, which may lead into the depths of the Feydark (see below).\nThe mountains and hills are home to Giants, among other things. While seldom hostile, affected as they are by the demiplane's influence, their sheer size makes them potentially dangerous to those who often seek them out (often for just that reason)."
+					},
+					{
+						"name": "🔹 _Swamps_",
+						"value": "In distant, isolated reaches of the plane lie wetlands, marshes, and swamps. But, rather than stagnant, fetid water, the swampy terrain is filled with colonies of sentient slimes, oozes, and plasmoids. Content to remain in their liquid state until someone wanders into their territory, they often leave such interlopers much messier and stickier than when they arrived."
+					},
+					{
+						"name": "🔹 _Underdark_ (_Feydark_)",
+						"value": "Deep inside the Demiplane lies a subterranean world. Like its counterpart on the material plane, the Underdark, the Feydark consists of vast caverns, interconnected by a network of labyrnthine tunnels. The walls of such caverns and tunnels are warm and slick, and lined with bioluminescent lichen, revealing the ever-present mist which hangs thick. Phallic mushrooms with aphrodisiac spores grow in abundance, and strange monsters with unspeakable appetites roam beneath.\nDrow & drider, myconids, many-tentacled things, and even a few colonies of Illithids occupy the depths of the Demiplane. Though all touched and influenced by the Demiplane's nature, they are no less dangerous for it. Some who lose their way beneath are never seen again..."
+					}
+				]
+			},
+			{
+				"title": "Demiplanar Politics",
+				"description": "The Archfey who lays claim to the Domain of Delight known as the Demiplane of Lust, is aligned to neither the Seelie nor Unseelie, nor beholden to any court or queen. Lady Aoife has gone to great lengths to remain on good (or at least neutral) terms with the courts. Though the Seelie and Unseelie queens aren't foolish enough to underestimate the hedonistic Archfey, they afford her a begrudging respect and a good deal of distance.\nThe other courts acknowledge her domain as neutral ground from hostilities, if not politics, and she extends them her hospitality under condition of good etiquette. Similar bargains have been struck with all manner of other powerful beings across many planes, allowing normally-hostile creatures a place to vacation from their millennia-long feuds and indulge in their carnal natures for a time, even with those for whom they might otherwise hold animosity.",
 				"fields": [
 					{
 						"name": "Ost in Edhil",
-						"value": "Queen Sel'ani Suma'tril the Fair is known to be the ruler of Ost in Edhil. In truth, the Queen is little more than a figurehead; a noble enjoying an easy life of riches and comfort, who does very little *actual* governing. Most of the real power and responsibility lies with the Guilds. The ruler of the Demiplane seldom interferes in the politics of the city. As long as the lust flows, she is content to let the guilds manage things as they see fit.\nThere are six guilds in Ost, each maintaining different spheres of influence."
+						"value": "Queen Sel'ani Suma'tril the Fair is known to be the rightful ruler of Ost in Edhil. In truth, the Queen is little more than a figurehead; a noble enjoying an easy life of riches and comfort, who does very little *actual* governing. Most of the real power and responsibility lies with the Guilds. The ruler of the Demiplane seldom interferes directly in the politics of the Kingdom of Ost. As long as the lust flows, she is content to let the Queen and the guilds manage things as they see fit.\nThere are six guilds in Ost, each maintaining different spheres of influence. The leaders of each guild and their respective councils are collectively referred to in Ost as the Illuminaughty."
 					},
 					{
 						"name":"🔮 Arcanum",
@@ -136,14 +177,24 @@
 						"name":"⚔️ Guardians",
 						"value":"Ost in Edhil is largely a peaceful city, thanks in no small part to the efforts of the Guardian Guild. A guild of unsurpassed martial prowess, they serve as both the city guard and military arm of Ost in Edhil, under the leadership of the <@&699575897853788302> and the <@&833505914619166721>. The Colosseum serves as their recruitment, testing, and training grounds, but they can be seen patrolling the streets of Ost, keeping it safe for the average citizen."
 					},
-					{						
+					{
 						"name":"🍃 Outriders",
-						"value":"A guild of scouts and explorers who venture out into the mists and guard the roads outside Ost. The <@&853348541287890994> and <@&853349316139024414> have taken it as their duty to explore, map, and protect the wilds of the Demiplane, growing closer to the primal nature of the wilderness. Their lodge is rumored to be hidden in the wilderness beyond the city walls, but only its members know the wilds well enough to find the way."},
+						"value":"A guild of scouts and explorers who venture out into the mists and guard the roads outside Ost. The <@&853348541287890994> and <@&853349316139024414> have taken it as their duty to explore, map, and protect the wilds of the Demiplane, growing closer to the primal nature of the wilderness. Their lodge is rumored to be hidden in the wilderness beyond the city walls, but only its members know the wilds well enough to find the way."
+					},
 					{
 						"name":"<:silverrose:699470814356963418> Silver Thorn",
 						"value":"The most socially and politically connected of the guilds, these entertainers, courtesans, and companions service the ruling elite and commonfolk alike from their 'guildhall,' the Silver Thorn Brothel. The <@&699439189447671889> and her <@&833509439277367338> use their vast network of allies and connections to quietly deal in gossip, information, and favors."
 					}
-				]	
+				]
+			},
+			{
+				"_indexBreak":"Everyday Concerns",
+				"title": "Pregnancy & Children",
+				"description": "Everyone knows that sex can lead to pregnancy, and this fact remains immutable even in the Demiplane of Lust. There are areas of the Demiplane dedicated to fertility but, outside of such areas, copulation is no more or less fruitful than it is on the material plane.\n\nSome enterprising individuals have developed means to encourage, prevent, hasten, terminate, or any other myriad of effects on an individual's fertility and any resulting pregnancies, essentially allowing the denizens of the Demiplane complete control over their reproductive responsibilities.\n\nDespite the irrefutable cause-and-effect relationship of sex and pregnancy, there is a notable absence of ANY children in the Demiplane. Rumors say that fey bargains were struck during the creation of the Demiplane, promising firstborn children to each of the fey courts. During the orgy that followed the signing of the contract, however, the word 'first' was smeared with cum and the resulting bargain promised **all** of the Demiplane's children to the courts, instead.\n\nNearly the instant they're born, the Demiplane whisks children away to a destination elsewhere in the Feywild as easily as it draws in others. Through a peculiarity of the interaction between these realms, a portion of the parents' energy is sometimes sent with the child, and given form by fey magic. The child can grow to adulthood with their parents' care and guidance.\n\nIn many cases, due the latent influence their origin has on such progeny, they often find their way back to the Demiplane once they've matured. However long it takes for them to mature, usually only a few short weeks or months might have passed in the Demiplane, thanks to the odd movement of time in the demiplane and the feywild at large."
+			},
+			{
+				"title": "Health Concerns",
+				"description": "Another common risk inherent in indiscriminate sexual promiscuity is the spread of sexually transmitted infections. Common, that is, outside of the Demiplane of Lust. Denizens of the demiplane seem to be untouched by such infections, and any who might have been infected prior to their arrival will quickly find such things magically cured. Other illnesses seem likewise affected, though to a lesser degree - it seems that the demiplane is invested in removing impediments to its inhabitants enjoying a good fucking.\nSexual injuries, however, are fairly common. While the demiplane's nature will speed the natural healing process, many afflicted by such injuries are far too impatient to wait and are eager to visit a medical professional ~~or just play doctor~~"
 			}
 		]
 	}

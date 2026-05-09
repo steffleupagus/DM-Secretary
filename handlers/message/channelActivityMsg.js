@@ -13,7 +13,7 @@ async function shouldHandle(client, message)
 
 	if (ChanUtils.isRoleplayChannel(message.channel) || ChanUtils.isRoleplayThread(message.channel))
 		tracked = true;	//await ChanUtils.isTrackedChannel(message.channel);
-
+	
 	return tracked;
 }
 
