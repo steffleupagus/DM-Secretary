@@ -7,6 +7,7 @@ const Utils   = require(`../utilities/utilFuncs.js`)
 
 /// Identify if a channel is an RP channel
 function isRoleplayChannel(channel) {
+	if (channel.id == config.chan.rpTest) return false;
 	return channel.name.includes("🗣");
 }
 
