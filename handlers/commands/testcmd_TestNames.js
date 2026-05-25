@@ -41,6 +41,15 @@ async function execute(interaction) {
 
 function GenerateEmbed(tupperData)
 {
+	tupperData.sort(function (a, b) {
+		let ret = 0;
+		if (a.match && b.match)
+			ret = (b.match?.rating - a.match?.rating)
+		else if (a.candidates.length && b.candidates.length)
+			ret = b.candidates[0].rating - a.candidates[0].rating;
+	})
+	tupperData = tupperData.slice(0,25);
+
 	const embed = new EmbedBuilder()
 	embed.setTitle("Tupper Matches")
 	const fields = tupperData.map( t => {
