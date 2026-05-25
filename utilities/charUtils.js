@@ -107,39 +107,6 @@ class CharacterData
 		let result = {match,matches};
 		return result;
 	}
-
-
-
-
-	async nameMatchTest()
-	{
-		const tupperSchema = require(`../database/tupperSchema.js`)
-		const tupperLog = await tupperSchema.find()
-
-		let tupperData = {}
-		tupperLog.forEach( item => tupperData[item.t] = item)
-		let tuppers = Object.keys(tupperData);
-		console.log(tuppers.length)
-
-		let charData = {}
-		this.charCache.forEach( char => charData[char.name] = char.user );
-		const names = Object.keys(charData);
-
-		tuppers = tuppers.map( tupper => {
-			const matches = StringSimilarity.findBestMatch(tupper, names);
-			const match = matches.bestMatch;
-			const tupperUser = tupperData[tupper].aId
-			const targetUser = charData[match.target]
-			return { tupper, tupperUser, target: match.target, targetUser, rating: match.rating}
-		})
-		.filter( tupper => (tupper.rating < MATCH_THRESHOLD &&
-							tupper.rating >= MIN_THRESHOLD  &&
-						    tupper.tupperUser != tupper.targetUser) )
-
-		console.log(tuppers)
-
-		return tuppers
-	}
 }
 
 module.exports = new CharacterData();
