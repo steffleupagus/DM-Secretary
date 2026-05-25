@@ -15,11 +15,14 @@
   "dependencies": {
     "axios": "^1.15.2",
     "chalk": "^4.1.2",
+    "cli-color": "^2.0.4",
     "discord.js": "^14.26.3",
     "express": "^5.2.1",
+    "fast-levenshtein": "^3.0.0",
     "glob": "^13.0.6",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^9.5.0",
+    "munkres-js": "^1.2.2",
     "string-similarity": "^4.0.4",
     "unb-api": "^1.4.0"
   },
