@@ -1,6 +1,8 @@
 /*-------------------------------------------------*\
 | Detect Tupper messages and log them in a database |
 \*-------------------------------------------------*/
+const mod = process.env.mod || "";
+const config = require(`../../config/${mod}_config.json`);
 const Tupper = require(`../../utilities/tupperUtils.js`)
 const RPP = require(`../../database/rppTrackerSchema.js`)
 
