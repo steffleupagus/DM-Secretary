@@ -48,7 +48,7 @@ class CharacterData
 		return result;
 	}
 
-	async findClosestMatch(char, user = null, forceAll = false, npcs = [], threshold = MIN_THRESHOLD) {
+	findClosestMatch(char, user = null, forceAll = false, npcs = [], threshold = MIN_THRESHOLD) {
 		//Get a list of all characters - character:{level,player}
 		let options = this.charCache;
 		if (user)

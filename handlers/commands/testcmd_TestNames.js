@@ -42,25 +42,25 @@ async function execute(interaction) {
 function GenerateEmbed(tupperData)
 {
 	tupperData.sort(function (a, b) {
-		let ret = 0;
-		if (a.match && b.match)
-			ret = (b.match?.rating - a.match?.rating)
-		else if (a.candidates.length && b.candidates.length)
-			ret = b.candidates[0].rating - a.candidates[0].rating;
+		return (b.match?.rating - a.match?.rating) ||
+				(b.candidates?.[0]?.rating - a.candidates?.[0]?.rating);
 	})
 	tupperData = tupperData.slice(0,25);
-
+  
 	const embed = new EmbedBuilder()
 	embed.setTitle("Tupper Matches")
 	const fields = tupperData.map( t => {
-		const name = t.tupper;
-		let value = "No match";
+		const name = charMatch.normalizeName(t.tupper);
+		let value = "**No match**";
 		if (t.match && t.match.partial)
-			value = `Partial Match: ${t.match.target} (Substring: ${t.match.partial})`
+			value = `- ${t.match.target} (Partial Match: ${t.match.partial})`
 		else if (t.match)
-			value = `Match: ${t.match.target} (${(t.match.rating * 100).toFixed(2)}%)`
+			value = `- ${t.match.target} (Match: ${Math.round(t.match.rating * 100).toFixed(2)}%)`
 		else if (t.candidates.length > 0)
-			value = t.candidates.map( c => `${c.target} (${(c.rating * 100).toFixed(2)}%)`).join("\n")
+			value = "**No match** (*NPC*) | Candidates:\n" +
+					t.candidates.map( c => `-# - ${c.target} (${Math.round(c.rating * 100).toFixed(2)}%)`).join("\n")
+
+		value += `\n-# **Old method**: ${t.oldBest.name} (${Math.round(t.oldBest.rating * 100).toFixed(2)}%)`
 		return {name, value}
 	})
 	embed.addFields(fields)
@@ -102,24 +102,61 @@ async function nameMatchTest(targetUser = null, logAll = false) {
 		const match = matches.bestMatch;
 		const candidates = matches.rawRatings.map(m => ({target: m.target, rating: m.rating, partial: m.partial}))
 
+		const oldMatch = charUtils.findClosestMatch(tupper, userId);
+		const oldBest = oldMatch.match ?? oldMatch.matches?.[0]
+
 		return {
 			tupper,
 			userId,
 			match,
-			candidates
+			candidates,
+			oldBest
 		};
 	})
 
-	if (logAll)
-	{
-		//tupperData.map( t => {if (t.match?.rating == 1) delete t.candidates} )
-		tupperData = tupperData.filter( t => t.match != null && (t.match.rating < 1) )
-		Log.FILE("./data/test/nameTest.json", tupperData)
-	}
+
+	if (logAll) LogTupperData(tupperData)
+	return tupperData;
+}
+
+function LogTupperData(tupperData)
+{
+	//tupperData.map( t => {if (t.match?.rating == 1) delete t.candidates} )
+	//tupperData.forEach( t => delete t.candidates )
+	//tupperData = tupperData.filter( t => t.match != null && (t.match.rating < 1) )
+	//tupperData = tupperData.filter( t => t.match != null )
+
+	tupperData = tupperData
+	// .filter( t => {
+	// 	if (t.match)
+	// 		return t.oldBest.name != t.match.target
+	// 	else if (t.candidates.length > 0)
+	// 		return t.oldBest.name != t.candidates[0].target
+	// 	return true
+	// })
+	.map(t => {
+		if (t.match)
+		{
+			m = t.match?.rating >= charMatch.THRESHOLD.BESTMATCH ? "Match" : "No Match"
+			t.newBest = `[${m}] ${t.match.target}\t(${Math.round(t.match.rating * 100).toFixed(2)}%)`;
+		}
+		else if (t.candidates.length > 0)
+		{
+			t.match = t.candidates[0]
+			m = t.match?.rating >= charMatch.THRESHOLD.BESTMATCH ? "Match" : "No Match"
+			t.newBest = `[${m}] ${t.match.target}\t(${Math.round(t.match.rating * 100).toFixed(2)}%)`;
+		}
+		delete t.match;
+		delete t.candidates;
+		m = t.oldBest?.rating >= 0.15 ? "Match" : "No Match"
+		t.oldBest = `[${m}] ${t.oldBest.name}\t(${Math.round(t.oldBest.rating * 100).toFixed(2)}%)`;
+		return t
+	})
+
+	Log.FILE("./data/test/nameTest.json", tupperData)
 
 	//console.log(tupperChars)
 	//console.log(tupperData)
-	return tupperData;
 }
 
 const data = new SlashCommandBuilder()
