@@ -26,11 +26,9 @@ function parseTupperLog(client, message, silent = true)
 		if (authorId && content && messageId)
 		{
 			tupperData = {
-			//	logId:message.id,
 				cId:channelId,
 				mId:messageId,
 				aId:authorId,
-			//	u:name,
 				t:tupperName,
 				time:message.createdTimestamp,
 				len:content.length,
@@ -69,9 +67,6 @@ async function logTupperMessage(client, message)
 		const tupperData = parseTupperLog(client, message)
 		if (tupperData)
 		{
-			if (process.env.mod == "dev")
-				return tupperData;
-
 			const channel = message.guild.channels.resolve(tupperData.cId);
 			if (channel && (chanUtils.isRoleplayChannel(channel) ||
 							chanUtils.isRoleplayThread(channel)))
