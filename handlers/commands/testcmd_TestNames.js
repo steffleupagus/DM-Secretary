@@ -46,9 +46,7 @@ function GenerateEmbed(tupperData)
 				(b.candidates?.[0]?.rating - a.candidates?.[0]?.rating);
 	})
 	tupperData = tupperData.slice(0,25);
-
-	console.log(tupperData)
-
+  
 	const embed = new EmbedBuilder()
 	embed.setTitle("Tupper Matches")
 	const fields = tupperData.map( t => {
