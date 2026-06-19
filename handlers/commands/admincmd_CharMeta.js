@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, SlashCommandStringOption, SlashCommandNumberOption, 
-	EmbedBuilder, MessageFlags, PermissionsBitField } = require('discord.js')
+		EmbedBuilder, MessageFlags, PermissionsBitField } = require('discord.js')
 const CharUtils = require(`../../utilities/charUtils.js`);
 const LevelUtils = require(`../../utilities/levelUtils.js`)
 //const Log = require(`../../utilities/loggerUtils.js`)

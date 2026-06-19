@@ -4,20 +4,19 @@ const config = require(`../../config/${mod}_config.json`);
 module.exports = {
 	name: 'debug',
 	once: false,
-	execute(client, info) 
+	execute(client, info)
 	{
-		const filters = ["Heartbeat"]
+		const filters = ["Heartbeat","heartbeat"]
 
 		let log = true;
-		filters.forEach(filter => 
+		filters.forEach(filter =>
 		{
 			if (info.includes(filter))
-				log = false;			
+				log = false;
 		})
 
 		if (log)
 			console.error(`debug -> ${info}`)//, stackTrace);
 	},
-	
-	build: config.DEV || config.PRODUCTION,	
+	build: config.DEV || config.PRODUCTION,
 };
