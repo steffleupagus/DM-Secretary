@@ -7,7 +7,7 @@ async function execute(client, oldThread, newThread)
 {
 	if (newThread.archived != oldThread.archived)
 	{
-		const user = await client?.users?.fetch(config.OWNERID)		
+		const user = await client?.users?.fetch(config.OWNERID)
 		const name = newThread.name;
 		const archived = newThread.archived;
 		if (archived && name.includes("📌") && config.PRODUCTION)
@@ -23,14 +23,14 @@ async function execute(client, oldThread, newThread)
 		}
 
 		if (ChanUtils.isRoleplayThread(newThread) && newThread.archived)
-		{		
-			const isExpChannel = await ChanUtils.isRPExpThread(newThread)			
+		{
+			const isExpChannel = await ChanUtils.isRPExpThread(newThread)
 			const isTableThread = await ChanUtils.isTableRPThread(newThread)
 			const log = `${newThread.name} ${newThread}\narchived: ${newThread.archived}\nExp Thread: ${isExpChannel}\nTable Thread: ${isTableThread}`
 			if (isExpChannel && config.PRODUCTION)
 			{
 				const messages = await newThread.messages.fetch({limit:1});
-				const message  = messages?.first()				
+				const message  = messages?.first()
 				if ( message && (!message.author.bot || Tupper.isTupperProxyMessage(message)) )
 				{
 					const commandName = `scene${config.DEV ? "dev" : ""}`
@@ -45,7 +45,7 @@ async function execute(client, oldThread, newThread)
 			else if (isTableThread)
 			{
 				const messages = await newThread.messages.fetch({limit:1});
-				const message  = messages?.first()				
+				const message  = messages?.first()
 				if ( message && (!message.author.bot || Tupper.isTupperProxyMessage(message)) )
 				{
 					const commandName = `table${config.DEV ? "dev" : ""}`
@@ -56,7 +56,7 @@ async function execute(client, oldThread, newThread)
 					}
 				}
 			}
-						
+
 			if (user && log)
 			{
 				await user.send(log)
