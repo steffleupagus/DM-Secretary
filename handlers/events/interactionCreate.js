@@ -6,24 +6,24 @@ const config = require(`../../config/${mod}_config.json`);
 
 async function execute(client, interaction)
 {
-	const commandName = interaction.isMessageComponent() ? 
+	const commandName = interaction.isMessageComponent() ?
 							(interaction.message?.interaction?.commandName ||
-							 (interaction?.customId?.includes('.') ? 
-								interaction.customId.split(".")[0] : null)) : 
+							 (interaction?.customId?.includes('.') ?
+								interaction.customId.split(".")[0] : null)) :
 						interaction.commandName;
 	//TODO: customId should be in the form of <command>.<payload>
-	
+
 	if (!commandName) return;
 	const command = interaction.client.commands.get(commandName);
 	if (!command) return;
 	const commandPermitted = checkPermissions(interaction, command)
 	if (!commandPermitted) return;
 	if (command.hasOwnProperty("build") && !command.build) return;
-	
+
 	try
 	{
 		//interaction.isMessageComponent()
-		if (interaction.type === InteractionType.ApplicationCommandAutocomplete) 
+		if (interaction.type === InteractionType.ApplicationCommandAutocomplete)
 		{
 			await command.autoComplete(interaction);
 		}
@@ -44,19 +44,19 @@ async function execute(client, interaction)
 	{
 		// var stackTrace = Error().stack;
 		console.error("Error",error)//, stackTrace);
-		await reply(interaction, 
-					{	content: `This command failed to execute:\n${error}`, 
-					 	components: [], ephemeral: true });
+		await reply(interaction,
+					{	content: `This command failed to execute:\n${error}`,
+						components: [], ephemeral: true });
 	}
 }
 
 async function reply(interaction, reply)
 {
-	let identifier = interaction?.commandName || 
-					 interaction?.message?.interaction?.commandName || 
-					 interaction?.customId;	
-	console.log(identifier, reply)
-	
+	let identifier = interaction?.commandName ||
+					 interaction?.message?.interaction?.commandName ||
+					 interaction?.customId;
+	console.log(">", identifier, reply)
+
 	if (interaction.deferred)
 		await interaction.editReply(reply)
 	else if (interaction.replied)
@@ -127,7 +127,7 @@ function checkPermissions(interaction, command)
 				missingRoles.push(`<@&${role}>`)
 		};
 		missingRoles = `${missingRoles.join(',')}`;
-		reply(interaction, 
+		reply(interaction,
 				{content:`You are missing a required role to run this command: ${missingRoles}`, ephemeral:true });
 		return false;
 	}

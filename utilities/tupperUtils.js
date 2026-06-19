@@ -14,7 +14,7 @@ function parseTupperLog(client, message, silent = true)
 		var tupperName = embed.title;
 		var authorId = embed.fields.find(field => field.name == 'Registered by');
 			authorId = authorId.value.match(/[0-9]+/g)[0];
-		var user = client.users.resolve(authorId);
+		var user = client?.users?.resolve(authorId) ?? null;
 		var member = message.guild.members.resolve(authorId);
 		var name = member ? member.displayName : (user ? user.username : null);
 		var content = embed.description;
@@ -134,7 +134,6 @@ module.exports = {
 	isTupperProxyMessage,
 	isTupperLogMessage,
 	logTupperMessage,
-	parseTupperLog,
 	getTupperData,
 	deleteTupperProxyMessage,
 	cleanTupperData

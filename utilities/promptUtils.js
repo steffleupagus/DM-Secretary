@@ -23,9 +23,9 @@ const Time = {
 	Debug: 1				//1ms
 }
 
-const PROMPT_TIME = 30000;
-const REACT_TIME = 30000;
-const INTERACT_TIME = 30000;
+const PROMPT_TIME = Time.Std;
+const REACT_TIME = Time.Std;
+const INTERACT_TIME = Time.Std;
 const MODAL_INPUT_TIME = Time.Extended;
 
 ////// Prompt the user for message input that match a numeric filter
