@@ -37,13 +37,12 @@ async function execute(interaction)
 
 	let thread = null;
 	let threads = await channel.threads.fetchActive()
-
+	let threadcount = threads?.threads?.size || 0
 	thread = threads?.threads?.first()
-	if (!thread)
-	{
-		threads = await channel.threads.fetchArchived();
-		thread = threads?.threads?.first()
-	}
+
+	threads = await channel.threads.fetchArchived();
+	threadcount += threads?.threads?.size || 0
+	if (!thread) thread = threads?.threads?.first()
 
 	if (!thread || config.DEV)
 	{
