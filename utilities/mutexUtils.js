@@ -1,7 +1,7 @@
 ///
-/// We don't want people to resolve the same duel or scene multiple times
+/// We don't want people to resolve the same duel multiple times
 /// so to prevent that, we lock the channel from accepting the command again
-///
+/// 
 const ALREADY_UNLOCKED = 0
 const ALREADY_LOCKED = 1
 const errorCodes =
@@ -15,16 +15,19 @@ class MutexException
 	constructor(channel, value, error)
 	{
 		this.channel = channel?.id ?? channel
-		this.value   = value
-		this.message = error
-		this.stack   = error?.stack ?? Error().stack
+		this.value	 = value
+		this.error	 = error
+		this.name    = error?.name ?? "Error"
+		this.cause   = error?.cause ?? ""
+		this.message = error?.message ?? error
+		this.stack	 = error?.stack ?? Error().stack
 	}
-	
+
 	toString()
 	{
-		console.log("OOPS THIS DOESN'T EXIST!")
-		console.log(this.message, this.stack)
-		return this.message;
+		console.log(this.error)
+		console.log(this.stack)
+		return this.error?.toString();
 	}
 }
 
@@ -38,17 +41,18 @@ class MutexManager
 
 	_Debug()
 	{
-		if (this.debug) console.log(this.mutex);
+		if (this.debug)
+			console.log(this.mutex);
 	}
 
-	test(channel) { return this.Test(channel) }
+	test(channel){return this.Test(channel)}
 	Test(channel)
 	{
 		this._Debug();
 		return this.mutex[channel?.id ?? channel] === true;
 	}
 
-	lock(channel, except = false) { return this.Lock(channel,except) }
+	lock(channel, except = false){return this.Lock(channel,except)}
 	Lock(channel, except = false)
 	{
 		if (except && this.Test(channel))
@@ -56,7 +60,7 @@ class MutexManager
 		this.mutex[channel?.id ?? channel] = true;
 	}
 
-	unlock(channel, except = false, retVal = true) { return this.Unlock(channel,except,retVal) }
+	unlock(channel, except = false, retVal = true){return this.Unlock(channel,except,retVal)}
 	Unlock(channel, except = false, retVal = true)
 	{
 		this.mutex[channel?.id ?? channel] = false;
@@ -65,7 +69,7 @@ class MutexManager
 		return retVal;
 	}
 
-	get(channel=null) { return this.Get(channel) }
+	get(channel=null){return this.Get(channel)}
 	Get(channel=null)
 	{
 		if (channel)

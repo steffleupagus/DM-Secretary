@@ -72,9 +72,12 @@ function getDuelChannelPair(channel) {
 //TODO - Remove duelChannels from config; make it a field in the channel meta database.
 
 function isDuelRPChannel(channel) {
-	const pair = getDuelChannelPair(channel)
-	if (!pair) return false;
-	return (pair.RP == channel.id)
+	const duelChan = config.duelChannels.find( c => c.RP == (channel?.id || channel) )
+	return duelChan != undefined;
+
+	//  const pair = getDuelChannelPair(channel)
+	//	if (!pair) return false;
+	//	return (pair.RP == channel.id)
 }
 
 async function fetchThreads(channel) {
@@ -85,6 +88,11 @@ async function fetchThreads(channel) {
 	return {active:activeThreads, archive:archivedThreads, all:allThreads};
 }
 
+async function getChannelOwner(channel) {
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;
+	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
+	return chanMeta?.userOwner
+}
 
 
 
@@ -139,9 +147,8 @@ module.exports =
 	isTrackedChannel,
 	isDuelRPChannel,
 	getDuelChannelPair,
+	getChannelOwner,
 	fetchThreads,
-	// locations,
-	// guildLocations,
 
 	LocationRoles,
 	refreshLocationRoles,
