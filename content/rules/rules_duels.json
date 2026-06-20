@@ -5,60 +5,113 @@
 		"inlineIndex":false,
 		"embeds": [
 			{
-				"title": "Rules for Colosseum Duels"
+				"title": "Rules for Colosseum Duels",
+				"thumbnail": { "url": "https://i.imgur.com/2U90DwW.png" },
+				"description":"`                                                                     `"
 			},
 			{
-				"prefix":":one: ",
+				"prefix":"<:d20:704040692946698361> ",
+				"title": "Requirements",
+				"fields":[
+					{"name":"Character Sheet","value":"Duels require a character sheet to have been approved and properly `!setup`. The bot may not process a duel which involves an unrecognized participant."},
+					{"name":"Roleplaying","value":"Some effort into roleplaying the actions of the duel are required. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands. The bot will not process a duel unless a minimum RP threshold has been met by all participants."}
+				]
+			},
+			{
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Duels are Non-Lethal",
 				"description": "Duels are meant to be friendly spectacles, and are non-lethal.\nEven if a blow is dealt that would normally kill a character outright [that is, damage past 0 meets or exceeds the character’s maximum HP], that character is still only considered incapacitated until the end of the match."
 			},
 			{
-				"prefix":":two: ",
-				"title": "Duels are 1v1",
-				"description": "While other configurations combat can be run, the exp bot will not recognize them as valid - there are simply too many permutations to be accounted for to create a comprehensive set of rules for automatically awarding exp for PVP across a range of levels and participants. As a result, __duels will only award experience if they are 1v1__. The bot *should* automatically account for companions, summons, and wild shape, just not multiple leveled PCs."
-			},
-			{
-				"prefix":":three: ",
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Duels are Fought to Zero HP",
-				"description": "For duels to be considered valid and a winner to be determined, one of the combatants HP must be reduced to zero. A combatant whose HP has been dropped to 0 may not be healed by an ally or outside force so as to resume and prolong the fight. A combatant's own self-restorative feature that would bring them back into consciousness (e.g. Half-Orc's Relentless Endurance) may be used.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when one party is reduced to zero HP.",
+				"description": "For duels to be considered valid and a winner to be determined, one or more combatants must be reduced to zero hit poitns.\n\nAs it is meant to be a spectacle, preventing your opponent from fighting (charm, banishment, etc.) may end the fight, but it is entertaining to no one. Exp is awarded only when at least one participant is marked as 'defeated' (i.e. reduced to zero HP).",
 				"fields":[{"name":"Throwing Fights","value":"Surrendering or otherwise throwing the victory to the opponent will not be permitted. This includes, but is not limited to, a player rage-quitting by manually setting their HP to zero, or a high-level character allowing a low-level character to defeat them for a greater share of exp. If the DMs catch you doing this, you may lose your ability to gain exp from duels at all."}]
 			},
 			{
-				"prefix":":four: ",
+				"prefix":"⚠️ ",
+				"title": "[Experimental] Team Duels",
+				"description": "Previously, duels were limited to 1v1. An effort has been made to permit more than this base configuration of two combatants. When a duel is closed with more than two participants, the bot will give participants the option to group players for team combat.",
+				"fields":[
+					{"name":"Duel Permutations","value":"- 2 Participants: `1v1` (Standard Duel)\n- 3 Participants: `1v1v1` / `1v2`\n- 4 Participants: `1v1v1v1` / `1v1v2` / `1v3` / `2v2`\n- 5 Participants: `1v1v1v1v1` / `1v1v1v2` / `1v1v3` / `1v4` / `1v2v2`/ `2v3`\n- 6 Participants: `etc.`"},
+					{"name":"Multiple Characters","value":"A player will not be able to pit their own characters against one another. If a player has multiple character in the same duel, they will automatically be treated as part of the same team, and cannot be split."}
+				]
+			},
+			{
+				"indexBreak":true,
+				"title": "Starting a Duel",
+				"thumbnail": { "url": "https://i.imgur.com/2U90DwW.png" },
+					"description":"`                                                                     `"
+			},
+			{
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Initiative Setup",
 				"description": "Parties will begin at either 30 feet, or the distance reflecting the lowest movement speed of any of the combatants. While most race/class combinations have a minimum of 30 feet of movement, accommodations should be made so as not to put those with lower movement at a severe disadvantage.",
 				"fields":[{"name":"Starting Combat","value":"One participant should run the Avrae command `!i begin` in the mechanics thread of the arena channel to start initiative. Once the combat is created, all participants should use the `!i join` command to roll initiative. If you are unfamiliar with Avrae combat, you may want to review [avrae commands](avrae.io/commands#inittracker) or try running through the\n `!tutorial Initiative (Player)` in <#697620228703649892>."}]
 			},
 			{
-				"prefix":":five: ",
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Map Setup (Optional)",
 				"description": "Many requests have been made to provide map options for arena duels. Regardless, this step is **entirely optional**. Many who are new to Avrae may find it to be more trouble than it's worth, and Theater of the Mind combat often works just fine for arena duels. Before using a map, discuss it with your opponent and reach an agreement on the use of a map, as well as *which* map you wish to use. Several options are provided below.",
 				"fields":[
-					{"name":"Selecting a Map","value":"There are quite a few battle maps set up for use in the arenas. Images, along with some details, appear in the post following this one.\n`arena` - [image](https://i.imgur.com/xTFhOwl.png) - Main Colossuem [Recommended] - Has variants\n`arena_round` - [image](https://i.imgur.com/aX7ovJG.png) - Main Colossuem [Alternate]\n`sidearena1` - [image](https://i.imgur.com/QCrX0cg.jpg) - Side Arena Option\n`sidearena2` - [image](https://i.imgur.com/9ktKmsY.png) - Side Arena Option\n\nSee the attached `Map Options` thread for more!\n*If you find other arena battlemap images you think would be fitting inclusions, you may post them in <#694306844079947838>*"},
+					{"name":"Selecting a Map","value":"There are quite a few battle maps set up for use in the arenas. Images, along with some details, appear in the post following this one.\n`arena` - [image](https://a.l3n.co/i/YiFvYb.png) - Main Colossuem [Recommended] - Has variants\n`arena_round` - [image](https://b.l3n.co/i/YiUeOH.png) - Main Colossuem [Alternate]\n`sidearena1` - [image](https://a.l3n.co/i/YiUnc1.md.jpg) - Side Arena Option\n`sidearena2` - [image](https://a.l3n.co/i/YiUMsK.md.png) - Side Arena Option\n\nSee the attached `Map Options` thread for more!\n*If you find other arena battlemap images you think would be fitting inclusions, you may post them in <#694306844079947838>*"},
 					{"name":"Adding the Map","value":"In order for the map to track correctly, it will need to be added to initiative. (*Note that this will appear in turn order, and will need to be skipped, so pay close attention and try not to do your attack on the map's turn.*). One player should run these commands:\n\n`!i add 0 Map -p 69`\n`!map -loadmap <map_name>`\n\nReplace `<map_name>` with the name of your selection, for example:\n`!map -loadmap arena`"},
 					{"name":"Adding & Moving your Tokens","value":"Using the `!move <coordinate>` command will place your token. For example, `!move g10` will move your token to that corresponding square.\n`!move <coordinate> -t <target>` will move another target's token, as above. This can be used to move summons or familiars, for instance."},
 					{"name":"More Mapping Mayhem","value":"This covers just the barest basics of using the `!map` alias. If you want to explore it more, feel free to read the `!map ?` helpfule and experiment with it\n(__**DO NOT**__ do so in the colosseum channels. Use <#697620228703649892>) "}
 				],
 				"thread":{"name":"📌Map Options","content":"rules/rules_map_options.json"}
-			},			
+			},
 			{
-				"prefix":":six: ",
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Prep Round (Optional)",
 				"description":"If both parties agree, the first round may count as a prep round.\n\nDuring this round, **only** personal and party buffs/enhancements are allowed. This includes spells with a Range of Self (Blur, Mirror Image), enhance the abilities of yourself or your allies (Bless, False Life), and race/class features that create similar effects (Druid’s Wild Shape, Shifter’s Shifting). Effects with a duration of greater than an hour, such as Mage Armor, may be used prior to arriving in the colosseum, and may be used without a Prep Round, provided the relevant resource is expended to reflect its use. Persistent companions (familiars, Artificer Steel Defenders, Ranger Companions, etc) may be present without using a prep round.\n\nSpells and features that target or affect opposing party members or the battlefield in any way are NOT allowed. Attacks or damaging spells, debuffs (Bane, Hex, Hunter’s Mark), conjuration spells (non-persistent summons, etc.), and race/class features that create similar effects (Fallen Aasimar’s Necrotic Shroud).\n\nCombatants MAY NOT use any Action other than the aforementioned buffs and enhancements. Such disallowed Actions include the Ready/Hold Action for an attack or spell, Help, or Dodge. This includes any spell, race, or class feature that confers a similar result (Rogue’s Cunning Action, Monk’s ki features)."
 			},
-			{ 
-				"prefix":":seven: ",
+			{
+				"indexBreak":true,
+				"title": "Ending a Duel",
+				"thumbnail": { "url": "https://i.imgur.com/2U90DwW.png" },
+				"description":"`                                                                     `"
+			},
+			{
+				"prefix":"<:d20:704040692946698361> ",
 				"title": "Ending Duels: `/duel`",
-				"description": "At the end of the duel, enter the `/duel` command!\n\nA bot will log your duel for a DM to review & award at their earliest convenience. Be patient (we have lives).\n\nA DM will check both the mechanics channel to ensure nothing was done blatantly incorrectly, and check the RP channel to ensure you put some effort into roleplaying the actions of the duel. This roleplay doesn't need to be detailed or reflect every single action, but this is a role-playing server. You will get no xp for just running bot commands.",
+				"description": "At the end of the duel, enter the `/duel` command and follow the prompts.",
 				"fields":[
 					{"name":"Verify your Level!","value":"Prior to concluding a duel, make sure you (and your opponent) have `!setup` your character in <#704307298407022622>. The bot will ask you to confirm the duel details before posting them to the DMs for review. If your level is wrong, click CANCEL, and run the `!xp` command in <#704307298407022622> before trying the `/duel` command again."},
-					{"name":"<:xp:858887927899226112> Experience Awarded","value":"Once the duel is concluded, it will be sent to the DMs for approval. Please be patient, as it may take some time for a DM to review it. Once it has been reviewed and approved, the amount of exp awarded will be posted in <#775545148192587796>. Note that the Exp is **not** automatically added. You will need to run the `!xp <amt>` command in <#704307298407022622>, where `<amt>` is the exp award listed in the log channel."}, 
-					{"name":"** **","value":"Each combatant can earn an amount of exp per day up to an amount based on their level (see the table below). If the above EXP puts your character over their daily cap, any extra is lost and they cannot earn any more EXP from sparring for the day. The amount of exp awarded is calculated based on the level of the **losing** combatant. 75% of their cap is awarded to the winner, and the remaining 25% to the loser."},
-					{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   150 │   113 │    37  ║\n║   4  │   250 │   188 │    62  ║\n║   5  │   500 │   375 │   125  ║\n║   6  │   600 │   450 │   150  ║\n║   7  │   750 │   563 │   187  ║\n║   8  │   900 │   675 │   225  ║\n║   9  │ 1,100 │   825 │   275  ║\n║  10  │ 1,200 │   900 │   300  ║\n║  11  │ 1,600 │ 1,200 │   400  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,200 │ 2,400 │   800  ║\n║  17  │ 3,900 │ 2,925 │   975  ║\n║  18  │ 4,200 │ 3,150 │ 1,050  ║\n║  19  │ 4,900 │ 3,675 │ 1,125  ║\n║  20  │ 5,700 │ 4,275 │ 1,425  ║\n╚══════╧═══════╧═══════╧════════╝\n```"}					
-				],
-				"hiddenFields":[{"name":"** **","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │  Cap  │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   200 │   150 │    50  ║\n║   4  │   350 │   265 │    90  ║\n║   5  │   700 │   525 │   175  ║\n║   6  │   850 │   640 │   215  ║\n║   7  │ 1,000 │   750 │   250  ║\n║   8  │ 1,200 │   900 │   300  ║\n║   9  │ 1,400 │ 1,050 │   350  ║\n║  10  │ 1,600 │ 1,200 │   400  ║\n║  11  │ 1,800 │ 1,350 │   450  ║\n║  12  │ 2,000 │ 1,500 │   500  ║\n║  13  │ 2,200 │ 1,650 │   550  ║\n║  14  │ 2,500 │ 1,875 │   625  ║\n║  15  │ 2,800 │ 2,100 │   700  ║\n║  16  │ 3,500 │ 2,625 │   875  ║\n║  17  │ 4,000 │ 3,000 │ 1,000  ║\n║  18  │ 4,500 │ 3,375 │ 1,125  ║\n║  19  │ 5,000 │ 3,750 │ 1,250  ║\n║  20  │ 6,000 │ 4,500 │ 1,500  ║\n╚══════╧═══════╧═══════╧════════╝```"},
-					{"name":":coin: Gold Awarded","value":"```╔══════╤═══════╤═══════╤════════╗\n║ LVL  │ Total │  Win  │  Loss  ║\n╠══════╪═══════╪═══════╪════════╣\n║   3  │   4gp │   3gp │   1gp  ║\n║   4  │   7gp │   5gp │   2gp  ║\n║   5  │  14gp │  11gp │   3gp  ║\n║   6  │  17gp │  13gp │   4gp  ║\n║   7  │  20gp │  15gp │   5gp  ║\n║   8  │  24gp │  18gp │   6gp  ║\n║   9  │  28gp │  21gp │   7gp  ║\n║  10  │  32gp │  24gp │   8gp  ║\n║  11  │  36gp │  27gp │   9gp  ║\n║  12  │  40gp │  30gp │  10gp  ║\n║  13  │  44gp │  33gp │  11gp  ║\n║  14  │  50gp │  38gp │  12gp  ║\n║  15  │  56gp │  42gp │  14gp  ║\n║  16  │  70gp │  53gp │  17gp  ║\n║  17  │  80gp │  60gp │  20gp  ║\n║  18  │  90gp │  68gp │  22gp  ║\n║  19  │ 100gp │  75gp │  25gp  ║\n║  20  │ 120gp │  90gp │  30gp  ║\n╚══════╧═══════╧═══════╧════════╝```"}]
-			}		
+					{"name":"⚠️ Participant Groups","value":"For duels involving more than two participants: By default, it will treat the duel as a free-for-all, with every combatant trying to defeat every other combatant. It will provide an opportunity to group players together into teams. The bot should automatically account for monsters added from companions, summons, and wild shape. Multiple characters controlled by the same player will automatically be assigned to the same group, and may not be split up."},
+					{"name":"Winner","value":"The bot will attempt to determine the winner(s) of a duel based on participant hit points remaining: any combatant with hp remaining will be considered a victor, and any with 0 hp remaining will be considered 'defeated'. In team duels, it will consider the total HP of all participants. Experience points are calculated and awarded based on the level of the defeated participant(s). In the event that there is no clear victor (for instance if the duel was ended and all participants have HP remaining) the bot will require the user to select the victor(s)."},
+					{"name":"Pending DM Approval","value":"Once the duel is concluded, the bot will log it for review and approval at the earliest opportunity. Please be patient - it may take some time to be reviewed.\nOnce approved, your rewards will be posted in <#775545148192587796>."}
+				]
+			},
+			{
+				"prefix":"<:d20:704040692946698361> ",
+				"title": "Duel Rewards",
+				"description": "Once your duel has been reviewed and approved, the awards will be posted in <#775545148192587796>. Note that these awards are **not** automatically added, and must be manually logged in <#704307298407022622>."
+			},
+			{
+				"prefix":"<:xp:858887927899226112> ",
+				"title": "Experience Awarded",
+				"description":"Each combatant can earn an amount of exp per day up to an amount based on their level (see the `Cap` column in the table below). If the exp earned puts a character over their daily cap, any extra is lost and they cannot earn any more exp from duels for the day.\n\nYou will need to run the `!xp <amt>` command, where `<amt>` is the exp award listed in the log channel.",
+				"fields":[
+					{"name":"** **","value":"```╔══════╤═══════╤═══════╤═══════╗\n║ LVL  │  Cap  │  Win  │ Loss  ║\n╠══════╪═══════╪═══════╪═══════╣\n║   3  │   200 │   150 │    50 ║\n║   4  │   350 │   265 │    90 ║\n║   5  │   600 │   450 │   150 ║\n║   6  │   800 │   600 │   200 ║\n║   7  │ 1,000 │   750 │   250 ║\n║   8  │ 1,200 │   900 │   300 ║\n║   9  │ 1,400 │ 1,050 │   350 ║\n║  10  │ 1,600 │ 1,200 │   400 ║\n║  11  │ 1,800 │ 1,350 │   450 ║\n║  12  │ 2,000 │ 1,500 │   500 ║\n║  13  │ 2,200 │ 1,650 │   550 ║\n║  14  │ 2,500 │ 1,875 │   625 ║\n║  15  │ 2,800 │ 2,100 │   700 ║\n║  16  │ 3,200 │ 2,400 │   800 ║\n║  17  │ 3,900 │ 2,925 │   975 ║\n║  18  │ 4,500 │ 3,375 │ 1,125 ║\n║  19  │ 5,200 │ 3,900 │ 1,300 ║\n║  20  │ 6,000 │ 4,500 │ 1,500 ║\n╚══════╧═══════╧═══════╧═══════╝```"},
+					{"name":"How exp is calculated","value":"The pool of awarded exp awarded is calculated based on the cap of the **defeated** combatant(s) as shown above. 75% of this total cap is divided among the victor(s), and the remaining 25% to the defeated duelists.\n\nThe amount awarded to an individual combatant is calculated from the total exp pool, the % shown above, and the % of their personal cap vs. the total cap of their group.\n(`pool` x `outcome %` x `cap %`) = `exp award`\n\nIn team-based duels, a 'partial victory' of 50% may be awarded to defeated duelists who reduced a victor's HP to zero, or to victorious duelists who's HP was reduced to zero."}
+				]
+			},
+			{
+				"prefix":":coin: ",
+				"title":"Gold Awarded",
+				"description":"Each combatant can earn an amount of gold per day up to an amount based on their level (the `Cap` column in the table below). Once they reach their exp cap for the day, no additional gold may be earned from duels for the day.\n\nYou will need to run the `!coins <amt>` command, where `<amt>` is the gold award listed in the log channel.",
+				"fields":[
+					{"name":"** **","value":"```╔═════╤═════╤═════╤══════╗\n║ LVL │ Cap │ Win │ Loss ║\n╠═════╪═════╪═════╪══════╣\n║   3 │   4 │   3 │   1  ║\n║   4 │   8 │   6 │   2  ║\n║   5 │  16 │  12 │   4  ║\n║   6 │  24 │  18 │   6  ║\n║   7 │  32 │  24 │   8  ║\n║   8 │  40 │  30 │  10  ║\n║   9 │  48 │  36 │  12  ║\n║  10 │  56 │  42 │  14  ║\n║  11 │  72 │  54 │  18  ║\n║  12 │  88 │  66 │  22  ║\n║  13 │ 104 │  78 │  26  ║\n║  14 │ 120 │  90 │  30  ║\n║  15 │ 136 │ 102 │  34  ║\n║  16 │ 152 │ 114 │  38  ║\n║  17 │ 184 │ 138 │  46  ║\n║  18 │ 216 │ 162 │  54  ║\n║  19 │ 248 │ 186 │  62  ║\n║  20 │ 280 │ 210 │  70  ║\n╚═════╧═════╧═════╧══════╝```"},
+				{"name":"How gold is calculated","value":"The total gold purse is calculated based on the cap of the **defeated** combatant(s) as shown above. 75% of this total cap is divided among the victor(s), and the remaining 25% to the defeated duelists.\n\nThe amount awarded to an individual combatant is calculated from the total exp pool, the % shown above, and the % of their personal cap vs. the total cap of their group.\n(`pool` x `outcome %` x `cap %`) = `gold award`\n\nIn team-based duels, a 'partial victory' of 50% may be awarded to defeated duelists who reduced a victor's HP to zero, or to victorious duelists who's HP was reduced to zero."}]
+			},
+
+			{
+				"indexBreak":true,
+				"title": "Duel changelog",
+				"description":"`                                                                     `\n- Rewrote `/duel` from the ground up\n  - Added better error handling / logging\n  - Refactored user interface\n- Added support for more than 2 duelists\n  - Added group/team support to the bot\n- Refactored win detection and exp award calculation\n- Increased duel daily exp cap (see below)\n- Added duel gold award",
+				"fields":[{"name":"Exp Cap Changes","value":"```╔══════╤═══════╤═══════╗\n║  LVL │ Old (Cap) New ║\n╠══════╪═══════╪═══════╣\n║   3  │   150 │   200 ║\n║   4  │   250 │   350 ║\n║   5  │   500 │   600 ║\n║   6  │   600 │   800 ║\n║   7  │   750 │ 1,000 ║\n║   8  │   900 │ 1,200 ║\n║   9  │ 1,100 │ 1,400 ║\n║  10  │ 1,200 │ 1,600 ║\n║  11  │ 1,600 │ 1,800 ║\n║  12  │ 2,000 │ 2,000 ║\n║  13  │ 2,200 │ 2,200 ║\n║  14  │ 2,500 │ 2,500 ║\n║  15  │ 2,800 │ 2,800 ║\n║  16  │ 3,200 │ 3,200 ║\n║  17  │ 3,900 │ 3,900 ║\n║  18  │ 4,200 │ 4,500 ║\n║  19  │ 4,900 │ 5,200 ║\n║  20  │ 5,700 │ 6,000 ║\n╚══════╧═══════╧═══════╝```"}]
+			}
 		]
 	}
 }
