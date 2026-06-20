@@ -512,11 +512,35 @@ function incrementStats(data, id, name, message, tupperData)
 	return data;
 }
 
+/// Given a guild and a string containing a discord URL,
+/// return the message that URL points to
+async function getMessageFromURL(guild, url) {
+	const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d*)\/(\d*)\/(\d*)/;
+	const match = url.match(discordLinkReg) || null
+	if (!match) return
+	const [, guildId, channelId, messageId] = match
+	const channel = await guild?.channels?.fetch(channelId).catch(e => null) || null;
+	const message = await channel?.messages?.fetch(messageId).catch(e => null) || null;
+	return message || null
+}
+
+/// Post the approved exp message to the Exp Log channel
+/// @interaction	- The interaction of the button press
+/// @url			- The url of the message to react to
+/// @emoji			- The emoji to react
+async function reactToMessageURL(guild, url, emoji) {
+	if (!guild || !url || !emoji) return;
+	const message = await getMessageFromURL(guild, url)
+	if (emoji) await message?.react(emoji)
+	else await message?.reactions?.removeAll()
+}
+
 module.exports =
 {
 	channelCleanup,
 	deleteMessages,
 	getMessageRange,
+	getMessageFromURL,
 	findLastBreak,
 	findNextBreak,
 	findFenceposts,
@@ -526,5 +550,6 @@ module.exports =
 	getRoleplayData,
 	getAllRoleplayData,
 	isSceneBreak,
-	fetchAll
+	fetchAll,
+	reactToMessageURL
 }
