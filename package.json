@@ -13,7 +13,7 @@
   },
   "//": "npm run deploy -- dev // npm run deploy -- prod",
   "dependencies": {
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "chalk": "^4.1.2",
     "cli-color": "^2.0.4",
     "discord.js": "^14.26.3",
@@ -28,7 +28,7 @@
     "unb-api": "^1.4.0"
   },
   "overrides": {
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "undici": "^7.24.0"
   },
   "//chalk": "pinned at v4: chalk v5 is ESM-only and incompatible with require()"
