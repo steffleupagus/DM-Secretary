@@ -1,80 +1,68 @@
 const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js');
 const DuelUtils	= require(`../../utilities/funcsDuel.js`)
 const Utils		= require(`../../utilities/utilFuncs.js`)
-//const Log		= require(`../../utilities/loggerUtils.js`)
+const Log		= require(`../../utilities/loggerUtils.js`)
 const mod		= process.env.mod || "";
 const config	= require(`../../config/${mod}_config.json`);
 const util		= require('util')
 
 async function execute(interaction, message=null) {
 	const ephemeral	= (message || config.DEV) ? {flags:MessageFlags.Ephemeral} : {}
-	const channel	= interaction.channel;
-	const user		= interaction.user;
-	const reply		= await interaction.deferReply({fetchReply:true, ...ephemeral})
+	await interaction.deferReply({...ephemeral})
 
 	try {
-		const response = await DuelUtils.processDuel(channel, user, message);
+		const response = await DuelUtils.processDuel(interaction, message);
 		if (response !== true)
 			await interaction.editReply(response);
 		else if (interaction.ephemeral)
-			await interaction.editReply("Done")
-		else
-			await interaction.deleteReply();
+			await interaction.editReply({content:"Done",components:[]})
 	} catch (error) {
-		throw error.message
+		const embed = embedError(error);
+		await interaction.editReply({content:"", embeds:[embed], components:[]});
+		Log.TODO("Log error to channel?");
+		throw error;
 	}
 }
 
-async function run(client, message, command, args) {
-	const channel = message.channel;
-	const user = message.author;
-
-	const reply = await channel.send(`●●● ${client.user.username} is thinking...`)
-	try {
-		const response = await DuelUtils.processDuel(channel, user, null);
-		if (response === true)
-			reply.delete();
-		else
-			await reply.edit(response);
-	} catch (error) {
-		console.error(error);
-		await reply.edit(`There was an error executing this command:\n${error.message}`);
-	}
-
-	message.delete()
+function embedError(error)
+{
+	error = error.error || error
+	const embed = new EmbedBuilder().setTitle(`${config.emoji.duel} ${error.name}`)
+									.setThumbnail("https://i.imgur.com/2U90DwW.png")
+	if (error.message) embed.setDescription(error.message)
+	if (error.cause) embed.addFields(error.cause)
+	return embed
 }
 
-async function button(interaction) {
+async function handleButton(interaction) {
+	//	await interaction.deferReply();
+	//	await interaction.deleteReply();
+
 	const subCommand = interaction.customId;
+	// Routed to wrong command, early out
+	if (!subCommand.startsWith(`duel`)) return;
+	const ephemeral = {flags:MessageFlags.Ephemeral}
+	const editPerms = interaction?.member && Utils.hasAnyRole(interaction.member, [config.role.DM]);
+	const editError = `Only <@&${config.role.DM}> has permissions to edit duel data.`
 
-	if ("duel.startDuel" == subCommand) {
-		const client = interaction.client;
-		client.commands.get('startduel').execute(interaction)
-		return;
+	switch (subCommand)
+	{
+		case "duel.startDuel":
+			interaction.client.commands.get('startduel').execute(interaction);
+			break;
+		case "duel.approve": await DuelUtils.approveDuel(interaction); break;
+		case "duel.decline": await DuelUtils.rejectDuel(interaction); break;
+		case "duel.undo": await DuelUtils.undoResult(interaction); break;
+		case "duel.note": await DuelUtils.noteDuel(interaction); break;
+		case "duel.calc_false":
+		case "duel.calc_true":
+			await DuelUtils.toggleCalculations(interaction, subCommand == "duel.calc_true");
+			break;
+		case "duel.edit":
+			if (!editPerms) { await interaction.reply({content:editError,...ephemeral}); return }
+			await DuelUtils.editDuel(interaction);
+			break;
 	}
-	else if ("duel.transcript" == subCommand) {
-		await interaction.deferReply({ephemeral:true});
-		const transcript = await DuelUtils.generateTranscriptFromLog(interaction.message);
-		await interaction.editReply({embeds:[...transcript]});
-		return;
-	}
-	else if ("duel.undo" == subCommand) {
-		await interaction.deferReply();
-		await DuelUtils.undoApproval(interaction.message, interaction.client)
-		await interaction.deleteReply();
-		return;
-	}
-
-	await interaction.deferReply();
-	const confirmResult = await DuelUtils.approveDuel(interaction.message,
-													  interaction.user,
-													  subCommand)
-	await interaction.deleteReply();
-}
-
-async function select(interaction) {
-	console.log(interaction)
-	interaction.reply({content:`Handling ${interaction.customId}: ${interaction.values.join(", ")}`, ephemeral: true})
 }
 
 const data = new SlashCommandBuilder()
@@ -84,9 +72,7 @@ const data = new SlashCommandBuilder()
 module.exports = {
 	data: data,
 	execute: execute,
-	message: run,
-	button: button,
-	select: select,
+	button: handleButton,
 
 	build:config.PRODUCTION || config.DEV
 };

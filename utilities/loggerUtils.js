@@ -7,7 +7,7 @@ const fs = require('fs');
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
-//const {STEP,ERROR} = require(`./constants.js`)
+const {STEP,ERROR} = require(`./constants.js`)
 const Prompt = require(`./promptUtils.js`)
 const BR = `\n\`${' '.repeat(69)}\``
 
@@ -153,7 +153,7 @@ class Logger
 	/// Updates data.stage to newStage
 	async TRACE (interaction, data, newStage, DEBUG) {
 		/// Finish up the previous stage output
-		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
+		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === data?.stage);
 		const debugData = data ?? {};
 		const cause = data ? {cause:data} : {}
 
@@ -164,6 +164,7 @@ class Logger
 		else if (DEBUG?.WATCHDATA && debugData) this.DEBUG(debugData)
 
 		/// Process the next stage output
+		data = data ?? {};
 		data.stage = newStage;
 		STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
 		this.STEP(STEPKEY, newStage)

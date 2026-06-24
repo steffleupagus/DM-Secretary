@@ -13,18 +13,23 @@
   },
   "//": "npm run deploy -- dev // npm run deploy -- prod",
   "dependencies": {
-    "axios": "^1.15.2",
+    "axios": "^1.18.0",
     "chalk": "^4.1.2",
     "cli-color": "^2.0.4",
     "discord.js": "^14.26.3",
     "express": "^5.2.1",
     "fast-levenshtein": "^3.0.0",
     "glob": "^13.0.6",
+    "luxon": "^3.7.2",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^9.5.0",
     "munkres-js": "^1.2.2",
     "string-similarity": "^4.0.4",
     "unb-api": "^1.4.0"
+  },
+  "overrides": {
+    "axios": "^1.18.0",
+    "undici": "^7.24.0"
   },
   "//chalk": "pinned at v4: chalk v5 is ESM-only and incompatible with require()"
 }
