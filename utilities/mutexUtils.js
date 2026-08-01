@@ -14,17 +14,20 @@ class MutexException
 {
 	constructor(channel, value, error)
 	{
-		this.channel = channel?.id ?? channel
-		this.value   = value
-		this.message = error
-		this.stack   = error?.stack ?? Error().stack
+		this.channel	= channel?.id ?? channel
+		this.value		= value
+		this.error		= error
+		this.name		= error?.name ?? "Error"
+		this.cause		= error?.cause ?? ""
+		this.message	= error?.message ?? error
+		this.stack		= error?.stack ?? Error().stack
 	}
-	
+
 	toString()
 	{
-		console.log("OOPS THIS DOESN'T EXIST!")
+		console.log(this.error)
 		console.log(this.message, this.stack)
-		return this.message;
+		return this.error?.toString() ?? this.message;
 	}
 }
 

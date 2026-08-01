@@ -271,7 +271,11 @@ async function getRoleplayData(rpChan, message = null)
 	catch (err) { console.error(err) }
 
 	const rpData = await scrapeMessages(roleplay.messages);
-	if (rpData) rpData.start = roleplay.messages[0].url;
+	if (rpData) {
+		rpData.start = roleplay.messages[0].url;
+		rpData.startId = roleplay.messages[0].id
+		rpData.timestamp = roleplay.messages[0].createdAt;
+	}
 	return rpData;
 }
 
@@ -371,12 +375,6 @@ async function scrapeMessageMetadata(stats, message)
 
 	stats = stats || { tupperMap: {} }	//Assign the stats if they don't already exist
 
-	// if (!user.bot && !member)
-	// {
-	// 	try { member = await guildMembers.fetch(authorId); }
-	// 	catch (err) { member = null; }
-	// }
-
 	let name = member?.nickname ?? user?.username;
 	let tupperData = null
 
@@ -444,8 +442,10 @@ function assignUnknown(stats, authorId, name, tupperData)
 
 	stats[authorId] = stats ?.[authorId] || { char: {} }
 	stats[authorId].char[name] = stats ?.[authorId] ?.char ?.[name] || { length: 0, posts: 0 }
-	stats[authorId].char[name].length += unknown.length || 0;
-	stats[authorId].char[name].posts += unknown.posts || 0;
+	stats[authorId].char[name].length += unknown?.length ?? 0;
+	stats[authorId].char[name].posts += unknown?.posts ?? 0;
+	stats[authorId].length = (stats ?.[authorId] ?.length ?? 0) + (unknown?.length ?? 0);
+	stats[authorId].posts = (stats ?.[authorId] ?.posts ?? 0) + (unknown?.posts ?? 0);
 	if (unknown.chan)
 	{
 		stats[authorId].chan = stats[authorId].chan ?? [];
@@ -478,18 +478,23 @@ function assignUnknown(stats, authorId, name, tupperData)
 	return stats;
 }
 
+function formatDate(date) {
+	return ('0' + date.getDate()).slice(-2) + '.' +
+		   ('0' + (date.getMonth()+1)).slice(-2) + '.' +
+			date.getFullYear();
+}
+
 function incrementStats(data, id, name, message, tupperData)
 {
 	const channel = message.channel.id;
 	const content = cleanMessageContent(message)
 
 	const length  = content.length;
-	let   date    = message.createdAt;
-		  date    = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`
+	let   date    = formatDate(message.createdAt);
 
 	data = data ?? { length: 0, posts: 0, char: {}, chan: [] };
-	data.length += length;
-	data.posts += 1;
+	data.length = (data.length ?? 0) + length;
+	data.posts = (data.posts ?? 0) + 1;
 	data.chan = data.chan || [];
 	if (!data.chan.includes(channel))
 		data.chan.push(channel)
@@ -512,11 +517,35 @@ function incrementStats(data, id, name, message, tupperData)
 	return data;
 }
 
+/// Given a guild and a string containing a discord URL,
+/// return the message that URL points to
+async function getMessageFromURL(guild, url) {
+	const discordLinkReg = /https?:(?:www\.)?\/\/discord(?:app)?\.com\/channels\/(\d*)\/(\d*)\/(\d*)/;
+	const match = url.match(discordLinkReg) || null
+	if (!match) return
+	const [, guildId, channelId, messageId] = match
+	const channel = await guild?.channels?.fetch(channelId).catch(e => null) || null;
+	const message = await channel?.messages?.fetch(messageId).catch(e => null) || null;
+	return message || null
+}
+
+/// Post the approved exp message to the Exp Log channel
+/// @interaction	- The interaction of the button press
+/// @url			- The url of the message to react to
+/// @emoji			- The emoji to react
+async function reactToMessageURL(guild, url, emoji) {
+	if (!guild || !url || !emoji) return;
+	const message = await getMessageFromURL(guild, url)
+	if (emoji) await message?.react(emoji)
+	else await message?.reactions?.removeAll()
+}
+
 module.exports =
 {
 	channelCleanup,
 	deleteMessages,
 	getMessageRange,
+	getMessageFromURL,
 	findLastBreak,
 	findNextBreak,
 	findFenceposts,
@@ -526,5 +555,6 @@ module.exports =
 	getRoleplayData,
 	getAllRoleplayData,
 	isSceneBreak,
-	fetchAll
+	fetchAll,
+	reactToMessageURL
 }
