@@ -94,8 +94,6 @@ async function getChannelOwner(channel) {
 	return chanMeta?.userOwner
 }
 
-
-
 const LocationRoles = {
 	public:[],
 	guild:[]
@@ -146,10 +144,10 @@ module.exports =
 	isTableMechanicsThread,
 	isTrackedChannel,
 	isDuelRPChannel,
+	getChannelOwner,
 	getDuelChannelPair,
 	getChannelOwner,
 	fetchThreads,
-
 	LocationRoles,
 	refreshLocationRoles,
 	getChannelLocationRoles

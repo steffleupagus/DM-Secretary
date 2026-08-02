@@ -24,7 +24,7 @@ function getCurrentPerms(channel, chanMeta) {
 	ChanUtils.LocationRoles.guild.forEach(role => { locations[role.value] = role.label; })
 	const ids = Object.keys(locations)
 
-	perms = "";
+	let perms = "";
 	channel.permissionOverwrites.cache.map( (val, id) => {
 		if ((val.type == 0)&&(ids.includes(id)))
 		{
@@ -111,7 +111,7 @@ async function updateChannelPerms(channel, chanMeta, forceReset = false) {
 	//Add any chanMeta locations permissions that the channel doesn't already have
 	chanMeta.locations.forEach( id => {
 		const val = channel.permissionOverwrites.cache.get(id);
-		if (!val || val.allow.has(PermissionsBitField.Flags.ViewChannel))
+		if (!val || !val.allow.has(PermissionsBitField.Flags.ViewChannel))
 		{
 			output.push(`Adding permissions for role <@&${id}>`);
 			channel.permissionOverwrites.create(id, locationPermission);
@@ -168,7 +168,7 @@ async function updateChannelTopic(channel, chanMeta) {
 	topic = prefix.join("") + "\n" + topic.trim()
 
 	if (topic.length > 1024)
-		throw new Error(`Topic is too long to include ${config.emoji.xp} icon`)
+		throw new Error(`Channel topic would exceed Discord's character limit`)
 
 	console.log(topic,"\n\n\n")
 
@@ -260,7 +260,6 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
     const validUsers = users.filter((user) => user !== null);
     // Do something with the fetched users, e.g. send their usernames in a message
     const owners = validUsers.map((user) => { return { label: user.username, value: user.id, default:true } });
-	//console.log(owners)
 	const ownerSelect = Prompt.createSelectRow(`${data.name}.modifyOwners`,owners,0,owners.length,"Owners")
 	const buttons = [
 		{style:ButtonStyle.Secondary, emoji:config.emoji.xp, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
@@ -414,7 +413,10 @@ async function handleInteraction(interaction) {
 						chanMeta.userOwner.push(newOwner)
 						permsDirty = true;
 					} else await modal.reply({content:`${user} was already a channel owner`, ephemeral: true})
-				} catch {}
+				} catch (e) {
+					console.error(e)
+					throw e;
+				}
 				if (!user) await modal.reply({content:`${newOwner} is not a valid user`,ephemeral: true});
 			}
 			break;
@@ -441,11 +443,11 @@ async function handleInteraction(interaction) {
 			break;
 		case `publicLocation.false`:
 			publicFlag = false;
+			// intentional fall-through
 		case `publicLocation.true`:
 			dirty = false;
 			break;
 		case `permDebug`:
-			//getCurrentChanMeta(channel, chanMeta)
 			const result = getCurrentPerms(channel, chanMeta)
 			interaction.followUp({content:result, ephemeral:true})
 			dirty = false;
