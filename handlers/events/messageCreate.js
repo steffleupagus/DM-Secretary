@@ -49,8 +49,7 @@ async function execute(client, message)
 	}
 
 	//Finally, if we're all the way through here, check for RP messages
-	if (!message.author.bot)
-		processMessage(client, message)
+	if (!message.author.bot) processMessage(client, message)
 }
 
 module.exports = {

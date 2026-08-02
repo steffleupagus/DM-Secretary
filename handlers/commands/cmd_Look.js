@@ -143,9 +143,8 @@ async function generateComponents(isBuild, disabled = false) {
 }
 
 async function execute(interaction) {
-	//const ephemeral = {flags:MessageFlags.Ephemeral}
-	//await interaction.deferReply({...ephemeral});
-	await interaction.deferReply({ephemeral:true});
+	const ephemeral = {flags:MessageFlags.Ephemeral}
+	await interaction.deferReply({...ephemeral});
 
 	//Do nothing if we're not in an RP channel
 	const channel = interaction.channel;
