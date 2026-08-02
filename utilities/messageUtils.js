@@ -256,7 +256,7 @@ function isSceneBreak(message)
 ///
 /// Get the roleplay data
 ///
-async function getRoleplayData(rpChan, message = null) 
+async function getRoleplayData(rpChan, message = null)
 {
 	//Get the RP data
 	const roleplay = message
@@ -270,7 +270,12 @@ async function getRoleplayData(rpChan, message = null)
 	catch (err) { console.error(err) }
 
 	const rpData = await scrapeMessages(roleplay.messages);
-	if (rpData) rpData.start = roleplay.messages[0].url;
+	if (rpData) {
+		rpData.start = roleplay.messages[0].url;
+		rpData.startId = roleplay.messages[0].id
+		rpData.timestamp = roleplay.messages[0].createdAt;
+	}
+
 	return rpData;
 }
 
@@ -478,14 +483,19 @@ function assignUnknown(stats, authorId, name, tupperData)
 	return stats;
 }
 
+function formatDate(date) {
+	return ('0' + date.getDate()).slice(-2) + '.' +
+	 	   ('0' + (date.getMonth()+1)).slice(-2) + '.' +
+	 		date.getFullYear();
+}
+
 function incrementStats(data, id, name, message, tupperData)
 {
 	const channel = message.channel.id;
 	const content = cleanMessageContent(message)
 
 	const length  = content.length;
-	let   date    = message.createdAt;
-		  date    = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`
+	let   date    = formatDate(message.createdAt);
 
 	data = data ?? { length: 0, posts: 0, char: {}, chan: [] };
 	data.length = (data.length ?? 0) + length;

@@ -118,3 +118,6 @@ author = 3559563
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run start -- test"
+
+[agent]
+expertMode = true

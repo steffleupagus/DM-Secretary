@@ -1,5 +1,7 @@
 const { SlashCommandBuilder,
 	    EmbedBuilder, 
+	    UserSelectMenuBuilder,
+	    ActionRowBuilder,
 	    PermissionsBitField, 
 	    ButtonStyle } = require('discord.js')
 const Prompt = require(`../../utilities/promptUtils.js`)
@@ -54,12 +56,25 @@ async function execute(interaction)
 	// const rows = [buttons,select]
 	// await interaction.reply({embeds:[embed], components: rows})
 
-	const members = await guild.members.fetch({ user: ['659069077872181248', '647540953103728665', '670473952761741332']});
-	const users = members.map(member => member.id);
-	await interaction.deferReply({ephemeral:false});
-	const confirm = await Prompt.confirmDialog(interaction, {content:"Test"}, users);
-	await interaction.deleteReply();
-	await interaction.followUp({content: "Confirm: "+confirm, ephemeral:true})
+	const userSelect = new UserSelectMenuBuilder()
+		.setCustomId('users')
+		.setPlaceholder('Select a user.')
+		.setMinValues(1) 
+		.setMaxValues(1); 
+
+	const row1 = new ActionRowBuilder().addComponents(userSelect);
+
+	await interaction.reply({
+		content: 'Select users:',
+		components: [row1],
+	});
+
+	// const members = await guild.members.fetch({ user: ['659069077872181248', '647540953103728665', '670473952761741332']});
+	// const users = members.map(member => member.id);
+	// await interaction.deferReply({ephemeral:false});
+	// const confirm = await Prompt.confirmDialog(interaction, {content:"Test"}, users);
+	// await interaction.deleteReply();
+	// await interaction.followUp({content: "Confirm: "+confirm, ephemeral:true})
 
 	// const modal = await Prompt.createModal();
 	// console.log(modal)

@@ -1,0 +1,45 @@
+{
+  "title": "⚔️ Duel Complete (2 v 1)",
+  "thumbnail": {
+    "url": "https://i.imgur.com/2U90DwW.png"
+  },
+  "description": "\n`                                                                     `",
+  "fields": [
+    {
+      "name": "**🏆 Victor: **`Ardath` (Level `5`)",
+      "value": "<@227960499948486666> | HP: <`47`/`55`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Ardath%22%2C%22user%22%3A%22227960499948486666%22%2C%22hpMax%22%3A55%2C%22hpCur%22%3A47%2C%22level%22%3A5%2C%22team%22%3A0%2C%22win%22%3A1%2C%22xpAmt%22%3A300%2C%22gpAmt%22%3A9%7D)]\n-# *Team:* `Ardath`|`Elizabet Stockhardt`\n-# \t*Defeated:* `Trafellia Beau`\n- <:xp:858887927899226112> `300`xp [of `600` cap]\n- 🪙 `9`gp"
+    },
+    {
+      "name": "**🏆 Victor: **`Elizabet Stockhardt` (Level `5`)",
+      "value": "<@227960499948486666> | HP: <`0`/`37`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Elizabet%20Stockhardt%22%2C%22user%22%3A%22227960499948486666%22%2C%22hpMax%22%3A37%2C%22hpCur%22%3A0%2C%22level%22%3A5%2C%22team%22%3A0%2C%22win%22%3A1%2C%22xpAmt%22%3A200%2C%22gpAmt%22%3A6%7D)]\n-# *Team:* `Ardath`|`Elizabet Stockhardt`\n-# \t*Defeated:* `Trafellia Beau`\n- <:xp:858887927899226112> `200`xp [of `600` cap]\n- 🪙 `6`gp"
+    },
+    {
+      "name": "**💀 Defeat: **`Trafellia Beau` (Level `6`)",
+      "value": "<@399642969977651211> | HP: <`0`/`47`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Trafellia%20Beau%22%2C%22user%22%3A%22399642969977651211%22%2C%22hpMax%22%3A47%2C%22hpCur%22%3A0%2C%22level%22%3A6%2C%22team%22%3A1%2C%22win%22%3A0%2C%22xpAmt%22%3A200%2C%22gpAmt%22%3A6%7D)]\n-# \t*Defeated:* `Elizabet Stockhardt`\n- <:xp:858887927899226112> `200`xp [of `800` cap]\n- 🪙 `6`gp"
+    },
+    {
+      "name": "⚠️ Warning: Auto Group",
+      "value": "-# - Characters played by the same user are auto-grouped."
+    },
+    {
+      "name": "Links",
+      "value": "[Roleplay](https://discord.com/channels/694275190976413816/1333514474396717169/1334353990095343669)\n[Duel](https://discord.com/channels/694275190976413816/1333514474396717169/1334353990095343669)",
+      "inline": true
+    },
+    {
+      "name": "Duel",
+      "value": "Rounds: `6`\n[Transcript](https://discord.com/channels/694275190976413816/1333514474396717169/1433567966124970084)",
+      "inline": true
+    },
+    {
+      "name": "Data",
+      "value": "[Data](http://tinyurl.com/tjson?input=%7B%22type%22%3A%22duel%22%2C%22matchup%22%3A%222%20v%201%22%2C%22rounds%22%3A%226%22%2C%22startDate%22%3A1738205182%2C%22logDate%22%3A1761859599%7D)",
+      "inline": true
+    }
+  ],
+  "footer": {
+    "text": "Logged at:"
+  },
+  "timestamp": "2025-10-30T21:26:39.000Z",
+  "color": 16738560
+}

@@ -1,46 +1,38 @@
-const { EmbedBuilder, ButtonStyle, MessageFlags, MessageMentions, TextInputStyle } = require('discord.js')
-const { SortOrder } = require(`./enums.js`)
-const { DateTime } = require("luxon");
-const {INSTRUCT,ERROR,STEP} = require(`./constants.js`)
+const { EmbedBuilder, ButtonStyle, MessageMentions, TextInputStyle } = require('discord.js')
+const { SortOrder } = require(`../utilities/enums.js`)
+const ChannelMeta = require(`../database/chanMetaSchema.js`)
+const ExpUtils = require(`../utilities/expUtils.js`) 
+const ChanUtils = require(`../utilities/channelUtils.js`)
+const CharUtils = require(`../utilities/charUtils.js`)
+const MsgUtils = require(`../utilities/messageUtils.js`)
+const Prompt = require(`../utilities/promptUtils.js`)
+const Embed = require(`../utilities/EmbedPaginator.js`)
+const Mutex = require(`../utilities/mutexUtils.js`)
+const Utils = require(`../utilities/utilFuncs.js`)
+const Log = require(`../utilities/loggerUtils.js`)
 
-const mod = process.env.mod || "";
-const config = require(`../config/${mod}_config.json`);
-const ChanMeta = require(`../database/chanMetaSchema.js`)
-const ExpUtils = require(`./expUtils.js`) 
-const ChanUtils = require(`./channelUtils.js`)
-const CharUtils = require(`./charUtils.js`)
-const MsgUtils = require(`./messageUtils.js`)
-const Prompt = require(`./promptUtils.js`)
-const Embed = require(`./EmbedPaginator.js`)
-const Mutex = require(`./mutexUtils.js`)
-const Utils = require(`./utilFuncs.js`)
-const Log = require(`./loggerUtils.js`)
 const util = require('util')
 const unbapi = require("unb-api")
 const unbClient = new unbapi.Client(process.env.UBTOKEN)
+
+const mod = process.env.mod || "";
+const config = require(`../config/${mod}_config.json`);
+const {INSTRUCT,ERROR} = require(`./constants.js`)
 
 const MATCH_THRESHOLD = 0.9
 const MIN_THRESHOLD = 0.15
 const MIN_RP_THRESHOLD = 100
 const NPC_RPP_AMOUNT = 1000
 
-/// DEBUGGING
-const DEBUG = config.DEV ? {
-	IGNORE_RP: true,	//Ignore the RP requirement for debugging purposes
-	EMBEDDATA: false,	//Include duelData debug fields in embed output
-	USEREMBED: true,	//Automatically log user-facing interaction embeds
-	WATCHDATA: true,	//Log duelData to console.out at every step
-	TRACESTEP: true,	//Include button components to step through each stage
-	BREAKSTEP: null		//Break on this step of the trace //STEP.APPROVE_PEND;
-} : false
-const DEBUGFILE = config.DEV
-
-const BR = `\n\`${' '.repeat(69)}\``
 const SCENE_BREAK_CLOSER = "``` ```"
 const SCENE_COMMAND_TIME = (start, end, prefix='') => `${prefix}${Math.floor(end-start) / 1000} seconds.`
 
+const STEP_MESSAGE_DATA  = "Gathering scene data. Please be patient."
+const STEP_COLLECT_DATA  = "Gathering player & character data."
+const STEP_PROCESS_DATA  = "Processing scene data. Please be patient."
+const STEP_CONFIRM_DATA  = "Awaiting player confirmation."
+
 const SCENE_EMBED_TITLE  = `${config.emoji.xp} Scene Complete`;
-const SCENE_EMBED_THUMB  = "https://i.imgur.com/pz8sI6M.png";
 const SCENE_EMBED_TITLE_AUTO  = `${config.emoji.xp} Scene Auto-Closed`;
 const SCENE_EMBED_DESC   = `***Please wait** for the DM staff to confirm this scene before you add your exp.\nAwards will be posted in <#${config.chan.xpLog}> once verified.*`
 const SCENE_EMBED_FOOTER = "If any of this information looks incorrect, inform a `@DM On Duty`."
@@ -48,16 +40,22 @@ const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your 
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.chan.xpLog}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
 const CONFIRM_FOOTER = `👍 confirm (all players) / 👎 cancel (any player).\nWill auto-confirm after 30 seconds.`
 
+//const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
 const JSONURL = "http://tinyurl.com/tjson?input="
 const SCENEURL = "https://discord.com/channels/";
 
-const PING_PREFIX   = config.DEV ? '~' : '@'
-const dmPingChannel = config.DEV ? config.debug.dmPing : config.chan.dmPing;
-const xpLogChannel  = config.DEV ? config.debug.xpLog : config.chan.xpLog;
-const dmRoles       = [config.role.DM, config.role.DMOnDuty, config.role.Moderator, config.role.Builder];
+const Debug = config.DEV;
+
+const PING_PREFIX = Debug ? '~' : '@'
+const dmPingChannel = Debug ? config.debug.dmPing : config.chan.dmPing;
+const xpLogChannel  = Debug ? config.debug.xpLog : config.chan.xpLog;
 
 const NPC = 0;
 const SKIP = -1;
+
+const dmRoles = [
+			config.role.DM, config.role.Moderator
+		];
 
 const interactionTimer = {};
 
@@ -72,6 +70,7 @@ async function autoCloseScene(message)
 		return;
 	}
 
+//	if (!Debug) return
 	let startTime = performance.now()
 	var data
 	data = await MsgUtils.getRoleplayData(channel, null);
@@ -101,16 +100,16 @@ async function autoCloseScene(message)
 /// @user: The user who executed the command
 /// @message: Optionally, the message on which the menu command was run
 ///
-async function OLD_processScene(interaction, message)
+async function processScene(interaction, message)
 {	
 	let startTime = performance.now()
 	let endTime = startTime
 	interactionTimer[interaction.id] = 0
-	
+
 	//Check to make sure it's an Exp eligible scene or early out.
 	const channel = interaction.channel
-	const validChannel = await _CheckValidChannel(channel);
-	if (!validChannel && !DEBUG) return SCENE_BREAK_CLOSER;
+	const validChannel = await CheckValidChannel(channel);
+	if (!validChannel && !Debug) return SCENE_BREAK_CLOSER;
 
 	//Lock the channel so additional attempts to end this scene will fail	
 	Mutex.lock(channel, ERROR.SCENE_LOCKED);
@@ -119,17 +118,17 @@ async function OLD_processScene(interaction, message)
 	//If no message specified, it will search for the moost recent scene break
 	//If message is specified, it will search for scene break book ends in both directions.
 	var rpData
-	await updateStatus(interaction, STEP.GET_ROLEPLAY)
+	await updateStatus(interaction, STEP_MESSAGE_DATA)	
 	try 	  { rpData = await MsgUtils.getRoleplayData(channel, message); }
 	catch(err){	Mutex.unlock(channel, err)	}
-	
+
 	const start = rpData?.start;
 	if (!start)
 	{
 		Mutex.unlock(channel);	
 		return SCENE_BREAK_CLOSER
 	}
-	
+
 /*/ ^^^ Gathering all necessary data                    \*\
 |*| <<< TODO: Branch off here for informational output  |*|
 \*\ vvv Proccessing data for player approval            /*/
@@ -138,17 +137,17 @@ async function OLD_processScene(interaction, message)
 	endTime = performance.now()
 
 	//Take gathered stats & put them into a list of individual characters
-	await updateStatus(interaction, STEP.COLLECT_DATA)	
+	await updateStatus(interaction, STEP_COLLECT_DATA)	
 	try			{ rpData = await processData(interaction, rpData) }
 	catch(err)	{ Mutex.unlock(channel, err) }
 	if (null == rpData) return Mutex.unlock(channel, ERROR.CANCELLED);
 
 	// Consolidate the data & combine into a single record
 	// Assign experience - This will just be a multiplier based on the RP associated with each character
-	await updateStatus(interaction, STEP.COLLATE_DATA)
-	let pcData = structuredClone(rpData);
+	await updateStatus(interaction, STEP_PROCESS_DATA)
+	let pcData = JSON.parse(JSON.stringify(rpData));
 	try	{ 
-		pcData = consolidateData(pcData);
+		pcData = consolidateData(pcData); 
 		//Assign experience so we can identify those who didn't RP enough to earn any
 		pcData = assignExperience(pcData);		
 	}
@@ -159,37 +158,35 @@ async function OLD_processScene(interaction, message)
 	endTime = performance.now()
 	// endTime -= interactionTimer[interaction.id]
 	delete interactionTimer[interaction.id]
-	
+
 	//Close out the scene and get the players to confirm their levels
-	await updateStatus(interaction, STEP.CONFIRM_DATA)
-
-	Log.FILE("./data/test/scene_pc_Data.json", pcData)
-
+	await updateStatus(interaction, STEP_CONFIRM_DATA)
 	const confirm = await awaitConfirmation(interaction, pcData);
 	if (confirm !== true) return Mutex.unlock(channel, ERROR.CANCELLED);
-	
+
 /*/ ^^^ Proccessing data for player approval            \*\
 |*| <<< TODO: Branch off here for informational output  |*|
 \*\ vvv Player approval received. Post for DM approval  /*/
 
 	//Once confirmed, send this to the DM ping channel
-	
+
 	//Sort the DM's data 
 	keys = { "user":SortOrder.ASC, "char":SortOrder.ASC, "level":SortOrder.DESC };
 	rpData.sort((a,b)=>{ return Utils.priorityCompare(a, b, keys) })
 	// console.log(util.inspect(rpData, false, null, true /* enable colors */))
 
-	Log.FILE("./data/test/scene_rp_Data.json", rpData)
+	Log.FILE("scene_pc_Data.txt", pcData)
+	Log.FILE("scene_rp_Data.txt", rpData)
 
 	try	{ 
 		await sendDMApprovalMessage(interaction, start, rpData, SCENE_COMMAND_TIME(startTime, endTime));
 	}
 	catch(err)  { Mutex.unlock(channel, err) }
-	
+
 	// await LogDebugResult(interaction, rpData, start, interaction.channel, SCENE_COMMAND_TIME(startTime, endTime));
 	// await LogDebugResult(interaction, pcData, start, interaction.channel, SCENE_COMMAND_TIME(startTime, endTime));
-		
-	if (interaction.ephemeral || DEBUG)
+
+	if (interaction.ephemeral || Debug)
 		await interaction.followUp({content:SCENE_BREAK_CLOSER, ephemeral:true})
 	else
 		await interaction.channel.send(SCENE_BREAK_CLOSER)
@@ -217,20 +214,20 @@ async function generatePlayerXPField(interaction, data, idx)
 
 
 	console.log("Data: ",data)
-	
-	
+
+
 	if (data.level && data.xpMod > 0)
-	{
+	{		
 		//Apply daily exp cap
 		{
-			const cmd = `scene${config.DEV ? "dev" : ""}`
+			const cmd = `scene${config.DEV ? "dev" : ""}`						
 			const cap = 3 * ExpUtils.getRPExpCap(level);
 			let xpData = {char:data.char,uid:data.user,xp:{xp:data.xpMod,cap},logDate:data.date}
 				xpData = await ExpUtils.updateDailyExp(xpData, cmd, data.date);
 			if (!xpData)
 				throw "Something went very wrong..."
 			//xpData is an object: {xp (final xp after cap applied), cap, total (cumulative daily total)}
-			
+
 			if (xpData.xp.xp < data.xpMod)
 			{
 				data.xp  = data.xp - data.xpMod + xpData.xp.xp;
@@ -239,28 +236,28 @@ async function generatePlayerXPField(interaction, data, idx)
 			data.xpData = xpData.xp;
 			console.log("\n\n\n", data, xpData)
 		}
-    
+
 		const modification = `${data.char} (${data.level}) XP: +${data.xpData.xp} (${data.xpData.total} total)`
 		console.log(modification)
-		if (DEBUG)
+		if (Debug)
 			await interaction.followUp({content:modification, ephemeral:true});
 	}
 	else if (data.rpp > 0)
 	{
-		if (!DEBUG)
+		if (!Debug)
 		{
-  			//Automatically apply the amount to the user
+			//Automatically apply the amount to the user					
 			await unbClient.editUserBalance(interaction.guild.id, data.user, { cash: data.rpp })
 							.catch(console.error);
 		}
 		const modification = `${data.char} (${data.level}) RPP: +${data.rpp}`
 		console.log(modification)
-		if (DEBUG)			
+		if (Debug)			
 			await interaction.followUp({content:modification, ephemeral:true});
 	}
 	else
 		console.log(`== No modification for: ${data.char} (${data.level})`)
-	
+
 	let name   = `${data.char} (${level})`
 	let value  = ""
 	let footer = null
@@ -298,18 +295,18 @@ async function generateXPEmbed(interaction, start, rpData, comment = "", footer 
 	const reject = "scene.decline" == interaction.customId;
 	const title = SCENE_EMBED_TITLE
 	const desc = (reject ? "❌ Scene Rejected\n" : "✅ Scene Approved\n") + (comment || "")
-	
+
 	let embed = new EmbedBuilder();
 		embed.setTitle(title);
 		embed.setDescription(desc);
-		embed.setThumbnail(SCENE_EMBED_THUMB);
+		embed.setThumbnail("https://i.imgur.com/pz8sI6M.png");
 
 	//rpData.forEach( (data, idx) => 
 	await Utils.asyncArrayForEach(rpData, async (data,idx) =>
 	{
 		let level = data.level
 		if (level <= SKIP || (data.xp <= 0 && data.rpp <= 0)) return; // level = "Skip"
-		
+
 		data.rp.days = data.rp.days || data.daily?.length || "?";
 		data.rpp = reject ? 0 : (data.rpp || 0);
 		data.xp = reject ? 0 : (data.xp || 0);
@@ -321,7 +318,7 @@ async function generateXPEmbed(interaction, start, rpData, comment = "", footer 
 	embed.addFields([start]);
 	if (footer)
 		embed.setFooter({text:footer})		
-	
+
 	return embed;
 }
 
@@ -362,7 +359,7 @@ function retrieveData(source)
 	const embed  = message?.embeds?.[0] || message;
 	const fields = embed?.fields || embed;
 	if (!Array.isArray(fields)) return data;
-	
+
 	fields.forEach(field => 
 	{
 		let match = regex.exec(field.value || "");
@@ -384,13 +381,13 @@ async function handleUndo(interaction)
 {
 	const mutexId = interaction.message.id;
 	Mutex.lock(mutexId, ERROR.SCENE_LOCKED);
-	
+
 	const embed  = interaction?.message?.embeds?.[0];
 	const field  = {name:"Approval",value:`*Pending*`,inline:true};
 	const update = EmbedBuilder.from(embed)
 							   .setTitle(SCENE_EMBED_TITLE)
 							   .spliceFields(-1, 1, field)	
-	
+
 	let link = (embed.fields.pop()).value.split("/");
 	let msg  = link.pop().replace(")","");
 	let chan = interaction.guild.channels.resolve(link.pop());
@@ -400,7 +397,7 @@ async function handleUndo(interaction)
 
 	// if (msg)
 	// 	await handleUndoExp(interaction, msg);
-	
+
 	if (chan && msg && msg.author.id == process.env.clientid)
 		await msg.delete()
 
@@ -472,7 +469,7 @@ async function handleApprove(interaction)
 	const players = [];
 	data.map(x => { if (!players.includes(x.user)) players.push(x.user); })
 	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
-	
+
 	const xpEmbed = await generateXPEmbed(interaction, start, data, comment, footer)
 	var xpChan = await interaction.guild.channels.resolve(xpLogChannel);
 	const message = await xpChan.send({content: pings, embeds:[xpEmbed], components:assignNPC});
@@ -480,7 +477,7 @@ async function handleApprove(interaction)
 
 	const update = EmbedBuilder.from(embed)
 							   .spliceFields(-1, 1, newField)
-	
+
 	const oldComponents = interaction.message.components[0];
 	const disabledComp = oldComponents.components.map( x => {
 		x.data.disabled = true 
@@ -505,7 +502,7 @@ async function handleEdit(interaction)
 
 	const embed = interaction?.message?.embeds?.[0];
 	const data  = retrieveData(embed)
-	
+
 	const newEmbed = generateDMEmbed(null, null, data, "").embeds()
 	await interaction.editReply({embeds:[newEmbed[0]]})
 
@@ -532,14 +529,14 @@ async function handleEdit(interaction)
 	let sameUser = data.filter(x => x.user === editData.user && x.char != editData.char)
 					   .map(x => { return {name:x.char,level:x.level} })
 	editData.sameUser = sameUser;
-	
+
 	try {	editData = await processCharData(interaction, editData, true); }
 	catch(err) { 
 		console.error(err)
 		await interaction.editReply({content: "Cancelled Edit", embeds:[], components:[]})
 		return Mutex.unlock(mutexId);
 	}
-	
+
 		data[index] = editData //{...editData, edit:response}
 
 	const update = (generateDMEmbed(null, null, data, "").embeds())[0];
@@ -563,7 +560,7 @@ async function handleReject(interaction)
 {
 	const mutexId = interaction.message.id;
 	Mutex.lock(mutexId, ERROR.SCENE_LOCKED);
-	
+
 	await interaction.deferUpdate();
 	const embed = interaction?.message?.embeds?.[0];
 	const data  = retrieveData(embed)
@@ -577,7 +574,7 @@ async function handleReject(interaction)
 		{label:"Silent", description:"Silently reject the scene without posting to Loot Log.", value:"silent"},
 		{label:"❌ Cancel",value: "cancel"}
 	]
-	
+
 	let promptModal = async function(selectInteraction, args)
 	{
 		//Show the prompt and wait for input
@@ -597,14 +594,14 @@ async function handleReject(interaction)
 
 	const oldComponents = interaction.message.components[0];
 	oldComponents.components.map( x => { x.data.disabled = true; return x });	
-	
+
 	const selectId = interaction.id + interaction.customId
 	const select = Prompt.createSelectRow(selectId, options, 1, 1, 'Reason for Rejection');	
 	const prompt = await interaction.editReply({components:[oldComponents,select]});
 	let response = await Prompt.collectAllInteractions(prompt, callbacks, null, Prompt.Time.Long)	
 								.catch(async error => console.error(error))
 		response = (Array.isArray(response)) ? response[0] : response;
-	
+
 	if (!response || "cancel" == response)
 	{
 		oldComponents.components.map( x => { x.data.disabled = false; return x });	
@@ -667,7 +664,7 @@ async function handleNPC(interaction)
 	let   data    = xpData.filter( x => unassignedNPC(x) && pending.includes(x.name) && (modDM ||
 										(x.user == interaction.user.id)))
 	const unassigned = JSON.parse(JSON.stringify(data));
-	
+
 	let	 response = null
 	//Early out if we have no pending NPCs this user can edit
 	if (!data.length)
@@ -744,7 +741,7 @@ async function handleNPC(interaction)
 
 		// console.log(editData);
 	}
-	
+
 	xpData[index] = {...editData, edit:response}
 
 	//Re-generate the xp embed with the updated NPC data
@@ -761,22 +758,22 @@ async function handleNPC(interaction)
 	//Check if we have any more NPCs we'll need to edit
 	pending = pending.filter( x=> x != editData.name && x != assignedName )
 	data    = unassigned.filter( x => unassignedNPC(x) && pending.includes(x.name) )
-	
+
 	const hasNPC = data.length > 0
 	const component = [];
 	const npcButton = [{style:ButtonStyle.Secondary, emoji:"👥", label:"Assign NPC XP", custom_id:"scene.npc"}];	
 	if (hasNPC) component.push( Prompt.createButtonRow(npcButton) )
-	
+
 	await interaction.message.edit({embeds:[update]});	//, components:component})
 
 	const edit = response != editData.char ? `${response} => ${editData.char}` : editData.char
 	response = new EmbedBuilder().setTitle("Edit Complete")
 								 .setDescription(`${edit} [Updated](${interaction.message.url})`)
 								 .setFooter({text:`${interaction.member.displayName}`})
-	
+
 	await interaction.editReply({content:"",embeds:[response], components:[]})
 	// await interaction.editReply({content:`Edit Complete: ${response} => ${editData.char}`,embeds:[], components:[]})
-	
+
 	return Mutex.unlock(mutexId);
 }
 
@@ -792,24 +789,24 @@ function generateDMEmbed(interaction, start, rpData, footer)
 	const date 		= Utils.getDate();
 	const shortDate = Utils.formatDate(date, "DD MMM YYYY");
 	const fullDate  = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")
-	
+
 	rpData = consolidateData(rpData);
 	rpData = assignExperience(rpData);
- 	start  = `${interaction?.channel.name}\n${interaction?.channel} [Start](${start})`;
+	start  = `${interaction?.channel.name}\n${interaction?.channel} [Start](${start})`;
 	footer = `Logged at (Server Time): ${fullDate}\nProcTime: ${footer}`;
 
 	const title = footer.includes("auto-close") ? SCENE_EMBED_TITLE_AUTO : SCENE_EMBED_TITLE;
-	
+
 	const embed = new Embed();
 	const openEmbed = (embed) => 
 	{
 		embed.setTitle(title);
-		embed.setThumbnail(SCENE_EMBED_THUMB);
+		embed.setThumbnail("https://i.imgur.com/pz8sI6M.png");
 	}
 
 	const reservedLength =	interaction ? 
 							embed.calcFieldLength("Scene",start,true) + 
-						  	embed.calcFieldLength("X Approved",start,true) + footer.length
+							embed.calcFieldLength("X Approved",start,true) + footer.length
 							: 0
 
 	const closeEmbed = (embed) => {
@@ -828,15 +825,15 @@ function generateDMEmbed(interaction, start, rpData, footer)
 		if (data.xp <= 0 || level <= SKIP) level = "Skip"
 		else if (level == NPC) level = "NPC"
 		data.rp.days = data.rp.days || data.daily?.length || 0;
-		
+
 		let title  = `${data.char} (${level})`
 		let encode = encodeURIComponent(JSON.stringify(data));
-		 	encode = ` | [Data](${JSONURL}${encode})`
+			encode = ` | [Data](${JSONURL}${encode})`
 		//Hack to make sure the data won't overflow the max size of the embed value
 		data.daily = data.daily.slice(0,3);
 		let shortEncode = encodeURIComponent(JSON.stringify(data));
 			shortEncode = ` | [Data](${JSONURL}${shortEncode})`
-	
+
 		let value  = ""
 		if (data.name != data.char)
 		{
@@ -847,7 +844,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
 			value += `<@${data.user}>: ${config.emoji.rpp}\`${data.rpp}\` RPP\n`
 		else //if (data.xp >= 0)
 			value += `<@${data.user}>: \`${data.xp}x\` Cap\n`
-			
+
 			value += `**Days:** \`${data.rp.days}\` | **Posts:** \`${data.rp.posts}\` | **Length:** \`${data.rp.length}\``
 
 		let fieldLength = (value.length + encode.length)
@@ -861,7 +858,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
 			console.log("Full encode fits field. Using full encode")
 			value += encode
 		}
-		
+
 		const totalLen = embed.length() + (2 * reservedLength) + embed.calcFieldLength(title,value)
 		if (totalLen >= embed.MAX.EMBED)
 		{
@@ -873,7 +870,7 @@ function generateDMEmbed(interaction, start, rpData, footer)
 		embed.addField(title, value);
 	});
 	closeEmbed(embed)
-	
+
 	return embed;
 }
 
@@ -892,7 +889,7 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 		travel = travel?.components[0]
 	if (travel)
 		buttonRow.addComponents(travel)
-	
+
 	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.DMOnDuty}>`, //attachButtons);
 					 (message) => message.edit({ components:[buttonRow] }))
 }
@@ -929,7 +926,7 @@ function generatePlayerConfirmEmbed(expData)
 	if (npcs) embed.addField(`NPCs`, npcs)
 	if (skip) embed.addField(`Skipped`, skip)	
 	if (norp) embed.addField(`Insufficient RP`, norp);
-		
+
 	let embeds = embed.embeds();
 	return embeds
 }
@@ -947,7 +944,7 @@ async function awaitConfirmation(interaction, expData)
 
 	const embeds = generatePlayerConfirmEmbed(expData)
 	let   embed  = embeds.shift();
-	
+
 	await interaction.editReply({content:pings, embeds:[embed], components:[]})
 	Utils.asyncArrayForEach(embeds, async embed => {
 		await interaction.followUp({embeds:[embed], ephemeral: interaction.ephemeral})
@@ -962,12 +959,18 @@ async function awaitConfirmation(interaction, expData)
 	embed = new EmbedBuilder();
 	embed.setDescription(desc);
 	embed.setFooter({text:footer});	
-	//embed = await interaction.followUp({content:pings, embeds:[embed], ephemeral: false});
-	//const confirm = await Prompt.confirmDialog(interaction,embed,players,true);
-	const content = pings
-	const confirm = await Prompt.confirmDialog(interaction, {content, embeds:[embed]}, players, true);
-	interaction.editReply({content:"",embeds:[embed],components:[]})
-	if (!confirm || confirm == config.emoji.td) throw Error(ERROR.CANCELLED, {cause:duelData})
+	embed = await interaction.followUp({content:pings, embeds:[embed], ephemeral: false});
+	const confirm = await Prompt.confirmDialog(embed,players);	
+	embed.delete();
+
+
+	if (!confirm)
+	{
+		embed = new EmbedBuilder();
+		embed.setDescription(`If your level was incorrect:\n${inst}\nIf you need help, please ask a <@&${config.role.DMOnDuty}>`);
+		interaction.editReply({embeds:[embed],components:[]})
+	}
+
 	return confirm;
 }
 
@@ -991,7 +994,7 @@ function consolidateData(expData)
 					dataI.name += "\u200B" + dataJ.name;
 					dataI.rp.length += dataJ.rp.length;
 					dataI.rp.posts += dataJ.rp.posts;
-	
+
 					dataJ.daily.forEach( date => 
 					{
 						if (!dataI.daily.includes(date))
@@ -1000,7 +1003,7 @@ function consolidateData(expData)
 					expData[j] = undefined
 				}
 			}
-		
+
 			dataI.rp.days = dataI?.daily?.length || 0;
 			// (['name','daily'].forEach( x => delete dataI[x] ));
 			expData[i] = dataI;
@@ -1009,7 +1012,7 @@ function consolidateData(expData)
 
 	expData = expData.filter(e => e)
 	expData.sort(function(a, b){ return b.level - a.level })	
-	
+
 	return expData;
 }
 
@@ -1034,21 +1037,49 @@ function assignExperience(expData)
 	return expData;
 }
 
+
+
+
+
+
+
+
+
+///
+/// Check the channel to see if it's a valid channel to process exp scenes.
+/// @channel: The channel in which the command was executed.
+///
+async function CheckValidChannel(channel)
+{
+	//Check to make sure the channel is one that will award scene exp
+	if (ChanUtils.isDuelRPChannel(channel))
+		throw new Error(ERROR.DUEL_CHANNEL)
+	if (!ChanUtils.isRoleplayChannel(channel) &&
+		!ChanUtils.isRoleplayThread(channel))
+		throw new Error(ERROR.NORP_CHANNEL)
+	const expScene = await ChanUtils.isRPExpEligible(channel);	
+	return expScene;
+}
+
+///
 /// Collect user IDs for unknown tupper messages - SHOULD be unnecessary in most cases
 /// @interaction: The interaction passed down from the handler
 /// @data: the name of the character / tupper we're inquiring about
+///
 async function assignUnknownUser(interaction, name)
 {
 	let channel = interaction.channel
 	let guild = interaction.guild
-	
+
 	let embed = new EmbedBuilder()	
 		embed.setTitle("Who played `" + name + "`?");
 		embed.setDescription("Couldn't automatically match a character in the scene to the player.\n**@ping** the person who played `"+name+"`\n`s` to `skip` this character\n`c` to `cancel` the command entirely");
-	
+
 	let message = await interaction.editReply({embeds:[embed], ephemeral: interaction.ephemeral});	//.followUp(
 	let response = await Prompt.promptUserPing(channel, message, null)
 
+	// if (!Debug)
+	// 	await message.delete();	
 	let authorId = null
 	if (response)
 	{
@@ -1057,7 +1088,7 @@ async function assignUnknownUser(interaction, name)
 		if (("skip").includes(response))
 			return authorId;
 		authorId = response.match(/[0-9]+/g)[0];
-		
+
 		//Verify the author ID
 		var member = guild.members.resolve(authorId);
 		if (member) return authorId;
@@ -1085,7 +1116,7 @@ function constructLevelQuery(charRPData, showPctMatch=true, npcAssign=false)
 	else
 		footer += "❌ Cancel to stop processing the scene.\n"	
 	footer += "☑️ Default will be chosen if no selection is made in 30 seconds."	
-	
+
 	charRPData.matches.forEach(function(match,idx)
 	{
 		var line = ` • \`${match.name}\` (Level ${match.level})`;
@@ -1101,16 +1132,16 @@ function constructLevelQuery(charRPData, showPctMatch=true, npcAssign=false)
 		desc += ` • \`Skip\` - Exclude character from Scene awards\n`
 	}
 	desc += "*If a character is missing from the list, they may not have been `!setup`.*\n"
-		
+
 	let defaultOption = "Will `skip` this character."
 	if (charRPData.match)
-	 	defaultOption = `Will choose the highest % match (\`${charRPData.match.name}\`)`;
+		defaultOption = `Will choose the highest % match (\`${charRPData.match.name}\`)`;
 	else if (charRPData.matches?.length == 1)
 		defaultOption = `Will choose the only registered PC (\`${charRPData.matches?.[0]?.name}\`)`;
 	else if (charRPData.t)
 		defaultOption = "Will treat this character as an `NPC`.";
 	defaultOption = {name:"`☑️` Default",value:defaultOption}
-	
+
 	var embed = new EmbedBuilder();
 	embed.setTitle(title);
 	embed.setDescription(desc);
@@ -1127,7 +1158,7 @@ function constructLevelQuery(charRPData, showPctMatch=true, npcAssign=false)
 async function assignUnknownCharacter(interaction, charRPData, npcAssign = false)
 {
 	let showPctMatch = true; //!charRPData.char
-	
+
 	//Get the character list
 	let charList = []
 	let charData = {}
@@ -1155,7 +1186,7 @@ async function assignUnknownCharacter(interaction, charRPData, npcAssign = false
 		const selectId = interaction.id + charRPData.name
 		const charSelect = Prompt.createSelectRow(selectId, charList, 1, 1, 'Select Character...');
 		const buttonRow = Prompt.createButtonRow(buttons);
-	
+
 		//Post the emebed and collect responses
 		let userping = interaction.user.id != charRPData.user ? `<@${charRPData.user}>` : ""
 		let embed = constructLevelQuery(charRPData, showPctMatch, npcAssign)
@@ -1163,15 +1194,17 @@ async function assignUnknownCharacter(interaction, charRPData, npcAssign = false
 													embeds:[embed], components:[charSelect,buttonRow], 
 													ephemeral: interaction.ephemeral });		
 
-		const time = (DEBUG && interaction.isContextMenuCommand()) ? Prompt.Time.Debug : Prompt.Time.Std
-		
+		const time = (Debug && interaction.isContextMenuCommand()) ? Prompt.Time.Debug : Prompt.Time.Std
+
 		response = await Prompt.collectAllInteractions(prompt, {}, null, time)
 								.catch(async error => {
 										embed.setDescription(error)
 										await prompt.edit({embeds:[embed], components: []});
-								  	});		
+									});		
+		// if (!Debug)
+		// 	await prompt.delete();
 	}
-	
+
 	if (!response || ("default").includes(response))
 	{
 		if (charRPData.match)
@@ -1180,14 +1213,14 @@ async function assignUnknownCharacter(interaction, charRPData, npcAssign = false
 			return charRPData.matches[0]
 		response = charRPData.t ? 'npc' : 'skip'
 	}
-	
+
 	if (("skip").includes(response))
 		return null;
 	if (("npc").includes(response))
 		return response
 	if (("cancel").includes(response))
 		throw new Error(ERROR.CANCELLED);
-	
+
 	response = (Array.isArray(response)) ? response[0] : response;
 	return charData[response] || null		
 }
@@ -1215,7 +1248,7 @@ async function processData(interaction, stats)
 		let tup  = allData[char].t || false
 
 		// console.log(char, user)
-		
+
 		//If we have a uId associated with it, clean up some extraneous data
 		let charRPData = user ? stats[user].char[char] : allData[char]
 			charRPData.name  = char;
@@ -1232,7 +1265,7 @@ async function processData(interaction, stats)
 		charRPData = await processCharData(interaction, charRPData);
 		expData.push(charRPData)
 	}
-	
+
 	if (null == expData) return null;
 	return expData	
 }
@@ -1249,7 +1282,7 @@ async function processCharData(interaction, charRPData, forcePrompt = false, npc
 		endTime = performance.now()
 		interactionTimer[interaction.id] += (endTime - startTime)		
 	}
-	
+
 	//Find a match for this character based on the user
 	if (charRPData.user)
 	{
@@ -1267,9 +1300,9 @@ async function processCharData(interaction, charRPData, forcePrompt = false, npc
 			})
 			delete charRPData.sameUser;
 		}
-		
+
 console.log(charRPData)
-		
+
 		const matchRating = charRPData.match?.rating || 0;
 		if (matchRating < MATCH_THRESHOLD || forcePrompt)
 		{
@@ -1289,13 +1322,13 @@ console.log(charRPData)
 				charRPData.match = "npc"
 				charRPData.rpp = 1
 			}
-			
+
 			if (charRPData.match == "npc")
 				charRPData.match = { name:charRPData.name, level:NPC }
 			else if (!charRPData.match)
 				charRPData.match = { name:charRPData.name, level:SKIP }
 		}
-		
+
 		//Apply the matched character to the data
 		if (charRPData.match)
 		{
@@ -1316,7 +1349,7 @@ console.log(charRPData)
 
 	//Cleanup
 	['chan','dates','posts','length','match','matches','t'].forEach( k => delete charRPData[k] );
-	
+
 	return charRPData
 }
 
@@ -1349,7 +1382,7 @@ async function LogDebugResult(message, data, url = null, channel = null, footer 
 			if (value.length < embed.MAX.FIELD)
 			{
 				try{	embed.addField(name, value);	}
-				catch(error){ console.error(name, value); throw(error) }
+				catch(error){ console.error(name, value); throw(error) }				
 			}
 			else
 			{
@@ -1362,453 +1395,4 @@ async function LogDebugResult(message, data, url = null, channel = null, footer 
 	const debugChanId = config.debug.scene
 	const debugChan = await guild?.channels?.fetch(debugChanId);
 	if (debugChan) await embed.send(debugChan, `<@${config.OWNERID}>`);
-}
-
-
-
-
-
-
-
-
-
-
-
-/// DEBUGGING
-	function DEBUGFIELDS(data,args) {
-		if (!data) Log.ERROR(Error().stack)
-		const {events, ...debugData} = data;
-		return Log.DEBUGFIELDS(data, DebugFn(args));
-	}
-	/// Handle a thrown error by logging it to the appropriate log channel
-	async function _handleErrorLog(args) {
-		const {interaction, debugData, error} = args
-
-		// Early out if this is just a cancel message - we don't need to log every cancellation
-		if (error?.message?.includes(ERROR.CANCELLED)) return;
-
-		// Add the data to the debug log embed
-		if (!error.cause && debugData) error.cause = DEBUGFIELDS(debugData, debugStr)
-
-		// Log the error to the debug channel
-		// Log.DEBUG(error)
-		await Log.EMBED({interaction,channel:config.debug.scene,error,dataFields:error.cause})
-	}
-	async function trackProgress (interaction, data, newStage) {
-		/// Finish up the previous stage output
-		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
-		const { ...debugData } = (data ?? {});
-		const cause = data ? {cause:data} : {}
-
-		if (DEBUG.BREAKSTEP && DEBUG.BREAKSTEP == data.stage) {
-			Log.DEBUG([data, STEPKEY, DEBUG.BREAKSTEP])
-			throw new Error(`Break step reached`, cause)
-		}
-		else if (DEBUG?.WATCHDATA && debugData) Log.DEBUG(debugData)
-
-		/// Process the next stage output
-		data.stage	= newStage;
-		STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
-		Log.STEP(STEPKEY, newStage)
-		if (newStage.includes("TODO")) Log.TODO(newStage)
-		const embed = new EmbedBuilder().setTitle("Processing Scene").setThumbnail(SCENE_EMBED_THUMB)
-										.setDescription(`${newStage}\n${BR}`)
-										.setFooter({text:"Please Be Patient"})
-		const components = [];
-		const buttons = [
-			{style:ButtonStyle.Primary, emoji:config.emoji.next, label:"Step", custom_id:"step"},
-			{style:ButtonStyle.Primary, emoji:config.emoji.next, label:"Step & Log", custom_id:"steplog"},
-			{style:ButtonStyle.Primary, emoji:config.emoji.pause, label: "Pause", custom_id:"pause"},
-			{style:ButtonStyle.Secondary, emoji:config.emoji.no, label:"Cancel", custom_id:"cancel"},
-		]
-		if (DEBUG?.EMBEDDATA) {
-			let fields = (DEBUG?.EMBEDDATA && data) ? DEBUGFIELDS(data,debugStr) : [];
-			if (fields.length > 0) embed.addFields(fields)
-		}
-		if (DEBUG?.TRACESTEP) components.push(Prompt.createButtonRow(buttons))
-		const prompt = await interaction?.editReply({content:"",embeds:[embed],components})
-		if (DEBUG?.TRACESTEP) {
-			let input = await Prompt.collectComponents(prompt, {default:"step"});
-			while (input.values[0] == "pause")
-				input = await Prompt.collectComponents(prompt, {default:"pause",time:Prompt.Time.Extended})
-			if (input.values[0] == "cancel") throw Error(ERROR.CANCELLED, cause)
-			if (input.values[0] == "steplog") await interaction?.channel?.send({embeds:[embed]})
-		}
-		await interaction?.editReply({components:[]})
-	}
-
-/// Process the most recent duel in the specified channel in a try/catch harness
-/// @interaction: The slash command interaction (where applicable)
-/// @message: Optionally, the message on which the menu command was run
-async function processScene(interaction, message) {
-	const testMode = interaction.options.getBoolean('testmode') ?? false;
-	if (!testMode && !message) return OLD_processScene(interaction, message);
-
-	/// Arguments will vary depending on the method of entry
-	///		- User-Ended via slash command:	interaction (contains channel)
-	///		- User-Ended via context menu :	interaction (contains channel & message)
-	///		- Auto-ended via thread update: channel & message (NO interaction)
-	const args			=	{ interaction, message }
-	if (message) args.skipRP = true;
-	const channel		=	args.channel ?? interaction?.channel ?? message?.channel
-	let ret 			=	null;
-	let error	 		=	null;
-	try 		{ ret	=	await _closeSceneInternal(args) }
-	catch(err) 	{ error =	err }
-
-	if (error) {
-		if (error.message.includes(ERROR.CANCELLED)) error.name = "Cancelled"
-		const debugData = error.cause
-		error.cause = debugData ? DEBUGFIELDS(debugData, debugStr) : null
-		_handleErrorLog({interaction, debugData, error})
-		error.cause = debugData ? DEBUGFIELDS(debugData, playerStr) : null
-	}
-
-	Mutex.unlock(channel,	error);
-	return ret;
-}
-async function _closeSceneInternal(args) {
-	const interaction	=	args.interaction ?? null;
-	const message		=	args.message ?? interaction?.message ?? null;
-	const channel		=	args.channel ?? interaction?.channel ?? message?.channel;
-	const autoClose		=	args.auto ?? false;
-	const forceClose	=	null != message;
-	const ephemeral		=	interaction?.ephemeral ?? false;
-	const guild			=	channel.guild;
-	const sceneId		=	channel.id;
-	const runDebug		=	{...DEBUG}
-
-	let rpData			=	null;
-	let sceneData		=	_initSceneData(sceneId);
-await Log.TRACE(interaction, sceneData, STEP.CONFIRM_CHAN, runDebug);
-	{
-		// Confirm that the command is executed in a valid channel and lock it
-		const validChannel = await _CheckValidChannel(channel);
-		if (!validChannel) return SCENE_BREAK_CLOSER;
-
-		// Skip auto close for owned threads
-		const skipAutoClose	= await _shouldSkipAutoClose(channel, autoClose)
-		if (skipAutoClose) return console.log(`Silently skipping auto close for <#${sceneId}> (${channel?.name}`);
-
-		// Lock the channel so any additional attempts to end this scene will fail
-		// If already locked, will fail with a SCENE_LOCKED exception
-		Mutex.lock(channel, ERROR.SCENE_LOCKED);
-	}
-await Log.TRACE(interaction, sceneData, STEP.GET_ROLEPLAY, runDebug);
-	{
-		/// Fetch roleplay data from the specified channel / scene
-		/// If no message specified, search for most recent scene break
-		/// If message is specified, search for scene break book ends in both directions
-		try { rpData = await MsgUtils.getRoleplayData(channel, message); }
-		catch(err){	Mutex.unlock(channel, err)	}
-		/// If no scene start could be found, its likely the last message was a break
-		if (!rpData?.start)
-		{
-			Mutex.unlock(channel)
-			return SCENE_BREAK_CLOSER
-		}
-		if (!rpData) throw Error(ERROR.NO_SCENE_DATA);
-	}
-await Log.TRACE(interaction, sceneData, STEP.COLLECT_DATA, runDebug);
-	{
-		/// All necessary raw data gathered. Process data into something useful
-		sceneData.message = rpData.startId;
-		sceneData.startDate = DateTime.fromJSDate(rpData.timestamp).toUnixInteger();
-		sceneData.urls.roleplay = rpData.start;
-		Log.FILE("./data/test/sceneData.json", sceneData)
-
-		try			{ rpData = await _processRoleplayData(rpData, interaction) }
-		catch(err)	{ Mutex.unlock(channel, err) }
-		if (null == rpData) return Mutex.unlock(channel, ERROR.CANCELLED);
-	}
-	return true;
-}
-
-async function _OLD_processScene(interaction, message) {
-
-	//Take gathered stats & put them into a list of individual characters
-
-	// Consolidate the data & combine into a single record
-	// Assign experience - This will just be a multiplier based on the RP associated with each character
-	await updateStatus(interaction, STEP.COLLATE_DATA)
-	let pcData = JSON.parse(JSON.stringify(rpData));
-	try	{ 
-		pcData = consolidateData(pcData); 
-		//Assign experience so we can identify those who didn't RP enough to earn any
-		pcData = assignExperience(pcData);		
-	}
-	catch(err)  { Mutex.unlock(channel, err) }
-	if (null == pcData) return Mutex.unlock(channel, ERROR.CANCELLED);
-
-	// //All processing is complete. Now we need to wait for player input
-	endTime = performance.now()
-	// endTime -= interactionTimer[interaction.id]
-	delete interactionTimer[interaction.id]
-
-	//Close out the scene and get the players to confirm their levels
-	await updateStatus(interaction, STEP.CONFIRM_DATA)
-	const confirm = await awaitConfirmation(interaction, pcData);
-	if (confirm !== true) return Mutex.unlock(channel, ERROR.CANCELLED);
-
-/*/ ^^^ Proccessing data for player approval            \*\
-|*| <<< TODO: Branch off here for informational output  |*|
-\*\ vvv Player approval received. Post for DM approval  /*/
-
-	//Once confirmed, send this to the DM ping channel
-
-	//Sort the DM's data 
-	keys = { "user":SortOrder.ASC, "char":SortOrder.ASC, "level":SortOrder.DESC };
-	rpData.sort((a,b)=>{ return Utils.priorityCompare(a, b, keys) })
-	// console.log(util.inspect(rpData, false, null, true /* enable colors */))
-
-/////////////////////	Log.FILE("scene_pc_Data.txt", pcData)
-/////////////////////	Log.FILE("scene_rp_Data.txt", rpData)
-
-	try	{ 
-		await sendDMApprovalMessage(interaction, start, rpData, SCENE_COMMAND_TIME(startTime, endTime));
-	}
-	catch(err)  { Mutex.unlock(channel, err) }
-
-	// await LogDebugResult(interaction, rpData, start, interaction.channel, SCENE_COMMAND_TIME(startTime, endTime));
-	// await LogDebugResult(interaction, pcData, start, interaction.channel, SCENE_COMMAND_TIME(startTime, endTime));
-
-	if (interaction.ephemeral)
-		await interaction.followUp({content:SCENE_BREAK_CLOSER, ephemeral:true})
-	else
-		await interaction.channel.send(SCENE_BREAK_CLOSER)
-	return Mutex.unlock(channel);
-}
-
-
-
-
-
-
-/// Check the channel to see if it's a valid channel to process exp scenes.
-/// @channel: The channel in which the command was executed.
-async function _CheckValidChannel(channel) {
-	//If its a duel RP channel, point them towards the duel command
-	//TODO - automatically run the duel command instead?
-	if (ChanUtils.isDuelRPChannel(channel))
-		throw new Error(ERROR.DUEL_CHANNEL)
-	//Check to make sure the channel is one that will award scene exp
-	if (!ChanUtils.isRoleplayChannel(channel) && !ChanUtils.isRoleplayThread(channel))
-		throw new Error(ERROR.NORP_CHANNEL)
-	const expEligible = await ChanUtils.isRPExpEligible(channel);
-	return expEligible;
-}
-async function _shouldSkipAutoClose(channel, autoClose = false) {
-	const channelId	= channel.isThread() ? channel.parent.id : channel.id;
-	const chanMeta	= await ChanMeta.findOne({channelId:channelId})
-	if (autoClose && chanMeta?.userOwner && chanMeta?.userOwner?.length > 0)
-		return true
-	return false
-}
-function _initSceneData(channel) {
-	const logDate = DateTime.now().toUnixInteger();
-	const sceneData = {
-		type:"scene",
-		stage: null,
-		channel,
-		message:null,
-		startDate:null,
-		logDate,
-		chars:[],
-		players:[],
-		urls:{roleplay:null}
-	};
-	return sceneData
-}
-
-/// Take the gathered stats and put them all into a list of individual characters
-/// @rpData: The raw stats gathered from parsing the scene
-/// @interaction: May be null if scene is closed via automatic thread archiving
-/// @channel: The channel of the scene to process
-/// Returns: array of character objects containing: char, user, level, & earned exp
-async function _processRoleplayData(rpData, interaction = null, channel = null) {
-	Log.TODO("Move processRoleplayData to roleplayUtils")
-
-	// Cache all unprocessed data and cleanup unnecessary keys
-	const charData = rpData[0].char;
-	const startDate = DateTime.fromJSDate(rpData.timestamp).startOf('day');
-	Utils.cleanData(rpData, [0,"start","startId","timestamp","tupperMap"]);
-	const userData = rpData;
-
-	await Log.FILE("./data/test/sceneData_raw.json", {charData,userData})
-
-	// Loop through all the data to identify USER, CHAR, LEVEL of every scene participant
-	//  - those with user IDs (users & identified Tuppers)
-	//  - those without uIds (unidentified tupper proxies)
-	let expData = [];
-	let npcData = {};
-	for (const name in charData) {
-		let data = charData[name]
-		let tup  = data.t || false;
-
-		// Retrieve the user ID & data
-		let user = data.uId || null;
-		if (user) {
-			data = {...data, ...userData[user].char[name]};
-			delete userData[user].char[name];
-		}
-		else if (tup && interaction)
-			user = await _promptUserSelect(interaction, name);
-
-		// Process the gathered RP data
-		const { length, posts } = data;
-		const days = Object.keys(data.dates).map( day =>
-			DateTime.fromFormat(day, 'dd.MM.yyyy').diff(startDate, 'days').days )
-		const rpData = { length, posts, days };
-
-		// Fetch the character to retrieve the level
-		let level = SKIP
-		data = {name, char:name, user, level, tup, rpData}
-		data = await _fetchCharData(interaction, data)
-
-		// Assemble the final data and clean up
-		delete charData[name];
-		console.log(name, "\n\n", data, "\n\n")
-
-		continue;
-
-		// 	charRPData.t     = tup;
-		// if (charRPData.length < MIN_RP_THRESHOLD)
-		// 	continue;
-
-		charRPData = await _processCharData(interaction, charRPData);
-		expData.push(charRPData)
-	}
-
-	console.log(charData, "\n\n\n\n\n");
-
-return true; } async function hold() {
-
-	if (null == expData) return null;
-	return expData
-}
-
-// {
-//   "xpCap": 600,
-//   "xpAmt": 300,
-//   "xpData": {
-// 		"totalPool": 800,
-// 		"xpMult": 0.75,
-// 		"capTotal": 1200,
-// 		"poolPct": 0.5,
-// 		"unCapExp": 300,
-// 		"partial": 0,
-// 		"cap": 600
-//   }
-// }
-
-async function _fetchCharData(interaction, data, forcePrompt = false, npcAssign = false) {
-	//Find a match for this character based on the user
-	const charData = await CharUtils.findClosestMatch(data.name, data.user, forcePrompt);
-
-	data.match =  charData?.match;
-	data.matches = charData?.matches;
-
-	//console.log(charData)
-}
-
-async function _processCharData(interaction, data, forcePrompt = false, npcAssign = false)
-{
-	if (data.sameUser)
-	{
-		charRPData.matches = charRPData.matches ?? [];
-		charRPData.sameUser.forEach(x =>
-		{
-			if (!charRPData?.matches?.find(y => y.name == x.name))
-				charRPData.matches.push({...x, rating:0})
-		})
-		delete charRPData.sameUser;
-	}
-
-	const matchRating = charRPData.match?.rating || 0;
-	if (matchRating < MATCH_THRESHOLD || forcePrompt)
-	{
-		const numChars = charRPData.matches?.length || 0;
-		if (numChars > 0)
-		{
-			try {
-				charRPData.match = await assignUnknownCharacter(interaction, charRPData, npcAssign) 
-			}
-			catch (err) { throw err; }
-		}
-		else
-		{
-			charRPData.match = "npc"
-			charRPData.rpp = 1
-		}
-
-		if (charRPData.match == "npc")
-			charRPData.match = { name:charRPData.name, level:NPC }
-		else if (!charRPData.match)
-			charRPData.match = { name:charRPData.name, level:SKIP }
-	}
-
-	//Apply the matched character to the data
-	if (charRPData.match)
-	{
-		charRPData.char  = charRPData.match.name
-		charRPData.level = charRPData.match.level
-	}
-
-	if (!charRPData.char)
-	{
-		charRPData.char = charRPData.name;
-		charRPData.level = SKIP;
-	}
-
-	//Cleanup
-	['chan','dates','posts','length','match','matches','t'].forEach( k => delete charRPData[k] );
-	return charRPData
-}
-
-/// Prompt the players to identify the user who played an unknown character / tupper
-/// SHOULD be unnecessary in most cases
-/// @interaction: The interaction passed down from the handler
-/// @name: the name of the character / tupper we're inquiring about
-async function _promptUserSelect(interaction, name) {
-	// Prep the embed
-	let embed = new EmbedBuilder()
-		embed.setTitle(`Player Select: \`${name}\``);
-		embed.setDescription(`Please select the user who played **\`${name}\`**.\nYou may also \`Skip\` this character, or \`Cancel\` the command.`);
-
-	// Prep the components
-	const buttons = [{style:ButtonStyle.Primary, emoji:config.emoji.redo, label:"Clear", custom_id:"clear"},
-		 			 {style:ButtonStyle.Primary, emoji:config.emoji.next, label:"Skip", custom_id:"skip"},
-					 {style:ButtonStyle.Danger, emoji:config.emoji.no, label:"Cancel", custom_id:"cancel"}]
-	const userSelect = Prompt.createUserSelect("userSelect"+name);
-	const buttonRow = Prompt.createButtonRow(buttons)
-	const components = [userSelect, buttonRow]
-
-	// Present the prompt and collect the response
-	const ephemeral = (interaction.ephemeral) ? {flags:MessageFlags.Ephemeral} : {}
-	let prompt = await interaction.editReply({embeds:[embed], components, ...ephemeral});
-	let response = await Prompt.collectComponents(prompt, {default:"skip"})
-							   .catch(async error => console.error(error))
-
-	// Remove the component
-	await interaction.editReply({components:[]});
-	let authorId = null
-	if (response)
-	{
-		// Handle Clear
-		if (response.values.includes("clear"))
-			return _promptUserSelect(interaction, name);
-		// Handle Cancel
-		if (response.values.includes("cancel"))
-			throw new Error(ERROR.CANCELLED);
-		// Handle Skip
-		if (response.values.includes("skip"))
-			return authorId;
-
-		// Get the author ID and verify them as a valid user
-		authorId = response.values[0].match(/[0-9]+/g)[0];
-		var member = interaction.guild.members.resolve(authorId);
-		if (!member) console.error(`User ID ${authorId} is not a member of the server`)
-	}
-	else console.error(`_assignUnknownUser NO RESPONSE`)
-	return authorId;
 }

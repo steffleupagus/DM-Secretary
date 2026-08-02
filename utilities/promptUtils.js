@@ -8,7 +8,8 @@ const { ActionRowBuilder,
 		StringSelectMenuBuilder,
 		StringSelectMenuOptionBuilder,
 		TextInputBuilder,
-		TextInputStyle } = require('discord.js')
+		TextInputStyle,
+	    UserSelectMenuBuilder } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -235,6 +236,18 @@ function createSelectOption(label, description, value) {
 	// return select
 }
 
+function createUserSelect(customId="userSelect", placeholder=null, min=1, max=1, defaultUsers=[]) {
+	placeholder = placeholder || "Select a user."
+	const userSelect = new UserSelectMenuBuilder()
+		 .setCustomId(customId)
+		 .setPlaceholder(placeholder)
+		 .setDefaultUsers(defaultUsers)
+		 .setMinValues(min)
+		 .setMaxValues(max);
+	const row = new ActionRowBuilder().addComponents(userSelect);
+	return row;
+}
+
 ////
 // Create a button row component to attach to a message
 //@options	- an array of objects that contains button row data
@@ -346,9 +359,11 @@ async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=nu
 	return new Promise((resolve, reject) => {
 		const selectCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.StringSelect, time: time, errors:['time'] });
+		const userCollector = prompt.createMessageComponentCollector({
+			componentType: ComponentType.UserSelect, time: time, errors:['time'] });
 		const buttonCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.Button, time: time, errors:['time'] });
-		const collectors = [selectCollector, buttonCollector];
+		const collectors = [selectCollector, userCollector, buttonCollector];
 		let resolved = false;
 		const stopCollecting = () => {
 			resolved = true;
@@ -868,6 +883,7 @@ module.exports = {
 	createButtonRow,			//
 	createSelectRow,			//
 	createSelectOption,			//
+	createUserSelect,			//
 	createTextInputRow,			// DEPRECATED - REPLACE THIS WITH createTextInput
 	createTextInput,
 	Time

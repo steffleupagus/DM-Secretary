@@ -47,6 +47,7 @@ const ERROR = {
 	NO_OUTCOME: `Could not determine the duel outcome.\n${INSTRUCT.SELECTWIN}\n${CONTACT}`,
 
 	SCENE_LOCKED: `Already processing this scene\n${CONTACT}`,
+	NO_SCENE_DATA: `**No roleplay found**\nThere is no RP found for the current scene.\n${CONTACT}`,
 	DUEL_CHANNEL: `Cannot process scenes in this channel.\nRun \`/duel\` in the mechanics thread.\n${BR}`,
 	NORP_CHANNEL: `Cannot process scenes in this channel. (Not an RP channel)\n${BR}`,
 
@@ -75,6 +76,7 @@ const STEP = {
 	GET_ROLEPLAY: "Gathering RP posts and compiling roleplay data.",
 	EXTRACT_INIT: "Parsing duel events and compiling character data & transcript.",
 	FETCH_LEVELS: "Fetching level data from database and calculating exp caps.",
+	COLLECT_DATA: "Gathering player & character data.",
 	COLLATE_DATA: "Processing & combining data.",
 	CONFIRM_DATA: "Validating and confirming participant data.",
 	TEAMS_GROUPS: "Grouping participants.",
