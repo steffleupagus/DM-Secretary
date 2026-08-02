@@ -8,9 +8,10 @@ const reqString = { type:String, required:true }
 const schema = new mongoose.Schema({
 	name:   reqString,
 	catId:	reqString,
-	roleId: [String],	
+	roleId: [String],
 	icon:	String,
-	guild:	String
+	guild:	String,
+	disable:Boolean
 })
 
 module.exports = mongoose.model(schemaName, schema, schemaName)

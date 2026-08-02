@@ -1,6 +1,8 @@
 /*-------------------------------------------------*\
 | Detect Tupper messages and log them in a database |
 \*-------------------------------------------------*/
+const mod = process.env.mod || "";
+const config = require(`../../config/${mod}_config.json`);
 const Tupper = require(`../../utilities/tupperUtils.js`)
 const RPP = require(`../../database/rppTrackerSchema.js`)
 const mod = process.env.mod || "";
@@ -8,8 +10,8 @@ const config = require(`../../config/${mod}_config.json`)
 
 async function shouldHandle(client, message)
 {
-	return Tupper.isTupperLogMessage(client, message) ||
-		Tupper.isTupperProxyMessage(message)
+	return	Tupper.isTupperLogMessage(client, message) ||
+			Tupper.isTupperProxyMessage(message)
 }
 
 async function handleCreate(client, message, interaction=null, sendResult=true)
@@ -77,8 +79,7 @@ async function updateRPPFromTupperProxy(record)
 		$inc: { posts: record.posts, proxy: record.proxy, chars: record.chars },
 		$addToSet: {scene: record.scene}
 	};
-	const options = { new: true, upsert: true }
-
+	const options = { returnNewDocument:true, upsert: true }
 	record = await RPP.findOneAndUpdate(query, update, options);
 	return record;
 }

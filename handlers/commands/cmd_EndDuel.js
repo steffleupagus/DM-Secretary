@@ -1,14 +1,13 @@
 const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js');
-const DuelUtils = require(`../../utilities/funcsDuel.js`)
-const Utils = require(`../../utilities/utilFuncs.js`)
-const Log = require(`../../utilities/loggerUtils.js`)
-const mod = process.env.mod || "";
-const config = require(`../../config/${mod}_config.json`);
-const util = require('util')
-
+const DuelUtils	= require(`../../utilities/funcsDuel.js`)
+const Utils		= require(`../../utilities/utilFuncs.js`)
+const Log		= require(`../../utilities/loggerUtils.js`)
+const mod		= process.env.mod || "";
+const config	= require(`../../config/${mod}_config.json`);
+const util		= require('util')
 
 async function execute(interaction, message=null) {
-	const ephemeral = (message) ? {flags:MessageFlags.Ephemeral} : {}
+	const ephemeral	= (message || config.DEV) ? {flags:MessageFlags.Ephemeral} : {}
 	await interaction.deferReply({...ephemeral})
 	try {
 		const response = await DuelUtils.processDuel(interaction, message);
@@ -28,8 +27,7 @@ async function execute(interaction, message=null) {
 	}
 }
 
-async function button(interaction)
-{
+async function button(interaction) {
 	const subCommand = interaction.customId;
 	if (!subCommand.startsWith(`duel`)) return;
 	const ephemeral = {flags:MessageFlags.Ephemeral}
@@ -63,12 +61,16 @@ const data = new SlashCommandBuilder()
 	.setName(`duel${config.DEV ? "dev" : ""}`)
 	.setDescription('Conclude a duel')
 
-module.exports =
-{
+module.exports = {
 	data: data,
 	execute: execute,
 	button: button,
 
 	build:config.PRODUCTION || config.DEV
 };
-if (config.DEV) module.exports.aliases = ["duel"]
+
+const requiredRoles = [ config.role.Builder, config.role.Staff, config.role.Helper, config.role.OffDutyHelper ]
+if (config.DEV) {
+	module.exports.aliases = ["duel"]
+	module.exports.whitelistRoles = requiredRoles
+}

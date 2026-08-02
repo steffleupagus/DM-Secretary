@@ -14,7 +14,7 @@ async function execute(interaction)
 	const ephemeral = true;
 	await interaction.deferReply({ephemeral: ephemeral});
 
-//https://sheets.googleapis.com/v4/spreadsheets/1YEPAbZ1gVoLWL1SR5RRvIGhlk2FN61RcrMcuJJ87PxI/values/JSON?key=AIzaSyBDaQj-82W2OYuHLQWLo19IrW1tqVje4dk
+//https://sheets.googleapis.com/v4/spreadsheets/1YEPAbZ1gVoLWL1SR5RRvIGhlk2FN61RcrMcuJJ87PxI/values/JSON?key=process.env.google
 	const file = "1YEPAbZ1gVoLWL1SR5RRvIGhlk2FN61RcrMcuJJ87PxI"
 	const sheet = "data"
 	const gvar = "78965670-9d4b-455c-b44c-59da0255cdce";

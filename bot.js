@@ -2,8 +2,6 @@ const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js'
 const fs = require('fs');
 const path = require('path')
 const { glob } = require("glob");
-const { promisify } = require("util");
-const globPromise = promisify(glob);
 const mongoose = require('mongoose')
 
 class Bot {
@@ -29,7 +27,8 @@ class Bot {
 		this.loadConfig();
 		await this.loadEvents();
 		await this.loadMessageHandlers();
-		this.client.on("ready", async () => {
+		this.client.on("clientReady", async () =>
+		{
 			await this.loadCommands();
 			await this.loadDatabase();
 			await this.loadTimers();
@@ -59,7 +58,6 @@ class Bot {
 		mongoose.connection.on('connected', console.log)
 		mongoose.connection.on('disconnected', console.log)
 
-		mongoose.set('strictQuery', true);
 		await mongoose.connect(process.env.mongodb_url, { })
 		.then(console.log('Mongodb ✅'))
 		.catch(console.error)
@@ -71,8 +69,9 @@ class Bot {
 		this.client.eventHandlers = new Collection();
 
 		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-		const eventFiles = await globPromise(`./handlers/events/*.js`);
-		eventFiles.map((file) =>  {
+		const eventFiles = await glob(`./handlers/events/*.js`, { absolute: true });
+		eventFiles.map((file) =>
+		{
 			//const event = require(`./events/${file}`);
 			const event = require(file);
 			if (!event.hasOwnProperty("build") || event.build) {
@@ -126,11 +125,13 @@ class Bot {
 						 .filter(file => file.endsWith('.js'));
 
 		this.client.timers = new Collection();
-		for (const file of timers) {
+		for (const file of timers)
+		{
 			const timer = require(`./handlers/timers/${file}`);
 			console.log(" - Timer: ", timer.name, (timer.build ?? true) ? "(Enabled)" : "(Disabled)" );
-			if (!timer.hasOwnProperty("build") || timer.build) {
-				this.client.timers.set(timer.name, timer)	//.push(timer);
+			if (!timer.hasOwnProperty("build") || timer.build)
+			{
+				this.client.timers.set(timer.name, timer)
 				timer.startTimer(this.client);
 			}
 		}
@@ -144,7 +145,8 @@ class Bot {
 		const commandFiles = fs.readdirSync(`./handlers/commands`).filter(file => file.endsWith('.js'));
 		if (!commandFiles.length)
 			console.log(" - No commands found");
-		for (const file of commandFiles) {
+		for (const file of commandFiles)
+		{
 			let command = null;
 			try { command = require(`./handlers/commands/${file}`); }
 			catch(e) { console.log(e.stack) }
@@ -167,7 +169,7 @@ class Bot {
 	async runTests() {
 		console.log("Executing Unit Tests...");
 		const tests = fs.readdirSync(`./handlers/tests`)
-		 				.filter(file => file.endsWith('.js'));
+						.filter(file => file.endsWith('.js'));
 		for (const file of tests)
 		{
 			const test = require(`./handlers/tests/${file}`);

@@ -94,5 +94,4 @@ module.exports =
 	build:config.PRODUCTION || config.DEV
 };
 
-//if (config.DEV) module.exports.whitelistRoles = builderRoles
 if (config.DEV) module.exports.aliases = ["startduel"]

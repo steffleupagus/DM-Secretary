@@ -1,0 +1,17 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title": "🧠 Dawn of a Domain",
+				"description":"For a third time, the mists seep into your mind and drown out the present with images of the past. More complete is the memory, feeling more vibrant and real than the present. It becomes more difficult to resist its effects, and to push the memories aside. Hours pass, lost in the revelry of remembrance.\n\nWitnessing once again the archmage weaving a spell of imprisonment around you... no, not you... the Queen's sister. Feeling your... no, *her* emotions. Uncertainty and trepidation of being trapped, and yet a sense of ... satisfaction? Like dominos falling or the final piece of a puzzle fitting into place.\n\nWitnessing the birth of the demiplane within your... no, *her* very prison. Motes of lust, sparks of desire, fragments of an orgasm flowing in; each a grain of sand building a beach, or a single seed to grow a forest. The demiplane expands and grows before your eyes. In a place without time, it takes both mere seconds and uncountable centuries, until it resembles the demiplane you know... minus one key difference: the empty valley where the city of Ost in Edhil would sit.\n\nThen, the sky cracks. It shatters, simultaneously outward and inward, turning inside out and outside in, and you... no *she* stands just outside the Queen's citadel."
+			},
+			{
+				"title": "Mechanics",
+				"description":"The mists have taken a heavy toll on you, sapping your energy and your will to action. Your mind struggles between the present and the past, and between your actions now and memories not even your own. One of your Quest actions each day is drained away from you."
+			}				
+		]
+	}
+}

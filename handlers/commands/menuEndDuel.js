@@ -3,7 +3,7 @@ const { ContextMenuCommandBuilder } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 
-const requiredRoles = [ config.role.Moderator, config.role.DM, config.role.Builder];
+const requiredRoles = [ config.role.Moderator, config.role.Staff, config.role.Builder];
 
 async function execute(interaction)
 {
@@ -11,7 +11,6 @@ async function execute(interaction)
 	const messageId = interaction.targetId;
 	const channel = interaction.channel;
 	const message = interaction.targetMessage;
-	//const message = await channel?.messages.fetch(messageId);
 
 	const cmd = `duel${config.DEV ? "dev" : ""}`;
 	client.commands.get(cmd).execute(interaction, message)

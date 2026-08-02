@@ -1,0 +1,17 @@
+{
+	"Quest":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title": "🧠 Past is Prologue",
+				"description":"The gloom overtakes you, making your vision hazy and difficult to make out the world around you, but those few who remain untouched by the gloom practically glow in your vision, the lustful energy that drew them to the demiplane and sustains it stands out brightly against the gloomy mist. Conversely, the denizens you have been fighting almost blend with it, almost indistinguishable. To make matters worse, your vision has difficulty remaining in the present, flashing back and forth to the visions you've seen, and showing you a myriad of other images which become nearly impossible to distinguish.\n\nYou catch glimpses of an effort to reunite the shards, another to demolish and destroy them, a third to try to cleanse and purify them. You witness a possible future of the demiplane's destruction, pulled apart by the vortices as the shards reclaim the energy completely. Another in which they form tears in the fabric of the weave and entities from the hells, the abyss, the outer planes, and all across the multiverse converge on the demiplane and claim the shards for themselves. You witness an alternate path in which the lustful energy contained within the shards released, and the demiplane is as whole and vibrant as it was before this ordeal began - perhaps even moreso. Past, present, and future swirl in your mind in a mind-splitting vision."	
+			},
+			{
+				"title": "Mechanics",
+				"description":"On the cusp of a listless zombie like the denizens of the demiplane you have been fighting, you find even your final remaining action more difficult to enact. In addition to disadvantage, you will suffer a -3 to all attack, damage, and ability check rolls."
+			}
+		]
+	}
+}

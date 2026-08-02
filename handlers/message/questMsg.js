@@ -24,13 +24,13 @@ const guildEmoji = {
 }
 
 async function shouldHandle(client, message)
-{	
-	if (!message.author.bot) return false
-	if (message.author.id != config.bots.avrae) return false
+{
+	if (!message?.author?.bot) return false
+	if (message?.author?.id != config.bots.avrae) return false
 
 	const embed = message?.embeds?.[0] || null;
 	const fields = embed?.fields || null;
-	
+
 	if (!embed || !fields) return false;
 
 	////Quest Phrase
@@ -46,8 +46,7 @@ async function shouldHandle(client, message)
 	const skill = skillIdent.test(embed.title);
 
 	if (embed?.description?.includes("is too exhausted to continue questing!"))
-		return false	
-		
+		return false
 	return isQuest && (dtype || skill)
 }
 
@@ -72,11 +71,11 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	const action = /★*☆* \(\-([0-9])\)/i
 	let   actInc = false;
 	let   actCnt = 0;
-	
+
 	const damage = /\*\*(?:Damage|Healing)(?: \(CRIT\!\):?)?\*\*:.*\[.*\] = `(\-?[0-9]*)`/gi
 	const result = /[0-9]*d20.* = `([0-9]*)`/gi
-	
-	let   total  = fields.map(field => 
+
+	let   total  = fields.map(field =>
 	{
 		user   = user || field.value.match(userId)?.[1];
 		let act = field.value.match(action);
@@ -86,9 +85,9 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 			actCnt = parseInt(act?.[1] || "1")
 		}
 		console.log(actInc, actCnt)
-		
+
 		let amt = [...field.value.matchAll(skill ? result : damage)];
-			amt = (amt.length > 0) ? amt.reduce( (total, cur) => total + parseInt(cur[1]), 0) : 0			
+			amt = (amt.length > 0) ? amt.reduce( (total, cur) => total + parseInt(cur[1]), 0) : 0
 		return amt
 	}).filter(x=>x).reduce( (total, cur) => total + cur, 0)
 
@@ -99,7 +98,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 		total = total?.[0]?.[1] || null;
 		total = total ? parseInt(total) : 0
 	}
-	
+
 	console.log(user, char, guild, skill, total)
 
 	if (!user || !char || !total)
@@ -109,7 +108,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 	if (fields.find(x => x.name == "Action not Deducted"))
 		await message.react("ℹ️")
-	
+
 	await message.react("📜")
 	await message.react(skill?"💠":heal?"🇨🇭":"💥")
 
@@ -124,7 +123,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 
 	inc = actInc ? actCnt : 0
 	const guildData = {guild:guild, count:inc, skill:0, damage:0, healing:0}
-	
+
 	if (skill)
 	{
 		const idx = record.skills.findIndex( x => x.skill == skill);
@@ -136,20 +135,20 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 		else
 		{
 			record.skills.push({skill:skill, count:inc, total:total})
-			record.skills.sort( (a,b) => a.skill < b.skill )			
+			record.skills.sort( (a,b) => a.skill < b.skill )
 		}
 		guildData.skill += total
 	}
 	else if (heal)
 	{
 		record.healing.count += inc
-		record.healing.total += total		
-		guildData.healing    += total		
+		record.healing.total += total
+		guildData.healing    += total
 	}
 	else
 	{
 		record.damage.count += inc
-		record.damage.total += total		
+		record.damage.total += total
 		guildData.damage    += total
 	}
 
@@ -170,12 +169,8 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 			record.guilds.sort( (a,b) => a.guild < b.guild)
 		}
 	}
-	
 	console.log(record)
 	await quest.findOneAndUpdate(query, record, options);
-
-	
-
 }
 
 const schemaName = `questMsg${config.DEV ? "dev" : ""}`

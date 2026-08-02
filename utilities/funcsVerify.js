@@ -19,7 +19,7 @@ function shouldHandle(client, message)
 
 function verifyMessageMeta(client, message)
 {
-	let author  = message.author.id;
+	let author  = message?.author?.id || null;
 	author = author == client.config.bots.avrae;
 
 	let channel = message.channel.id;
@@ -67,9 +67,9 @@ async function verifyRoll(client, message, interaction=null, sendResult=true)
 	var t = parseInt(foot[0])
 	var color='#'
 
-	//Extract the user ID from the message	
+	//Extract the user ID from the message
 	var playerMatch = desc.split('\n')[0]
-	
+
 	// var playerMatch;// = [...desc.matchAll(MessageMentions.USERS_PATTERN)];
 	// // console.log(playerMatch)
 	// // if (playerMatch.length > 0)
@@ -94,7 +94,7 @@ async function verifyRoll(client, message, interaction=null, sendResult=true)
 	}
 	var eTotal = parseInt(matches[6][1]);
 	d += ''+total;
-	
+
 	//Prep to reconstrut the Hash
 	var mask = 0xFFFFFFFF;
 	var bigMask = BigInt(mask);
@@ -103,7 +103,7 @@ async function verifyRoll(client, message, interaction=null, sendResult=true)
 		s = Number(BigInt.asUintN(32, s)) >>>0;
 		d = (parseInt(d) & mask) >>>0;
 	var v = ((parseInt('0x'+foot[2]) & mask) >>>0);
-	var eHash= v.toString(16).toUpperCase();			
+	var eHash= v.toString(16).toUpperCase();
 
 	var a = s;
 	var b = u;
@@ -131,12 +131,12 @@ async function verifyRoll(client, message, interaction=null, sendResult=true)
 		var r4 = ((r2 >>> (32 - amt)) & mask);
 		var r  = ((r3 | r4) & mask) >>>0;
 		a = d;
-		d = c; 
+		d = c;
 		c = b;
 		b = ((b ^ r) & mask) >>>0;
 
 		out.push ("`" + r.toString(16).toUpperCase() + "`");
-		//+r1.toString(16)+" | "+r2.toString(16)+" | "+r3.toString(16) + " | "+r4.toString(16);	  
+		//+r1.toString(16)+" | "+r2.toString(16)+" | "+r3.toString(16) + " | "+r4.toString(16);
 	}
 
 	var p = [(a & mask) >>>0,(b & mask) >>>0,(c & mask) >>>0,(d & mask) >>>0];
@@ -205,7 +205,7 @@ function sendVerification(message, color, t, u, hash, mention, dice, interaction
 	}
 	else
 	{
-		message.channel.send({content:mention, embeds:[embed]})				
+		message.channel.send({content:mention, embeds:[embed]})
 			.then(async (newMsg) => {})
 			.catch(console.error);
 	}

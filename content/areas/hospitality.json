@@ -1,0 +1,72 @@
+{
+	"cityTavern":
+	{
+		"includeIndex":false,
+		"embeds": 
+		[
+			{
+				"title":"Manticore's Dream Tavern",
+				"description":"<#696536603778089001>",
+				"image": { "url":"https://i.imgur.com/7vBkFfb.jpeg" },
+				"footer":{"text":"https://www.artstation.com/asaneesrikijvilaikul"}
+			},
+			{
+				"title":"Manticore's Dream Public House",
+				"description":"<#696536671302320188>\n<#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/ms5Oa1w.jpeg" }
+				"footer":{"text":"https://www.artstation.com/nathanbierset"}
+			},
+			{
+				"title":"Manticore's Dream Taproom",
+				"description":"<#742484118146777118> <#821267837284122634>",
+				"image": { "url": "https://i.imgur.com/MdCNueY.png" }
+				"footer":{"text":"https://www.artstation.com/earl3163389"}
+			},
+{
+				"title":"Tavern Loft",
+				"description":"<#697832426432626762> <#737326955191599304>",
+				"image": { "url": "https://i.imgur.com/zNz6nsW.png" },
+				"footer":{"text":"https://www.artstation.com/gurayemen"}
+			},
+
+			{
+				"title":"Ample Ogre Inn",
+				"description":"<#696553906045714492>",
+				"image": { "url": "https://i.imgur.com/6k9ASva.png" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
+			},
+			{
+				"title":"Inn Common Room",
+				"description":"<#696554217158082630> <#762042861637861386>",
+				"image": { "url": "https://i.imgur.com/m4BlycC.jpeg" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
+			},
+			{
+				"title":"Inn Rooms",
+				"description":"<#697831832749736067> <#697832108646727712>",
+				"image": { "url": "https://i.imgur.com/IbkTld6.jpeg" },
+				"footer":{"text":"https://www.artstation.com/matchai_kat"}
+			},
+			{
+				"title":"Communal Bath",
+				"description":"<#775202925756678164> <#759944916989640735>",
+				"image": { "url": "https://i.imgur.com/IKgEpXk.png" },
+				"footer":{"text":"Artist Unknown"}
+			},
+			{
+				"title":"Ample Ogre Proprietors",
+				"image": { "url": "https://cdn.discordapp.com/attachments/1099734278025265192/1099734450004295710/unknown.png" },
+				"footer":{"text":"https://www.hentai-foundry.com/user/curanto"}
+			},
+
+			{
+				"title":"Travel",
+				"description": "`                                                                     `\n\n🏘️ Leave the Hospitality District for the Residential Quarter\n\n🏚️ Leave the Hospitality District for the the Slums\n\n💰 Leave the Hospitality District for the Mercantile Quarter"
+			},
+			{
+				"description":"`/rolemenu create group:Loc:Hospitality nodm:True rr:True m:<last_id>`"
+				,"fields":[{"name":"Thread Button","value":"`/rpthread` => `Create Button`"}]
+			}
+		]
+	}
+}

@@ -1,12 +1,11 @@
 const { EmbedBuilder, ButtonStyle, MessageFlags, MessageMentions, TextInputStyle } = require('discord.js')
 const { SortOrder } = require(`./enums.js`)
 const { DateTime } = require("luxon");
-const {INSTRUCT,ERROR,STEP} = require(`./constants.js`)
-
+const { INSTRUCT,ERROR,STEP } = require(`./constants.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const ChanMeta = require(`../database/chanMetaSchema.js`)
-const ExpUtils = require(`./expUtils.js`) 
+const ExpUtils = require(`./expUtils.js`)
 const ChanUtils = require(`./channelUtils.js`)
 const CharUtils = require(`./charUtils.js`)
 const MsgUtils = require(`./messageUtils.js`)
@@ -48,24 +47,27 @@ const CONFIRM_INSTRUCTIONS = `React with 👍 if this looks correct.\n__If your 
 const REFRESH_INSTRUCTIONS = `• Go to <#${config.chan.xpLog}> and run \`!xp\`\n• Come back and do the \`scene\` command again.`
 const CONFIRM_FOOTER = `👍 confirm (all players) / 👎 cancel (any player).\nWill auto-confirm after 30 seconds.`
 
+//const JSONURL = "https://onlinejsontools.com/url-decode-json?input=";
+const OLDJSONURL = "https://d.jsonx.repl.co?x="
 const JSONURL = "http://tinyurl.com/tjson?input="
 const SCENEURL = "https://discord.com/channels/";
 
 const PING_PREFIX   = config.DEV ? '~' : '@'
 const dmPingChannel = config.DEV ? config.debug.dmPing : config.chan.dmPing;
 const xpLogChannel  = config.DEV ? config.debug.xpLog : config.chan.xpLog;
-const dmRoles       = [config.role.DM, config.role.DMOnDuty, config.role.Moderator, config.role.Builder];
 
 const NPC = 0;
 const SKIP = -1;
+
+const dmRoles = [ config.role.Staff, config.role.Moderator ];
 
 const interactionTimer = {};
 
 async function autoCloseScene(message)
 {
 	const channel = message.channel;
-	const channelId = channel.isThread() ? channel.parent.id : channel.id;	
-	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;
+	const chanMeta = await ChanMeta.findOne({channelId:channelId})
 	if (chanMeta?.userOwner && chanMeta?.userOwner?.length > 0)
 	{
 		console.log("Auto Close Skipped")
@@ -356,14 +358,17 @@ function retrieveData(source)
 	const url = JSONURL.replace(sanitize,"\\$1") + "\(.*\)\\)"
 	const regex = new RegExp(url)
 
+	const oldUrl = OLDJSONURL.replace(sanitize,"\\$1") + "\(.*\)\\)"
+	const oldRegex = new RegExp(oldUrl)
+
 	const data  = []
 
 	const message = source?.message || source;
 	const embed  = message?.embeds?.[0] || message;
 	const fields = embed?.fields || embed;
 	if (!Array.isArray(fields)) return data;
-	
-	fields.forEach(field => 
+
+	fields.forEach(field =>
 	{
 		let match = regex.exec(field.value || "");
 		if (match)
@@ -372,6 +377,17 @@ function retrieveData(source)
 			match = decodeURIComponent(match)
 			match = JSON.parse(match)
 			data.push(match)
+		}
+		else
+		{
+			match = oldRegex.exec(field.value || "");
+			if (match)
+			{
+				match = match[1]
+				match = decodeURIComponent(match)
+				match = JSON.parse(match)
+				data.push(match)
+			}
 		}
 	});
 	return data;
@@ -892,8 +908,8 @@ async function sendDMApprovalMessage(interaction, start, rpData, footer="")
 		travel = travel?.components[0]
 	if (travel)
 		buttonRow.addComponents(travel)
-	
-	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.DMOnDuty}>`, //attachButtons);
+
+	await embed.send(dmPingChan, `<@&699439189447671889><${PING_PREFIX}&${config.role.Helper}>`,
 					 (message) => message.edit({ components:[buttonRow] }))
 }
 

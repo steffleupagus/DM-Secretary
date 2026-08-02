@@ -1356,9 +1356,9 @@ async function _closeScene(duelData) {
 	return embed;
 }
 
-/*==========================*\
+/*——————————————————————————*\
 |* DATA RETRIEVAL FUNCTIONS *|
-\*==========================*/
+\*——————————————————————————*/
 
 /// Gather and re-assemble the encoded data from the embed message
 /// @message	- The message containing the approval embed
@@ -1438,9 +1438,9 @@ function _reconstructData(duelData) {
 	return duelData
 }
 
-/*===================*\
-|* EDITING FUNCTIONS *|
-\*===================*/
+/*——————————————————————————*\
+|*     EDITING FUNCTIONS    *|
+\*——————————————————————————*/
 
 /// Toggle the approval embed's xp and gold calculation fields on and off
 async function toggleCalculations(interaction, calc) {
@@ -1762,9 +1762,9 @@ async function _resetDaily(duelData, interaction) {
 	}
 }
 
-/*====================*\
-|* APPROVAL FUNCTIONS *|
-\*====================*/
+/*——————————————————————————*\
+|*    APPROVAL FUNCTIONS    *|
+\*——————————————————————————*/
 
 /// Handle reactions to the exp log message for ease of DM validation
 /// @interaction	- The interaction of the button press
