@@ -95,7 +95,7 @@ const data = new SlashCommandBuilder()
 
 const userPermissions = [	PermissionsBitField.Flags.ViewChannel,
 							PermissionsBitField.Flags.SendMessages		];
-const whitelistRoles  = [	config.BuilderRole, config._BuilderRole		];
+const whitelistRoles  = [	config.role.Builder	];
 
 module.exports =
 {

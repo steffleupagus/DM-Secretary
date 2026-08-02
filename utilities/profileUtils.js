@@ -31,7 +31,7 @@ let profileCache = {};
 async function fetchAllMessages(guild, channelId) {
 	//Fetch the channel object from the ID & collect all the profiles in it
 	const channel = await guild.channels.fetch(channelId);
-	if (profileCache[channelId]) 
+	if (profileCache[channelId])
 	{
 		//Sanity check the cache to see if it is still valid
 		const messages = await channel.messages.fetch({limit: 1})
@@ -43,8 +43,9 @@ async function fetchAllMessages(guild, channelId) {
 	return profileCache[channelId];
 }
 
-///If we have a target member specified, skip any messages not by that author
-function processProfileMessage(message, followUp, targetMember) {
+/// Process a single profile message
+function processProfileMessage(message, followUp = false, targetMember = null) {
+	//If we have a target member specified, skip any messages not by that author
 	if (targetMember && targetMember.id != message.author.id)
 		return null;
 	//Parse the profile
@@ -79,7 +80,7 @@ async function batchProfiles(interaction) {
 		const type 		= channelId == config.chan.pcProfile ? "PC" : "NPC"
 		const output	= `${type} (${channelId}): ${count} messages.\n${allMsgs.first().url}\n${allMsgs.last().url}`
 		await interaction.followUp({ content: output, ephemeral: true });
-		
+
 		lastProfile		= null;
 		//Loop over all the profiles and process them
 		await Utils.asyncCollectionForEach(allMsgs, async (message) => {
@@ -87,18 +88,15 @@ async function batchProfiles(interaction) {
 			//Parse the profile
 			const profile = processProfileMessage(message, followUp, targetMember);
 
-			//If we have a name, push it
-			if (profile?.name)
-			{
+			//If this profile has a name, push it
+			if (profile?.name) {
 				charRecords.push(profile);
 				charsByUser[profile.user] = [...(charsByUser[profile.user] || []), profile];
-				//charsByUser[profile.user].push(profile);
 			}
 			else
 			{
 				chaffPosts.push(message.id);
-				if (profile)
-				{
+				if (profile) {
 					const lastIndex	= charsByUser[profile.user].length - 1;
 					const lastType	= charsByUser[profile.user][lastIndex].type || ""
 					const lastUrl	= charsByUser[profile.user][lastIndex].url || ""
@@ -116,7 +114,7 @@ async function batchProfiles(interaction) {
 	const total = charRecords.length + chaffPosts.length
 	const userCount = Object.keys(charsByUser).length
 	console.log(`${charRecords.length} chars + ${chaffPosts.length} chaff = ${total} posts (expected ${totalPosts})`)
-	console.log(`Profiles: ${charRecords.length} chars across ${userCount} users`)
+	console.log(`Profiles: ${charRecords.length} chars across ${userCount} users. (${charErrors.length} Errors)`)
 	return {charRecords, charsByUser, charErrors}
 }
 

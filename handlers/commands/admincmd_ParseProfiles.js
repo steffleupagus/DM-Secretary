@@ -42,12 +42,12 @@ async function processProfiles(interaction, charRecords, charsByUser, charErrors
 	const showErrors	= interaction.options.getBoolean('errors') ?? true;
 	const showParams	= { showSheets, showProfiles, showErrors, channel:debugChan }
 
-	await Utils.asyncArrayForEach(userList, async user =>
-	{
-		let member = await interaction.guild.members.fetch(user).catch(x=>console.log(`Unknown Member: ${user}`))
-		const memberID   = member?.user?.id || user;
-		const memberName = member?.displayName || member?.user?.username || user
-		const memberPing = `<@${memberID}>`
+	await Utils.asyncArrayForEach(userList, async user => {
+		const member		= await interaction.guild.members.fetch(user)
+												.catch(x=>console.log(`Unknown Member: ${user}`))
+		const memberID		= member?.user?.id || user;
+		const memberName	= member?.displayName || member?.user?.username || user
+		const memberPing	= `<@${memberID}>`
 
 		const sheetRecords = CharUtils.charCache.filter(item => item.user == memberID);
 		const sheetNames = sheetRecords.map(item => item.name);
@@ -153,28 +153,29 @@ function generateDBRecords(interaction, sheetRecords, profileRecords)
 
 /// Generate the embed with record matches
 function generateRecordEmbed(member, records, compareRecords, isSheet, includeDesc = true) {
-	const memberID   = member?.user?.id || "MISSING ID";
-	const memberName = member?.displayName || member?.user?.username || user
-	const memberPing = `<@${memberID}>`
-	const slotInfo   = getMemberSlotInfo(member)
-	const slotCount  = isSheet ? slotInfo.pcSlots : slotInfo.totalSlots;
-	const dataType   = isSheet ? "Sheet" : "Profile"
+	const memberID		= member?.user?.id || "MISSING ID";
+	const memberName	= member?.displayName || member?.user?.username || user
+	const memberPing	= `<@${memberID}>`
+	const slotInfo		= getMemberSlotInfo(member)
+	const slotCount		= isSheet ? slotInfo.pcSlots : slotInfo.totalSlots;
+	const dataType		= isSheet ? "Sheet" : "Profile"
 
-	const matches = {}
-	const errors = []
-	let redFlags = isSheet ? countMemberSheets : countMemberProfiles;
-		redFlags = redFlags(member, records, slotInfo);
-	const title = `${dataType} Data: ${memberName}`
-	let desc  = //`\`                                                                     \`\n`+
-				  `${((records.length > slotCount) ? `⚠️`:``)}`+
-				  `${records.length} / ${slotCount} ${dataType}s`
-		desc = `\`${desc}${' '.repeat(69-desc.length)}\`${redFlags}\n`
-	embed = new EmbedBuilder().setTitle(title).setDescription(desc).setFooter({text:title});
+	const matches		= {}
+	const errors		= []
+	let redFlags		= isSheet ? countMemberSheets : countMemberProfiles;
+		redFlags		= redFlags(records, slotInfo);
+	const title			= `${dataType} Data: ${memberName}`
+	let desc  			= //`\`                                                                     \`\n`+
+							`${((records.length > slotCount) ? `⚠️`:``)}`+
+							`${records.length} / ${slotCount} ${dataType}s`
+		desc 			= `\`${desc}${' '.repeat(69-desc.length)}\`${redFlags}\n`
+	const embed			= new EmbedBuilder();
+	embed.setTitle(title).setDescription(desc).setFooter({text:title});
 	records.forEach(char => {
-		const type  = ((char.type ?? '') + " " + dataType).trim()
-		const name  = `[${type}] ${char.name}`
+		const type		= ((char.type ?? '') + " " + dataType).trim()
+		const name		= `[${type}] ${char.name}`
 		let {icon, match, value} = outputMatches(char, compareRecords, isSheet)
-		let multiMatch = ""
+		let multiMatch	= ""
 		if (match)
 		{
 			matches[match] = [...(matches[match] || []), char.name]
@@ -305,8 +306,8 @@ function generateMatches(char, records, isSheet) {
 	return {icon, match, matchList, value, error}
 }
 
-/// Compare the number of sheets a member has against the max from the provided slot info
-function countMemberSheets(member, sheets, slotInfo) {
+/// Utility function: Compare number of sheets against max from provided slot info
+function countMemberSheets(sheets, slotInfo) {
 	const pcs  = sheets.map(p => `\`${p.name}\``)
 	if (pcs.length > slotInfo.pcSlots)
 		return `\n\`❌ Too Many Sheets: ${pcs.length} PCs in ${slotInfo.pcSlots} slots\`\n${pcs.join(" | ")}`
@@ -315,8 +316,8 @@ function countMemberSheets(member, sheets, slotInfo) {
 	return ""
 }
 
-/// Compare the number of profiles a member has against the max from the provided slot info
-function countMemberProfiles(member, profiles, slotInfo) {
+/// Utility function: Compare number of profiles against max from provided slot info
+function countMemberProfiles(profiles, slotInfo) {
 	const  pcs  = profiles.filter(p => p.type == "PC").map(p => `\`${p.name}\``)
 	const npcs  = profiles.filter(p => p.type == "NPC").map(p => `\`${p.name}\``)
 	const total = pcs.length + npcs.length
@@ -329,12 +330,12 @@ function countMemberProfiles(member, profiles, slotInfo) {
 	return ""
 }
 
-/// Calculate the slot info for a member based on their roles
+/// Utility function: Calculate the slot info for a member based on their roles
 function getMemberSlotInfo(member) {
-	const pcRoles = config.role.pcRoles
-	const npcRoles = config.role.npcRoles
-	let pcSlots = 1
-	let npcSlots= 0
+	const pcRoles = config.role.pcRoles;
+	const npcRoles = config.role.npcRoles;
+	let pcSlots = 1;
+	let npcSlots= 0;
 	let pcRole = "";
 	let npcRole = "";
 	if (member)

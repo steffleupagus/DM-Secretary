@@ -186,8 +186,9 @@ async function publishContent(channel, content) {
 	return true
 }
 
-async function publishIndexDesc(channel, index) {
+async function publishIndexDesc(channel, index, indexHeader = "**Index**\n") {
 	let desc = ""
+	if (indexHeader) desc += indexHeader
 	index.forEach( (item)=> {
 		if (!item.title) return;
 		desc += `${item.prefix || ""}[${item.title}](${item.url})\n`
@@ -198,9 +199,9 @@ async function publishIndexDesc(channel, index) {
 	await embed.send(channel);
 }
 
-async function publishIndexFields(channel, index, indexInline) {
+async function publishIndexFields(channel, index, indexInline, indexHeader = "**Index**") {
 	let embed = new Embed()
-		embed.addField("**Index**", '', indexInline);
+		embed.addField(indexHeader, '', indexInline);
 		embed.setFooter({text:"Index"})
 	index.forEach( (item)=> {
 		if (!item.title) return;
