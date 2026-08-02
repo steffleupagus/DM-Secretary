@@ -1,0 +1,134 @@
+{
+  "type": "duel",
+  "matchup": "1 v 1 v 1 v 1",
+  "rounds": "10",
+  "channel": "1338727402561605673",
+  "message": "1338729853758996532",
+  "startDate": 1739248469,
+  "logDate": 1782688824,
+  "chars": [
+    {
+      "char": "Seraph",
+      "user": "207285153138081793",
+      "hpMax": 54,
+      "hpCur": 15,
+      "level": 5,
+      "xpCap": 500,
+      "team": 0,
+      "win": 1,
+      "xpAmt": 500,
+      "xpData": {
+        "totalPool": 2250,
+        "xpMult": 0.75,
+        "capTotal": 500,
+        "poolPct": 1,
+        "unCapExp": 1688,
+        "partial": 0,
+        "cap": 500
+      },
+      "gpAmt": 16,
+      "gpData": {
+        "totalPurse": 96,
+        "gpMult": 0.75,
+        "capTotal": 16,
+        "poolPct": 1,
+        "uncapGold": 72,
+        "cap": 16
+      }
+    },
+    {
+      "char": "Justice",
+      "user": "720778997881110569",
+      "hpMax": 48,
+      "hpCur": 0,
+      "level": 8,
+      "xpCap": 900,
+      "team": 3,
+      "win": 0,
+      "xpAmt": 225,
+      "xpData": {
+        "totalPool": 2250,
+        "xpMult": 0.25,
+        "capTotal": 2250,
+        "poolPct": 0.4,
+        "unCapExp": 225,
+        "partial": 0,
+        "cap": 900
+      },
+      "gpAmt": 10,
+      "gpData": {
+        "totalPurse": 96,
+        "gpMult": 0.25,
+        "capTotal": 96,
+        "poolPct": 0.4166666666666667,
+        "uncapGold": 10,
+        "cap": 40
+      }
+    },
+    {
+      "char": "Raziel",
+      "user": "227960499948486666",
+      "hpMax": 39,
+      "hpCur": 0,
+      "level": 6,
+      "xpCap": 600,
+      "team": 2,
+      "win": 0,
+      "xpAmt": 150,
+      "xpData": {
+        "totalPool": 2250,
+        "xpMult": 0.25,
+        "capTotal": 2250,
+        "poolPct": 0.26666666666666666,
+        "unCapExp": 150,
+        "partial": 0,
+        "cap": 600
+      },
+      "gpAmt": 6,
+      "gpData": {
+        "totalPurse": 96,
+        "gpMult": 0.25,
+        "capTotal": 96,
+        "poolPct": 0.25,
+        "uncapGold": 6,
+        "cap": 24
+      }
+    },
+    {
+      "char": "Islati Leonso Pluonm",
+      "user": "199645920562774017",
+      "hpMax": 57,
+      "hpCur": 0,
+      "level": 7,
+      "xpCap": 750,
+      "team": 1,
+      "win": 0,
+      "xpAmt": 188,
+      "xpData": {
+        "totalPool": 2250,
+        "xpMult": 0.25,
+        "capTotal": 2250,
+        "poolPct": 0.3333333333333333,
+        "unCapExp": 188,
+        "partial": 0,
+        "cap": 750
+      },
+      "gpAmt": 8,
+      "gpData": {
+        "totalPurse": 96,
+        "gpMult": 0.25,
+        "capTotal": 96,
+        "poolPct": 0.3333333333333333,
+        "uncapGold": 8,
+        "cap": 32
+      }
+    }
+  ],
+  "urls": {
+    "roleplay": "https://discord.com/channels/694275190976413816/1338727402561605673/1338729853758996532",
+    "duel": "https://discord.com/channels/694275190976413816/1338727402561605673/1338729853758996532",
+    "transcript": "https://discord.com/channels/694275190976413816/1338727402561605673/1520931960317542541"
+  },
+  "stage": "Sending to DMs for approval.",
+  "errors": {}
+}

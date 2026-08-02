@@ -68,6 +68,11 @@ async function handleButton(interaction) {
 const data = new SlashCommandBuilder()
 	.setName(`duel${config.DEV ? "dev" : ""}`)
 	.setDescription('Conclude a duel')
+.addBooleanOption(option => option
+	.setName('auto')
+	.setDescription('Auto-select all options')
+	.setRequired(false)
+)
 
 module.exports = {
 	data: data,

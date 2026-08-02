@@ -1,0 +1,44 @@
+{
+  "title": "⚔️ Duel Complete (1 v 1 v 1 v 1)",
+  "thumbnail": {
+    "url": "https://i.imgur.com/2U90DwW.png"
+  },
+  "description": "\n`                                                                     `",
+  "fields": [
+    {
+      "name": "**🏆 Victor: **`Seraph` (Level `5`)",
+      "value": "<@207285153138081793> | HP: <`15`/`54`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Seraph%22%2C%22user%22%3A%22207285153138081793%22%2C%22hpMax%22%3A54%2C%22hpCur%22%3A15%2C%22level%22%3A5%2C%22team%22%3A0%2C%22win%22%3A1%2C%22xpAmt%22%3A500%2C%22gpAmt%22%3A16%7D)]\n-# \t*Defeated:* `Justice`|`Raziel`|`Islati Leonso Pluonm`\n- <:xp:858887927899226112> `500`xp [of `500` cap]\n- 🪙 `16`gp"
+    },
+    {
+      "name": "**💀 Defeat: **`Justice` (Level `8`)",
+      "value": "<@720778997881110569> | HP: <`0`/`48`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Justice%22%2C%22user%22%3A%22720778997881110569%22%2C%22hpMax%22%3A48%2C%22hpCur%22%3A0%2C%22level%22%3A8%2C%22team%22%3A3%2C%22win%22%3A0%2C%22xpAmt%22%3A225%2C%22gpAmt%22%3A10%7D)]\n- <:xp:858887927899226112> `225`xp [of `900` cap]\n- 🪙 `10`gp"
+    },
+    {
+      "name": "**💀 Defeat: **`Raziel` (Level `6`)",
+      "value": "<@227960499948486666> | HP: <`0`/`39`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Raziel%22%2C%22user%22%3A%22227960499948486666%22%2C%22hpMax%22%3A39%2C%22hpCur%22%3A0%2C%22level%22%3A6%2C%22team%22%3A2%2C%22win%22%3A0%2C%22xpAmt%22%3A150%2C%22gpAmt%22%3A6%7D)]\n- <:xp:858887927899226112> `150`xp [of `600` cap]\n- 🪙 `6`gp"
+    },
+    {
+      "name": "**💀 Defeat: **`Islati Leonso Pluonm` (Level `7`)",
+      "value": "<@199645920562774017> | HP: <`0`/`57`> | [[`Data`](http://tinyurl.com/tjson?input=%7B%22char%22%3A%22Islati%20Leonso%20Pluonm%22%2C%22user%22%3A%22199645920562774017%22%2C%22hpMax%22%3A57%2C%22hpCur%22%3A0%2C%22level%22%3A7%2C%22team%22%3A1%2C%22win%22%3A0%2C%22xpAmt%22%3A188%2C%22gpAmt%22%3A8%7D)]\n- <:xp:858887927899226112> `188`xp [of `750` cap]\n- 🪙 `8`gp"
+    },
+    {
+      "name": "Links",
+      "value": "[Roleplay](https://discord.com/channels/694275190976413816/1338727402561605673/1338729853758996532)\n[Duel](https://discord.com/channels/694275190976413816/1338727402561605673/1338729853758996532)",
+      "inline": true
+    },
+    {
+      "name": "Duel",
+      "value": "Rounds: `10`\n[Transcript](https://discord.com/channels/694275190976413816/1338727402561605673/1520931960317542541)",
+      "inline": true
+    },
+    {
+      "name": "Data",
+      "value": "[Data](http://tinyurl.com/tjson?input=%7B%22type%22%3A%22duel%22%2C%22matchup%22%3A%221%20v%201%20v%201%20v%201%22%2C%22rounds%22%3A%2210%22%2C%22startDate%22%3A1739248469%2C%22logDate%22%3A1782688824%2C%22stage%22%3A%22Sending%20to%20DMs%20for%20approval.%22%7D)",
+      "inline": true
+    }
+  ],
+  "footer": {
+    "text": "Logged at:"
+  },
+  "timestamp": "2026-06-28T23:20:24.000Z"
+}

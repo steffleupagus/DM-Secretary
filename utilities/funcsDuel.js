@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonStyle } = require('discord.js')
+const { EmbedBuilder, MessageFlags, ButtonStyle } = require('discord.js')
 const { ActionRowBuilder, MessageMentions, TextInputStyle } = require('discord.js')
 const { DateTime } = require("luxon");
 const { SortOrder } = require(`./enums.js`)
@@ -27,6 +27,20 @@ const DEBUG = config.DEV ? {
 const BREAKSTEP = null//STEP.APPROVE_PEND;
 const DEBUGFILE = config.DEV
 
+///
+const VICTOR_XP			= 0.75;
+const PARTIAL_XP		= 0.5;
+const DEFEAT_XP			= 0.25;
+const INVALID_LEVEL		= 0;
+const MIN_CHARS			= DEBUG ? 0 : 750;
+const MIN_POSTS			= DEBUG ? 0 : 3;
+const BR				= `\n\`${' '.repeat(69)}\``
+const DUELTITLE			= `${config.emoji.duel} Duel Complete`;
+const JSONURL			= "http://tinyurl.com/tjson?input=";
+const PING_PREFIX		= DEBUG ? "-" : "@";
+const DM_PING 			= `<${PING_PREFIX}&${config.role.Helper}>`
+const DM_PING_CHANNEL	= DEBUG ? config.debug.dmPing : config.chan.dmPing;
+const _encodeDataURL	= (data) => { return JSONURL + encodeURIComponent(JSON.stringify(data)); }
 
 /// REGEX
 const GROUP_REGEX	= /.* (?:was )?added to (?:combat with initiative [0-9]+ as part of )?group .*\./gim;
@@ -94,81 +108,6 @@ const INIT_REGEX	= (() => {
 	return INIT_REGEX
 })()
 
-const DELETE_ON_UNDO	= true
-const INVALID_LEVEL		= 0;
-const MIN_CHARS			= DEBUG ? 0 : 750;
-const MIN_POSTS			= DEBUG ? 0 : 3;
-const PING_PREFIX		= DEBUG ? "-" : "@";
-const PROMPT_REACTS		= false;
-const DUELTITLE			= `${config.emoji.xp} Duel Complete`;
-const DUELXPTITLE		= `${config.emoji.xp} Duel`
-const JSONURL			= "http://tinyurl.com/tjson?input=";
-const dmPingChannel		= DEBUG ? config.debug.dmPing : config.chan.dmPing;
-const _encodeDataURL	= (data) => { return JSONURL + encodeURIComponent(JSON.stringify(data)); }
-///
-/// Process the most recent duel in the specified channel
-/// @channel: The channel in which the command was executed
-/// @user: The user who executed the command
-/// @message: Optionally, the message on which the menu command was run
-///
-async function _OLD_processDuel(channel, user, message)
-{
-	duelData.outcome = outcome
-	duelData = calculateExp(duelData);
-
-/*/                                                    \*\ 
-|*| ^^^ Processed all necessary data                   |*|
-|*| <<< TODO: Branch off here for informational output |*|
-\*\                                                    /*/
-
-	const cleanedData = cleanData(duelData);
-	const confirm = await awaitConfirmation(channel, cleanedData);
-	if (confirm !== true)
-		return Mutex.unlock(mechChan, confirm.error);
-
-	cleanedData.channel = mechChan.id
-	cleanedData.id = duelData.startId
-	cleanedData.links = {
-		rp:rpData.start,
-		duel:duelData.start
-	}
-
-	const transcript = generateTranscriptFromData(duelData)
-	if (transcript)
-	{		
-		const transcriptLink = await mechChan.send({embeds:[transcript[0]]})
-		cleanedData.transcript = transcriptLink.url
-
-		for (let i=1; i < transcript.length; ++i)
-			await mechChan.send({embeds:[transcript[i]]})
-	}
-	mechChan.send("``` ```");
-	const dmEmbed = await sendApprovalMessage(cleanedData, guild);	
-	await attachButtons(dmEmbed);
-
-	cleanedData.link = dmEmbed.url;
-	const playerEmbed = await closeScene(cleanedData);
-
-	if (mechChan.isThread)
-		await rpChan.send({embeds:[playerEmbed]})
-	await resetDuelButton(rpChan)
-
-	Mutex.unlock(mechChan);
-	return {embeds:[playerEmbed]}
-}
-
-/// Handle a thrown error by logging it to the appropriate log channel
-async function _handleErrorLog(args) {
-	const {interaction, debugData, error} = args
-	// Early out if this is just a cancel message - we don't need to log every cancellation
-	if (error?.message?.includes(ERROR.CANCELLED)) return;
-	// Add the duelData to the debug log embed
-	if (!error.cause && debugData) error.cause = Log.DEBUGFIELDS(debugData, debugStr)
-	// Log the error to the debug channel
-	// Log.DEBUG(error)
-	await Log.EMBED({interaction,channel:config.debug.duel,error,dataFields:error.cause})
-}
-
 /// Process the most recent duel in the specified channel in a try/catch harness
 /// @interaction: The slash command interaction (where applicable)
 /// @message: Optional: the message on which menu command was run.
@@ -181,7 +120,7 @@ async function processDuel(interaction, message) {
 	const channel		=	args.channel ?? interaction?.channel ?? message?.channel
 	let ret 			=	null;
 	let error	 		=	null;
-	if (message) 			args.skipRP = true;
+	if (message)			args.skipRP = true;
 	try 		{ ret	=	await _closeDuelInternal(args) }
 	catch(err) 	{ error =	err }
 
@@ -197,12 +136,14 @@ async function processDuel(interaction, message) {
 	Mutex.unlock(channel, error);
 	return ret;
 }
+
 async function _closeDuelInternal(args) {
 	const interaction	=	args.interaction ?? null;
 	const message		=	args.message ?? interaction?.message ?? null;
 	const channel		=	args.channel ?? interaction?.channel ?? message?.channel;
 	const autoClose		=	args.auto ?? false;
-	const ephemeral		=	interaction?.ephemeral ?? false;
+	const isEphemeral	=	interaction?.ephemeral ?? false;
+	const ephemeral		=	(isEphemeral) ? {flags:MessageFlags.Ephemeral} : {}
 	const duelId		=	channel.id;
 	const skipRP		=	(args.skipRP || DEBUG?.IGNORE_RP) ?? false
 	const forceClose	=	null != message;// && !DEBUG;
@@ -260,7 +201,7 @@ await Log.TRACE(interaction, duelData, STEP.TEAMS_GROUPS, DEBUG);	//[User] Group
 		//Group the participants automatically / user input
 		duelData = await _groupParticipants(duelData, interaction)
 	}
-await Log.TRACE(interaction, duelData, STEP.FIND_OUTCOME, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.FIND_OUTCOME, DEBUG);	//[User] Determine outcome, with input if necessary
 	{
 		if (duelActive && !_autoDetectOutcome(duelData).valid)
 			throw Error(ERROR.ACTIVE_DUEL, {cause:duelData})
@@ -270,48 +211,49 @@ await Log.TRACE(interaction, duelData, STEP.FIND_OUTCOME, DEBUG);
 		if (null == duelData) {
 			mechChan.send("``` ```")
 			await resetDuelButton(rpChan)
-			throw Error("Duel Aborted")
+			throw Error(ERROR.DUEL_ABORTED)
 		}
 	}
-await Log.TRACE(interaction, duelData, STEP.CALC_WIN_EXP, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.CALC_WIN_EXP, DEBUG);	//[Auto] Determine rewards based on outcome
 	{
 		//Calculate the exp & Clean the data into the minimum necessary
 		duelData = _calculateExp(duelData);
 		duelData = _calculateGold(duelData)
 	}
-await Log.TRACE(interaction, duelData, STEP.CONFIRMATION, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.CONFIRMATION, DEBUG);	//[User] Get player confirmation of results
 	{
 		if (duelActive) throw Error(ERROR.ACTIVE_DUEL, {cause:duelData})
 		//Present the outcome to the players and await confirmation
 		const confirm = await _awaitConfirmation(duelData, interaction);
 	}
-await Log.TRACE(interaction, duelData, STEP.DUEL_SUMMARY, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.DUEL_SUMMARY, DEBUG);	//[Auto] Generate & post duel Transcript
 	{
 		duelData = _cleanData(duelData);
 		const transcript = _generateTranscriptFromData(duelData)
 		if (transcript) {
-			const transcriptMsg = ephemeral ? await interaction.followUp({embeds:[transcript[0]],ephemeral})
-											: await mechChan.send({embeds:[transcript[0]]})
+			const transcriptMsg = isEphemeral
+				? await interaction.followUp({embeds:[transcript[0]], ...ephemeral})
+				: await mechChan.send({embeds:[transcript[0]]})
 			for (let i=1; i < transcript.length; ++i) {
-				if (ephemeral)	await interaction.followUp({embeds:[transcript[i]],ephemeral})
-				else 			await mechChan.send({embeds:[transcript[i]]})
+				if (isEphemeral)	await interaction.followUp({embeds:[transcript[i]], ...ephemeral})
+				else 				await mechChan.send({embeds:[transcript[i]]})
 			}
-			delete duelData.events
 			duelData.urls.transcript = transcriptMsg.url
 		}
-		if (ephemeral) await interaction.followUp({content:"``` ```",ephemeral})
-		else await mechChan.send("``` ```");
+		if (isEphemeral)	await interaction.followUp({content:"``` ```", ...ephemeral})
+		else 				await mechChan.send("``` ```");
+		delete duelData.events
 	}
-await Log.TRACE(interaction, duelData, STEP.APPROVE_PEND, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.APPROVE_PEND, DEBUG);	//[Auto] Send the DM Approval
 	{
 		if (DEBUGFILE) Log.FILE("./data/test/duelData.json", duelData)
 		const dmEmbed = await _sendApprovalMessage(duelData, interaction);
 		duelData.dmMsg = dmEmbed.url;
 	}
-await Log.TRACE(interaction, duelData, STEP.CLOSING_DUEL, DEBUG);
+await Log.TRACE(interaction, duelData, STEP.CLOSING_DUEL, DEBUG);	//[Auto] Close the scene and reset the duel button
 	{
 		const playerEmbed = await _closeScene(duelData);
-		if (mechChan.isThread && !interaction?.ephemeral) {
+		if (mechChan.isThread && !isEphemeral) {
 			await rpChan.send({embeds:[playerEmbed]})
 			await resetDuelButton(rpChan)
 		}
@@ -320,15 +262,78 @@ await Log.TRACE(interaction, duelData, STEP.CLOSING_DUEL, DEBUG);
 			const embed = new EmbedBuilder().setTitle("Active Duel").setDescription(INSTRUCT.CLOSE_DUEL)
 			await interaction.followUp({embeds:[embed]})
 		}
-		Mutex.unlock(mechChan);
-		//return {embeds:[playerEmbed]}
+		//Mutex.unlock(mechChan);
 	}
 
 	return true;
 }
 
+/// Closer methods
+const { _cleanData, _generateTranscriptFromData, _closeScene } = {
+	/// Cleanup the data into a small manageable chunk
+	/// @duelData		- Extant data gathered from the initiative
+	_cleanData(duelData) {
+		const {events, ...debugData} = duelData
+
+		//We don't need player data anymore
+		// - if we got here, we don't care about their RP data
+		// - We can reconstruct the players.chars list from the characters fields
+		delete duelData.players;
+
+		//We can reconstruct the team data from character fields
+		delete duelData.teams;
+
+		//We can reconstruct the outcome data from character / team fields
+		delete duelData.outcome;
+
+		return duelData;
+	},
+
+	/// Generate the transcript embed from the events field of the duel data
+	/// @duelData		= Extant data gathered from the initiative
+	_generateTranscriptFromData(duelData) {
+		if (!duelData.events) return null;
+		//Create a paginated Embed, NOT an EmbedBuilder
+		let embed = new Embed()
+			embed.setTitle("Duel Transcript")
+			embed.setDescription(`[[jump](${duelData.urls.duel})] \`Duel Initiative\`\n${BR}`)
+		for (let round=0; round <= duelData.rounds; ++round) {
+			let events = duelData.events.filter(event => (event.round == round));
+			if (events.length > 0) {
+				embed.addField(`Round ${round}`, "")
+				events.forEach(event => {
+					let field = `[[jump](${event.msg})] \`${event.event}\``
+					if (event.result) field += `\n- *${event.result}*`
+					embed.extendField(field, `Round ${round} cont.`)
+				})
+				embed.closeField();
+			}
+		}
+		return embed.embeds();
+	},
+
+	/// Close the scene, sends a message to the DM channel
+	/// @duelData		- Extant data gathered from the initiative
+	/// @interaction	- Original interaction, needed for player input
+	async _closeScene(duelData) {
+		const date		= DateTime.fromSeconds(duelData.logDate);
+		const format	= `dd LLLL yyyy [ hh:mma ]`	//`DD [ hh:mma ]`
+		const fullDate	= date.toFormat(format)
+		const footer	= `Logged at:`;
+
+		const fields = duelData.chars.map(c => _charToString(c, duelData.chars, {xp:false,gp:false,string:false}));
+		fields.push(..._errorsToFields(duelData.errors))
+		const embed		= new EmbedBuilder().setTitle(DUELTITLE).setThumbnail(THUMB.DUEL)
+											.setDescription(INSTRUCT.PENDING_APPROVAL(duelData.dmMsg))
+											.addFields(fields)
+											.setFooter({text:footer})
+											.setTimestamp(date.toMillis())
+		return embed;
+	}
+}
+
 /// Automatic data gathering & validation
-const {_verifyChannel, _fetchLevelData, _collateData, _verifyParticipation} = {
+const { _verifyChannel, _fetchLevelData, _collateData, _verifyParticipation } = {
 	/// Verify that the channel being used is a duel channel
 	/// @channel	- the channel the command is being run in
 	/// Returns		- the pair of RP and Mech channels associated
@@ -527,7 +532,7 @@ const { _getDuelData, _parseInitiative, _parseDuel, _parseEventEmbed, _parseEven
 			const condition = match[5] ?? null;
 			duelData.chars.push({ char, init, hpCur, hpMax, user, level });
 		});
-	
+
 		return duelData;
 	},
 
@@ -568,7 +573,6 @@ const { _getDuelData, _parseInitiative, _parseDuel, _parseEventEmbed, _parseEven
 
 			//Skip known irrelevant messages & massage the data a little
 			if (_parseIrrelevantEvent(event.event)) continue;
-			//const AddInitRegex = /with initiative 1d20 .*/i;
 			event.event = event.event.replace(INIT_REGEX.INIT_MATCH, "...");
 
 			duelData.events.push(event);
@@ -592,11 +596,11 @@ const { _getDuelData, _parseInitiative, _parseDuel, _parseEventEmbed, _parseEven
 											.map(user => user.replaceAll(/\D/g,"")));
 			return duelData;
 		}
-	
+
 		// Check for actors in the event title
 		const actor = duelData.chars.find(c => embed?.title?.includes(c.char)) ||
 					  duelData.chars.find(c => embed?.description?.includes(c.char));
-	
+
 		// Check for targets in the fields and use to track aggressors for later grouping
 		targets = []
 		embed?.fields?.forEach(field => {
@@ -615,14 +619,14 @@ const { _getDuelData, _parseInitiative, _parseDuel, _parseEventEmbed, _parseEven
 					});
 				}
 				// - Non-Save Effect Could be buff or something like Sleep, don't track it
-	
+
 				//Don't add this to events where the actor targets themselves
 				if (act.mod && act.type && char && char.char && actor &&
 					char.char != actor.name && char.user != actor.user)
 					targets.push({name:char.char, user:char.user, ...act});
 			}
 		});
-	
+
 		//Only add actor/targets to event if we have both, otherwise they're useless on their own
 		if (actor && targets.length > 0)
 		{
@@ -717,6 +721,7 @@ const { _resetTeams, _aggregateTeams, _getTeamsEmbed, _getTeamsComponents,
 	_resetTeams(duelData) {
 		// Reset to 1(v1)*
 		duelData.teams = duelData.players.map(x => ([x.user]))
+		duelData.matchup = duelData.teams.map(t => t.chars.length).join(' v ');
 		// Remove any warning that the grouping was manually edited
 		delete duelData.errors?.MANUAL_GROUP
 		return duelData;
@@ -834,6 +839,7 @@ const { _resetTeams, _aggregateTeams, _getTeamsEmbed, _getTeamsComponents,
 			try { duelData = await _editParticipantGroups(duelData, interaction, forceEdit) }
 			catch (e) { throw e }
 		}
+		if (duelData.teams) duelData.matchup = duelData.teams.map(t => t.chars.length).join(' v ');
 		return duelData;
 	},
 
@@ -895,306 +901,591 @@ const { _resetTeams, _aggregateTeams, _getTeamsEmbed, _getTeamsComponents,
 	}
 }
 
+/// Outcome / Winner methods
+const { _autoDetectOutcome, _determineOutcome, _promptWinners, _calculateExp, _calculateGold } = {
+	/// Determine the outcome of a duel
+	/// @duelData		- Extant data gathered from the initiative
+	/// @interaction	- Original interaction, needed for player input
+	_autoDetectOutcome(duelData) {
+		//Determine victors (teams with HP left) and defeats (those with no HP remaining)
+		const hasWinners = duelData.teams.filter(x => x.win).length > 0
+		let victors  = duelData.teams.filter(x => hasWinners ?  x.win : x.totalHP >  0)
+		let defeats	 = duelData.teams.filter(x => hasWinners ? !x.win : x.totalHP <= 0)
+		//Determine the total cap of all defeats teams
+		let totalCap = defeats.reduce((total,team) => total + team.xpCap, 0)
 
-/// Determine the outcome of a duel
-/// @duelData		- Extant data gathered from the initiative
-/// @interaction	- Original interaction, needed for player input
-function _autoDetectOutcome(duelData) {
-	//Determine victors (teams with HP left) and defeats (those with no HP remaining)
-	const hasWinners = duelData.teams.filter(x => x.win).length > 0
-	let victors  = duelData.teams.filter(x => hasWinners ?  x.win : x.totalHP >  0)
-	let defeats	 = duelData.teams.filter(x => hasWinners ? !x.win : x.totalHP <= 0)
-	//Determine the total cap of all defeats teams
-	let totalCap = defeats.reduce((total,team) => total + team.xpCap, 0)
+		const outcome = {victors, defeats, totalCap}
+		outcome.valid = (defeats.length > 0 && totalCap > 0)
 
-	const outcome = {victors, defeats, totalCap}
-	outcome.valid = (defeats.length > 0 && totalCap > 0)
+		return outcome
+	},
 
-	return outcome
-}
+	async _determineOutcome(duelData, interaction, edit = false, forceSelect = false) {
+		let {victors, defeats, totalCap, valid} = _autoDetectOutcome(duelData)
+		const {chars,players,teams} = duelData
+		const debugData = {chars,players,teams}
 
-async function _determineOutcome(duelData, interaction, edit = false, forceSelect = false) {
-	let {victors, defeats, totalCap, valid} = _autoDetectOutcome(duelData)
-	const {chars,players,teams} = duelData
-	const debugData = {chars,players,teams}
+		// Ideal case: clearly defined victors/defeats - One (or more) victors and one (or more) defeats
+		// Deviant case: All defeats, no victors - Draw, each earning the minimum (25%) amount
+		// Deviant case: No defeats teams means no totalCap exp pool to award
+		//	- Duel ended early / player bailed (no one should get any award)
+		//	- Player fuckup and healed before ending duel (select winner/loser teams)
+		////if (defeats.length == 0 || totalCap == 0 || forceSelect)
+		if (!valid || forceSelect) {
+			delete duelData.errors.INVALID_OUTCOME
+			if (!valid) duelData.errors.INVALID_OUTCOME = ERROR.INVALID_OUTCOME.invalid
 
-	// Ideal case: clearly defined victors/defeats - One (or more) victors and one (or more) defeats
-	// Deviant case: All defeats, no victors - Draw, each earning the minimum (25%) amount
-	// Deviant case: No defeats teams means no totalCap exp pool to award
-	//	- Duel ended early / player bailed (no one should get any award)
-	//	- Player fuckup and healed before ending duel (select winner/loser teams)
-	////if (defeats.length == 0 || totalCap == 0 || forceSelect)
-	if (!valid || forceSelect) {
-		delete duelData.errors.INVALID_OUTCOME
-		if (!valid) duelData.errors.INVALID_OUTCOME = ERROR.INVALID_OUTCOME.invalid
+			victors = (victors.length > 0) ? victors?.map(t => t.team) : [];
+			outcome = await _promptWinners(duelData, interaction, victors, edit, forceSelect)
 
-		victors = (victors.length > 0) ? victors?.map(t => t.team) : [];
-		outcome = await _promptWinners(duelData, interaction, victors, edit, forceSelect)
+			if (!outcome || "cancel" == outcome)
+				throw Error(`${ERROR.CANCELLED}\n${INSTRUCT.CONTACT}`, {cause:debugData})
+			else if ("abort" == outcome) return null;
+			else if ("default" == outcome) outcome = victors
 
-		if (!outcome || "cancel" == outcome)
-			throw Error(`${ERROR.CANCELLED}\n${CONTACT}`, {cause:debugData})
-		else if ("abort" == outcome) return null;
-		else if ("default" == outcome) outcome = victors
+			victors = duelData.teams.filter(t => outcome.includes(t.team));
+			defeats = duelData.teams.filter(t => !outcome.includes(t.team));
 
-		victors = duelData.teams.filter(t => outcome.includes(t.team));
-		defeats = duelData.teams.filter(t => !outcome.includes(t.team));
+			if (defeats.length > 0) duelData.errors.INVALID_OUTCOME = ERROR.INVALID_OUTCOME.manual
+		}
+		outcome = {victors, defeats};
 
-		if (defeats.length > 0) duelData.errors.INVALID_OUTCOME = ERROR.INVALID_OUTCOME.manual
+		const v = victors.map(x => x.users).flat()
+		duelData.chars.forEach(c => c.win = v.includes(c.user) ? 1 : 0)
+
+		duelData.outcome = outcome;
+		return duelData;
+	},
+
+	/// Prompt the user for a winner via select box
+	/// @duelData		- Extant data gathered from the initiative
+	/// @interaction	- Original interaction, needed for player input
+	async _promptWinners(duelData, interaction, victors = [], edit = false, forceSelect = false) {
+		//Generate the prompt fields & options
+		const opts		= [];
+		const fields	= [];
+		const users		= duelData.players.map(x => x.user)
+		const content	= users.map(x => `<${PING_PREFIX}${x}>`).join(" ");
+		const {trophy,skull,scale,play,no}	= config.emoji
+		duelData.teams.forEach(t => {
+			const victor = victors.includes(t.team)
+			const icon = victors ? (victor ? trophy : skull) : ``
+			const type = victors ? `-# *\`Default:\`* \`${icon}\`` : ``
+			const list = t.chars.length > 1 ? ` [${t.chars.map(c => `\`${c}\``).join('|')}]` : ``
+			const name = `${t.team} ${list}`
+			const value = `${_teamToString(t, duelData)}\n${type}`
+			fields.push({name, value})
+
+			const charList = duelData.chars.filter(c => t.users.includes(c.user))
+			const optName = `${icon} ${t.team}`
+			const optDesc = _teamToOption(charList)
+			opts.push(Prompt.createSelectOption(optName, optDesc, t.team));
+		});
+		fields.push(..._errorsToFields(duelData.errors,true))
+
+		//Create the embed
+		const embeds = new EmbedBuilder().setTitle("Select the Winner...").addFields(fields)
+										 .setDescription(forceSelect ? INSTRUCT.SELECTWIN : ERROR.NO_OUTCOME)
+										 .setThumbnail(THUMB.DUEL)
+		//Create button components
+		const buttons = []
+		if (victors.length > 0) buttons.push({style:ButtonStyle.Primary, emoji:play, label:"Default", custom_id:"default"})
+		if (edit || forceSelect) buttons.push({style:ButtonStyle.Secondary, emoji:scale, label:"Draw", custom_id:"draw"})
+		buttons.push({style:ButtonStyle.Secondary, emoji:no, label:"Cancel", custom_id:"cancel"})
+		const modDM = interaction?.member && Utils.hasAnyRole(interaction.member, dmRoles);
+		if (modDM) buttons.push({style:ButtonStyle.Danger, emoji:no, label:"Abort", custom_id:"abort"})
+
+		//Create select components
+		const components = []
+		if (opts.length)
+			components.push(Prompt.createSelectRow(customId="winners", opts, 1, opts.length-1, "Select winner..."))
+		components.push(Prompt.createButtonRow(buttons))
+
+		//Present to the user and await the response
+		const {ephemeral} = interaction
+		const prompt = await interaction.editReply({content,embeds:[embeds],components,ephemeral});
+		if (DEBUG?.USEREMBED) await interaction.channel.send({embeds:[embeds]})
+		const promptArgs = {users, returnFirst:true,
+							failOptions:["default","cancel","abort"]}
+		let   result = await Prompt.collectComponents(prompt, promptArgs);
+
+		//Response received (or time ran out) - remove the components and return the result
+		await interaction.editReply({components:[]})
+		if (!result?.values) result.values = victors
+		else if (result.fail) result.values = result.values[0];
+
+		return result.values;
+	},
+
+	/// Calculate the exp split between players based on the losers combined exp cap
+	/// @duelData		- Extant data gathered from the initiative
+	_calculateExp(duelData) {
+		const {victors, defeats} = duelData.outcome
+		const testV = duelData.chars.filter(c => c.win)
+		const testD = duelData.chars.filter(c => !c.win)
+
+		//Total up any victors the defeated team managed to reduce to zero HP to award that exp
+		//Comment this out if it's being abused
+		const partVictorTotal = duelData.chars.reduce((total,c) =>
+			(total += (c.win && c.hpCur == 0 && c.hpMax > 0) ? c.xpCap : 0), 0)
+
+		const victorCapTotal = victors.reduce((total,team) => total + team.xpCap, 0)
+		const defeatCapTotal = defeats.reduce((total,team) => total + team.xpCap, 0)
+
+		//Determine exp award for each participant
+		duelData.chars.map(c => {
+			const partial = (c.win ? c.hpCur == 0 : partVictorTotal >= defeatCapTotal) ? 1 : 0
+
+			//Determine the total pool -
+			//if the loser took out one of the winners, give them the partial win if it's higher
+			const totalPool = (partial && !c.win) ? partVictorTotal : defeatCapTotal
+			//Determine the group's percentage of the totalPool, lower if individual went down
+			const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
+			const xpMult = grpPoolPct;
+			//Determine the individual's percentage of their group's pool
+			const capTotal = (c.win ? victorCapTotal : defeatCapTotal);
+			const poolPct = Math.min(1, c.xpCap / capTotal);
+			//Calculate the individual's total award
+			const unCapExp = Math.round(totalPool * grpPoolPct * poolPct);
+			c.xpAmt = Math.min(c.xpCap, Math.round(unCapExp));
+
+			console.log(totalPool, grpPoolPct, poolPct)
+
+			c.team = duelData.teams.findIndex(t => t.users.includes(c.user))
+			c.xpData = { totalPool, xpMult, capTotal, poolPct, unCapExp, partial, cap:c.xpCap }
+		})
+
+		return duelData;
+	},
+
+	/// Calculate the gold percentage an individual player gains based on their result
+	/// @duelData		- Extant data gathered from the initiative
+	_calculateGold(duelData) {
+		//			 Level :  0, 1, 2, 3,  4,  5,  6,  7,  8,  9, 10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20
+		const goldPerLevel = [0, 0, 0, 4,  8, 16, 24, 32, 40, 48, 56,  72,  88, 104, 120, 136, 152, 184, 216, 248, 280];
+
+		const { chars } = duelData
+		const victorTotal = chars.reduce((t, c) => t += (c.win ? goldPerLevel[c.level] : 0), 0)
+		const partialTotal = chars.reduce((t,c) => t += ((c.win && c.hpCur == 0) ? goldPerLevel[c.level] : 0), 0)
+		const defeatTotal = chars.reduce((t, c) => t += (c.win ? 0 : goldPerLevel[c.level]), 0)
+
+		duelData.chars.map(c => {
+			const { partial } = c.xpData;
+
+			//Determine the purse amount
+			//if the loser took out one of the winners, give them the partial win if it's higher
+			const totalPurse = (partial && !c.win) ? partialTotal : defeatTotal
+			//Determine the group's percentage of the total purse
+			const grpPoolPct = (partial ? PARTIAL_XP : (c.win ? VICTOR_XP : DEFEAT_XP))
+			const gpMult = grpPoolPct
+			//Determine the individual's percentage of their group's pool
+			const goldCap = goldPerLevel[c.level];
+			const capTotal = (c.win ? victorTotal : defeatTotal);
+			const poolPct = Math.min(1, goldCap / capTotal);
+			//Calculate the individual's total gold award
+			const uncapGold = Utils.precise(totalPurse * grpPoolPct * poolPct)
+
+			c.gpAmt = Math.min(goldCap, Math.round(uncapGold))
+			c.gpData = { totalPurse, gpMult, capTotal, poolPct, uncapGold, cap:goldCap }
+		})
+
+		return duelData;
 	}
-	outcome = {victors, defeats};
-
-	const v = victors.map(x => x.users).flat()
-	duelData.chars.forEach(c => c.win = v.includes(c.user) ? 1 : 0)
-
-	duelData.outcome = outcome;
-	return duelData;
 }
 
-/// Prompt the user for a winner via select box
-/// @duelData		- Extant data gathered from the initiative
-/// @interaction	- Original interaction, needed for player input
-async function _promptWinners(duelData, interaction, victors = [], edit = false, forceSelect = false) {
-	//Generate the prompt fields & options
-	const opts		= [];
-	const fields	= [];
-	const users		= duelData.players.map(x => x.user)
-	const content	= users.map(x => `<${PING_PREFIX}${x}>`).join(" ");
-	const {trophy,skull,scale,play,no}	= config.emoji
-	duelData.teams.forEach(t => {
-		const victor = victors.includes(t.team)
-		const icon = victors ? (victor ? trophy : skull) : ``
-		const type = victors ? `-# *\`Default:\`* \`${icon}\`` : ``
-		const list = t.chars.length > 1 ? ` [${t.chars.map(c => `\`${c}\``).join('|')}]` : ``
-		const name = `${t.team} ${list}`
-		const value = `${_teamToString(t, duelData)}\n${type}`
-		fields.push({name, value})
+/// Confirmation and Approval methods
+const { _awaitConfirmation, _sendApprovalMessage, _handleDuelResult, _postDuelResultLog } = {
+	/// Pause and wait for confirmation from the player(s) before continuing
+	/// @duelData		- Extant data gathered from the initiative
+	/// @interaction	- Original interaction, needed for player input
+	async _awaitConfirmation(duelData, interaction, isEdit = false) {
+		const users = duelData.chars.map(c => c.user)
 
-		const charList = duelData.chars.filter(c => t.users.includes(c.user))
-		const optName = `${icon} ${t.team}`
-		const optDesc = _teamToOption(charList)
-		opts.push(Prompt.createSelectOption(optName, optDesc, t.team));
-	});
-	fields.push(..._errorsToFields(duelData.errors,true))
+		duelData.chars.sort((a,b) => {
+			if (b.win   != a.win  ) return b.win   - a.win
+			if (b.team  != a.team ) return b.team  - a.team
+			if (b.level != a.level) return b.level - a.level
+			if (b.hpCur != a.hpCur) return b.hpCur - a.hpCur
+		})
 
-	//Create the embed
-	const embeds = new EmbedBuilder().setTitle("Select the Winner...").setThumbnail(DUELTHUMB).addFields(fields)
-									 .setDescription(forceSelect ? INSTRUCT.SELECTWIN : ERROR.NO_OUTCOME)
-	//Create button components
-	const buttons = []
-	if (victors.length > 0) buttons.push({style:ButtonStyle.Primary, emoji:play, label:"Default", custom_id:"default"})
-	if (edit || forceSelect) buttons.push({style:ButtonStyle.Secondary, emoji:scale, label:"Draw", custom_id:"draw"})
-	buttons.push({style:ButtonStyle.Secondary, emoji:no, label:"Cancel", custom_id:"cancel"})
-	const modDM = interaction?.member && Utils.hasAnyRole(interaction.member, dmRoles);
-	if (modDM) buttons.push({style:ButtonStyle.Danger, emoji:no, label:"Abort", custom_id:"abort"})
+		const fields = duelData.chars.map(c => _charToString(c, duelData.chars, {string:false, xp:false, gp:false}));
+		fields.push(..._errorsToFields(duelData.errors,!isEdit))
 
-	//Create select components
-	const components = []
-	if (opts.length)
-		components.push(Prompt.createSelectRow(customId="winners", opts, 1, opts.length-1, "Select winner..."))
-	components.push(Prompt.createButtonRow(buttons))
+		Log.TODO("Move confirmation code into its own utility")
+		const embed = new EmbedBuilder().setThumbnail(THUMB.DUEL).addFields(fields)
+		await interaction.editReply({embeds:[embed],components:null})
+		if (DEBUG?.USEREMBED) await interaction.channel.send({embeds:[embed]})
 
-	//Present to the user and await the response
-	const {ephemeral} = interaction
-	const prompt = await interaction.editReply({content,embeds:[embeds],components,ephemeral});
-	if (DEBUG?.USEREMBED) await interaction.channel.send({embeds:[embeds]})
-	const promptArgs = {users, returnFirst:true,
-						failOptions:["default","cancel","abort"]}
-	let   result = await Prompt.collectComponents(prompt, promptArgs);
+		//Send embed confirm prompt
+		const {tu:yes, td:no} = config.emoji;
+		const content = users.map(x => `<${PING_PREFIX}${x}>`).join(" ");
+		const desc	= `${STEP.CONFIRMATION}\n${INSTRUCT.CONFIRM(yes,no)}\n${INSTRUCT.CONTACT}`
+		const prompt = new EmbedBuilder().setTitle("Confirmation").setFooter({text:INSTRUCT.CONFIRM_FOOTER(yes,no)})
+										 .setDescription(desc)
+										 .setThumbnail(THUMB.DUEL).addFields(fields)
+		const confirm = await Prompt.confirmDialog(interaction, {content, embeds:[prompt]}, users, true);
+		const cancelled = `${ERROR.CANCELLED}\nIf your level is wrong:\n${INSTRUCT.REFRESH}${INSTRUCT.CONTACT}`;
+		if (!confirm || confirm == no) throw Error(cancelled, {cause:duelData})
 
-	//Response received (or time ran out) - remove the components and return the result
-	await interaction.editReply({components:[]})
-	if (!result?.values) result.values = victors
-	else if (result.fail) result.values = result.values[0];
+		return true;
+	},
 
-	return result.values;
-}
+	/// Sends approval message to the DM channel
+	/// @duelData		- Extant data gathered from the initiative
+	/// @interaction	- Original interaction, needed for player input
+	async _sendApprovalMessage(duelData, interaction, components = null, calc = false) {
+		const date		= DateTime.fromSeconds(duelData.logDate);
+		const format	= `dd LLLL yyyy [ hh:mma ]`	//`DD [ hh:mma ]`
+		const fullDate	= date.toFormat(format)
+		const footer	= `Logged at:`;
+		const {errors, urls, channel, message, chars, comments, logField, ...encodeData} = duelData;
+		const {roleplay, duel, transcript} = urls;
+		const charFieldArgs = {string:false, calc, data:true};
+		const fields 	= chars.map(c => _charToString(c, chars, charFieldArgs));
+		const data		= _encodeDataURL(encodeData);
+		const disabled	= chars.filter(c => !c.xpData?.totalPool && !c.xpData?.unCapExp).length > 0
 
+		const errorFields = _errorsToFields(duelData.errors);
+		fields.push(...errorFields);
+		fields.push({name:"Links",value:`[Roleplay](${roleplay})\n[Duel](${duel})`,inline:true});
+		fields.push({name:"Duel", value:`Rounds: \`${duelData.rounds}\`\n[Transcript](${transcript})`,inline:true});
+		fields.push({name:"Data", value:`[Data](${data})`,inline:true});
+		if (logField) fields.push(logField)
+		if (comments) fields.push(...comments);
 
+		const matchup = duelData.matchup ? ` (${duelData.matchup})` : ``
+		let dmEmbed = new EmbedBuilder().setTitle(`${DUELTITLE}${matchup}`)
+										.setThumbnail(THUMB.DUEL)
+										.setDescription(BR)
+										.addFields(fields)
+										.setFooter({text:footer})
+										.setTimestamp(date.toMillis())
+		if (errorFields.length > 0) dmEmbed.setColor(0xff6900);	//FFCC4D
+		const {yes,no,edit,xp} = config.emoji;
+		components = components ?? [ Prompt.createButtonRow([
+			{style:ButtonStyle.Success, emoji:yes, label:"Approve", custom_id:"duel.approve", disabled},
+			{style:ButtonStyle.Danger, emoji:no, label:"Reject", custom_id:"duel.decline"},
+			{style:ButtonStyle.Secondary, emoji:edit, label:"Comment", custom_id:"duel.note"},
+			{style:ButtonStyle.Secondary, emoji:"📱", label:"Calcs", custom_id:`duel.calc_${!calc}`, disabled},
+			{style:ButtonStyle.Secondary, emoji:edit, label:"Edit", custom_id:"duel.edit"}
+		])]
+		if (DEBUGFILE) Log.FILE("./data/duelData_embed.json", dmEmbed)
 
+		if (interaction.channel.id == DM_PING_CHANNEL) {
+			dmEmbed = await interaction.editReply({content:`${DM_PING}`,embeds:[dmEmbed], components})
+		}
+		else {
+			const dmChan = interaction.guild.channels.resolve(DM_PING_CHANNEL);
+			dmEmbed = await dmChan.send({content:`${DM_PING}`,embeds:[dmEmbed], components});
+		}
+		return dmEmbed;
+	},
 
+	/// Handle reactions to the exp log message for ease of DM validation
+	/// @interaction	- The interaction of the button press
+	/// @approved		- If the duel in question should be approved or not
+	async _handleDuelResult(interaction, approved) {
+		if (!interaction.deferred) await interaction.deferUpdate();
+		// Retrieve info from the Embed to restore it exactly if anything goes wrong
+		const content = interaction?.message?.content;
+		const restoreEmbeds = interaction?.message?.embeds;
+		const restoreComponents = interaction?.message?.components;
 
+		let duelData = null
+		try {
+			const {yes, no} = config.emoji
+			const icon = approved ? yes : no;
+			// Disable the components to prevent double-handling
+			// Recreate the row from the raw JSON, manually set all to disabled, edit interaction
+			const componentRow = new ActionRowBuilder(interaction.message.components[0].toJSON())
+			componentRow.components.map(x => {x.data.disabled = true; return x})
+			const components = [componentRow]
+			await interaction.editReply({components})
 
+			// Retrieve the encoded data & update the reset
+			duelData = _getEncodedData(interaction?.message,false)
+			duelData.reset = DateTime.fromSeconds(duelData.logDate).plus({days:1}).startOf('day').toUnixInteger()
+			//Update each character's exp mod
+			await Utils.asyncArrayForEach(duelData.chars, async (char,i) => {
+				if (approved)	char = await ExpUtils.applyDuelExp(char, duelData.logDate, duelData.reset);
+				else			char = {...char, xpMod: 0, gpMod: 0}
+				if (char.xpMod == 0 && char.capped) char.gpMod = 0;
+				duelData.chars[i] = char;
+			})
 
-///
-/// Calculate the exp split between the two players based on the loser's level
-///
-function calculateExp(duelData)
-{
-	const winuid  = duelData.outcome.winner.uid;
-	const winName = duelData.outcome.winner.char;	//players[winuid].char;
-	const winner  = duelData.characters[winName];
-	const winCap  = ExpUtils.getDuelExpCap(winner.level);
+			//Post the award to the exp log channel
+			const logMessage = await _postDuelResultLog(interaction, duelData, approved);
+			const logName	= approved ? `${icon} **Duel Approved**` : `${icon} **Duel Rejected**`
+			const logValue	= `-# [<t:${DateTime.now().toUnixInteger()}:F>](${logMessage.url})\n<@${interaction.user.id}>`
+			duelData.logField = {name:logName, value:logValue}
 
-	const losuid  = duelData.outcome.loser.uid;
-	const lossName= duelData.outcome.loser.char;	//players[losuid].char;
-	const loser   = duelData.characters[lossName];
-	const lossCap = ExpUtils.getDuelExpCap(loser.level);
+			//Update the DM approval message
+			const undo = Prompt.createButtonRow([{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"}])
+			components.push(undo)
+			const approveMsg = await _sendApprovalMessage(duelData, interaction, components);
 
-	const exp = ExpUtils.getDuelExp(loser.level);
+			//Add a react to the original initiative post when approved by a DM
+			await MsgUtils.reactToMessageURL(interaction.guild, duelData.urls.duel, icon);
+		} catch (error) {
+			await _handleComponentError({interaction, restoreEmbeds, restoreComponents, duelData, error})
+		}
+	},
 
-	const date = Utils.getDate();
-	duelData.logDate = date.getTime();
+	/// Post the approved exp message to the Exp Log channel
+	/// @interaction	- The interaction of the button press
+	/// @duelData		- The duel data to populate the embed
+	async _postDuelResultLog(interaction, duelData, approved) {
+		const date		= DateTime.fromSeconds(duelData.logDate);
+		const format	= `dd LLLL yyyy [ hh:mma ]`	//`DD [ hh:mma ]`
+		const fullDate	= date.toFormat(format)
+		const guild		= interaction.guild;
 
-	const winRaw = exp[0];
-	const winExp = Math.min(winRaw, winCap);
+		const {yes, no} = config.emoji
+		const icon = approved ? yes : no;
+		const {urls, chars, comments} = duelData;
+		const {roleplay, duel, transcript} = urls;
+		const charFieldArgs = { string:false, hp:false, defeat:false };
 
-	const lossRaw = exp[1];
-	const lossExp = Math.min(lossRaw, lossCap);
+		const desc		= `${icon} **Duel ${approved ? 'Approved' : 'Rejected'}**${BR}`
+		const instruct	= approved ? INSTRUCT.LOG_FOOTER : ``
+		const fields 	= chars.map(c => _charToString(c, chars, charFieldArgs));
+		if (comments) fields.push(...comments);
 
-	duelData.characters[winName].xp = { xp:winExp,	 cap:winCap	 }
-	duelData.characters[lossName].xp = { xp:lossExp, cap:lossCap }
+		fields.push({name:"** **", value:`-# [Roleplay](${roleplay}) / [Duel](${duel}) / [Transcript](${transcript})\n${instruct}-# Next Daily Exp Reset (from time of duel) <t:${duelData.reset}:R>\n-# <t:${duelData.reset}:F>`})
 
-	return duelData;
-}
+		const matchup	= duelData.matchup ? ` (${duelData.matchup})` : ``
+		const logEmbed	= new EmbedBuilder().setTitle(`${DUELTITLE}${matchup}`)
+											.setThumbnail(DUELTHUMB)
+											.setDescription(desc)
+											.setFields(fields)
 
-///
-/// Cleanup the data into a small manageable chunk
-///
-function cleanData(duelData)
-{
-	var cleanData = {};
-	//Winner
-	var uid    = duelData.outcome.winner.uid;
-	var player = duelData.players[uid]
-	var name   = duelData.outcome.winner.char;	//player.char;
-	var char   = duelData.characters[name];
-	cleanData["winner"] = {
-		uid: uid,
-		char: name,
-		level: char.level,
-		rp: player.rp,
-		xp: char.xp
-	};
+		const players	= []
+		chars.forEach(c => { if (c.xpMod > 0 && !players.includes(c.user)) players.push(c.user) })
+		const content	= players.map(p => `<${PING_PREFIX}${p}>`).join('');
 
-	//loser
-	uid    = duelData.outcome.loser.uid;
-	player = duelData.players[uid];
-	name   = duelData.outcome.loser.char;	//player.char;
-	char   = duelData.characters[name];
-	cleanData["loser"] = {
-		uid: uid,
-		char: name,
-		level: char.level,
-		rp: player.rp,
-		xp: char.xp
-	};
-
-	cleanData.command = "duel";
-	cleanData.logDate = duelData.logDate;
-	duelData = cleanData;
-	return duelData;
-}
-
-///
-/// Pause and wait for confirmation from the player(s) before continuing
-///
-async function awaitConfirmation(channel, duelData)
-{	
-	const winner = duelData.winner
-	const loser = duelData.loser	
-	const players = [winner.uid,loser.uid];
-	const pings = `<${PING_PREFIX}${players.join("> <"+PING_PREFIX)}>`;
-	const inst = REFRESH_INSTRUCTIONS;
-	const title = "Confirmation";
-	const desc = CONFIRM_INSTRUCTIONS + '\n' + REFRESH_INSTRUCTIONS;
-	const footer = CONFIRM_FOOTER;
-	const win = `${winner.char} (Level ${winner.level})`;
-	const loss = `${loser.char} (Level ${loser.level})`;
-
-	let embed = new EmbedBuilder();
-		embed.setTitle(title);
-		embed.setDescription(desc);
-		embed.addFields([
-				{name:`👑 Win: ${win}`, value:`<@${winner.uid}>`},		
-				{name:`💀 Loss: ${loss}`, value:`<@${loser.uid}>`}
-			]);
-		embed.setFooter({text:footer});
-		embed = await channel.send({content:pings,embeds:[embed]});
-
-	let react;
-	if (PROMPT_REACTS)
-	{
-		const reacts = ["👍","👎"];
-		react = await Prompt.promptUserReaction(channel, embed, players, reacts, "👍","👎");
+		const logChan = await guild?.channels?.resolve(xpLogChannel)
+		const message = await logChan.send({content,embeds:[logEmbed]})
+		return message;
 	}
-	else
-	{
-		const reacts = [
-			{style:ButtonStyle.Success, emoji:"👍", label:'Approve', custom_id:"👍"},
-			{style:ButtonStyle.Danger, emoji:"👎", label:'Decline', custom_id:"👎"}		
-		]
-		react = await Prompt.promptUserButton(channel, embed, players, reacts, "👍", "👎");
-	}
-
-	embed.delete();
-	if (react.react == "👎")
-	{
-		return {error:`${react.user} If your level was wrong:\n${inst}`,
-				user:react.user.id};
-	}
-	return true;
 }
 
-///
-/// Close the scene, sends a message to the DM channel
-///
-async function sendApprovalMessage(duelData, guild)
-{
-	const date     = new Date(duelData.logDate)
-	const fullDate = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")	
-	const winner   = duelData.winner;
-	const loser    = duelData.loser;
-	const win 	   = getExpField(duelData.winner, true, true)
-	const loss     = getExpField(duelData.loser, true, true)
-	const rpLink   = duelData.links.rp
-	const duelLink = duelData.links.duel
-	let transcript = duelData.transcript
-	transcript = transcript ? `[Transcript](${transcript})` : "None"
+/// DATA RETRIEVAL METHODS
+const { _getEncodedData, _reconstructData } = {
+	/// Gather and re-assemble the encoded data from the embed message
+	/// @message	- The message containing the approval embed
+	_getEncodedData(message, reconstruct = true) {
+		let data = null;
+		const linkRegex = /\[`?Data`?\]\((.*)\)/
+		const linksRegex = /\[(.*)\]\((.*)\)/g
+		const fields = message?.embeds?.[0]?.fields;
+		const errorPrefix = `${config.emoji.warn} Warning: `
+		const errors = fields?.filter(f => f.name.startsWith(errorPrefix))?.reduce((e, f) => {
+			let k = f.name.replace(errorPrefix,``)
+			k = Object.keys(ERROR).find(x => ERROR[x].name == k)
+			let error = f.value.replaceAll("-# - ", "").split("\n")
+			if (k) e[k] = error
+			return e
+		}, {})
+		const value  = fields?.find(field => field.name == "Data")?.value?.replace(JSONURL,'');
+		if (value) {
+			data = value.match(linkRegex)?.[1]				//Strip the URL wrapper, leaving just encoded data
+			data = data ? decodeURIComponent(data) : null	//Decode the data into json string
+			data = JSON.parse(data);						//Parse it into an object
+		}
 
-	delete duelData.links
-	delete duelData.winner.rp
-	delete duelData.loser.rp
-	delete duelData.transcript
-	const encoded = encodeURIComponent(JSON.stringify(duelData));
-	var dmEmbed = new EmbedBuilder() 
-		.setTitle(DUELTITLE)
-		.setThumbnail(THUMB.DUEL)
-		.addFields([
-			{name: `👑 Win: ${winner.char} (Level ${winner.level})`, value:win},
-			{name: `💀 Loss: ${loser.char} (Level ${loser.level})`, value:loss},
-			{name: "Start Links", value:`[Roleplay](${rpLink})\n[Duel](${duelLink})`, inline: true},
-			{name: "Transcript", value: transcript, inline: true},
-			{name: "Data",value:"[Data]("+(JSONURL+encoded)+")",inline: true}
+		let urls = {}
+		fields?.filter(f => f.name == "Links" || f.name == "Duel").map(f => {
+			f = [...f.value.matchAll(linksRegex)].map(l => urls[l[1].toLowerCase()] = l[2])
+		})
+
+		const chars = fields?.filter(f => MessageMentions.UsersPattern.test(f.value)).map(char => {
+			char = char.value.replace(JSONURL,``)
+			char = char.match(linkRegex)?.[1]
+			char = char ? decodeURIComponent(char) : null
+			char = JSON.parse(char)
+			return char
+		}).filter(c => c)
+		//Reconstruct some of the character data we'll need
+		chars.map(c => c.xpCap = ExpUtils.getDuelExpCap(c.level || 0))
+
+		const comments = fields?.filter(f => f.name.includes("DM Comment"))
+
+		data = {...(data || []), chars, errors, comments, urls}
+		if (reconstruct) data = _reconstructData(data)	//Reconstruct data into the complete version
+
+		return data;
+	},
+
+	/// Reconstruct the players / teams / outcome duelData from the characters list
+	/// @duelData 	- the duelData containing all the characters data.
+	_reconstructData(duelData) {
+		//Rebuild the Players list from the characters
+		const players = [];
+		duelData.chars.forEach(c => {
+			const idx = players.findIndex(p => p.user == c.user);
+			if (idx < 0) players.push({user:c.user, chars:[c.char]})
+			else players[idx].chars.push(c.char);
+		})
+
+		let teams = {};
+		duelData.chars.forEach(c => {
+			const t = teams[c.team] ?? {team: c.char, users:[], chars:[], totalHP: 0, xpCap: 0};
+			if (!t.users.includes(c.user)) t.users.push(c.user);
+			if (!t.chars.includes(c.char)) t.chars.push(c.char);
+			if (t.chars.length > 1) t.team = `Group ${c.team + 1}`
+			t.totalHP += c.hpCur;
+			t.xpCap += c.xpCap;
+			t.win = (c.win == 1) && (t?.win ?? true)
+			teams[c.team] = t;
+		})
+		teams = Object.values(teams)
+		teams.sort((a,b) => b.totalHP - a.totalHP)
+
+		const outcome = {}
+		outcome.victors = teams.filter(t => t.win)
+		outcome.defeats = teams.filter(t => !t.win)
+
+		duelData = {...duelData, players, teams, outcome}
+		return duelData
+	}
+}
+
+/// Edit Methods
+const { _handleDuelEdit } = {
+	_getEditButtons() {
+		const {Primary, Secondary} = ButtonStyle;
+		const {no,edit,undo,gear,group,trophy} = config.emoji;
+		const editingButtons = Prompt.createButtonRow([
+			{style:Secondary, emoji:group, label:"Edit Teams", custom_id:"editteam"},
+			{style:Secondary, emoji:trophy, label:"Edit Outcome", custom_id:"editoutcome"},
+			{style:Secondary, emoji:no, label:"Cancel Edit", custom_id:"cancel"}])
+		const testingButtons = Prompt.createButtonRow([
+			{style:Secondary, emoji:edit, label:"Copy", custom_id:"copy"},
+			{style:Secondary, emoji:"⏰", label:"Daily Exp Reset", custom_id:"resetdaily"}
 		])
-		.setFooter({text:`Logged at (server time): ${fullDate}\n✅ Approve | ❌ Reject (no exp)\n👑 Winner exp only | ⏸️ 50% to each | 💀 Loser exp only`});
+		const builderButtons = Prompt.createButtonRow([
+			{style:Primary, emoji:gear, label:"Raw", custom_id:"editraw"},
+			{style:Primary, emoji:undo, label:"Reset Edit", custom_id:"clearraw"}
+		])
+		return { editingButtons, testingButtons, builderButtons }
+	},
 
-	const dmChan = guild.channels.resolve(dmPingChannel);
-	dmEmbed = await dmChan.send({content:`<@&${config.role.Helper}>`,embeds:[dmEmbed]})
-	return dmEmbed;
+	/// Entrypoint for the duel editing functionality
+	async _handleDuelEdit(interaction) {
+		if (!interaction.deferred) await interaction.deferUpdate();
+		const builderPerms = Utils.hasAnyRole(interaction.member, [config.role.Builder]);
+
+		// Retrieve info from the Embed to restore it exactly if anything goes wrong
+		const content = interaction?.message?.content;
+		const restoreEmbeds = interaction?.message?.embeds;
+		const restoreComponents = interaction?.message?.components;
+
+		let duelData = null
+		try {
+			// Retrieve the encoded data.
+			duelData = _getEncodedData(interaction?.message, false)
+			// And a second copy to diff against any edit changes
+			duelDiff = _getEncodedData(interaction?.message, false)
+
+			// Construct the edit components
+			const { editingButtons, testingButtons, builderButtons } = _getEditButtons();
+			const components = [editingButtons]
+			if (DEBUG) components.push(testingButtons);
+			if (builderPerms) components.push(builderButtons);
+
+			// Add edit components to the interaction and start a collector to handle them
+			const prompt = await interaction.editReply({components})
+			const collectArgs = {users:[interaction.user.id]}
+			response = await Prompt.collectComponents(prompt, collectArgs)
+
+			// Handle the resulting input
+			const input = response.values ? response.values[0] : null
+			if (!input) throw Error(ERROR.CANCELLED);
+			else if (input == "cancel") throw Error(ERROR.CANCELLED);
+			else if (input == "copy") {
+				const copy = {content,embeds:restoreEmbeds,components:restoreComponents};
+				await interaction.channel.send(copy)
+				await interaction.editReply(copy)
+				return;
+			}
+			else if (input == "editteam") {
+				duelData = _reconstructData(duelData);
+				duelData = await _editTeams(duelData, interaction);
+			}
+			else if (input == "editoutcome") {
+				duelData = _reconstructData(duelData);
+				duelData = await _editOutcome(duelData, interaction, true);
+			}
+			else if (input == "clearraw") {
+				const deleteKeys = ["xpAmt","xpSet","gpAmt","gpSet"]
+				duelData.chars.map(c => deleteKeys.forEach(k => delete c[k]))
+				duelData = _reconstructData(duelData);
+				duelData = await _editTeams(duelData, interaction);
+			}
+			else if (input == "editraw") {
+				duelData = await _editDuelDataRaw(duelData, interaction);
+				duelData = _reconstructData(duelData);
+				duelData = await _editTeams(duelData, interaction);
+			}
+			else if (input == "resetdaily") {
+				await _resetDaily(duelData, interaction);
+				await interaction.editReply({embeds:restoreEmbeds,components:restoreComponents})
+				return
+			}
+
+			//Clean the duel data and refresh the DM Approval message
+			duelData = _cleanData(duelData)
+			const dmEmbed = await _sendApprovalMessage(duelData, interaction)
+
+			const sortKeys = {char:SortOrder.ASC,level:SortOrder.DESC}
+			duelData.chars.forEach(c => { delete c.xpData; delete c.xpCap; delete c.gpData })
+			duelDiff.chars.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+			duelData.chars.sort((a,b) => Utils.priorityCompare(a, b, sortKeys))
+			duelDiff = Utils.deepDiff(duelDiff.chars, duelData.chars, [], ["char"])
+			const dataFn = {
+				json: (data) => ({name:"Data JSON", value:`\`\`\`json\n${JSON.stringify(data,null,2)}\n\`\`\``}),
+				diff: (data) => ({name:"Data Diff", value:`\`\`\`diff\n${data}\n\`\`\``})
+			}
+			const dataFields = Log.DEBUGFIELDS(duelDiff,dataFn)
+			const logEmbed = {embedTitle:"Duel Changelog",embedDesc:BR}
+			await Log.EMBED({interaction, channel:config.debug.duel, callstack:false, dataFields, ...logEmbed})
+		}
+		catch (error) {
+			await _handleComponentError({interaction, restoreEmbeds, restoreComponents, duelData, error})
+		}
+	}
 }
 
 
-///
-/// Close the scene, sends a message to the DM channel
-///
-async function closeScene(duelData)
-{
-	const date     = new Date(duelData.logDate);
-	const fullDate = Utils.formatDate(date, "DD MMMM YYYY [ hh:mmpm ]")
-	const win 	   = getExpField(duelData.winner, false)
-	const loss 	   = getExpField(duelData.loser, false)
-	const playerEmbed = new EmbedBuilder()
-		.setTitle(DUELTITLE)
-		.setDescription(`***Please wait** for a [@Helper](${duelData.link}) to verify this before you add your exp.\nIf anything looks incorrect, please notify a <@&${config.role.Helper}> immediately*`)
-		.addFields([
-			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, value:win},
-			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, value:loss},
-			{name:`Awards`, value:`Awards will be posted in <#${config.chan.xpLog}> once the duel has been reviewed by the DM staff.`}			
-		]);
-	playerEmbed.setFooter({text:"Logged at (Server Time): " + fullDate});
 
-	return playerEmbed;
+/*======================================*\
+|* APPROVAL & EDIT ENTRYPOINT FUNCTIONS *|
+\*======================================*/
+
+/// Handle reactions to the exp log message for ease of DM validation
+/// @interaction	- The interaction of the button press
+async function approveDuel(interaction) {
+	await _handleDuelResult(interaction,true)
 }
+
+/// Edit the outcome of a duel
+/// @interaction	- The interaction of the button press
+async function editDuel(interaction) {
+	await _handleDuelEdit(interaction)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function getExpField(record, includeXP = true, includeRP = false)
 {
@@ -1219,37 +1510,31 @@ function getExpField(record, includeXP = true, includeRP = false)
 	}
 
 	if (includeRP && record.rp)
-		ret += `\nRP: \`${record.rp.posts}\` Posts, \`${record.rp.length}\` Chars`;	
+		ret += `\nRP: \`${record.rp.posts}\` Posts, \`${record.rp.length}\` Chars`;
 	return ret;
 }
 
 ///
-/// Attach the buttons to the DM 
+/// Attach the buttons to the DM
 ///
-async function attachButtons(embed)
-{
-	const rows = getApprovalButtons();
-	await embed.edit({ components:rows })
-}
-
 function getApprovalButtons()
 {
 	const row = Prompt.createButtonRow([
 		{style:ButtonStyle.Success, emoji:"✅", label:"Approve", custom_id:"duel.approve"},
-		{style:ButtonStyle.Danger, emoji:"❌", label:"Reject", custom_id:"duel.decline"},	
+		{style:ButtonStyle.Danger, emoji:"❌", label:"Reject", custom_id:"duel.decline"},
 //		{style:ButtonStyle.Secondary, emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 	])
 	const row2 = Prompt.createButtonRow([
 		{style:ButtonStyle.Secondary, emoji:"👑", custom_id:"duel.winOnly"},
-		{style:ButtonStyle.Primary, emoji:"⏸️", custom_id:"duel.draw"},		
+		{style:ButtonStyle.Primary, emoji:"⏸️", custom_id:"duel.draw"},
 		{style:ButtonStyle.Secondary, emoji:"💀", custom_id:"duel.lossOnly"},
 		{style:ButtonStyle.Primary, emoji:"🔀", custom_id:"duel.reverse"}
-	])	
+	])
 	return [row,row2]
 }
 
 ///
-///  
+///
 ///
 function retrieveDuelData(duelLogMessage)
 {
@@ -1278,7 +1563,7 @@ function getWinLossRatio(subCommand)
 	switch(subCommand)
 	{
 		case "duel.approve":  winRatio = 1.0, lossRatio = 1.0; break;
-		case "duel.reverse":  winRatio = 1.0, lossRatio = 1.0; break;			
+		case "duel.reverse":  winRatio = 1.0, lossRatio = 1.0; break;
 		case "duel.winOnly":  winRatio = 1.0, lossRatio = 0.0; break;
 		case "duel.lossOnly": winRatio = 0.0, lossRatio = 1.0; break;
 		case "duel.draw":     winRatio = 0.5, lossRatio = 0.5; break;
@@ -1287,13 +1572,14 @@ function getWinLossRatio(subCommand)
 	return [winRatio, lossRatio]
 }
 
+/*
 ///
 /// Handle reactions to the exp log message for ease of DM validation
 ///
 async function approveDuel(duelLogMessage, user, subCommand)
 {
 	const channel = duelLogMessage.channel;
-	const duelData = retrieveDuelData(duelLogMessage);	
+	const duelData = retrieveDuelData(duelLogMessage);
 	const date = duelData.logDate;
 	const cmd = duelData.command;
 	const [winRatio, lossRatio] = getWinLossRatio(subCommand)
@@ -1316,7 +1602,7 @@ async function approveDuel(duelLogMessage, user, subCommand)
 
 	//Update the daily total in the DB
 	const winner = await ExpUtils.updateDailyExp(duelData.winner, cmd, date);
-	const loser  = await ExpUtils.updateDailyExp(duelData.loser, cmd, date);	
+	const loser  = await ExpUtils.updateDailyExp(duelData.loser, cmd, date);
 	if (winner == null || loser == null)
 		return "Something went wrong";
 	duelData.winner = winner;
@@ -1335,12 +1621,13 @@ async function approveDuel(duelLogMessage, user, subCommand)
 
 	await postApprovedExp(duelLogMessage, duelData, user);
 }
+*/
 
 //Post the approved exp message to the Log channel
 async function postApprovedExp(message, duelData, user)
 {
 	const guild 	= message.guild;
-	const channel	= await guild?.channels.resolve(duelData.channel);	
+	const channel	= await guild?.channels.resolve(duelData.channel);
 	const date      = new Date(duelData.logDate);
 	const veriDate  = Utils.formatDate(Utils.getDate(), "DD MMMM YYYY [ hh:mmpm ]")
 	const shortDate = Utils.formatDate(date, "DD MMM YYYY");
@@ -1355,12 +1642,12 @@ async function postApprovedExp(message, duelData, user)
 
 	let emoji,reply;
 	switch(duelData.subCommand)
-	{			
+	{
 		case "duel.approve": emoji = "✅"; reply = "Duel Approved"; break;
 		case "duel.winOnly": emoji = "👑"; reply = "Duel Semi-Approved"; break;
 		case "duel.lossOnly": emoji = "💀"; reply = "Duel Semi-Approved"; break;
-		case "duel.reverse": emoji = "🔀"; reply = "Duel Reversed"; break;				
-		case "duel.draw": emoji = "⚖️"; reply = "Draw Declared"; break;    
+		case "duel.reverse": emoji = "🔀"; reply = "Duel Reversed"; break;
+		case "duel.draw": emoji = "⚖️"; reply = "Draw Declared"; break;
 		case "duel.decline": emoji = "❌"; reply = "Duel Rejected"; break
 	}
 
@@ -1371,12 +1658,12 @@ async function postApprovedExp(message, duelData, user)
 	// await unbClient.editUserBalance(guild.id, duelData.loser.uid, { cash: bonus })
 	// /////
 
-	let logEmbed = new EmbedBuilder().setTitle(`${DUELXPTITLE} - ${shortDate}`)
+	let logEmbed = new EmbedBuilder().setTitle(`${DUELTITLE} - ${shortDate}`)
 		.setDescription(`${emoji} ${reply}`)
 		.addFields([
-			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`, 
+			{name:`👑 Win: ${duelData.winner.char} (Level ${duelData.winner.level})`,
 			 value: win + winNote},
-			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`, 
+			{name:`💀 Loss: ${duelData.loser.char} (Level ${duelData.loser.level})`,
 			 value: loss + lossNote},
 			{name:"DM Comment",value:duelData.comment ? duelData.comment : "[None]"}
 		]);
@@ -1393,7 +1680,7 @@ async function postApprovedExp(message, duelData, user)
 		embed.addFields([{name:`${emoji} ${reply}`, value:link}]);
 		embed.setFooter({text:`Logged at (server time): ${fullDate}\nVerified at: ${veriDate} by ${user.id}`})
 		const row = Prompt.createButtonRow([
-//			{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"},	
+//			{style:ButtonStyle.Primary, emoji:"↩️", label:"Undo", custom_id:"duel.undo"},
 			{style:ButtonStyle.Secondary, emoji:"📜", label:"Transcript", custom_id:"duel.transcript"}
 		])
 		await message.edit({embeds:[embed], components:[]})	//,components:[row]});
@@ -1425,80 +1712,6 @@ async function undoApproval(logMessage, client)
 	const rows = getApprovalButtons()
 	logMessage.edit({embeds:[embed], components:rows});
 }
-
-///
-/// Using the parsed event data, generate a transcript
-///
-async function generateTranscriptFromLog(duelLogMessage)
-{
-	const data = retrieveDuelData(duelLogMessage);
-	const guild = duelLogMessage.guild;
-	const mechChan = guild?.channels?.resolve(data.channel);
-	const message = await mechChan?.messages?.fetch(data.id);
-	return await generateTranscript(mechChan, message)
-}	
-
-async function generateTranscript(channel, message)
-{	
-	//Get the raw duel data and throw an error if we don't have any
-	const duelData = await getDuelData(channel, message);
-	if (!duelData || !duelData.events)
-	{
-		const embed = new EmbedBuilder().setTitle("Error: No Duel Data Found")
-					.setDescription("Must be done in a mechanics channel")
-		return [embed]	
-	}
-	return generateTranscriptFromData(duelData)
-}
-
-function generateTranscriptFromData(duelData)
-{
-	if (!duelData.events) return null;
-
-	let embed = new Embed()
-		embed.setTitle("Duel Transcript")
-//	embed.setDescription("")
-	for (let round=0; round <= duelData.rounds; ++round)
-	{
-		let events = duelData.events.filter(event => (event.round == round));
-		if (events.length > 0)
-		{
-			embed.addField(`Round ${round}`, "")
-			events.forEach(event => 
-			{
-				let field = `[[jump](${event.msg})] \`${event.event}\``
-				if (event.result)
-					field += `\n • *${event.result}*`
-				embed.extendField(field, `Round ${round} cont.`)
-			})
-			embed.closeField();
-		}
-	}
-
-	return embed.embeds();
-}
-
-/// Reset the duel button and break in the specified rp channel
-/// @rpChan			- The channel to add the duel button into
-async function resetDuelButton(rpChan) {
-	let button = Prompt.createButtonRow([
-		{style:ButtonStyle.Secondary, emoji:config.emoji.duel, label:"Start New Duel", custom_id:"duel.startDuel"}
-	])
-	button = [button]
-	await rpChan.send({content:"``` ```",components:button});
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 const charStrFormat = { team:true, user:true, xp:true, gp:true, hp:true,
 						defeat:true, calc:false, string:true, data:false, shownull:true }
@@ -1627,7 +1840,28 @@ _charToString, _charToStringElements, _charExpDetails, _charGoldDetails } = {
 }
 
 /// LOG WRAPPERS AND DEBUGGING
-const {_errorsToFields, _errorToString, DebugFn, DEBUGFIELDS, DEBUGTHROW} = {
+const {_handleErrorLog, _handleComponentError,
+	   _errorsToFields, _errorToString, DebugFn, DEBUGFIELDS, DEBUGTHROW} = {
+	/// Handle a thrown error by logging it to the appropriate log channel
+	async _handleErrorLog(args) {
+		const {interaction, debugData, error} = args
+		// Early out if this is just a cancel message - we don't need to log every cancellation
+		if (error?.message?.includes(ERROR.CANCELLED)) return;
+		// Add the duelData to the debug log embed
+		if (!error.cause && debugData) error.cause = Log.DEBUGFIELDS(debugData, debugStr)
+		// Log the error to the debug channel
+		// Log.DEBUG(error)
+		await Log.EMBED({interaction,channel:config.debug.duel,error,dataFields:error.cause})
+	},
+	/// Handle an error with the edit components by restoring the original embed/components passed in via args
+	async _handleComponentError(args) {
+		const {interaction, restoreEmbeds, restoreComponents, duelData, error} = args
+		// Restore the interaction embed / components to the original state
+		await interaction.editReply({embeds:restoreEmbeds,components:restoreComponents})
+		// Relay the error message to the user
+		if (error.message) await interaction.followUp({content:error.message, ephemeral:true})
+		await _handleErrorLog(args)
+	},
 	_errorsToFields(errors, verbose = false) {
 		const fields = Object.keys(errors).map( k => {
 			const msg = (verbose ? (ERROR[k]?.msg || ``) : ``)
@@ -1667,11 +1901,20 @@ const {_errorsToFields, _errorToString, DebugFn, DEBUGFIELDS, DEBUGTHROW} = {
 	}
 }
 
+
+/// Reset the duel button and break in the specified rp channel
+/// @rpChan			- The channel to add the duel button into
+async function resetDuelButton(rpChan) {
+	let button = Prompt.createButtonRow([
+		{style:ButtonStyle.Secondary, emoji:config.emoji.duel, label:"Start New Duel", custom_id:"duel.startDuel"}
+	])
+	button = [button]
+	await rpChan.send({content:"``` ```",components:button});
+}
+
 module.exports = {
 	processDuel,
 	approveDuel,
 	undoApproval,
-	resetDuelButton,
-	generateTranscript,
-	generateTranscriptFromLog
+	resetDuelButton
 }

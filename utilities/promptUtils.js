@@ -8,7 +8,8 @@ const { ActionRowBuilder,
 		StringSelectMenuBuilder,
 		StringSelectMenuOptionBuilder,
 		TextInputBuilder,
-		TextInputStyle } = require('discord.js')
+		TextInputStyle,
+		UserSelectMenuBuilder } = require('discord.js')
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
@@ -27,43 +28,6 @@ const PROMPT_TIME = Time.Std;
 const REACT_TIME = Time.Std;
 const INTERACT_TIME = Time.Std;
 const MODAL_INPUT_TIME = Time.Extended;
-
-////// Prompt the user for message input that match a numeric filter
-//@channel the prompt should be sent to
-//@prompt displayed to the users
-//@users array of user IDs that can respond to this prompt
-//@defaultOption selected if it times out
-//@time to wait for the user input
-async function promptUserInputOption(channel, prompt, users, defaultOption=null, time = PROMPT_TIME) {
-	var response = defaultOption;
-	var responses = ["cancel","c","skip","s"]
-	const filter = (m) => {
-		const userId = m.author.id
-		//Check if the author of the message is a mod or DM
-		const member = m.member;
-		const modDM = Utils.hasAnyRole(member, dmRoles)
-		//Check if the author of the message is one of the users this prompt is listening for
-		const user  = users.includes(userId);
-		//Check if the message content is a number
-		const isNum = m.content.replace(/\D/g,'').length > 0
-		//Make sure the message is a number or one of the non-numeric responses
-		const valid = isNum || responses.includes(m.content.toLowerCase())
-		return (valid && (modDM || user));
-	};
-
-	await channel.awaitMessages({ filter, max: 1, time: time, errors: ['time'] })
-	.then(collected => {
-		collected = collected.first();
-		response = collected.content;
-		collected.delete();
-	})
-	.catch(collected => {
-		channel.send('Timeout waiting for response.')
-		.then(msg => { setTimeout(() => { if (msg && !msg.deleted){ msg.delete() } }, 30000) });
-	});
-
-	return response;
-}
 
 ////// Prompt the user for message input
 //@channel			- the prompt should be sent to
@@ -336,6 +300,19 @@ function createSelectOption(label, description, value) {
 	// return select
 }
 
+//// Create a user select menu
+function createUserSelect(customId="userSelect", placeholder=null, min=1, max=1, defaultUsers=[]) {
+	placeholder = placeholder || "Select a user."
+	const userSelect = new UserSelectMenuBuilder()
+		 .setCustomId(customId)
+		 .setPlaceholder(placeholder)
+		 .setDefaultUsers(defaultUsers)
+		 .setMinValues(min)
+		 .setMaxValues(max);
+	const row = new ActionRowBuilder().addComponents(userSelect);
+	return row;
+}
+
 ////
 // Create a button row component to attach to a message
 //@options	- an array of objects that contains button row data
@@ -447,9 +424,11 @@ async function collectAllInteractions(prompt, callbackMap = {}, defaultOption=nu
 	return new Promise((resolve, reject) => {
 		const selectCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.StringSelect, time: time, errors:['time'] });
+		const userCollector = prompt.createMessageComponentCollector({
+			componentType: ComponentType.UserSelect, time: time, errors:['time'] });
 		const buttonCollector = prompt.createMessageComponentCollector({
 			componentType: ComponentType.Button, time: time, errors:['time'] });
-		const collectors = [selectCollector, buttonCollector];
+		const collectors = [selectCollector, userCollector, buttonCollector];
 		let resolved = false;
 		const stopCollecting = () => {
 			resolved = true;
@@ -690,34 +669,7 @@ async function collectMultiUserButton(prompt, users=[], defaultOption=null, fail
 	});
 }
 
-async function confirmDialog(prompt, users=[]) {
-	const options = [
-		{style:ButtonStyle.Success, emoji:"👍", label:'Approve', custom_id:"👍"},
-		{style:ButtonStyle.Danger, emoji:"👎", label:'Decline', custom_id:"👎"}
-	]
-	const buttons = createButtonRow(options);
-	await prompt.edit({components:[buttons]});
-
-	let callbackFunc = async function(interaction, reactCount, args) {
-		for (b=0; b<options.length; ++b) {
-			const option = options[b];
-			const count = reactCount[option.custom_id];
-			let label = `${option.label || ''}`
-			if (count)
-				label += ` x ${count}`;
-			buttons.components[b].data.label = label;
-		}
-		await prompt.edit({components:[buttons]});
-	}
-	const callbacks = { "*": {func:callbackFunc, args:null}};
-	let confirm = await collectMultiUserButton(prompt, users, "👍", "👎", callbacks)
-						.catch(async error => { console.error(error) });
-
-	console.log("Confirm: "+confirm)
-	return confirm == "👍"
-}
-
-async function UPDATED_confirmDialog(interaction, prompt, users=[], inline=false) {
+async function confirmDialog(interaction, prompt, users=[], inline=false) {
 	//If this interaction is ephemeral, we don't need to wait for other users since they can't see it
 	if (interaction.ephemeral) users = [];
 
@@ -837,9 +789,6 @@ async function promptModal(interaction, title="Modal", customId="modal", inputs 
 
 module.exports = {
 	promptUserReaction,			//<-- funcsDuels: (Deprecated) Use reacts for prompting winner/confirmation.
-	promptUserInputOption,		//<-- funcsDuels: Prompt them for which person won. TODO: Swap with Select with options
-
-
 
 	promptUserPing,				//<-- funcsScene: Used to ping player of unknown tupper messages
 	promptUserInput,			//<-- funcsDuels: Used to prompt for reason for denying exp. TODO: Swap with Modal for general comments
@@ -854,6 +803,7 @@ module.exports = {
 	createButtonRow,			//
 	createSelectRow,			//
 	createSelectOption,			//
+	createUserSelect,			//
 	createTextInputRow,			// DEPRECATED - REPLACE THIS WITH createTextInput
 	createTextInput,
 	Time
