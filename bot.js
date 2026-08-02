@@ -37,6 +37,9 @@ class Bot
 			await this.loadCommands();
 			await this.loadDatabase();
 			await this.loadTimers();
+
+			if (process.argv.length > 2 && process.argv[2] == "test")
+				await this.runTests();
 		});
 		this.runBot();
 
@@ -74,16 +77,16 @@ class Bot
 		console.log("Loading events...");
 		this.client.eventHandlers = new Collection();
 
-		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));  
+		// const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 		const eventFiles = await glob(`./handlers/events/*.js`, { absolute: true });
-		eventFiles.map((file) => 
+		eventFiles.map((file) =>
 		{
 			//const event = require(`./events/${file}`);
 			const event = require(file);
 			if (!event.hasOwnProperty("build") || event.build)
 			{
 				console.log(" - Event: ", event.name);
-				if (event.once) 
+				if (event.once)
 					this.client.once(event.name, (...args) => event.execute(this.client, ...args));
 				else
 					this.client.on(event.name, (...args) => event.execute(this.client, ...args));
@@ -139,13 +142,13 @@ class Bot
 						 .filter(file => file.endsWith('.js'));
 
 		this.client.timers = new Collection();
-		for (const file of timers) 
+		for (const file of timers)
 		{
 			const timer = require(`./handlers/timers/${file}`);
 			console.log(" - Timer: ", timer.name, (timer.build ?? true) ? "(Enabled)" : "(Disabled)" );
 			if (!timer.hasOwnProperty("build") || timer.build)
 			{
-				this.client.timers.set(timer.name, timer)       //.push(timer);
+				this.client.timers.set(timer.name, timer)
 				timer.startTimer(this.client);
 			}
 		}
@@ -160,7 +163,7 @@ class Bot
 		const commandFiles = fs.readdirSync(`./handlers/commands`).filter(file => file.endsWith('.js'));
 		if (!commandFiles.length)
 			console.log(" - No commands found");
-		for (const file of commandFiles) 
+		for (const file of commandFiles)
 		{
 			let command = null;
 			try { command = require(`./handlers/commands/${file}`); }
@@ -177,6 +180,21 @@ class Bot
 				command?.aliases?.forEach(alias => {
 					this.client.commands.set(alias, command);
 				});
+			}
+		}
+	}
+
+	/// Load tests and run them if active
+	async runTests() {
+		console.log("Executing Unit Tests...");
+		const tests = fs.readdirSync(`./handlers/tests`)
+						.filter(file => file.endsWith('.js'));
+		for (const file of tests)
+		{
+			const test = require(`./handlers/tests/${file}`);
+			console.log(" - Test: ", test.name, (test.build ?? true) ? "(Enabled)" : "(Disabled)" );
+			if (!test.hasOwnProperty("build") || test.build) {
+				await test.run(this.client);
 			}
 		}
 	}

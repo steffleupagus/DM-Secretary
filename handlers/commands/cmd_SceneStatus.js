@@ -42,7 +42,11 @@ async function updateEmbed(interaction, user, sort = SortOrder.ASC, filterPendin
 	let  totalLength = 0;
 	await Utils.asyncArrayForEach( scenes, async sceneData => {
 		let channel = channelManager.resolve(sceneData.chan)
-		if (!channel) channel = await channelManager.fetch(sceneData.chan)
+		try {
+			if (!channel) channel = await channelManager.fetch(sceneData.chan)
+		} catch (e) {
+			return;
+		}
 		const chanName = Utils.toSentenceCase(channel.name,true);
 		const awardsExp = await ChanUtils.isRPExpEligible(channel)
 		const xpEmoji = awardsExp ? config.emoji.xp : ""
