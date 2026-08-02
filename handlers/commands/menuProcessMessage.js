@@ -1,5 +1,5 @@
 const { ApplicationCommandType } = require(`../../utilities/enums.js`)
-const { ContextMenuCommandBuilder } = require('discord.js')
+const { ContextMenuCommandBuilder, MessageFlags } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 const Utils = require(`../../utilities/utilFuncs.js`)
@@ -13,20 +13,22 @@ async function execute(interaction)
 	const messageId = interaction.targetId;
 	const channel = interaction.channel;
 	const message = await channel?.messages.fetch(messageId);
+	const ephemeral = {flags:MessageFlags.Ephemeral}
 
 	if (!message)
-		return interaction.reply({ 	content: 'No message found', ephemeral: true });
+		return interaction.reply({ 	content: 'No message found', ...ephemeral });
 
-	const author = await interaction.guild.members.fetch(message.author)
-	
-	let reply = `Processing [message](${message.url})\n`
-	await interaction.reply({ 	content: reply, 
-								ephemeral: true });
-
-	Utils.asyncArrayForEach(client.messageHandlers, async (handler) => 
+	if (!message.author.bot)
 	{
-		if (!handler.menu) 
-			return;
+		const author = await interaction.guild.members.fetch(message.author)
+	}
+
+	let reply = `Processing [message](${message.url})\n`
+	await interaction.reply({ content: reply, ...ephemeral });
+
+	Utils.asyncArrayForEach(client.messageHandlers, async (handler) =>
+	{
+		if (!handler.menu) return;
 
 		const roles = handler.menuRoles;
 		if (roles && !Utils.hasAnyRole(interaction.member, roles))
@@ -37,12 +39,12 @@ async function execute(interaction)
 		{
 			reply += `Matched Handler: ${handler.name}\n`
 			await interaction.editReply({ content: reply });
-			await handler.handleCreate(client, message)			
-		}		
+			await handler.handleCreate(client, message)
+		}
 	});
 }
 
-module.exports = 
+module.exports =
 {
 	data: new ContextMenuCommandBuilder()
 		.setName('Process message')
@@ -51,5 +53,5 @@ module.exports =
 	whitelistRoles: requiredRoles,
 	execute: execute,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };

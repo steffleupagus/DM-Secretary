@@ -106,6 +106,15 @@ function getTableExpCap(level)
 	return cap[level];
 }
 
+/*╔═══════════════════════════════════════════════╗*\
+│ ║ Reset the daily exp log for a given character ║ │
+\*╚═══════════════════════════════════════════════╝*/
+async function resetDailyExp(char) {
+	const records = await dailyExpSchema.deleteMany(char)
+	console.log(records)
+}
+
+
 /*╔══════════════════════════════════════════════════════════╗*\
 │ ║ Update the daily exp log, and cap the exp from this data ║ │
 \*╚══════════════════════════════════════════════════════════╝*/
@@ -197,7 +206,7 @@ module.exports = {
 	undoDuelExp,
 
 	updateDailyExp,
-
+	resetDailyExp,
 	getRPExpCap,
 	calculateSingleDayRPMult,
 	calculateMultiDayRPMult,

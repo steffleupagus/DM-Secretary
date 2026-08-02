@@ -2,6 +2,7 @@ const { EmbedBuilder, MessageFlags, SlashCommandBuilder } = require('discord.js'
 const SceneUtils = require(`../../utilities/funcsScene.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`);
+const Activity  = require(`../../utilities/activityUtils.js`)
 const Utils = require(`../../utilities/utilFuncs.js`)
 const Log = require(`../../utilities/loggerUtils.js`)
 const util = require('util')
@@ -16,6 +17,7 @@ async function execute(interaction, message=null)
 			await interaction.editReply(response);
 		else if (interaction.ephemeral)
 			await interaction.editReply({content:"Done",components:[]})
+		Activity.updateActivity(reply);
 	}
 	catch (error) {
 		error = error.error || error
@@ -33,27 +35,21 @@ async function execute(interaction, message=null)
 
 
 
-
-
-async function autoClose(message)
-{
+async function autoClose(message) {
 	await SceneUtils.autoCloseScene(message)
 }
 
-async function run(client, message, command, args)
-{
+async function run(client, message, command, args) {
 	const reply = await message.reply("*This command has been disabled. Please use `/scene` going forward.*")
 	message.delete()
 	return
 }
 
-async function button(interaction)
-{
+async function button(interaction) {
 	const subCommand = interaction.customId;
-	console.log(subCommand)	
+	console.log(subCommand)
 
-	switch(subCommand)
-	{
+	switch(subCommand) {
 		case "scene.approve":
 			await SceneUtils.handleApprove(interaction);
 			return;
@@ -62,19 +58,18 @@ async function button(interaction)
 			return;
 		case "scene.npc":
 			await SceneUtils.handleNPC(interaction);
-			return;			
+			return;
 		case "scene.edit":
 			await SceneUtils.handleEdit(interaction);
 			return;
 		case "scene.undo":
 			await SceneUtils.handleUndo(interaction);
-			return;			
-	}		
+			return;
+	}
 	return;
 }
 
-async function select(interaction)
-{
+async function select(interaction) {
 	const subCommand = interaction.customId;
 	const values = interaction.values.join(", ")
 	return;
@@ -83,16 +78,18 @@ async function select(interaction)
 const data = new SlashCommandBuilder()
 	.setName(`scene${config.DEV ? "dev" : ""}`)
 	.setDescription('Conclude a scene')
-	.addBooleanOption(option => option
+if (config.DEV)
+{
+	data.setDefaultPermission(false)
+	data.addBooleanOption(option => option
 		.setName('testmode')
 		.setDescription('Test the new functionality')
 		.setRequired(false)
 	)
-if (config.DEV)
-	data.setDefaultPermission(false)
+}
 
-module.exports = 
-{
+
+module.exports = {
 	data: data,
 	execute: execute,
 	message: run,
@@ -102,10 +99,8 @@ module.exports =
 	build:config.PRODUCTION||config.DEV
 };
 
-const requiredRoles = [ config.role.Builder,
-					    config.role.DM	]
-if (config.DEV)
-{
+const requiredRoles = [ config.role.Builder, config.role.Staff, config.role.Helper, config.role.OffDutyHelper ]
+if (config.DEV) {
 	module.exports.aliases = ["scene"]
 	module.exports.whitelistRoles = requiredRoles
 }

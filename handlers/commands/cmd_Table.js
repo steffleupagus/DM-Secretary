@@ -1,7 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField,
-		ChannelType, ThreadAutoArchiveDuration,
-		ActionRowBuilder, ButtonStyle, TextInputBuilder, TextInputStyle
-	  } = require('discord.js')
+const {
+		SlashCommandBuilder,
+		PermissionsBitField,
+		EmbedBuilder,
+		ChannelType,
+		ThreadAutoArchiveDuration,
+		ButtonStyle,
+		ActionRowBuilder,
+		TextInputBuilder,
+		TextInputStyle
+	} = require('discord.js')
 const mongoose = require('mongoose');
 const Prompt = require(`../../utilities/promptUtils.js`)
 const Tables = require(`../../database/tableSchema.js`)
@@ -204,7 +211,7 @@ async function handleInteraction(interaction){
 	}
 	// Send output to the user
 	if (output) {
-		output = {content:TEST_MODE ? customId : null,embeds:[output], ephemeral: true}
+		output = {content:TEST_MODE ? customId : null, embeds:[output], ephemeral: true}
 		if (!interaction.deferred && !interaction.replied)
 			await interaction.reply(output)
 		else
@@ -217,9 +224,9 @@ async function handleInteraction(interaction){
 /// Menu interaction buttons for the main table embed
 function getTableMenuButtons() {
 	const options = [
-		{style:ButtonStyle.Success,		emoji:"🗺️", label:"Create Table", 	custom_id:`${data.name}.createTable`},
-		{style:ButtonStyle.Secondary,	emoji:"📝", label:"Edit Table", 	custom_id:`${data.name}.updateTable`},
-		{style:ButtonStyle.Danger,		emoji:"✖️", label:"Close Table", 	custom_id:`${data.name}.closeTable`	},
+		{style:ButtonStyle.Success,		emoji:"🗺️", label:"Create Table",	custom_id:`${data.name}.createTable`},
+		{style:ButtonStyle.Secondary,	emoji:"📝", label:"Edit Table",		custom_id:`${data.name}.updateTable`},
+		{style:ButtonStyle.Danger,		emoji:"✖️", label:"Close Table",	custom_id:`${data.name}.closeTable`	},
 		{style:ButtonStyle.Primary,		emoji:"🔄", label:"Refresh List",	custom_id:`${data.name}.refreshList`}
 	]
 	return Prompt.createButtonRow(options)
@@ -309,6 +316,7 @@ async function getSelectableTables(archived) {
 		tables.sort((a,b) => a.archived - b.archived)
 	else
 		tables.sort((a,b) => a.created - b.created)
+
 	//Cap the number of tables displayed at 25 (limit of field & select count)
 	tables = tables.slice(0,25)
 	return tables
@@ -389,7 +397,7 @@ async function promptSelectTable(interaction, callbacks = null) {
 	//Show the prompt, gather and return the response.
 	const prompt = await interaction.followUp({embeds:[menu],components:components,ephemeral:true})
 	let response = await Prompt.collectAllInteractions(prompt, callbacks || {}, null, Prompt.Time.Std)
-							   .catch(console.error)
+								.catch(console.error)
 	if (response == "cancel") return null
 	if (callbacks) return response;
 
@@ -481,8 +489,8 @@ async function promptCloseConfirm(interaction, table) {
 	const opDesc = table.archived ? DELETE_CONFIRM : ARCHIVE_CONFIRM
 	let embed  = getTableReplyEmbed(table,`${op} Confirmation`,opDesc)
 	const options = [
-		{style:ButtonStyle.Danger,		emoji:"✖️", label:`Confirm ${op}`, 	custom_id:`confirm`	},
-		{style:ButtonStyle.Secondary,				label:`Cancel ${op}`, 	custom_id:`cancel`	}
+		{style:ButtonStyle.Danger,		emoji:"✖️", label:`Confirm ${op}`,	custom_id:`confirm`	},
+		{style:ButtonStyle.Secondary,				label:`Cancel ${op}`,   custom_id:`cancel`	}
 	]
 	const isBuilder	= Utils.hasAnyRole(interaction.member, whitelistRoles);
 	if (isBuilder || debugUserAwardButton)
@@ -513,7 +521,7 @@ async function canCreateTable(member, tables) {
 	if (tables.length >= MAX_TABLE_COUNT) throw ERROR_MAX_TABLES
 
 	//Allow a builder to open multiple tables in test mode
-	const isBuilder	= Utils.hasAnyRole(member, whitelistRoles);
+	const isBuilder = Utils.hasAnyRole(member, whitelistRoles);
 	if (TEST_MODE && isBuilder) return true
 
 	//Check user's roles for a permissive or preventative one?
@@ -542,17 +550,17 @@ async function createTable(interaction) {
 	//Generate the table record
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
-		user: 		table.user || interaction.user.id,
-		title: 		details.title,
-		name: 		details.name,
-		desc: 		details.desc || "",
+		user:		table.user || interaction.user.id,
+		title:		details.title,
+		name:		details.name,
+		desc:		details.desc || "",
 		dmThread:	table.dmThread,
 		oocThread:	table.oocThread,
 		rpThread:	table.rpThread,
 		created:	timestamp,
 		updated:	timestamp,
 		players:	{},
-		archived: 	0
+		archived:	0
 	}
 
 	//Update the table DB with the new record.
@@ -639,17 +647,17 @@ async function updateTable(interaction) {
 	const timestamp = Math.floor(interaction.createdTimestamp/1000);
 	const tableRecord = {
 		_id:		table._id,
-		user: 		table.user,
-		title: 		details?.title || table.title,
-		name: 		details?.name || table.name,
-		desc: 		details?.desc || "",
+		user:		table.user,
+		title:		details?.title || table.title,
+		name:		details?.name || table.name,
+		desc:		details?.desc || "",
 		dmThread:	table.dmThread,
 		oocThread:	table.oocThread,
 		rpThread:	table.rpThread,
 		created:	table.created,
 		updated:	timestamp,
 		players:	table.players,
-		archived: 	0
+		archived:	0
 	}
 
 	//Update the database with the new record and edit the reply
@@ -851,7 +859,7 @@ async function getTableByUser(user, active = true) {
 	return getTable(query)
 }
 async function getTableById(id) {
-	return await getTable({_id:mongoose.Types.ObjectId(id)})
+	return await getTable({_id:new mongoose.Types.ObjectId(id)})
 }
 async function getTable(query) {
 	const table = await Tables.findOne(query)

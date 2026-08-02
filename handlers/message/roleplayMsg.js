@@ -11,7 +11,7 @@ const RPP = require(`../../database/rppTrackerSchema.js`)
 async function shouldHandle(client, message)
 {
 	if (ChanUtils.isRoleplayChannel(message.channel) ||
-	   	ChanUtils.isRoleplayThread(message.channel))
+		ChanUtils.isRoleplayThread(message.channel))
 		return true;
 	return false;
 }
@@ -25,7 +25,7 @@ async function updateRecord(record)
 		$addToSet: {scene: record.scene}
 	};
 	const options = { new: true, upsert: true }
-	
+
 	record = await RPP.findOneAndUpdate(query, update, options);
 	return record;
 }
@@ -41,8 +41,7 @@ async function handleCreate(client, message, interaction=null, sendResult=true)
 	});
 
 	if (record)
-		console.log(`Post (${record.user}): ${record.posts} posts | ${record.chars} chars `)	
-	
+		console.log(`Post (${record.user}): ${record.posts} posts | ${record.chars} chars `)
 }
 
 async function handleUpdate(client, oldMessage, newMessage)
@@ -56,23 +55,30 @@ async function handleUpdate(client, oldMessage, newMessage)
 	});
 
 	if (record)
-		console.log(`Post edited ${record.user}: ${record.posts} posts | ${record.chars} chars `)	
-	
+		console.log(`Post edited ${record.user}: ${record.posts} posts | ${record.chars} chars `)
 }
 
 async function handleDelete(client, message, interaction=null, sendResult=true)
 {
+	if (message.partial) {
+		await message.fetch()
+			.then((fullMessage) => {
+				message = fullMessage;
+			})
+			.catch((e) => {});
+	}
+
+	if (!message.author) return;
 	const record = await updateRecord({
-		user: message.author.id,
+		user: message?.author?.id || null,
 		posts: -1,
 		chars: -message.content.length,
 		scene: message.channel.id,
 		last: message.id
-	});	
+	});
 
 	if (record)
-		console.log(`Post deleted ${record.user}: ${record.posts} posts | ${record.chars} chars `)	
-	
+		console.log(`Post deleted ${record.user}: ${record.posts} posts | ${record.chars} chars `)
 }
 
 module.exports = {
@@ -84,6 +90,5 @@ module.exports = {
 	handleUpdate: handleUpdate,
 	handleDelete: handleDelete,
 	updateRecord: updateRecord,
-	
-	build: config.PRODUCTION //|| config.DEV	
+	build: config.PRODUCTION //|| config.DEV
 };

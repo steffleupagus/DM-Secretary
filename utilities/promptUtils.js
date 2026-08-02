@@ -15,7 +15,7 @@ const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
 const Utils = require(`./utilFuncs.js`)
 
-const dmRoles = [ config.role.DM, config.role.Moderator ];
+const dmRoles = [ config.role.Staff, config.role.Moderator ];
 const Time = {
 	Extended: 15*59*1000,	//14.75 minutes
 	Long: 5*60*1000,		//5 minutes
@@ -24,9 +24,9 @@ const Time = {
 	Debug: 1				//1ms
 }
 
-const PROMPT_TIME = 30000;
-const REACT_TIME = 30000;
-const INTERACT_TIME = 30000;
+const PROMPT_TIME = Time.Std;
+const REACT_TIME = Time.Std;
+const INTERACT_TIME = Time.Std;
 const MODAL_INPUT_TIME = Time.Extended;
 
 ////// Prompt the user for message input

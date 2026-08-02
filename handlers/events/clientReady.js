@@ -35,6 +35,6 @@ function execute(client)
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 module.exports = {
-	name: 'ready',
+	name: 'clientReady',
 	execute: execute
 };

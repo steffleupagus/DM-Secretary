@@ -26,7 +26,10 @@
 			{
 				"prefix":":three: ",
 				"title": "Multiple Scenes",
-				"description": "A character is not considered RP-locked, and may be in more than one scene simultaneously. We don't explicitly cap the number of simultaneous scenes you can be in, but RP locations ARE limited, so try not to take up too many channels or lock them for too long without replies. Channels which go for too long without replies might be considered dead, and the scenes ended. See below."
+				"description": "A character is not considered RP-locked, and may be in more than one scene simultaneously. We don't explicitly cap the number of simultaneous scenes you can be in, but RP locations ARE limited, so try not to take up too many channels or lock them for too long without replies. Channels which go for too long without replies might be considered dead, and the scenes ended. See below.",
+				"fields":[
+					{"name":"Scene Status","value":"The server's bot has a built-in scene status tracker which can be accessed using the `/scenestatus` command. You can see a list of all open scenes you are currently participating in, and easily travel between their locations. Note that this only tracks scenes with new RP posts so, if any are missing, you simply need to make a post in the scene channel. Ending the scene will remove it from the active scene tracker."}
+				]
 			},
 			{
 				"prefix":":four: ",

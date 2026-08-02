@@ -1,7 +1,5 @@
-const { SlashCommandBuilder,
-	    EmbedBuilder, 
-	    PermissionsBitField, 
-	    ButtonStyle } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags,
+	    PermissionsBitField, ButtonStyle } = require('discord.js')
 const mod = process.env.mod || "";
 const Utils = require(`../../utilities/utilFuncs.js`);
 const config = require(`../../config/${mod}_config.json`);
@@ -26,15 +24,13 @@ const ROLE_REQUIREMENTS = {
 	"853362003691438101":"853346385545920522"	//@Outrider's Lodge Guild Hall @Outrider's Lodge
 }
 
-async function RefreshLocationData(guild, force = false)
-{
-	if (LOCATION_DATA.length == 0 || force)
-	{
-		const areas = await AreaMeta.find({});
-		areas.forEach(area =>
-		{
+async function RefreshLocationData(guild, force = false) {
+	if (LOCATION_DATA.length == 0 || force) {
+		let areas = await AreaMeta.find({});
+		areas = areas.filter(area => !area.disable)
+		areas.forEach(area => {
 			area.roleId.forEach(role => {
-				  	  role = guild.roles.resolve(role)
+				role = guild.roles.resolve(role)
 				if (!role) return
 				const name = role.name
 				const desc = area.guild || null
@@ -63,8 +59,7 @@ async function RefreshLocationData(guild, force = false)
 ///
 ///
 ///
-async function activityButton(guild, roles)
-{
+async function activityButton(guild, roles) {
 	await RefreshLocationData(guild);
 	// console.log(channels)
 	// channels = channels.map( channel => CHANNEL_ROLES[channel] ).filter(x => x);
@@ -76,10 +71,8 @@ async function activityButton(guild, roles)
 	return Prompt.createButtonRow(options)
 }
 
-async function chanMentionButton(channels)
-{
-	if (!channels || channels.size == 0)
-		return null;
+async function chanMentionButton(channels) {
+	if (!channels || channels.size == 0) return null;
 
 	await RefreshLocationData(channels.first().guild);
 	let custom_id = `${data.name}.mention`
@@ -90,8 +83,7 @@ async function chanMentionButton(channels)
 	const roles = [...new Set(channels)]
 	if (roles.length == 0) return null;
 
-	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex)
-	{
+	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex) {
 		// console.log(`${previousValue} | ${currentValue}`)
 		if (previousValue.length + 1 + currentValue.length < 100)
 			return previousValue + (currentIndex == 0 ? ":" : ",") + currentValue
@@ -102,8 +94,7 @@ async function chanMentionButton(channels)
 	return Prompt.createButtonRow(options)
 }
 
-async function dmPingButton(channel)
-{
+async function dmPingButton(channel) {
 	if (!channel) return null;
 
 	await RefreshLocationData(channel.guild);
@@ -115,15 +106,13 @@ async function dmPingButton(channel)
 	return Prompt.createButtonRow(options)
 }
 
-async function getDepartButton(interaction, roles)
-{
+async function getDepartButton(interaction, roles) {
 	await RefreshLocationData(interaction.guild);
 	if (roles.length == 0) return null;
 	roles = [...new Set(roles)]
 
 	let custom_id = `${data.name}.depart`
-	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex)
-	{
+	custom_id = roles.reduce(function(previousValue, currentValue, currentIndex) {
 		if (previousValue.length + 1 + currentValue.length < 100)
 			return previousValue + (currentIndex == 0 ? ":" : ",") + currentValue
 		return previousValue
@@ -135,8 +124,7 @@ async function getDepartButton(interaction, roles)
 	return Prompt.createButtonRow(options)
 }
 
-async function getLocationSelectRow(interaction, selectRoles = [], roles = null)
-{
+async function getLocationSelectRow(interaction, selectRoles = [], roles = null) {
 	await RefreshLocationData(interaction.guild);
 
 	const id = `${data.name}.locations`
@@ -174,8 +162,7 @@ async function getLocationSelectRow(interaction, selectRoles = [], roles = null)
 // * One role that represents the highest rank that user has in any guild
 // * (Each guild) The highest-rank role of all user's characters that are in that guild
 // * (Each guild) General guild role if they have at least one character in that guild
-async function UpdateLocationRoles(interaction, selectedLocations)
-{
+async function UpdateLocationRoles(interaction, selectedLocations) {
 	await RefreshLocationData(interaction.guild)
 
 	//The user's starting roles
@@ -184,18 +171,16 @@ async function UpdateLocationRoles(interaction, selectedLocations)
 
 	// Figure out which roles we're removing from the user
 	let removed = [];
-	roles = roles.filter( role =>
-	{
+	roles = roles.filter( role => {
 		let keep = false;
 		//Don't remove any roles that aren't location roles.
 		if (!LOCATION_ROLES.includes(role)) keep = true;
 		//Don't remove the role if it was selected to be kept.
 		if (selectedLocations.includes(role)) keep = true;
 
-		if (requires.includes(role))
-		{
+		if (requires.includes(role)) {
 			const requiredRole = ROLE_REQUIREMENTS[role];
-			if (!roles.includes(requiredRole)) 
+			if (!roles.includes(requiredRole))
 				keep = false;
 		}
 
@@ -207,12 +192,10 @@ async function UpdateLocationRoles(interaction, selectedLocations)
 
 	// Add required roles to the user
 	let added = [];
-	selectedLocations.forEach( role =>
-	{
-		if (requires.includes(role))
-		{
+	selectedLocations.forEach( role => {
+		if (requires.includes(role)) {
 			const requiredRole = ROLE_REQUIREMENTS[role];
-			if (!roles.includes(requiredRole)) 
+			if (!roles.includes(requiredRole))
 				return false;
 		}
 
@@ -232,10 +215,10 @@ async function UpdateLocationRoles(interaction, selectedLocations)
 	if (added.length == 0 && removed.length == 0)
 		return null;
 	// removed = removed.length == 0 ? "[None]" : `<@&${removed.join(">\n<@&")}>`
-	if (removed.length > 0) 
+	if (removed.length > 0)
 		fields.push({name:"Departed", value: removed.map(x=>`<@&${x}>`).join('\n'), inline:true})
 	// added   = added.length == 0 ? "[None]" : `<@&${added.join(">\n<@&")}>`
-	if (added.length > 0) 
+	if (added.length > 0)
 		fields.push({name:"Arrived", value: added.map(x=>`<@&${x}>`).join('\n'), inline:true})
 	//Return the fields
 	return fields;
@@ -244,8 +227,7 @@ async function UpdateLocationRoles(interaction, selectedLocations)
 ///
 /// Generic interaction handler
 ///
-async function handleInteraction(interaction)
-{
+async function handleInteraction(interaction) {
 	const prefix = `${data.name}.`
 	if (!interaction.customId.startsWith(prefix))
 		throw new Error("Interaction routed to incorrect command")
@@ -267,22 +249,19 @@ async function handleInteraction(interaction)
 	const MAX = isUnlimited ? 25 : MAX_LOCATIONS
 	const requires = Object.keys(ROLE_REQUIREMENTS);
 	let   defaultMsg = "You are already in this location"
-	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP]))
-	{
+	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP])) {
 		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.chan.pcProfile}>)`)
 		await interaction.editReply({embeds:[embed]})
 		return;
 	}
 
-	switch(command)
-	{
+	switch(command) {
 		//Button components
 		case `depart`:
 			console.log(roleIds.map(x=>`<@&${x}>`).join('\n'))
 			const remainingRoles = userLocRoles.filter(x => !roleIds.includes(x));
 			result = await UpdateLocationRoles(interaction, remainingRoles)
-			if (result) 
-			{
+			if (result) {
 				embed.addFields(result)
 				embed.setDescription(`<@${interaction.member.id}>`)
 				await logChan.send({embeds:[embed]})
@@ -307,12 +286,10 @@ async function handleInteraction(interaction)
 			})
 
 			let showDepart = false;
-			if (roleIds.length > 0 && combinedRoles.length <= MAX)
-			{
+			if (roleIds.length > 0 && combinedRoles.length <= MAX) {
 				//console.log(combinedRoles)
 				result = await UpdateLocationRoles(interaction, combinedRoles)
-				if (result)
-				{
+				if (result) {
 					showDepart = true;
 					embed.addFields(result)
 					embed.setDescription(`<@${interaction.member.id}>`)
@@ -322,9 +299,7 @@ async function handleInteraction(interaction)
 				const depart = await getDepartButton(interaction, roleIds);
 				if (showDepart)
 					components.push(depart)
-			}
-			else
-			{
+			} else {
 				embed.setTitle("Select your Locations")
 				embed.setDescription(`You may have a maximum of ${MAX} location roles.`)
 				const select = await getLocationSelectRow(interaction, roleIds)
@@ -338,7 +313,7 @@ async function handleInteraction(interaction)
 			selectedLocations = selectedLocations.filter(x=>x).filter(x => {
 				const requirementsMet = filterRequired(x, allUserRoles);
 				if (!requirementsMet)
-					defaultMsg = "You lack a required guild role to enter this location."	
+					defaultMsg = "You lack a required guild role to enter this location."
 				return requirementsMet;
 			})
 			// {
@@ -351,8 +326,7 @@ async function handleInteraction(interaction)
 			// })
 
 			result = await UpdateLocationRoles(interaction, selectedLocations)
-			if (result) 
-			{
+			if (result)  {
 				embed.addFields(result)
 				embed.setDescription(`<@${interaction.member.id}>`)
 				await logChan.send({embeds:[embed]})
@@ -364,8 +338,7 @@ async function handleInteraction(interaction)
 	await interaction.editReply({embeds:[embed],components:components})
 }
 
-function filterRequired(role, allUserRoles)
-{
+function filterRequired(role, allUserRoles) {
 	const requires = Object.keys(ROLE_REQUIREMENTS);
 	if (!requires.includes(role)) return true;
 
@@ -374,14 +347,12 @@ function filterRequired(role, allUserRoles)
 	return allUserRoles.includes(requiredRole)
 }
 
-async function execute(interaction)
-{
+async function execute(interaction) {
 	//Set up for the response
 	await interaction.deferReply({ephemeral:true})
 	const embed = new EmbedBuilder();
 
-	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP]))
-	{
+	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP])) {
 		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.chan.pcProfile}>)`)
 		await interaction.editReply({embeds:[embed]})
 		return;
@@ -395,8 +366,7 @@ async function execute(interaction)
 
 	const isUnlimited = Utils.hasAnyRole(interaction.member, whitelistRoles);
 	const MAX = isUnlimited ? 25 : MAX_LOCATIONS
-	if (location && LOCATION_ROLES.includes(location))
-	{
+	if (location && LOCATION_ROLES.includes(location)) {
 		selectedLocation.push(location)
 
 		await RefreshLocationData(interaction.guild);
@@ -410,8 +380,7 @@ async function execute(interaction)
 				return requirementsMet;
 			})
 
-		if (combinedRoles.length <= MAX)
-		{
+		if (combinedRoles.length <= MAX) {
 			showSelect = false;
 
 			const result = await UpdateLocationRoles(interaction, combinedRoles)
@@ -420,8 +389,7 @@ async function execute(interaction)
 			//TODO - Show Depart button for selectedLocation
 		}
 	}
-	else if (location == "BuilderButton")
-	{
+	else if (location == "BuilderButton") {
 		const options = [{style:ButtonStyle.Primary, emoji:"🗺️",
 						  label:"Fast Travel", custom_id:`${data.name}.toggle`}]
 		components.push(Prompt.createButtonRow(options))
@@ -429,8 +397,7 @@ async function execute(interaction)
 		await interaction.editReply({content:"Location Select Menu Added"})
 		return;
 	}
-	else if (location == "BuilderMenu")
-	{
+	else if (location == "BuilderMenu") {
 		embed.setTitle("Select your Locations")
 		embed.setDescription(`You may have a maximum of ${MAX_LOCATIONS} location roles.`)
 		const select = await getLocationSelectRow(interaction,[],[])
@@ -441,8 +408,7 @@ async function execute(interaction)
 		return;
 	}
 
-	if (showSelect)
-	{
+	if (showSelect) {
 		embed.setTitle("Select your Locations")
 		embed.setDescription(`You may have a maximum of ${MAX} location roles.`)
 		const select = await getLocationSelectRow(interaction, selectedLocation)
@@ -463,10 +429,9 @@ const data = new SlashCommandBuilder()
 			.setAutocomplete(true)
 		)
 
-const whitelistRoles = [ config.role.Builder, config.role.DMOnDuty, config.role.Moderator ]
+const whitelistRoles = [ config.role.Builder, config.role.Staff, config.role.Moderator ]
 const userPermissions = [ PermissionsBitField.Flags.SendMessages ];
-module.exports =
-{
+module.exports = {
 	data: data,
 	userPermissions: userPermissions,
 	execute: execute,
@@ -475,6 +440,7 @@ module.exports =
 	select: handleInteraction,
 	attach:{
 		chanMention:chanMentionButton,
+		selectMenu:getLocationSelectRow,
 		activity:activityButton,
 		dmPing:dmPingButton
 	},
@@ -483,23 +449,22 @@ module.exports =
 
 
 ////// Handle autocomplete options for the location field
-async function autoComplete(interaction)
-{
+async function autoComplete(interaction) {
 	const focusedOption = interaction.options.getFocused(true);
-	if (focusedOption.name === 'location')
-	{
+	if (focusedOption.name === 'location') {
 		await RefreshLocationData(interaction.guild)
 		const value = focusedOption.value.toLowerCase();
 		const roles = Array.from(interaction.member.roles.cache.keys());
 		const requires = Object.keys(ROLE_REQUIREMENTS);
+
+		if (value == "refresh") await RefreshLocationData(interaction.guild, true)
 
 		let response = LOCATION_DATA
 		response = response.map(x => { x.name = x.label; return x})
 		if (value.length > 0)
 			response = LOCATION_DATA.filter(x => x.label.toLowerCase().includes(value))
 
-		response = response.filter(opt => 
-		{
+		response = response.filter(opt => {
 			if (!requires.includes(opt.value)) return true;
 			const requiredRole = ROLE_REQUIREMENTS[opt.value];
 			if (roles.includes(requiredRole)) return true;
@@ -509,8 +474,7 @@ async function autoComplete(interaction)
 
 		//Add menu options to the autocomplete list for owner.
 		const user = interaction.member.id;
-		if (config.OWNERID == user)
-		{
+		if (config.OWNERID == user) {
 			response.push({ name: 'Builder: Create Menu', value: "BuilderMenu" });
 			response.push({ name: 'Builder: Create Button', value: "BuilderButton" });
 		}

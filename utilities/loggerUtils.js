@@ -1,4 +1,4 @@
-const { ChannelType, EmbedBuilder, InteractionType, ButtonStyle } = require('discord.js')
+const { EmbedBuilder, InteractionType, ButtonStyle } = require('discord.js')
 const util = require("util");
 const cli = require("cli-color");
 const purple = cli.xterm(93);
@@ -7,7 +7,7 @@ const fs = require('fs');
 
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
-const {STEP,ERROR} = require(`./constants.js`)
+//const {STEP,ERROR} = require(`./constants.js`)
 const Prompt = require(`./promptUtils.js`)
 const BR = `\n\`${' '.repeat(69)}\``
 
@@ -20,6 +20,15 @@ const errorLogDefaultArgs = {
 	dataFields:null,
 	callstack: true
 }
+
+// Helper
+const truncateToField = (text, lang = "", limit = 1024) => {
+	const wrap = (s) => `\`\`\`${lang}\n${s}\n\`\`\``;
+	const overhead = wrap("").length;
+	const maxContent = limit - overhead;
+	if (text.length <= maxContent) return wrap(text);
+	return wrap(text.slice(0, maxContent - 3) + "...");
+};
 
 class Logger
 {
@@ -56,7 +65,7 @@ class Logger
 			//If we have methods to process the data, run only those keys through their respective methods and return
 			if (dataFn?.[k]) result = dataFn[k](data[k])
 			//If we don't have any methods to process any data, just give it all back as raw JSON
-			else if (!dataFn) result = {name:k, value:`\`\`\`json\n${JSON.stringify(data[k],null,2)}\n\`\`\``}
+			else if (!dataFn) result = {name:k, value:truncateToField(JSON.stringify(data[k],null,2), "json")}
 			return result
 		}).filter(field => field).flat(Infinity)
 
@@ -76,7 +85,10 @@ class Logger
 		const interaction = args.interaction
 		const channel = isString(args?.channel) ? await interaction?.guild?.channels?.fetch(args.channel) :
 						args?.channel?.type ? args.channel : null
-		if (!channel) return this.ERROR(Error().stack);
+		if (!channel) {
+			this.ERROR(Error().stack);
+			throw Error("Missing channel", {cause: args})
+		}
 
 		//Generate an embed if one isn't included
 		const title = args.embedTitle ?? "Debug Log"
@@ -96,14 +108,17 @@ class Logger
 		}
 
 		//Add the passed-in fields
-		if (args.dataFields) { embed.addFields(args.dataFields.filter(f => f.value.length <= 1024)) }
+		if (args.dataFields) {
+			const safeFields = args.dataFields.map(f => ({ ...f, value: f.value.length <= 1024 ? f.value : truncateToField(f.value) }));
+			embed.addFields(safeFields)
+		}
 
 		//Generate a callstack unless one is provided
 		if (args.callstack) {
 			embed.setThumbnail(null)
 			const stack = error ? error.stack.replace(error.message,"").trim()
 								: Error().stack
-			embed.addFields([{name:"Callstack",value:`\`\`\`js\n${stack}\n\`\`\``}]);
+			embed.addFields([{name:"Callstack",value:truncateToField(stack,"js")}]);
 		}
 
 		//Add interaction details
@@ -125,21 +140,21 @@ class Logger
 		await channel?.send({content:`<@${config.OWNERID}>`,embeds:[embed]})
 	}
 
-	FILE(filePath, data) {
-		data = JSON.stringify(data, null, 2);
-		fs.writeFile(filePath, data, (err) => {
-		  if (err) {
-			console.error('An error occurred:', err);
-		  } else {
-			console.log('File written successfully!');
-		  }
-		});
-	}
+	async FILE(filePath, data) {
+		try {
+			await fs.promises.writeFile(filePath, JSON.stringify(data, null, 2));
+		} catch (err) {
+			this.ERROR(err);
+		}
+	}	
 
+	/// Trace step
+	/// Advance the data to the newStage and handle stepping interaction
+	/// Updates data.stage to newStage
 	async TRACE (interaction, data, newStage, DEBUG) {
 		/// Finish up the previous stage output
 		let STEPKEY = Object.keys(STEP).find(key => STEP[key] === data.stage);
-		const { ...debugData } = (data ?? {});
+		const debugData = data ?? {};
 		const cause = data ? {cause:data} : {}
 
 		if (DEBUG.BREAKSTEP && DEBUG.BREAKSTEP == data.stage) {

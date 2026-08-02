@@ -11,16 +11,16 @@ const saveIdent = /.* makes a (.*) Save!/gi
 const success   = "Success!"
 
 async function shouldHandle(client, message)
-{	
-	if (!message.author.bot) return false
-	if (message.author.id != config.bots.avrae) return false
+{
+	if (!message?.author?.bot) return false
+	if (message?.author?.id != config.bots.avrae) return false
 
 	const embed = message?.embeds?.[0] || null;
 	const fields = embed?.fields || null;
 	if (!embed || !fields) return false;
 
 	let save = fields.find(field => field.name == questSave);
-	if (save) return true;		
+	if (save) return true;
 	return false;
 }
 

@@ -46,7 +46,7 @@ async function execute(client, interaction)
 		console.error("Error",error)//, stackTrace);
 		await reply(interaction,
 					{	content: `This command failed to execute:\n${error}`,
-					 	components: [], ephemeral: true });
+						components: [], ephemeral: true });
 	}
 }
 

@@ -26,11 +26,9 @@ function parseTupperLog(client, message, silent = true)
 		if (authorId && content && messageId)
 		{
 			tupperData = {
-			//	logId:message.id,
 				cId:channelId,
 				mId:messageId,
 				aId:authorId,
-			//	u:name,
 				t:tupperName,
 				time:message.createdTimestamp,
 				len:content.length,
@@ -47,7 +45,7 @@ function parseTupperLog(client, message, silent = true)
 function isTupperProxyMessage(message)
 {
 	if (!message) return false;
-	const isBot = message.author?.bot;
+	const isBot = message?.author?.bot;
 	const isTupper = message.applicationId == config.bots.tupper;
 	const isWebhook = message.webhookId;
 	return (isBot && isTupper && isWebhook);
@@ -56,8 +54,8 @@ function isTupperProxyMessage(message)
 function isTupperLogMessage(client, message)
 {
 	if (!message) return false;
-	const author  = message.author?.id == config.bots.tupper;
-	const channel = message.channel?.id == config.chan.tupperLog;
+	const author  = message?.author?.id == client.config.bots.tupper;
+	const channel = message?.channel?.id == client.config.chan.tupperLog;
 	const content = (message && message.embeds && message.embeds.length > 0);
 	return author && channel && content
 }
@@ -69,9 +67,6 @@ async function logTupperMessage(client, message)
 		const tupperData = parseTupperLog(client, message)
 		if (tupperData)
 		{
-			// if (process.env.mod == "dev")
-			// 	return tupperData;
-
 			const channel = message.guild.channels.resolve(tupperData.cId);
 			if (channel && (chanUtils.isRoleplayChannel(channel) ||
 							chanUtils.isRoleplayThread(channel)))

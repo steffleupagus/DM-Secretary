@@ -3,8 +3,7 @@ const { ApplicationCommandType } = require(`../../utilities/enums.js`)
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 
-async function execute(interaction)
-{
+async function execute(interaction) {
 	const client = interaction.client;
 	const messageId = interaction.targetId;
 	const channel = interaction.channel;
@@ -14,8 +13,7 @@ async function execute(interaction)
 	await client.commands.get(command).execute(interaction, message)
 }
 
-module.exports = 
-{
+module.exports = {
 	data: new ContextMenuCommandBuilder()
 		.setName('Conclude Scene')
 		.setType(ApplicationCommandType.Message)
@@ -24,8 +22,7 @@ module.exports =
 	build:config.DEV||config.PRODUCTION
 };
 
-const requiredRoles = [ config.role.Builder, 
-						config.role.DM	]
+const requiredRoles = [ config.role.Builder, config.role.Staff ]
 
 //if (config.DEV)
 	module.exports.whitelistRoles = requiredRoles

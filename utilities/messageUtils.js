@@ -39,6 +39,7 @@ async function deleteMessages(messages)
 	let delayCount = 0;
 	await Utils.asyncArrayForEach(messages, async (message) =>
 	{
+		if (message.system) return;
 		await message.delete();
 		await Utils.slowdown(500);
 		if (++delayCount >= 5)
@@ -54,7 +55,7 @@ async function fetchAll(channel, options = { reverseArray: false, userOnly: fals
 	let lastID;
 	let count = 0;
 
-	while (true) 
+	while (true)
 	{
 		const fetchedMessages = await channel.messages.fetch({limit: 100,
 			...(lastID && { before: lastID })
@@ -231,7 +232,7 @@ async function findNextBreak(channel, message, limit = 500)
 }
 
 //Find the scene break fenceposts in both directions from a given message
-async function findFenceposts(channel, message, limit = 500) 
+async function findFenceposts(channel, message, limit = 500)
 {
 	console.log(`findFenceposts (${message.id})`)
 	const before = await findLastBreak(channel, message, limit)
@@ -275,7 +276,6 @@ async function getRoleplayData(rpChan, message = null)
 		rpData.startId = roleplay.messages[0].id
 		rpData.timestamp = roleplay.messages[0].createdAt;
 	}
-
 	return rpData;
 }
 
@@ -325,12 +325,11 @@ function checkForBullshit(message)
 	if (content.length - stripped.length > (content.length / 2))
 	{
 		const guild = message.guild
-		const debug = guild.channels.fetch(config.debugLogParent).then( chan => 
+		const debug = guild.channels.fetch(config.debugLogParent).then( chan =>
 		{	//If it was, flag it for closer inspection
 			chan.send(`<@659069077872181248> [Message](${message.url}) warrants a closer look: ${message}`)
 		})
 	}
-	//else console.log('.')
 }
 
 function cleanMessageContent(message)
@@ -485,8 +484,8 @@ function assignUnknown(stats, authorId, name, tupperData)
 
 function formatDate(date) {
 	return ('0' + date.getDate()).slice(-2) + '.' +
-	 	   ('0' + (date.getMonth()+1)).slice(-2) + '.' +
-	 		date.getFullYear();
+		   ('0' + (date.getMonth()+1)).slice(-2) + '.' +
+			date.getFullYear();
 }
 
 function incrementStats(data, id, name, message, tupperData)

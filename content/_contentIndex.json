@@ -11,7 +11,7 @@
 	"699589168304488559":{"data":"areas/silverThornSuites.json"},
 	"768318521674301470":{"data":"areas/silverThornEvent.json"},
 	"695638364862414858":{"data":"areas/residential.json"},
-	"696536603778089001":{"data":"areas/tavern.json"},
+	"696536603778089001":{"data":"areas/hospitality.json"},
 	"696553906045714492":{"data":"areas/inn.json"},
 	"708025677236142161":{"data":"areas/garden.json"},
 	"833537974166618122":{"data":"areas/slums.json"},
@@ -22,18 +22,24 @@
 	"833425039251472384":{"data":"areas/blessedGate.json"},
 	"833791497862119444":{"data":"areas/wilderness.json"},
 	"853363208109948938":{"data":"areas/outriders.json"},
+	"1372044357867409448":{"data":"areas/farReaches.json"},
 	"780154517710700574":{"data":"lore.json"},
 
+	"699973588572176405":{"data":"rules/rules.json"},
 	"709941516818448384":{"data":"rules/rules.json"},
-	"911129455345405992":{"data":"rules/approvedContent.json"},	
+	"911129455345405992":{"data":"rules/approvedContent.json"},
 	"698568383846940703":{"data":"rules/rules_duels.json"},
 	"1105301940717490267":{"data":"rules/rules_roleplay.json"},
 	"1105303752702959726":{"data":"rules/rules_tables.json"},
 	"1122642616324984924":{"data":"rules/rules_map_options.json"},
+	"729038636074401842":{"data":"rules/dm_da_rules.json"},
+	"1373459769255268453":{"data":"rules/rules_guide_helper.json"},
+	"1373459977179500686":{"data":"rules/rules_guide_da.json"},
+
+	"789526779693629480": { "data":"tableSelect.json"},
 
 	"709733574810533929" :{ "data":"items/itemReference.json"},
 	"1122621263177863289":{ "data":"items/lewdTattoos.json"},
-
 
 	"guildItemReference" :{ "data":"items/guildItems.json"},
 	"985935929149624370" :{ "data":"items/guildItems_Arcanum.json"},

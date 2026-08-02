@@ -3,7 +3,7 @@ const { ContextMenuCommandBuilder, EmbedBuilder } = require('discord.js')
 const mod = process.env.mod || "";
 const config = require(`../../config/${mod}_config.json`)
 
-const requiredRoles = [ config.role.Moderator, config.role.DM ];
+const requiredRoles = [ config.role.Moderator, config.role.Staff ];
 
 function getLogEmbed(author, archivist, msgChan)
 {
