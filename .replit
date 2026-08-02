@@ -111,6 +111,15 @@ author = 3559563
 task = "shell.exec"
 args = "npm run deploy -- dev"
 
+[[workflows.workflow]]
+name = "Dev Test"
+mode = "sequential"
+author = 3559563
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run start -- test"
+
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 120000

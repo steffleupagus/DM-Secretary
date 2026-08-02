@@ -10,7 +10,7 @@ async function execute(interaction)
 	const client = interaction.client;
 	const messageId = interaction.targetId;
 	const channel = interaction.channel;
-	const message = await channel?.messages.fetch(messageId);
+	const message = interaction.targetMessage;
 
 	const cmd = `duel${config.DEV ? "dev" : ""}`;
 	client.commands.get(cmd).execute(interaction, message)
@@ -25,5 +25,5 @@ module.exports =
 	whitelistRoles: requiredRoles,
 	execute: execute,
 
-	build:config.PRODUCTION// || config.DEV
+	build:config.PRODUCTION || config.DEV
 };

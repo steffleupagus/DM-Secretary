@@ -62,7 +62,7 @@ const interactionTimer = {};
 async function autoCloseScene(message)
 {
 	const channel = message.channel;
-	const channelId = channel.isThread() ? channel.parent.id : channel.id;	
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;
 	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
 	if (chanMeta?.userOwner && chanMeta?.userOwner?.length > 0)
 	{

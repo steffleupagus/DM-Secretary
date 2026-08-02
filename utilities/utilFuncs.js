@@ -39,6 +39,14 @@ module.exports =
 		return fields;
 	},
 
+	cleanData(data, keys = []) {
+		keys.forEach(x =>
+		{
+			//console.log(`- ${x}: ${util.inspect(data[x], false, null, true /* enable colors */)}`)
+			delete data[x]
+		});
+	},
+
 	deepDiff(obj1, obj2, skipKeys = [], logKeys = []) {
 		const changes = {};
 		const diff = {};

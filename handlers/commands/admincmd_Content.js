@@ -300,8 +300,7 @@ async function autoComplete(interaction) {
 		}
 		catch (e) {}
 	}
-	else
-		interaction.respond([])
+	else interaction.respond([])
 }
 
 const data = new SlashCommandBuilder()
@@ -319,7 +318,7 @@ const userPermissions = [	PermissionsBitField.Flags.ManageChannels,
 
 module.exports = {
 	data: data,
-	whitelistRoles: [ config.role.Builder, ],
+	whitelistRoles: [ config.role.Builder ],
 	userPermissions: userPermissions,
 	execute: execute,
 	autoComplete: autoComplete,
