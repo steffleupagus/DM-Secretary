@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, SlashCommandStringOption, ChannelType, ButtonStyle,
-	   	EmbedBuilder, PermissionsBitField } = require('discord.js')
+		EmbedBuilder, PermissionsBitField } = require('discord.js')
 const ChannelMeta = require(`../../database/chanMetaSchema.js`)
 const GuildUtils = require(`../../utilities/guildUtils.js`)
 const ChanUtils = require(`../../utilities/channelUtils.js`)
@@ -12,10 +12,30 @@ const defaultChanMeta = { awardsExp: false, trackActivity: false, threadMax: 0, 
 const threadIcon = "🧵";
 const defaultThreadMax = 5;
 const locationPermission = { ViewChannel: true };
-const ownerPermission = { ViewChannel: true, ManageChannels: true, ManageMessages: true, ManageThreads: true }
+const ownerPermission = { ViewChannel: true, ManageChannels: true, ManageMessages: true, PinMessages: true, ManageThreads: true }
 
 function getDefaultChanMeta(channel) {
 	return { channelId: channel.id, ...defaultChanMeta};
+}
+
+function getCurrentPerms(channel, chanMeta) {
+	const locations = {}
+	ChanUtils.LocationRoles.public.forEach(role => { locations[role.value] = role.label; })
+	ChanUtils.LocationRoles.guild.forEach(role => { locations[role.value] = role.label; })
+	const ids = Object.keys(locations)
+
+	let perms = "";
+	channel.permissionOverwrites.cache.map( (val, id) => {
+		if ((val.type == 0)&&(ids.includes(id)))
+		{
+			perms += `${locations[id]} (<@&${id}>):\n - \`Allow\` ${val.allow.toArray()}\n - \`Deny\` ${val.deny.toArray()}\n\n`;
+		}
+		else if (val.type == 1) {
+			perms += `<@${id}>:\n - \`Allow\` ${val.allow.toArray()}\n - \`Deny\` ${val.deny.toArray()}\n\n`
+		}
+	})
+
+	return perms
 }
 
 function getCurrentChanMeta(channel, chanMeta, sync = false) {
@@ -61,7 +81,7 @@ function getCurrentChanMeta(channel, chanMeta, sync = false) {
 }
 
 
-async function updateChannelPerms(channel, chanMeta) {
+async function updateChannelPerms(channel, chanMeta, forceReset = false) {
 	const locations = {}
 	ChanUtils.LocationRoles.public.forEach(role => { locations[role.value] = role.label; })
 	ChanUtils.LocationRoles.guild.forEach(role => { locations[role.value] = role.label; })
@@ -91,7 +111,7 @@ async function updateChannelPerms(channel, chanMeta) {
 	//Add any chanMeta locations permissions that the channel doesn't already have
 	chanMeta.locations.forEach( id => {
 		const val = channel.permissionOverwrites.cache.get(id);
-		if (!val || val.allow.has(PermissionsBitField.Flags.ViewChannel))
+		if (!val || !val.allow.has(PermissionsBitField.Flags.ViewChannel))
 		{
 			output.push(`Adding permissions for role <@&${id}>`);
 			channel.permissionOverwrites.create(id, locationPermission);
@@ -105,6 +125,11 @@ async function updateChannelPerms(channel, chanMeta) {
 		{
 			output.push(`Adding permissions for owner: <@${owner}>`);
 			channel.permissionOverwrites.create(owner, ownerPermission);
+		}
+		else
+		{
+			output.push(`Refreshing permissions for owner: <@${owner}>`);
+			channel.permissionOverwrites.edit(owner, ownerPermission);
 		}
 	});
 
@@ -143,7 +168,7 @@ async function updateChannelTopic(channel, chanMeta) {
 	topic = prefix.join("") + "\n" + topic.trim()
 
 	if (topic.length > 1024)
-		throw new Error(`Topic is too long to include ${config.emoji.xp} icon`)
+		throw new Error(`Channel topic would exceed Discord's character limit`)
 
 	console.log(topic,"\n\n\n")
 
@@ -235,7 +260,6 @@ async function generateComponents(interaction, chanMeta, isBuilder, publicFlag =
     const validUsers = users.filter((user) => user !== null);
     // Do something with the fetched users, e.g. send their usernames in a message
     const owners = validUsers.map((user) => { return { label: user.username, value: user.id, default:true } });
-	//console.log(owners)
 	const ownerSelect = Prompt.createSelectRow(`${data.name}.modifyOwners`,owners,0,owners.length,"Owners")
 	const buttons = [
 		{style:ButtonStyle.Secondary, emoji:config.emoji.xp, label:'RP Exp', custom_id:`${data.name}.toggleExp`},
@@ -389,7 +413,10 @@ async function handleInteraction(interaction) {
 						chanMeta.userOwner.push(newOwner)
 						permsDirty = true;
 					} else await modal.reply({content:`${user} was already a channel owner`, ephemeral: true})
-				} catch {}
+				} catch (e) {
+					console.error(e)
+					throw e;
+				}
 				if (!user) await modal.reply({content:`${newOwner} is not a valid user`,ephemeral: true});
 			}
 			break;
@@ -416,14 +443,19 @@ async function handleInteraction(interaction) {
 			break;
 		case `publicLocation.false`:
 			publicFlag = false;
+			// intentional fall-through
 		case `publicLocation.true`:
 			dirty = false;
 			break;
 		case `permDebug`:
-			getCurrentChanMeta(channel, chanMeta)
+			const result = getCurrentPerms(channel, chanMeta)
+			interaction.followUp({content:result, ephemeral:true})
 			dirty = false;
+			permsDirty = false;
 			break;
 		case `syncPerms`:
+			permsDirty = true;
+			dirty = false;
 			chanMeta = getCurrentChanMeta(channel, chanMeta, true)
 			break;
 		case `deleteRecord`:

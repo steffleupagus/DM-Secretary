@@ -26,7 +26,7 @@ module.exports = {
 	name: 'chanActivityMsg',
 	bot: true,
 	user: true,
-	menu: true,
+	menu: false,
 	shouldHandle: shouldHandle,
 	handleCreate: handleCreate,
 

@@ -151,5 +151,5 @@ module.exports =
 	userPermissions: userPermissions,
 	execute: execute,
 
-	build:config.DEV
+	build: config.PRODUCTION || config.DEV
 };

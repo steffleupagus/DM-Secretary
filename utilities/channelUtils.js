@@ -7,6 +7,7 @@ const Utils   = require(`../utilities/utilFuncs.js`)
 
 /// Identify if a channel is an RP channel
 function isRoleplayChannel(channel) {
+	if (channel.id == config.chan.rpTest) return false;
 	return channel.name.includes("🗣");
 }
 
@@ -84,7 +85,11 @@ async function fetchThreads(channel) {
 	return {active:activeThreads, archive:archivedThreads, all:allThreads};
 }
 
-
+async function getChannelOwner(channel) {
+	const channelId = channel.isThread() ? channel.parent.id : channel.id;
+	const chanMeta = await ChannelMeta.findOne({channelId:channelId})
+	return chanMeta?.userOwner
+}
 
 
 const LocationRoles = {
@@ -137,11 +142,9 @@ module.exports =
 	isTableMechanicsThread,
 	isTrackedChannel,
 	isDuelRPChannel,
+	getChannelOwner,
 	getDuelChannelPair,
 	fetchThreads,
-	// locations,
-	// guildLocations,
-
 	LocationRoles,
 	refreshLocationRoles,
 	getChannelLocationRoles
