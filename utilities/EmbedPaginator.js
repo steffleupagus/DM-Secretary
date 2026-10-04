@@ -76,6 +76,9 @@ class EmbedPaginator
 	/// Appears before any fields. Will throw if the current embed can't fit the value.
 	setDescription(value)
 	{
+		var currentDesc = this._embeds[this._embeds.length-1].data.description || "";
+		this._embed_count -= currentDesc.length;
+
 		if (value.length > EMBED_DESC_MAX || value.length + this._embed_count > EMBED_MAX)
 			throw "The current embed cannot fit this description.";
 
