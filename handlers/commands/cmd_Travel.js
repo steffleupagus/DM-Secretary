@@ -6,6 +6,7 @@ const config = require(`../../config/${mod}_config.json`);
 const Prompt = require(`../../utilities/promptUtils.js`);
 const AreaMeta = require(`../../database/areaMetaSchema.js`);
 const ChanMeta = require(`../../database/chanMetaSchema.js`);
+const ChanUtils = require(`../../utilities/channelUtils.js`);
 
 const MAX_LOCATIONS = 3;
 const LOCATION_DATA = [];
@@ -15,14 +16,6 @@ const STATIC_ROLES  = [
 	{emoji:"🌐",label:"Open RP",value:"1001640103841632306",order:999}
 ]
 const DoChangeRoles = true;
-
-const ROLE_REQUIREMENTS = {
-	"742107921835360376":"702348143752118372",	//@Arcanum Inner Sanctum       @Arcanum Guild
-	"742107953577984110":"697848468986921030",	//@Black Hand Guild Hall       @Black Hand Guild
-	"766031999864668191":"766031516038987786",	//@Temple Sanctuary            @Council of Faith
-	"742107924255735849":"702481674344071178",	//@Guardian Guild Barracks     @Guardian Guild
-	"853362003691438101":"853346385545920522"	//@Outrider's Lodge Guild Hall @Outrider's Lodge
-}
 
 async function RefreshLocationData(guild, force = false) {
 	if (LOCATION_DATA.length == 0 || force) {
@@ -130,12 +123,12 @@ async function getLocationSelectRow(interaction, selectRoles = [], roles = null)
 	const label = "●▬▬▬▬▬ 𝕷𝖔𝖈𝖆𝖙𝖎𝖔𝖓𝖘 ▬▬▬▬▬●"
 	const isUnlimited = (roles === null) && Utils.hasAnyRole(interaction.member, whitelistRoles);
 	roles = roles ?? Array.from(interaction.member.roles.cache.keys());
-	const requires = Object.keys(ROLE_REQUIREMENTS);
+	const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 	let options = LOCATION_DATA.filter(opt => {
 		return (selectRoles.length == 0) || selectRoles.includes(opt.value) || roles.includes(opt.value)
 	}).filter(opt => {
 		if (!requires.includes(opt.value)) return true;
-		const requiredRole = ROLE_REQUIREMENTS[opt.value];
+		const requiredRole = ChanUtils.ROLE_REQUIREMENTS[opt.value];
 		if (roles.includes(requiredRole)) return true;
 		return false;
 	}).map(opt => {
@@ -166,7 +159,7 @@ async function UpdateLocationRoles(interaction, selectedLocations) {
 
 	//The user's starting roles
 	let roles = Array.from(interaction.member.roles.cache.keys());
-	const requires = Object.keys(ROLE_REQUIREMENTS);
+	const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 
 	// Figure out which roles we're removing from the user
 	let removed = [];
@@ -178,7 +171,7 @@ async function UpdateLocationRoles(interaction, selectedLocations) {
 		if (selectedLocations.includes(role)) keep = true;
 
 		if (requires.includes(role)) {
-			const requiredRole = ROLE_REQUIREMENTS[role];
+			const requiredRole = ChanUtils.ROLE_REQUIREMENTS[role];
 			if (!roles.includes(requiredRole))
 				keep = false;
 		}
@@ -193,7 +186,7 @@ async function UpdateLocationRoles(interaction, selectedLocations) {
 	let added = [];
 	selectedLocations.forEach( role => {
 		if (requires.includes(role)) {
-			const requiredRole = ROLE_REQUIREMENTS[role];
+			const requiredRole = ChanUtils.ROLE_REQUIREMENTS[role];
 			if (!roles.includes(requiredRole))
 				return false;
 		}
@@ -246,7 +239,7 @@ async function handleInteraction(interaction) {
 	const allUserRoles = Array.from(interaction.member.roles.cache.keys())
 	const userLocRoles = allUserRoles.filter(x => LOCATION_ROLES.includes(x));
 	const MAX = isUnlimited ? 25 : MAX_LOCATIONS
-	const requires = Object.keys(ROLE_REQUIREMENTS);
+	const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 	let   defaultMsg = "You are already in this location"
 	if (Utils.hasAnyRole(interaction.member, [config.role.NeedRP])) {
 		embed.setDescription(`An approved character profile is required to view RP locations\n(<#${config.chan.pcProfile}>)`)
@@ -317,7 +310,7 @@ async function handleInteraction(interaction) {
 			})
 			// {
 			// 	if (!requires.includes(x)) return true;
-			// 	const requiredRole = ROLE_REQUIREMENTS[x];
+			// 	const requiredRole = ChanUtils.ROLE_REQUIREMENTS[x];
 			// 	console.log(`<@&${x}> requires role <@&${requiredRole}>`)
 			// 	if (allUserRoles.includes(requiredRole)) return true;
 			// 	defaultMsg = "You lack a required guild role to enter this location."
@@ -338,10 +331,10 @@ async function handleInteraction(interaction) {
 }
 
 function filterRequired(role, allUserRoles) {
-	const requires = Object.keys(ROLE_REQUIREMENTS);
+	const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 	if (!requires.includes(role)) return true;
 
-	const requiredRole = ROLE_REQUIREMENTS[role];
+	const requiredRole = ChanUtils.ROLE_REQUIREMENTS[role];
 	console.log(`<@&${role}> requires role <@&${requiredRole}>`)
 	return allUserRoles.includes(requiredRole)
 }
@@ -369,7 +362,7 @@ async function execute(interaction) {
 		selectedLocation.push(location)
 
 		await RefreshLocationData(interaction.guild);
-		const requires = Object.keys(ROLE_REQUIREMENTS);
+		const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 		const allUserRoles = Array.from(interaction.member.roles.cache.keys())
 		const userLocRoles = allUserRoles.filter(x => LOCATION_ROLES.includes(x));
 		const combinedRoles = [...new Set(userLocRoles.concat(selectedLocation))].filter(x=>x).filter(x => {
@@ -454,7 +447,7 @@ async function autoComplete(interaction) {
 		await RefreshLocationData(interaction.guild)
 		const value = focusedOption.value.toLowerCase();
 		const roles = Array.from(interaction.member.roles.cache.keys());
-		const requires = Object.keys(ROLE_REQUIREMENTS);
+		const requires = Object.keys(ChanUtils.ROLE_REQUIREMENTS);
 
 		if (value == "refresh") await RefreshLocationData(interaction.guild, true)
 
@@ -465,7 +458,7 @@ async function autoComplete(interaction) {
 
 		response = response.filter(opt => {
 			if (!requires.includes(opt.value)) return true;
-			const requiredRole = ROLE_REQUIREMENTS[opt.value];
+			const requiredRole = ChanUtils.ROLE_REQUIREMENTS[opt.value];
 			if (roles.includes(requiredRole)) return true;
 			return false;
 		})
