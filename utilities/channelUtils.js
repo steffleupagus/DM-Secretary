@@ -92,9 +92,18 @@ async function getChannelOwner(channel) {
 }
 
 
+const ROLE_REQUIREMENTS = {
+	"742107921835360376":"702348143752118372",	//@Arcanum Inner Sanctum       @Arcanum Guild
+	"742107953577984110":"697848468986921030",	//@Black Hand Guild Hall       @Black Hand Guild
+	"766031999864668191":"766031516038987786",	//@Temple Sanctuary            @Council of Faith
+	"742107924255735849":"702481674344071178",	//@Guardian Guild Barracks     @Guardian Guild
+	"853362003691438101":"853346385545920522"	//@Outrider's Lodge Guild Hall @Outrider's Lodge
+}
+
 const LocationRoles = {
 	public:[],
-	guild:[]
+	guild:[],
+	user:[]
 }
 
 async function refreshLocationRoles(guild) {
@@ -102,6 +111,7 @@ async function refreshLocationRoles(guild) {
 
 	LocationRoles.public = [openRP]
 	LocationRoles.guild = []
+	LocationRoles.user = []
 
 	let areas = await AreaMeta.find({});
 	await Utils.asyncArrayForEach( areas, async (area, i) => {
@@ -115,12 +125,15 @@ async function refreshLocationRoles(guild) {
 
 		area.roleId.forEach(role => {
 			role = guild.roles.resolve(role)
-			role = {value:role.id, label:role.name}//, emoji:area.icon}
+			role = {value:role.id, label:role.name, emoji:area.icon}
+			const isRestricted = (ROLE_REQUIREMENTS[role.value])
 
 			if (isGuild)
 				LocationRoles.guild.push(role)
 			else
 				LocationRoles.public.push(role)
+			if (!isRestricted)
+				LocationRoles.user.push(role)
 		})
 	})
 }
@@ -147,5 +160,6 @@ module.exports =
 	fetchThreads,
 	LocationRoles,
 	refreshLocationRoles,
-	getChannelLocationRoles
+	getChannelLocationRoles,
+	ROLE_REQUIREMENTS
 }
