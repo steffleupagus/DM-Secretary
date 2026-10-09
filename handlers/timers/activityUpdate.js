@@ -262,7 +262,7 @@ const timerData = {
 	startTimer,
 	stopTimer,
 	triggerTimer,
-	build:config.PRODUCTION || config.DEV
+	build:config.PRODUCTION //|| config.DEV
 };
 
 module.exports = timerData
