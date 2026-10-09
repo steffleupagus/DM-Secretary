@@ -14,6 +14,7 @@ const schema = new mongoose.Schema({
 	guildHall: String,
 	threadMax: Number,
 	locations: [String],
+	locationCooldown: { type: Number, default: 0 },
 	trackActivity: Boolean
 })
 

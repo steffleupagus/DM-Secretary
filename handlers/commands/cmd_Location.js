@@ -12,7 +12,8 @@
  * command. The command reads the existing chanMeta to determine the upgrade
  * tier, then presents a location select menu capped accordingly.
  */
-const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField, OverwriteType, MessageFlags } = require('discord.js')
+const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField, 
+		OverwriteType, MessageFlags, ButtonStyle } = require('discord.js')
 const ChannelMeta	= require(`../../database/chanMetaSchema.js`)
 const ChanUtils		= require(`../../utilities/channelUtils.js`)
 const Prompt		= require(`../../utilities/promptUtils.js`)
@@ -34,6 +35,11 @@ const MAX_LOCATIONS = {
 	exp:     2,
 	thread:  3,
 };
+const COOLDOWN_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+const TOPIC_COOLDOWN = 5 * 60 * 1000;	// 5 minutes
+const RATE_LIMIT = {}
+const timeout = (ms, err) => new Promise((_, reject) => setTimeout(() => reject(new Error(err)), ms));
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -49,6 +55,24 @@ function getLocationLimit(chanMeta) {
 	if (chanMeta.threadMax > 0)  return MAX_LOCATIONS.thread;
 	if (chanMeta.awardsExp)      return MAX_LOCATIONS.exp;
 	return MAX_LOCATIONS.default;
+}
+
+/**
+ * Returns null if the cooldown has passed, or a Discord timestamp string if
+ * the user must still wait.
+ * Builders bypass the cooldown entirely.
+ * @param {object} chanMeta
+ * @returns {string|null}
+ */
+function getCooldownBlock(chanMeta) {
+	const last = chanMeta.locationCooldown ?? 0;
+	const next = last + COOLDOWN_MS;
+	if (Date.now() < next)
+	{
+		const timestamp = Math.floor(next / 1000);
+		return `<t:${timestamp}:R>\n(<t:${timestamp}:F>)`;
+	}
+	return null;
 }
 
 /**
@@ -114,6 +138,16 @@ async function saveChanges(chanMeta) {
 */
 async function updateChannelTopic(channel, chanMeta) {
 	let topic = channel.topic || ""
+	if (channel?.isThread()) return; // threads don't have topics
+
+	const now = Date.now()
+	if (RATE_LIMIT[channel.id] + TOPIC_COOLDOWN > now)
+	{
+		const diff = ((RATE_LIMIT[channel.id] + TOPIC_COOLDOWN) - now) / 1000;
+		console.log(`--- Skipping topic set to avoid rate limits (${diff}s)`)
+		return;
+	}
+	RATE_LIMIT[channel.id] = now;
 
 	if (topic.includes(config.emoji.xp)) topic = topic.replaceAll(config.emoji.xp,``)
 	if (topic.includes(threadIcon)) topic = topic.replaceAll(threadIcon,``)
@@ -135,7 +169,19 @@ async function updateChannelTopic(channel, chanMeta) {
 	if (topic.length > 1024)
 		throw new Error(`Channel topic would exceed Discord's character limit`)
 
-	try { await channel.setTopic(topic)	}
+	if (topic == channel.topic)
+	{
+		console.log("--- Topic unchanged, skipping set")
+		return;
+	}
+
+	try {
+		// Force it to throw an error if Discord takes longer than 5 seconds
+		await Promise.race([
+			channel.setTopic(topic),
+			timeout(5000, "Update channel topic failed - request timed out")
+		]);
+	}
 	catch(e){ console.error(e); throw e; }
 }
 
@@ -164,6 +210,8 @@ function EmbedMenu(chanMeta)
 	const currentLocStr = chanMeta.locations.length
 						? chanMeta.locations.map(id => `<@&${id}>`).join('\n')
 						: '*None set*';
+	// ── Cooldown check ──────────────────────────────────────────────────
+	const cooldownBlock = getCooldownBlock(chanMeta);
 
 	const embed = new EmbedBuilder()
 		.setTitle('📍 Channel Location')
@@ -174,7 +222,9 @@ function EmbedMenu(chanMeta)
 			{ name: 'Current Location(s)', value: currentLocStr },
 			{ name: `Upgrade tier: ${tierDesc}`, value: minMaxStr}
 		)
-	.setFooter({ text: channelId });
+		.setFooter({ text: channelId });
+	if (cooldownBlock)
+		embed.addFields({ name: `⏳ Cooldown`, value: `You may change locations again ${cooldownBlock}.`})
 	return embed;
 }
 
@@ -190,7 +240,7 @@ function GetLocationOptions(chanMeta)
 	return locationOptions
 }
 
-function GetLocationSelect(locationOptions, MAX_LOCATIONS)
+function GetLocationSelect(locationOptions, MAX_LOCATIONS, locked)
 {
 	const locationSelect = Prompt.createSelectRow(
 		`${data.name}.location`,
@@ -200,7 +250,15 @@ function GetLocationSelect(locationOptions, MAX_LOCATIONS)
 		'Select location(s)…'
 	);
 
+	if (locked) locationSelect.components[0].setDisabled(true)
 	return locationSelect
+}
+
+function GetResetButton()
+{
+	const button = [{style:ButtonStyle.Primary, emoji:config.emoji.undo,
+					 label:"Reset", custom_id:`${data.name}.reset`}]
+	return Prompt.createButtonRow(button)
 }
 
 // ---------------------------------------------------------------------------
@@ -222,7 +280,8 @@ const userPermissions = [
 // ---------------------------------------------------------------------------
 async function execute(interaction) {
 	await interaction.deferReply({...ephemeral});
-	const channel = interaction.channel;
+	let channel = interaction.channel;
+	if (channel.isThread()) channel = channel.parent;
 
 	await ChanUtils.refreshLocationRoles(interaction.guild);
 
@@ -244,16 +303,20 @@ async function execute(interaction) {
 
 	// ── Determine upgrade tier ──────────────────────────────────────────────
 	const MAX_LOCATIONS = getLocationLimit(chanMeta);
+	// ── Cooldown check ──────────────────────────────────────────────────
+	const cooldown = getCooldownBlock(chanMeta);
 
 	// ── Build location select options ───────────────────────────────────────
 	// Always use the `user` location list for this player-facing command.
 	// Admins can use /chanmeta to assign guild-specific locations.
 	let locationOptions = GetLocationOptions(chanMeta);
-	const locationSelect = GetLocationSelect(locationOptions, MAX_LOCATIONS);
+	const locationSelect = GetLocationSelect(locationOptions, MAX_LOCATIONS, cooldown);
+	const components = [locationSelect]
+	if (cooldown && isBuilder) components.push(GetResetButton());
 
 	// ── Build the reply embed ───────────────────────────────────────────────
 	const embed = EmbedMenu(chanMeta)
-	await interaction.editReply({ embeds: [embed], components: [locationSelect] });
+	await interaction.editReply({ embeds: [embed], components });
 }
 
 // ---------------------------------------------------------------------------
@@ -267,6 +330,7 @@ async function handleInteraction(interaction) {
 	await interaction.deferUpdate();
 
 	// ── Re-fetch chanMeta from the footer of the original embed ────────────
+	let error 		= null;
 	const embed     = interaction.message?.embeds?.[0] ?? null;
 	const channelId = embed?.footer?.text ?? null;
 	if (!channelId) return;
@@ -274,7 +338,8 @@ async function handleInteraction(interaction) {
 	const chanMeta = await ChannelMeta.findOne({ channelId });
 	if (!chanMeta) return;
 
-	const channel   = await interaction.guild.channels.fetch(channelId);
+	let channel   = await interaction.guild.channels.fetch(channelId);
+	if (channel?.isThread()) channel = channel.parent;
 	const isBuilder = Utils.hasAnyRole(interaction.member, whitelistRoles);
 	const isOwner   = chanMeta.userOwner?.includes(interaction.user.id) ?? false;
 
@@ -283,11 +348,22 @@ async function handleInteraction(interaction) {
 		return interaction.followUp({ embeds:[embed], ...ephemeral });
 	}
 
+	// ── Cooldown check ──────────────────────────────────────────────────
+	let cooldown	= getCooldownBlock(chanMeta);
+	if (cooldown && !isBuilder)
+	{
+		const embed = EmbedReply(`⏳ Location can be changed again ${cooldown}.`);
+		return interaction.followUp({embeds:[embed],...ephemeral});
+	}
+
+	let updated			= false;
+	let MAX_LOCATIONS	= getLocationLimit(chanMeta);
+
 	const command = interaction.customId.replace(`${data.name}.`, '');
 	if (command === 'location') {
 		const selectedIds = interaction.values;
-		let MAX_LOCATIONS = getLocationLimit(chanMeta);
 
+		// ── Slot guard ──────────────────────────────────────────────────────
 		// Guard: enforce the slot cap (the Discord UI enforces it too, but
 		// double-check server-side in case of unexpected payloads).
 		if (selectedIds.length < MIN_LOCATIONS || selectedIds.length > MAX_LOCATIONS) {
@@ -297,9 +373,9 @@ async function handleInteraction(interaction) {
 		chanMeta.locations = selectedIds;
 
 		// Persist changes and sync Discord permissions.
-		let error = null;
 		try
 		{
+			chanMeta.locationCooldown = Date.now();
 			const permResults = await syncLocationPerms(channel, chanMeta);
 			await saveChanges(chanMeta);
 			await updateChannelTopic(channel, chanMeta)
@@ -310,14 +386,30 @@ async function handleInteraction(interaction) {
 			console.log(e)
 		}
 
-		// Refresh the embed to show updated locations.
-		let updatedOptions = GetLocationOptions(chanMeta)
-		const updatedSelect = GetLocationSelect(updatedOptions, MAX_LOCATIONS)
-		const updatedEmbed = EmbedMenu(chanMeta);
-		if (error) updatedEmbed.addFields({name:"Error", value: error.toString()})
-		await interaction.editReply({ content: `✅ Location updated for <#${channelId}>.`,
-									  embeds: [updatedEmbed], components: [updatedSelect] });
+		updated = true;
+	}
+	else if (command === 'reset')
+	{
+		chanMeta.locationCooldown = 0;
+		await saveChanges(chanMeta);
+		updated = false;
+	}
 
+	// Refresh the embed to show updated locations.
+	cooldown 			= getCooldownBlock(chanMeta);
+	let updatedOptions	= GetLocationOptions(chanMeta)
+	const updatedSelect = GetLocationSelect(updatedOptions, MAX_LOCATIONS, cooldown)
+	const components 	= [updatedSelect]
+	if (cooldown && isBuilder) components.push(GetResetButton());
+	const updatedEmbed	= EmbedMenu(chanMeta);
+	if (error) updatedEmbed.addFields({name:"⚠️ Error", value: error.toString()})
+
+	const content		= updated ? `✅ Location updated for <#${channelId}>.` : "";
+	const reply			= { content, embeds: [updatedEmbed], components };
+	await interaction.editReply(reply);
+
+	if (updated)
+	{
 		const logChanId = config.debug.location;
 		const logChan = await interaction?.guild?.channels?.fetch(logChanId);
 		if (logChan) await logChan.send({embeds:[updatedEmbed]})
@@ -334,6 +426,7 @@ module.exports = {
 	userPermissions,
 	botPermissions: userPermissions,
 	execute,
+	button: handleInteraction,
 	select: handleInteraction,
 	build: config.PRODUCTION || config.DEV,
 };
