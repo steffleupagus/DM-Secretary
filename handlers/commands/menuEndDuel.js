@@ -25,5 +25,5 @@ module.exports =
 	whitelistRoles: requiredRoles,
 	execute: execute,
 
-	build:config.PRODUCTION || config.DEV
+	build:null//config.PRODUCTION || config.DEV
 };
