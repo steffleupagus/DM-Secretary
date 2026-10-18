@@ -19,7 +19,7 @@ module.exports = {
 		.setType(ApplicationCommandType.Message)
 		.setDefaultPermission(false),
 	execute: execute,
-	build:config.DEV||config.PRODUCTION
+	build:null//config.DEV||config.PRODUCTION
 };
 
 const requiredRoles = [ config.role.Builder, config.role.Staff ]
