@@ -1,0 +1,107 @@
+{
+
+  "type": "duel",
+  "channel": "1333514474396717169",
+  "message": "1334353990095343669",
+  "startDate": 1738205182,
+  "logDate": 1761859599,
+  "matchup": "2 v 1",
+  "rounds": "6",
+  "chars": [
+    {
+      "char": "Ardath",
+      "user": "227960499948486666",
+      "hpMax": 55,
+      "hpCur": 47,
+      "level": 5,
+      "xpCap": 600,
+      "team": 0,
+      "win": 1,
+      "xpAmt": 300,
+      "xpData": {
+        "totalPool": 800,
+        "xpMult": 0.75,
+        "capTotal": 1200,
+        "poolPct": 0.5,
+        "unCapExp": 300,
+        "partial": 0,
+        "cap": 600
+      },
+      "gpAmt": 9,
+      "gpData": {
+        "totalPurse": 24,
+        "gpMult": 0.75,
+        "capTotal": 32,
+        "poolPct": 0.5,
+        "uncapGold": 9,
+        "cap": 16
+      }
+    },
+    {
+      "char": "Elizabet Stockhardt",
+      "user": "227960499948486666",
+      "hpMax": 37,
+      "hpCur": 0,
+      "level": 5,
+      "xpCap": 600,
+      "team": 0,
+      "win": 1,
+      "xpAmt": 200,
+      "xpData": {
+        "totalPool": 800,
+        "xpMult": 0.5,
+        "capTotal": 1200,
+        "poolPct": 0.5,
+        "unCapExp": 200,
+        "partial": 1,
+        "cap": 600
+      },
+      "gpAmt": 6,
+      "gpData": {
+        "totalPurse": 24,
+        "gpMult": 0.5,
+        "capTotal": 32,
+        "poolPct": 0.5,
+        "uncapGold": 6,
+        "cap": 16
+      }
+    },
+    {
+      "char": "Trafellia Beau",
+      "user": "399642969977651211",
+      "hpMax": 47,
+      "hpCur": 0,
+      "level": 6,
+      "xpCap": 800,
+      "team": 1,
+      "win": 0,
+      "xpAmt": 200,
+      "xpData": {
+        "totalPool": 800,
+        "xpMult": 0.25,
+        "capTotal": 800,
+        "poolPct": 1,
+        "unCapExp": 200,
+        "partial": 0,
+        "cap": 800
+      },
+      "gpAmt": 6,
+      "gpData": {
+        "totalPurse": 24,
+        "gpMult": 0.25,
+        "capTotal": 24,
+        "poolPct": 1,
+        "uncapGold": 6,
+        "cap": 24
+      }
+    }
+  ],
+  "urls": {
+    "roleplay": "https://discord.com/channels/694275190976413816/1333514474396717169/1334353990095343669",
+    "duel": "https://discord.com/channels/694275190976413816/1333514474396717169/1334353990095343669",
+    "transcript": "https://discord.com/channels/694275190976413816/1333514474396717169/1433567966124970084"
+  },
+  "errors": {
+    "USER_GROUP": "Characters played by the same user are auto-grouped."
+  }
+}
