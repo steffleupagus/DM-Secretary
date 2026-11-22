@@ -3,7 +3,7 @@ const chanUtils = require(`./channelUtils.js`)
 const Tupper = require(`./tupperUtils.js`)
 const mod = process.env.mod || "";
 const config = require(`../config/${mod}_config.json`);
-const { MessageMentions, Collection } = require('discord.js')
+const { MessageMentions, ComponentType, Collection } = require('discord.js')
 
 const _regex = "[`-]{3}\n? ?(\u200B*|<\:.*\:[0-9]+>|\-+COMBAT ENDED\-+)? ?\n?[`-]{3}"
 const BreakRegex = new RegExp(_regex);
@@ -540,6 +540,56 @@ async function reactToMessageURL(guild, url, emoji) {
 	else await message?.reactions?.removeAll()
 }
 
+
+
+
+
+
+/**
+ * Recursively extracts all TextDisplay components from a message's component tree.
+ * @param {Array} components - The message.components array (or nested components)
+ * @returns {Array} Flat array of TextDisplay components
+ */
+function findAllTextComponents(components = []) {
+	const textComponents = [];
+	for (const component of components) {
+		// Check if the current component is a Text Display (Type 10)
+		if (component.type === ComponentType.TextDisplay)
+			textComponents.push(component);
+		// Recursively search nested components (e.g., inside Containers or Sections)
+		if (Array.isArray(component.components) && component.components.length > 0)
+			textComponents.push(...findAllTextComponents(component.components));
+	}
+	return textComponents;
+}
+
+/**
+ * Consolidates all text in a message (content, embed text, and text
+ * components) into a single string.
+ *
+ * @param {import('discord.js').Message} message
+ * @returns {string}
+ */
+function getBotMessageText(message) {
+	const parts = [];
+	if (message.content) parts.push(message.content);
+
+	for (const embed of message.embeds ?? []) {
+		if (embed.description) parts.push(embed.description);
+		for (const field of embed.fields ?? []) {
+			if (field.value) parts.push(field.value);
+		}
+	}
+
+	for (const component of message.components ?? []) {
+		const textBlocks = findAllTextComponents(message.components);
+		const allText = textBlocks.map(comp => comp.content);
+		parts.push(...allText);
+	}
+
+	return parts.filter(Boolean).join('\n');
+}
+
 module.exports =
 {
 	channelCleanup,
@@ -556,5 +606,6 @@ module.exports =
 	getAllRoleplayData,
 	isSceneBreak,
 	fetchAll,
-	reactToMessageURL
+	reactToMessageURL,
+	getBotMessageText
 }

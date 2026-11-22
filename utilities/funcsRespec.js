@@ -2,6 +2,8 @@
 | Detect Respec purchases and relay them to the respec channel |
 \*------------------------------------------------------------*/
 const { EmbedBuilder } = require("discord.js");
+const MsgUtils = require(`./messageUtils.js`);
+const util = require('util')
 
 const regex = /You have bought ([0-9]+) \[Character Respec\]/
 
@@ -29,6 +31,7 @@ Run all commands in this channel
 
 async function shouldHandle(client, message) {
 	let meta = verifyMessageMeta(client, message)
+	if (!meta) return meta;
 	let content = verifyMessageContent(client, message)
 	return meta && content
 }
@@ -42,18 +45,19 @@ function verifyMessageMeta(client, message) {
 	channel = ((channel == client.config.chan.botSpam)||
 			   (channel == client.config.chan.dmBotSpam)||
 			   (channel == client.config.chan.gameSpam))
+
 	return author && channel;
 }
 
 function verifyMessageContent(client, message) {
-	if (!message || !message.embeds || !message.embeds[0])
+	if (!message)
 		return false;
 
-	//Grab the necessary data from the embed
-	var embed = message.embeds[0];
-	var title = embed.title
-	let desc = embed.description;
+	//console.log(util.inspect(message, false, null, true /* enable colors */))
 
+	//Grab the necessary data from the message
+	const desc = MsgUtils.getBotMessageText(message)
+	console.log(desc)
 	if (!desc) return false
 
 	let match = desc.match(regex)
@@ -63,9 +67,10 @@ function verifyMessageContent(client, message) {
 }
 
 async function handleRespec(client, message) {
-	let embed = message.embeds[0];
-	let name = embed.author.name
-	let desc = embed.description;
+	let interaction = message.interaction || null
+	let name = interaction?.user?.username ?? "Unknown User"
+	let user = interaction?.user?.id
+	let desc = MsgUtils.getBotMessageText(message)
 
 	let match = desc.match(regex)
 	if (match) {

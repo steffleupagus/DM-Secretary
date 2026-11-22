@@ -51,6 +51,94 @@ async function getAllReactions(message) {
 	return results;
 }
 
+/** Human-readable names for component type IDs, including Components V2 types. */
+const COMPONENT_TYPE_NAMES = {
+	[ComponentType.ActionRow]: 'ActionRow',
+	[ComponentType.Button]: 'Button',
+	[ComponentType.StringSelect]: 'StringSelect',
+	[ComponentType.TextInput]: 'TextInput',
+	[ComponentType.UserSelect]: 'UserSelect',
+	[ComponentType.RoleSelect]: 'RoleSelect',
+	[ComponentType.MentionableSelect]: 'MentionableSelect',
+	[ComponentType.ChannelSelect]: 'ChannelSelect',
+	[ComponentType.Section]: 'Section',
+	[ComponentType.TextDisplay]: 'TextDisplay',
+	[ComponentType.Thumbnail]: 'Thumbnail',
+	[ComponentType.MediaGallery]: 'MediaGallery',
+	[ComponentType.File]: 'File',
+	[ComponentType.Separator]: 'Separator',
+	[ComponentType.ContentInventoryEntry]: 'ContentInventoryEntry',
+	[ComponentType.Container]: 'Container',
+};
+
+/**
+ * Visits every component in the tree, depth-first. Recurses into `components`
+ * (ActionRows, Containers, Sections) and into a Section's `accessory`.
+ * @param {Array<any>} components
+ * @param {(component: any, depth: number) => void} visit
+ * @param {number} depth
+ */
+function walkComponents(components, visit, depth = 0) {
+	for (const c of components ?? []) {
+		visit(c, depth);
+		const children = c.components ?? (c.accessory ? [c.accessory] : []);
+		if (children.length) walkComponents(children, visit, depth + 1);
+	}
+}
+
+/** Returns the readable type name for a component, falling back to the raw ID. */
+function componentTypeName(c) {
+	return COMPONENT_TYPE_NAMES[c.type] ?? `Unknown(${c.type})`;
+}
+
+/** One line per component: its type, plus a label or text preview where one exists. */
+function describeComponent(c) {
+	const extras = [];
+	if (c.label) extras.push(c.label);
+	if (c.placeholder) extras.push(c.placeholder);
+	if (c.type === ComponentType.TextDisplay && c.content) {
+		const preview = c.content.replace(/\s+/g, ' ').slice(0, 60);
+		extras.push(`"${preview}${c.content.length > 60 ? '…' : ''}"`);
+	}
+	if (c.disabled) extras.push('disabled');
+
+	const name = `**${componentTypeName(c)}**`;
+	return extras.length ? `${name} — ${extras.join(' · ')}` : name;
+}
+
+/** Formats the component tree as indented lines for the Components view. */
+function componentTreeLines(message) {
+	const lines = [];
+	walkComponents(message.components, (c, depth) => {
+		lines.push(`${'│ '.repeat(depth)}${describeComponent(c)}`);
+	});
+	return lines;
+}
+
+/** Counts each component type across the whole tree, e.g. "Container ×1 · TextDisplay ×3". */
+function componentSummary(message) {
+	const counts = new Map();
+	walkComponents(message.components, c => {
+		const name = componentTypeName(c);
+		counts.set(name, (counts.get(name) ?? 0) + 1);
+	});
+	if (counts.size === 0) return 'None';
+	return [...counts].map(([name, n]) => `${name} ×${n}`).join(' · ');
+}
+
+/** Formats a byte count as B, KB, MB or GB. */
+function formatBytes(bytes) {
+	if (bytes < 1024) return `${bytes} B`;
+	const units = ['KB', 'MB', 'GB'];
+	let value = bytes / 1024;
+	let i = 0;
+	while (value >= 1024 && i < units.length - 1) {
+		value /= 1024;
+		i++;
+	}
+	return `${value.toFixed(1)} ${units[i]}`;
+}
+
 /** Splits lines into chunks that each fit in one embed field value. */
 function chunkLines(lines, max = MAX_FIELD_VALUE) {
 	const chunks = [];
@@ -97,18 +185,6 @@ function addListFields(embed, title, lines) {
 	return complete;
 }
 
-function formatBytes(bytes) {
-	if (bytes < 1024) return `${bytes} B`;
-	const units = ['KB', 'MB', 'GB'];
-	let value = bytes / 1024;
-	let i = 0;
-	while (value >= 1024 && i < units.length - 1) {
-		value /= 1024;
-		i++;
-	}
-	return `${value.toFixed(1)} ${units[i]}`;
-}
-
 const escapeLinkText = s => s.replace(/[\[\]]/g, '\\$&');
 
 function attachmentLines(message) {
@@ -135,6 +211,7 @@ function buildButtons(active = null, disabled = false) {
 		{ id: 'meta', label: 'Metadata', emoji: '📋' },
 		{ id: 'reactions', label: 'Reactions', emoji: '👥' },
 		{ id: 'content', label: 'Content', emoji: '📝' },
+		{ id: 'components', label: 'Components', emoji: '🧩' },
 		{ id: 'raw', label: 'Raw', emoji: '🔍' },
 	];
 	return new ActionRowBuilder().addComponents(
@@ -170,6 +247,7 @@ function buildMetadataEmbed(message) {
 			{ name: 'Embeds / Stickers', value: `${message.embeds.length} / ${message.stickers.size}`, inline: true },
 			{ name: 'Reactions', value: `${message.reactions.cache.size} emoji`, inline: true },
 			{ name: 'Reply To', value: message.reference?.messageId ? `\`${message.reference.messageId}\`` : 'None', inline: true },
+			{ name: 'Components', value: componentSummary(message), inline: false },
 		);
 
 	// Lists go last so the base fields always fit
@@ -195,7 +273,29 @@ function buildContentEmbed(message) {
 		.setFooter({ text: `${content.length} chars (cleaned)` });
 }
 
-/** Raw content before cleaning. Embed JSON goes in a file so it doesn't crowd the embed. */
+/** Builds the components view: the tree with types and labels, no IDs or styling details. */
+function buildComponentsEmbed(message) {
+	const embed = new EmbedBuilder()
+		.setTitle('Message Components')
+		.setURL(message.url)
+		.setColor(COLOR);
+
+	const lines = componentTreeLines(message);
+	if (lines.length === 0) {
+		return embed.setDescription('*No components on this message.*');
+	}
+
+	const topLevel = message.components.length;
+	embed.setDescription(`${topLevel} top-level component${topLevel === 1 ? '' : 's'} · ${lines.length} total`);
+
+	const complete = addListFields(embed, 'Component tree', lines);
+	if (!complete) {
+		embed.setFooter({ text: "Some components were cut off to fit Discord's embed limits. Check the Raw view for the full data." });
+	}
+	return embed;
+}
+
+/** Raw content before cleaning. Embed JSON and component JSON go in files so they don't crowd the embed. */
 function buildRawView(message) {
 	const raw = message.content ?? '';
 	const cleaned = MsgUtils.cleanMessageContent(message) ?? '';
@@ -212,6 +312,10 @@ function buildRawView(message) {
 	if (message.embeds.length) {
 		const json = JSON.stringify(message.embeds.map(e => e.toJSON()), null, 2);
 		files.push(new AttachmentBuilder(Buffer.from(json, 'utf8'), { name: 'embeds.json' }));
+	}
+	if (message.components.length) {
+		const json = JSON.stringify(message.components.map(c => c.toJSON?.() ?? c), null, 2);
+		files.push(new AttachmentBuilder(Buffer.from(json, 'utf8'), { name: 'components.json' }));
 	}
 	return { embed, files };
 }
@@ -279,6 +383,15 @@ async function execute(interaction) {
 				embeds: [embed],
 				components: [buildButtons('reactions')],
 				files: file ? [file] : [],
+			});
+		}
+
+		if (i.customId === 'components') {
+			const embed = buildComponentsEmbed(message);
+			return i.update({
+				embeds: [embed],
+				components: [buildButtons('components')],
+				files: [],
 			});
 		}
 
