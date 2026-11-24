@@ -422,7 +422,6 @@ async function handleInteraction(interaction) {
 
 module.exports = {
 	data,
-	whitelistRoles,
 	userPermissions,
 	botPermissions: userPermissions,
 	execute,
